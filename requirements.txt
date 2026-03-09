@@ -1,0 +1,13 @@
+streamlit
+python-dotenv
+firecrawl
+groq
+langchain
+langchain-community
+langchain-groq
+faiss-cpu
+sentence-transformers
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+pypdf
