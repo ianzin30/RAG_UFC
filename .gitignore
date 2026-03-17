@@ -1,0 +1,4 @@
+google-oauth-credentials.json
+__pycache__/
+.env
+firecrawl/
