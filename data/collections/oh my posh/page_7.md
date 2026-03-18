@@ -1,77 +1,83 @@
-[Skip to main content](https://ohmyposh.dev/docs/segments/cli/buf#__docusaurus_skipToContent_fallback)
+Source URL: https://ohmyposh.dev/docs/migrating
 
-If you're enjoying Oh My Posh, consider becoming a [sponsor](https://github.com/sponsors/JanDeDobbeleer) to keep the project going strong 💪
+[Skip to main content](https://ohmyposh.dev/docs/migrating#__docusaurus_skipToContent_fallback)
+
+If you're enjoying Oh My Posh, consider becoming a [sponsor](https://github.com/sponsors/JanDeDobbeleer)
+ to keep the project going strong 💪
 
 On this page
 
-## What [​](https://ohmyposh.dev/docs/segments/cli/buf\#what "Direct link to What")
+Problem statement[​](https://ohmyposh.dev/docs/migrating#problem-statement "Direct link to Problem statement")
 
-Display the currently active [Buf CLI](https://buf.build/) version.
+---------------------------------------------------------------------------------------------------------------
 
-## Sample Configuration [​](https://ohmyposh.dev/docs/segments/cli/buf\#sample-configuration "Direct link to Sample Configuration")
+Traditionally, the module was the only way to install oh-my-posh using `Install-Module oh-my-posh`. Today, with the shift to the executable version over a year ago, it only acts as a wrapper around the executable, offering no additional functionality. Throughout the year, the following changes have been made:
 
-- json
-- yaml
-- toml
+*   don't ship all binaries in the Module but download on `Import-Module`
+*   move all functionality from the Module to the [init](https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/src/shell/scripts/omp.ps1)
+     script
 
-```json
-{
-  "type": "buf",
-  "style": "plain",
-  "foreground": "#1000D6",
-  "template": " 🐃 {{ .Full }} "
-}
-```
+There's a problem with the Module due to the following:
 
-```yaml
-type: buf
-style: plain
-foreground: "#1000D6"
-template: " 🐃 {{ .Full }} "
-```
+*   downloading the binary is a problem on company managed computers
+*   the module syncs cross device thanks to OneDrive sync, causing versions to be out of sync and [configs to break](https://ohmyposh.dev/blog/idiots-everywhere)
+    
+*   it's impactful having to explain the difference time and time again (for me)
 
-```toml
-type = "buf"
-style = "plain"
-foreground = "#1000D6"
-template = " 🐃 {{ .Full }} "
-```
+Migration steps[​](https://ohmyposh.dev/docs/migrating#migration-steps "Direct link to Migration steps")
 
-## Options [​](https://ohmyposh.dev/docs/segments/cli/buf\#options "Direct link to Options")
+---------------------------------------------------------------------------------------------------------
 
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| `home_enabled` | `boolean` | `false` | display the segment in the HOME folder or not |
-| `fetch_version` | `boolean` | `true` | fetch the active version or not; useful if all you need is an icon indicating `buf` |
-| `cache_duration` | `string` | `none` | the duration for which the version will be cached. The duration is a string in the format `1h2m3s` and is parsed using the [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) function from the Go standard library. To disable the cache, use `none` |
-| `missing_command_text` | `string` |  | text to display when the command is missing |
-| `display_mode` | `string` | `context` | - `always`: the segment is always displayed<br>- `files`: the segment is only displayed when file `extensions` listed are present<br>- `context`: displays the segment when the environment or files is active |
-| `version_url_template` | `string` |  | a go [text/template](https://golang.org/pkg/text/template/) [template](https://ohmyposh.dev/docs/configuration/templates) that creates the URL of the version info / release notes |
-| `extensions` | `[]string` | `buf.yaml, buf.gen.yaml, buf.work.yaml` | allows to override the default list of file extensions to validate |
-| `folders` | `[]string` |  | allows to override the list of folder names to validate |
-| `tooling` | `[]string` | `buf` | the tooling to use for fetching the version |
+### Remove the module's cached files[​](https://ohmyposh.dev/docs/migrating#remove-the-modules-cached-files "Direct link to Remove the module's cached files")
 
-## Template ( [info](https://ohmyposh.dev/docs/configuration/templates)) [​](https://ohmyposh.dev/docs/segments/cli/buf\#template-info "Direct link to template-info")
+    Remove-Item $env:POSH_PATH -Force -Recurse
 
-default template
+warning
 
-```template
-{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}
-```
+If you added custom elements to this location, they will be deleted with the command above. Make sure to move these before running the command.
 
-### Properties [​](https://ohmyposh.dev/docs/segments/cli/buf\#properties "Direct link to Properties")
+### Install oh-my-posh[​](https://ohmyposh.dev/docs/migrating#install-oh-my-posh "Direct link to Install oh-my-posh")
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `.Full` | `string` | the full version |
-| `.Major` | `string` | major number |
-| `.Minor` | `string` | minor number |
-| `.Patch` | `string` | patch number |
-| `.URL` | `string` | URL of the version info / release notes |
-| `.Error` | `string` | error encountered when fetching the version string |
+See your platform's installation guide. The preferred ways are **winget** and **Homebrew**.
 
-- [What](https://ohmyposh.dev/docs/segments/cli/buf#what)
-- [Sample Configuration](https://ohmyposh.dev/docs/segments/cli/buf#sample-configuration)
-- [Options](https://ohmyposh.dev/docs/segments/cli/buf#options)
-- [Template (info)](https://ohmyposh.dev/docs/segments/cli/buf#template-info)
-  - [Properties](https://ohmyposh.dev/docs/segments/cli/buf#properties)
+*   [Windows](https://ohmyposh.dev/docs/installation/windows)
+    
+*   [macOS](https://ohmyposh.dev/docs/installation/macos)
+    
+*   [Linux](https://ohmyposh.dev/docs/installation/linux)
+    
+
+### Uninstall the PowerShell module[​](https://ohmyposh.dev/docs/migrating#uninstall-the-powershell-module "Direct link to Uninstall the PowerShell module")
+
+    Uninstall-Module oh-my-posh -AllVersions
+
+Delete the import of the PowerShell module in your `$PROFILE`
+
+    Import-Module oh-my-posh
+
+### Adjust setting the prompt[​](https://ohmyposh.dev/docs/migrating#adjust-setting-the-prompt "Direct link to Adjust setting the prompt")
+
+If you're still using `Set-PoshPrompt`, replace that statement with the following:
+
+#### I have a custom theme[​](https://ohmyposh.dev/docs/migrating#i-have-a-custom-theme "Direct link to I have a custom theme")
+
+    oh-my-posh init pwsh --config ~/.custom.omp.json | Invoke-Expression
+
+And replace `~/.custom.omp.json` with the location of your theme.
+
+#### I have an out-of-the-box theme[​](https://ohmyposh.dev/docs/migrating#i-have-an-out-of-the-box-theme "Direct link to I have an out-of-the-box theme")
+
+    oh-my-posh init pwsh --config "jandedobbeleer" | Invoke-Expression
+
+Replace `jandedobbeleer` with the theme you use.
+
+*   [Problem statement](https://ohmyposh.dev/docs/migrating#problem-statement)
+    
+*   [Migration steps](https://ohmyposh.dev/docs/migrating#migration-steps)
+    *   [Remove the module's cached files](https://ohmyposh.dev/docs/migrating#remove-the-modules-cached-files)
+        
+    *   [Install oh-my-posh](https://ohmyposh.dev/docs/migrating#install-oh-my-posh)
+        
+    *   [Uninstall the PowerShell module](https://ohmyposh.dev/docs/migrating#uninstall-the-powershell-module)
+        
+    *   [Adjust setting the prompt](https://ohmyposh.dev/docs/migrating#adjust-setting-the-prompt)

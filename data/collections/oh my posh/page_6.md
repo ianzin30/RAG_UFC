@@ -1,83 +1,49 @@
-[Skip to main content](https://ohmyposh.dev/docs/segments/languages/rust#__docusaurus_skipToContent_fallback)
+Source URL: https://ohmyposh.dev/docs/share
 
-If you're enjoying Oh My Posh, consider becoming a [sponsor](https://github.com/sponsors/JanDeDobbeleer) to keep the project going strong 💪
+[Skip to main content](https://ohmyposh.dev/docs/share#__docusaurus_skipToContent_fallback)
+
+If you're enjoying Oh My Posh, consider becoming a [sponsor](https://github.com/sponsors/JanDeDobbeleer)
+ to keep the project going strong 💪
 
 On this page
 
-## What [​](https://ohmyposh.dev/docs/segments/languages/rust\#what "Direct link to What")
+You can export your prompt to an image which you can share online. You have the ability to align it correctly and add your name for credits too.
 
-Display the currently active [Rust](https://rust-lang.org/) version.
+caution
 
-## Sample Configuration [​](https://ohmyposh.dev/docs/segments/languages/rust\#sample-configuration "Direct link to Sample Configuration")
+Some glyphs aren't rendered correctly, that's not you but the limitations of the renderer. Depending on your config, you might have to tweak the output a little bit.
 
-- json
-- yaml
-- toml
+The oh-my-posh executable has the `config export image` command to export your current theme configuration to a PNG image file (if no other options are specified this will be the name of the config file, or `prompt.png`).
 
-```json
-{
-  "type": "rust",
-  "style": "powerline",
-  "powerline_symbol": "",
-  "foreground": "#193549",
-  "background": "#99908a",
-  "template": "  {{ .Full }} "
-}
-```
+    oh-my-posh config export image
 
-```yaml
-type: rust
-style: powerline
-powerline_symbol: 
-foreground: "#193549"
-background: "#99908a"
-template: "  {{ .Full }} "
-```
+Settings File[​](https://ohmyposh.dev/docs/share#settings-file "Direct link to Settings File")
 
-```toml
-type = "rust"
-style = "powerline"
-powerline_symbol = ""
-foreground = "#193549"
-background = "#99908a"
-template = "  {{ .Full }} "
-```
+-----------------------------------------------------------------------------------------------
 
-## Options [​](https://ohmyposh.dev/docs/segments/languages/rust\#options "Direct link to Options")
+The `--settings` flag allows you to provide a JSON file to customize the exported image. This file lets you override colors, set the author name, and specify the background color.
+
+~/.image.settings.json
+
+    {  "colors": {    "red": "#FF6B6B",    "blue": "#4ECDC4",    "green": "#45B7D1",    "yellow": "#FFA07A",    "magenta": "#98D8C8",    "cyan": "#F7DC6F"  },  "fonts": {    "regular": "C:/Users/user/Downloads/BigBlueTerminal/BigBlueTerm437NerdFont-Regular.ttf",    "bold": "C:/Users/user/Downloads/BigBlueTerminal/BigBlueTerm437NerdFont-Regular.ttf",    "italic": "C:/Users/user/Downloads/BigBlueTerminal/BigBlueTerm437NerdFont-Regular.ttf"  },  "author": "Your Name",  "background_color": "#282828",  "cursor": "\udb81\udde7"}
+
+### Settings Options[​](https://ohmyposh.dev/docs/share#settings-options "Direct link to Settings Options")
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `home_enabled` | `boolean` | `false` | display the segment in the HOME folder or not |
-| `fetch_version` | `boolean` | `true` | fetch the rust version (`rustc --version`) |
-| `cache_duration` | `string` | `none` | the duration for which the version will be cached. The duration is a string in the format `1h2m3s` and is parsed using the [time.ParseDuration](https://golang.org/pkg/time/#ParseDuration) function from the Go standard library. To disable the cache, use `none` |
-| `missing_command_text` | `string` |  | text to display when the command is missing |
-| `display_mode` | `string` | `context` | - `always`: the segment is always displayed<br>- `files`: the segment is only displayed when file `extensions` listed are present<br>- `context`: displays the segment when the environment or files is active |
-| `version_url_template` | `string` |  | a go [text/template](https://golang.org/pkg/text/template/) [template](https://ohmyposh.dev/docs/configuration/templates) that creates the URL of the version info / release notes |
-| `extensions` | `[]string` | `*.rs, Cargo.toml, Cargo.lock` | allows to override the default list of file extensions to validate |
-| `folders` | `[]string` |  | allows to override the list of folder names to validate |
-| `tooling` | `[]string` | `rustc` | the tooling to use for fetching the version |
+| `colors` | `object` |     | Map of ANSI color names to hex color codes. See [16 ANSI color names](https://ohmyposh.dev/docs/configuration/colors#standard-colors) |
+| `author` | `string` |     | Your name or credit to display on the image |
+| `background_color` | `string` | `#151515` | Hex code for the image background |
+| `fonts` | `object` |     | Font settings for the image, including regular, bold, and italic styles |
+| `cursor` | `string` | `_` | A custom cursor |
 
-## Template ( [info](https://ohmyposh.dev/docs/configuration/templates)) [​](https://ohmyposh.dev/docs/segments/languages/rust\#template-info "Direct link to template-info")
+### Usage[​](https://ohmyposh.dev/docs/share#usage "Direct link to Usage")
 
-default template
+    oh-my-posh config export image --settings ~/.image.settings.json
 
-```template
-{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}
-```
+This will export your prompt image using the custom colors and settings from the file.
 
-### Properties [​](https://ohmyposh.dev/docs/segments/languages/rust\#properties "Direct link to Properties")
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `.Full` | `string` | the full version |
-| `.Major` | `string` | major number |
-| `.Minor` | `string` | minor number |
-| `.Patch` | `string` | patch number |
-| `.Prerelease` | `string` | channel name |
-| `.Error` | `string` | error encountered when fetching the version string |
-
-- [What](https://ohmyposh.dev/docs/segments/languages/rust#what)
-- [Sample Configuration](https://ohmyposh.dev/docs/segments/languages/rust#sample-configuration)
-- [Options](https://ohmyposh.dev/docs/segments/languages/rust#options)
-- [Template (info)](https://ohmyposh.dev/docs/segments/languages/rust#template-info)
-  - [Properties](https://ohmyposh.dev/docs/segments/languages/rust#properties)
+*   [Settings File](https://ohmyposh.dev/docs/share#settings-file)
+    *   [Settings Options](https://ohmyposh.dev/docs/share#settings-options)
+        
+    *   [Usage](https://ohmyposh.dev/docs/share#usage)

@@ -2,7 +2,8 @@ import streamlit as st
 from service.scraping import ScrapingService
 
 def show():
-    st.header("Scraping de Websites")
+    st.header("Scraping de Documentações")
+    st.caption("Cole a URL da documentação ou da página inicial do produto. O scraper vai priorizar a seção de docs.")
 
     feedback = st.session_state.pop("scrape_feedback", None)
     if feedback:
@@ -11,7 +12,7 @@ def show():
     scraper = ScrapingService()
 
     with st.form("scraping_form"):  
-        url = st.text_input("URL do site para scraping:", placeholder="https://example.com")
+        url = st.text_input("URL da documentação para scraping:", placeholder="https://example.com/docs/")
         collection_name = st.text_input("Nome da coleção para salvar os dados:", placeholder="minha_colecao")
         submit_button = st.form_submit_button("Iniciar Scraping")
 
@@ -27,8 +28,10 @@ def show():
                 elif isinstance(result, dict) and result.get("ok"):
                     files_saved = result.get("files", 0)
                     source = result.get("source", "unknown")
+                    target_url = result.get("target_url")
                     st.session_state.scrape_feedback = (
-                        f"{files_saved} arquivos salvos na coleção '{collection_name}' usando Firecrawl {source}."
+                        f"{files_saved} arquivos salvos na coleção '{collection_name}' usando Firecrawl {source}"
+                        + (f" a partir de '{target_url}'." if target_url else ".")
                     )
                     st.rerun()
                 else:

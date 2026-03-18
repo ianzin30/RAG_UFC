@@ -1,8 +1,0 @@
-services:
-  app:
-    build: .
-    ports:
-      - "8501:8501"
-    # Uncomment if you use a local .env file:
-    # env_file:
-    #   - .env

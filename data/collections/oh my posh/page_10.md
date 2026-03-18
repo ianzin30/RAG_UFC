@@ -1,122 +1,140 @@
-[Skip to main content](https://ohmyposh.dev/docs/segments/scm/sapling#__docusaurus_skipToContent_fallback)
+Source URL: https://ohmyposh.dev/docs/configuration/block
 
-If you're enjoying Oh My Posh, consider becoming a [sponsor](https://github.com/sponsors/JanDeDobbeleer) to keep the project going strong 💪
+[Skip to main content](https://ohmyposh.dev/docs/configuration/block#__docusaurus_skipToContent_fallback)
+
+If you're enjoying Oh My Posh, consider becoming a [sponsor](https://github.com/sponsors/JanDeDobbeleer)
+ to keep the project going strong 💪
 
 On this page
 
-## What [​](https://ohmyposh.dev/docs/segments/scm/sapling\#what "Direct link to What")
+Let's take a closer look at what defines a block.
 
-Display [Sapling](https://sapling-scm.com/) information when in a sapling repository.
+*   json
+*   yaml
+*   toml
 
-## Sample Configuration [​](https://ohmyposh.dev/docs/segments/scm/sapling\#sample-configuration "Direct link to Sample Configuration")
+    {  "blocks": [    {      "type": "prompt",      "alignment": "left",      "segments": []    }  ]}
 
-- json
-- yaml
-- toml
+    blocks:  - type: prompt    alignment: left    segments: []
 
-```json
-{
-  "type": "sapling",
-  "style": "powerline",
-  "powerline_symbol": "",
-  "foreground": "#193549",
-  "background": "#4C9642",
-  "background_templates": [\
-    "{{ if .Bookmark }}#4C9642{{ end }}"\
-  ],
-  "options": {
-    "fetch_status": true
-  }
-}
-```
+    [[blocks]]type = "prompt"alignment = "left"segments = []
 
-```yaml
-type: sapling
-style: powerline
-powerline_symbol: 
-foreground: "#193549"
-background: "#4C9642"
-background_templates:
-  - "{{ if .Bookmark }}#4C9642{{ end }}"
-options:
-  fetch_status: true
-```
+Settings[​](https://ohmyposh.dev/docs/configuration/block#settings "Direct link to Settings")
 
-```toml
-type = "sapling"
-style = "powerline"
-powerline_symbol = ""
-foreground = "#193549"
-background = "#4C9642"
-background_templates = [ "{{ if .Bookmark }}#4C9642{{ end }}" ]
+----------------------------------------------------------------------------------------------
 
-[options]
-fetch_status = true
-```
-
-## Options [​](https://ohmyposh.dev/docs/segments/scm/sapling\#options "Direct link to Options")
-
-### Fetching information [​](https://ohmyposh.dev/docs/segments/scm/sapling\#fetching-information "Direct link to Fetching information")
-
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| `fetch_status` | `boolean` | `true` | fetch the local changes - defaults to |
-| `native_fallback` | `boolean` | `false` | when set to `true` and `sl.exe` is not available when inside a WSL2 shared Windows drive, we will fallback to the native `sl` executable to fetch data. Not all information can be displayed in this case |
-| `status_formats` | `map[string]string` |  | a key, value map allowing to override how individual status items are displayed. For example, `"status_formats": { "Added": "Added: %d" }` will display the added count as `Added: 1` instead of `+1`. See the [Status](https://ohmyposh.dev/docs/segments/scm/sapling#status) section for available overrides |
-
-## Template ( [info](https://ohmyposh.dev/docs/configuration/templates)) [​](https://ohmyposh.dev/docs/segments/scm/sapling\#template-info "Direct link to template-info")
-
-default template
-
-```template
- {{ if .Bookmark }}\uf097 {{ .Bookmark }}*{{ else }}\ue729 {{ .ShortHash }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}
-```
-
-### Properties [​](https://ohmyposh.dev/docs/segments/scm/sapling\#properties "Direct link to Properties")
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `.RepoName` | `string` | the repo folder name |
-| `.Working` | `Status` | changes in the worktree (see below) |
-| `.Description` | `string` | the first line of the commit's description |
-| `.Author` | `string` | the author of the commit |
-| `.Hash` | `string` | the full hash of the commit |
-| `.ShortHash` | `string` | the short hash of the commit |
-| `.When` | `string` | the commit's relative time indication |
-| `.Bookmark` | `string` | the commit's bookmark (if any) |
-| `.Dir` | `string` | the repository's root directory |
-| `.RelativeDir` | `string` | the current directory relative to the root directory |
-| `.New` | `boolean` | true when there are no commits in the repo |
-
-### Status [​](https://ohmyposh.dev/docs/segments/scm/sapling\#status "Direct link to Status")
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `.Modified` | `int` | number of modified changes |
-| `.Added` | `int` | number of added changes |
-| `.Deleted` | `int` | number of removed changes |
-| `.Untracked` | `boolean` | number of untracked changes |
-| `.Clean` | `int` | number of clean changes |
-| `.Missing` | `int` | number of missing changes |
-| `.Ignored` | `boolean` | number of ignored changes |
-| `.String` | `string` | a string representation of the changes above |
-
-Local changes use the following syntax:
-
-| Icon | Description |
+| Name | Type |
 | --- | --- |
-| `~` | Modified |
-| `+` | Added |
-| `-` | Deleted |
-| `?` | Untracked |
-| `=` | Clean |
-| `!` | Missing |
-| `Ø` | Ignored |
+| `type` | `string` |
+| `newline` | `boolean` |
+| `alignment` | `string` |
+| `filler` | `string` |
+| `overflow` | `string` |
+| `leading_diamond` | `string` |
+| `trailing_diamond` | `string` |
+| `segments` | `array` |
+| `force` | `boolean` |
+| `index` | `int` |
 
-- [What](https://ohmyposh.dev/docs/segments/scm/sapling#what)
-- [Sample Configuration](https://ohmyposh.dev/docs/segments/scm/sapling#sample-configuration)
-- [Options](https://ohmyposh.dev/docs/segments/scm/sapling#options)
-  - [Fetching information](https://ohmyposh.dev/docs/segments/scm/sapling#fetching-information)
-- [Template (info)](https://ohmyposh.dev/docs/segments/scm/sapling#template-info)
-  - [Properties](https://ohmyposh.dev/docs/segments/scm/sapling#properties)
-  - [Status](https://ohmyposh.dev/docs/segments/scm/sapling#status)
+### Type[​](https://ohmyposh.dev/docs/configuration/block#type "Direct link to Type")
+
+Tells the engine what to do with the block. There are two options:
+
+*   `prompt` renders one or more segments
+*   `rprompt` renders one or more segments aligned to the right of the cursor. Only one `rprompt` block is permitted. Supported on bash (with [ble.sh](https://github.com/akinomyoga/ble.sh)
+    ), zsh, PowerShell, cmd, nu and fish.
+
+### Newline[​](https://ohmyposh.dev/docs/configuration/block#newline "Direct link to Newline")
+
+Start the block on a new line - defaults to `false`. For `pwsh` and `cmd` this will not print a newline that's defined on the first block when the prompt is on the first line (when using clear), or when the shell session starts (1st prompt). To enable the same behavior for `bash` and `zsh`, set `enable_cursor_positioning` to `true`. This can have the side effect of swallowing commands you type while the prompt loads, or while the current command is still ongoing. This is a limitation of the shell and not Oh My Posh.
+
+### Alignment[​](https://ohmyposh.dev/docs/configuration/block#alignment "Direct link to Alignment")
+
+*   `left`
+*   `right`
+
+Tell the engine if the block should be left or right-aligned.
+
+### Filler[​](https://ohmyposh.dev/docs/configuration/block#filler "Direct link to Filler")
+
+When you want to join a right and left aligned block with a repeated set of characters, add the character(s) to be repeated to this property. Add this property to the _right_ aligned block. This supports the use of [color overrides](https://ohmyposh.dev/docs/configuration/colors#color-overrides)
+.
+
+*   json
+*   yaml
+*   toml
+
+    {  "blocks": [    {      "alignment": "right",      "filler": "."    }  ]}
+
+    blocks:  - alignment: right    filler: .
+
+    [[blocks]]alignment = "right"filler = "."
+
+Filler allows you to specify a template to tweak the text used as filler. This template behaves the same as Segment templates, however, fewer properties are available.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `.Overflow` | `text` | if no overflow was needed, this is empty. Otherwise `hide` or `break` |
+| `.Padding` | `int` | the computed length of the padding between left and right blocks |
+
+This can be very useful if you wish to use a filler text when there is no overflow and use empty space when the right block is hidden or drawn on a newline due to overflow.
+
+*   json
+*   yaml
+*   toml
+
+    {  "blocks": [    {      "alignment": "right",      "overflow": "hide",      "filler": "{{ if .Overflow }} {{ else }}-{{ end }}"    }  ]}
+
+    blocks:  - alignment: right    overflow: hide    filler: "{{ if .Overflow }} {{ else }}-{{ end }}"
+
+    [[blocks]]alignment = "right"overflow = "hide"filler = "{{ if .Overflow }} {{ else }}-{{ end }}"
+
+### Overflow[​](https://ohmyposh.dev/docs/configuration/block#overflow "Direct link to Overflow")
+
+*   `break`
+*   `hide`
+
+When the right aligned block is so long it will overflow the left aligned block, the engine will either break the block or hide it based on the setting. By default it is printed as is on the same line.
+
+### Leading Diamond[​](https://ohmyposh.dev/docs/configuration/block#leading-diamond "Direct link to Leading Diamond")
+
+The character to use as a leading diamond for the first segment in case you always want to start the block with the same leading diamond, regardless of which segment is enabled or not.
+
+### Trailing Diamond[​](https://ohmyposh.dev/docs/configuration/block#trailing-diamond "Direct link to Trailing Diamond")
+
+The character to use as a trailing diamond for the last segment in case you always want to end the block with the same trailing diamond, regardless of which segment is enabled or not.
+
+### Segments[​](https://ohmyposh.dev/docs/configuration/block#segments "Direct link to Segments")
+
+Array of one or more [segments](https://ohmyposh.dev/docs/configuration/segment)
+.
+
+### Force[​](https://ohmyposh.dev/docs/configuration/block#force "Direct link to Force")
+
+When set to `true`, the block will always be rendered, even if all segments are empty. Defaults to `false`.
+
+### Index[​](https://ohmyposh.dev/docs/configuration/block#index "Direct link to Index")
+
+The index of the block in the configuration. This is used to [override](https://ohmyposh.dev/docs/configuration/general#extends)
+ a specific block in a base configuration. This is a 1-based index, so the first block has an index of `1`.
+
+*   [Settings](https://ohmyposh.dev/docs/configuration/block#settings)
+    *   [Type](https://ohmyposh.dev/docs/configuration/block#type)
+        
+    *   [Newline](https://ohmyposh.dev/docs/configuration/block#newline)
+        
+    *   [Alignment](https://ohmyposh.dev/docs/configuration/block#alignment)
+        
+    *   [Filler](https://ohmyposh.dev/docs/configuration/block#filler)
+        
+    *   [Overflow](https://ohmyposh.dev/docs/configuration/block#overflow)
+        
+    *   [Leading Diamond](https://ohmyposh.dev/docs/configuration/block#leading-diamond)
+        
+    *   [Trailing Diamond](https://ohmyposh.dev/docs/configuration/block#trailing-diamond)
+        
+    *   [Segments](https://ohmyposh.dev/docs/configuration/block#segments)
+        
+    *   [Force](https://ohmyposh.dev/docs/configuration/block#force)
+        
+    *   [Index](https://ohmyposh.dev/docs/configuration/block#index)

@@ -24,13 +24,14 @@ def show():
             st.write(message["content"])
 
     if prompt := st.chat_input("Faça uma pergunta sobre os documentos da coleção selecionada..."):
+        recent_history = st.session_state.messages[-6:]
         st.chat_message("user").write(prompt)
         st.session_state.messages.append({"role": "user", "content": prompt})
 
         with st.chat_message("assistant"):
             with st.spinner("Pensando..."):
                 try:
-                    answer = st.session_state.rag_service.ask_question(prompt)
+                    answer = st.session_state.rag_service.ask_question(prompt, recent_history)
                     st.write(answer)
                     st.session_state.messages.append({"role": "assistant", "content": answer})
                 except Exception as e:

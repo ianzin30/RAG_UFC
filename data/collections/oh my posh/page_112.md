@@ -1,0 +1,89 @@
+Source URL: https://ohmyposh.dev/docs/segments/music/ytm
+
+[Skip to main content](https://ohmyposh.dev/docs/segments/music/ytm#__docusaurus_skipToContent_fallback)
+
+If you're enjoying Oh My Posh, consider becoming a [sponsor](https://github.com/sponsors/JanDeDobbeleer)
+ to keep the project going strong 💪
+
+On this page
+
+What[​](https://ohmyposh.dev/docs/segments/music/ytm#what "Direct link to What")
+
+---------------------------------------------------------------------------------
+
+Shows the currently playing song in the [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
+.
+
+Setup[​](https://ohmyposh.dev/docs/segments/music/ytm#setup "Direct link to Setup")
+
+------------------------------------------------------------------------------------
+
+You need to enable the Companion API in the YouTube Music Desktop App settings. To do this, open the app, go to `Settings > Integration` and enable the following:
+
+*   Companion server
+*   Enable companion authentication
+
+From the CLI, run the following command to set the authentication token:
+
+    oh-my-posh auth ytmda
+
+If done correctly, you should now be able to add the `ytm` segment to your prompt.
+
+rate limiting
+
+The YouTube Music Desktop App has a pretty strict rate limit. Therefore it is recommended to set the `cache` property in your configuration. If you don't, the segment will not be able to display correctly.
+
+Sample Configuration[​](https://ohmyposh.dev/docs/segments/music/ytm#sample-configuration "Direct link to Sample Configuration")
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+*   json
+*   yaml
+*   toml
+
+    {  "type": "ytm",  "style": "powerline",  "powerline_symbol": "",  "foreground": "#ffffff",  "background": "#FF0000",  "options": {    "playing_icon": " ",    "paused_icon": " ",    "stopped_icon": " ",    "ad_icon": " ",    "http_timeout": 1000  },  "cache": {    "duration": "5s",    "strategy": "session"  }}
+
+    type: ytmstyle: powerlinepowerline_symbol: foreground: "#ffffff"background: "#FF0000"options:  playing_icon: " "  paused_icon: " "  stopped_icon: " "  ad_icon: " "  http_timeout: 1000cache:  duration: 5s  strategy: session
+
+    type = "ytm"style = "powerline"powerline_symbol = ""foreground = "#ffffff"background = "#FF0000"[options]playing_icon = " "paused_icon = " "stopped_icon = " "ad_icon = " "http_timeout = 1000[cache]duration = "5s"strategy = "session"
+
+Options[​](https://ohmyposh.dev/docs/segments/music/ytm#options "Direct link to Options")
+
+------------------------------------------------------------------------------------------
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `playing_icon` | `string` | `\uf04b` | text/icon to show when playing |
+| `paused_icon` | `string` | `\uf04c` | text/icon to show when paused |
+| `stopped_icon` | `string` | `\uf04d` | text/icon to show when stopped |
+| `ad_icon` | `string` | `\ueebb` | text/icon to show when an advertisement is playing |
+| `http_timeout` | `int` | `5000` | in milliseconds - the timeout for http request |
+
+Template ([info](https://ohmyposh.dev/docs/configuration/templates)
+)[​](https://ohmyposh.dev/docs/segments/music/ytm#template-info "Direct link to template-info")
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+default template
+
+    {{ .Icon }}{{ if ne .Status \"stopped\" }}{{ .Artist }} - {{ .Track }}{{ end }}
+
+### Properties[​](https://ohmyposh.dev/docs/segments/music/ytm#properties "Direct link to Properties")
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `.Status` | `string` | player status (`playing`, `paused`, `stopped`) |
+| `.Artist` | `string` | current artist |
+| `.Track` | `string` | current track |
+| `.Icon` | `string` | icon (based on `.Status`) |
+
+*   [What](https://ohmyposh.dev/docs/segments/music/ytm#what)
+    
+*   [Setup](https://ohmyposh.dev/docs/segments/music/ytm#setup)
+    
+*   [Sample Configuration](https://ohmyposh.dev/docs/segments/music/ytm#sample-configuration)
+    
+*   [Options](https://ohmyposh.dev/docs/segments/music/ytm#options)
+    
+*   [Template (info)](https://ohmyposh.dev/docs/segments/music/ytm#template-info)
+    *   [Properties](https://ohmyposh.dev/docs/segments/music/ytm#properties)

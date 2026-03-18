@@ -1,7 +1,6 @@
 import json
 import os
 import re
-import tempfile
 from io import BytesIO
 from pathlib import Path
 
@@ -13,8 +12,10 @@ from googleapiclient.http import MediaIoBaseDownload
 from pypdf import PdfReader
 
 try:
+    from .docling_pure_extractor import DoclingPureExtractor
     from .spreadsheet_markdown import extract_spreadsheet_markdown
 except ImportError:
+    from docling_pure_extractor import DoclingPureExtractor
     from spreadsheet_markdown import extract_spreadsheet_markdown
 
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", "..", ".env"), override=True)
@@ -23,9 +24,11 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", "..", ".en
 SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
 EXTRACTION_METHOD_PYPDF = "pypdf"
 EXTRACTION_METHOD_DOCLING = "docling"
+EXTRACTION_METHOD_DOCLING_PURE = "docling-puro"
 SUPPORTED_EXTRACTION_METHODS = {
     EXTRACTION_METHOD_PYPDF,
     EXTRACTION_METHOD_DOCLING,
+    EXTRACTION_METHOD_DOCLING_PURE,
 }
 DOCX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 PPTX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
@@ -67,7 +70,7 @@ class GoogleDriveService:
         self.credentials_file = root_dir / "google-oauth-credentials.json"
         # Pasta onde as coleções de documentos são salvas
         self.collections_root = root_dir / "data" / "collections"
-        self._docling_converter = None
+        self._docling_pure_extractor = DoclingPureExtractor()
 
     # ------------------------------------------------------------------ #
     # AUTENTICAÇÃO
@@ -145,7 +148,7 @@ class GoogleDriveService:
             return {"folder_name": folder_name, "files": [], "message": f"Pasta '{folder_name}' não encontrada."}
 
         files = self._list_folder_files(service, folder["id"])
-        if extraction_method == EXTRACTION_METHOD_DOCLING:
+        if extraction_method in {EXTRACTION_METHOD_DOCLING, EXTRACTION_METHOD_DOCLING_PURE}:
             supported_files = [drive_file for drive_file in files if self._build_docling_file_plan(drive_file)]
         else:
             supported_files = [drive_file for drive_file in files if drive_file.get("mimeType") == PDF_MIME_TYPE]
@@ -205,36 +208,8 @@ class GoogleDriveService:
         pages = [page.extract_text() or "" for page in reader.pages]
         return "\n\n".join(p.strip() for p in pages if p.strip())
 
-    def _get_docling_converter(self):
-        if self._docling_converter is None:
-            try:
-                from docling.document_converter import DocumentConverter
-            except ImportError as exc:
-                raise RuntimeError(
-                    "Docling não está instalado. Adicione 'docling' às dependências do projeto."
-                ) from exc
-
-            self._docling_converter = DocumentConverter()
-
-        return self._docling_converter
-
-    def _extract_file_text_with_docling(self, file_bytes: bytes, suffix: str) -> str:
-        """Converte um arquivo suportado pelo Docling e exporta o resultado em Markdown."""
-        converter = self._get_docling_converter()
-
-        with tempfile.NamedTemporaryFile(suffix=suffix or ".bin", delete=False) as temp_file:
-            temp_file.write(file_bytes)
-            temp_file.flush()
-            temp_path = Path(temp_file.name)
-
-        try:
-            result = converter.convert(str(temp_path))
-            return result.document.export_to_markdown().strip()
-        finally:
-            temp_path.unlink(missing_ok=True)
-
     def _extract_drive_file_text(self, service, drive_file: dict, extraction_method: str) -> str:
-        if extraction_method == EXTRACTION_METHOD_DOCLING:
+        if extraction_method in {EXTRACTION_METHOD_DOCLING, EXTRACTION_METHOD_DOCLING_PURE}:
             plan = self._build_docling_file_plan(drive_file)
             if not plan:
                 raise RuntimeError(f"Tipo de arquivo não suportado pelo Docling: {drive_file.get('mimeType')}")
@@ -248,7 +223,7 @@ class GoogleDriveService:
             else:
                 file_bytes = self._download_drive_file_bytes(service, drive_file["id"])
 
-            if plan["suffix"] in SPREADSHEET_SUFFIXES:
+            if extraction_method == EXTRACTION_METHOD_DOCLING and plan["suffix"] in SPREADSHEET_SUFFIXES:
                 try:
                     spreadsheet_text = extract_spreadsheet_markdown(
                         file_bytes=file_bytes,
@@ -260,7 +235,7 @@ class GoogleDriveService:
                 except Exception:
                     pass
 
-            return self._extract_file_text_with_docling(file_bytes, plan["suffix"])
+            return self._docling_pure_extractor.extract_markdown(file_bytes, plan["suffix"])
 
         pdf_bytes = self._download_drive_file_bytes(service, drive_file["id"])
         return self._extract_pdf_text_with_pypdf(pdf_bytes)
@@ -299,7 +274,7 @@ class GoogleDriveService:
 
         files = listing.get("files", [])
         if not files:
-            if extraction_method == EXTRACTION_METHOD_DOCLING:
+            if extraction_method in {EXTRACTION_METHOD_DOCLING, EXTRACTION_METHOD_DOCLING_PURE}:
                 raise RuntimeError(f"Nenhum arquivo compatível com Docling encontrado na pasta '{folder_name}'.")
             raise RuntimeError(f"Nenhum PDF encontrado na pasta '{folder_name}'.")
 
@@ -332,7 +307,7 @@ class GoogleDriveService:
             )
 
         if not saved_files:
-            if extraction_method == EXTRACTION_METHOD_DOCLING:
+            if extraction_method in {EXTRACTION_METHOD_DOCLING, EXTRACTION_METHOD_DOCLING_PURE}:
                 raise RuntimeError("Arquivos compatíveis encontrados, mas nenhum conteúdo pôde ser extraído com Docling.")
             raise RuntimeError("PDFs encontrados, mas nenhum texto pôde ser extraído.")
 

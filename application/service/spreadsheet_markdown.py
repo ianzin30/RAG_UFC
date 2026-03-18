@@ -5,51 +5,315 @@ from io import BytesIO, StringIO
 
 from openpyxl import load_workbook
 
-
 MAX_SPREADSHEET_ROWS = 1000
 MAX_SPREADSHEET_COLUMNS = 40
 MAX_SAMPLE_VALUES = 5
 MAX_CELL_CHARS = 200
 CSV_SNIFF_DELIMITERS = ",;\t|"
-PERSON_BLOCKLIST = {
+PERSON_QUERY_TERMS = {
     "nome",
+    "nomes",
+    "name",
+    "names",
+    "pessoa",
+    "pessoas",
+    "person",
+    "people",
+    "trabalhador",
+    "trabalhadores",
+    "worker",
+    "workers",
+    "funcionario",
+    "funcionarios",
+    "funcionaria",
+    "funcionarias",
+    "employee",
+    "employees",
+    "colaborador",
+    "colaboradores",
+    "pesquisador",
+    "pesquisadores",
+    "researcher",
+    "researchers",
+    "coordenador",
+    "coordenadores",
+    "team",
+    "equipe",
+    "quem",
+    "who",
+}
+ROLE_HINT_TERMS = {
+    "coordenador",
+    "coordinator",
+    "pesquisador",
+    "researcher",
+    "analista",
+    "analyst",
+    "desenvolvedor",
+    "developer",
+    "testador",
+    "tester",
+    "designer",
+    "consultor",
+    "consultant",
+    "gerente",
+    "manager",
+    "especialista",
+    "specialist",
+    "engineer",
+    "engenheiro",
+}
+LOWERCASE_CONNECTORS = {"a", "as", "da", "das", "de", "do", "dos", "e", "of", "the"}
+PEOPLE_HEADER_TERMS = {
+    "nome",
+    "nomes",
+    "name",
+    "names",
+    "colaborador",
+    "colaboradores",
+    "funcionario",
+    "funcionarios",
+    "funcionaria",
+    "funcionarias",
+    "employee",
+    "employees",
+    "responsavel",
+    "responsaveis",
+    "owner",
+    "owners",
+    "traveler",
+    "viajante",
+    "viajantes",
+    "coordenador",
+    "coordenadores",
+    "pesquisador",
+    "pesquisadores",
+    "researcher",
+    "researchers",
+    "equipe",
+    "team",
+}
+GENERIC_PERSON_BLOCKLIST = {
+    "nome",
+    "nomes",
+    "name",
+    "names",
+    "person",
+    "people",
+    "employee",
+    "employees",
+    "funcionario",
+    "funcionarios",
+    "funcionaria",
+    "funcionarias",
+    "colaborador",
+    "colaboradores",
+    "responsavel",
+    "responsaveis",
+    "fornecedor",
+    "supplier",
+    "vendor",
     "tbd",
     "total",
     "totais",
     "subtotal",
     "sub total",
-    "target",
-    "rpa",
-    "profissionais",
-    "bolsas",
-    "custo dell",
-    "custo total de rh mensal",
-    "encargos clt",
-    "descricoes",
     "descricao",
-    "historico de margem para prestacao de contas dell",
-    "rh direto bolsas",
-    "rh direto celetistas",
-    "rh indireto administrativo",
+    "descricoes",
+    "description",
+    "descriptions",
 }
-PERSON_PREFIX_BLOCKLIST = (
-    "rh ",
-    "sub total",
-    "subtotal",
+GENERIC_PERSON_PREFIX_BLOCKLIST = (
     "total ",
-    "totais ",
+    "subtotal",
+    "sub total",
+    "taxa ",
+    "fee ",
+    "valor ",
+    "value ",
     "custo ",
+    "custos ",
+    "cost ",
+    "costs ",
     "historico ",
-    "margem ",
+    "history ",
+    "material ",
+    "servico ",
+    "servicos ",
+    "service ",
+    "services ",
+    "equip",
+    "equipment ",
+    "licenca ",
+    "licencas ",
+    "license ",
+    "licenses ",
+    "livro ",
+    "livros ",
+    "book ",
+    "books ",
+    "obra ",
+    "outro ",
+    "outros ",
+    "other ",
+    "others ",
+    "fundo ",
+    "fund ",
 )
-ROLE_BLOCKLIST = {
-    "ufc",
-    "s vinculo",
-    "column",
-    "custo dell",
-    "total",
-    "totais",
-}
+ROLE_BLOCKLIST = {"column", "cpf", "cnpj", "total", "totais", "ufc"}
+
+
+def normalize_identifier(text: str) -> str:
+    normalized = unicodedata.normalize("NFKD", (text or "").lower())
+    normalized = "".join(char for char in normalized if not unicodedata.combining(char))
+    normalized = re.sub(r"[^a-z0-9]+", " ", normalized)
+    return re.sub(r"\s+", " ", normalized).strip()
+
+
+def to_number(value: str) -> float | None:
+    if not value:
+        return None
+
+    cleaned = value.strip().replace("R$", "").replace("%", "").replace("\u00a0", " ")
+    cleaned = cleaned.replace(" ", "")
+    if not cleaned:
+        return None
+
+    if "," in cleaned and "." in cleaned:
+        if cleaned.rfind(",") > cleaned.rfind("."):
+            cleaned = cleaned.replace(".", "").replace(",", ".")
+        else:
+            cleaned = cleaned.replace(",", "")
+    elif "," in cleaned:
+        cleaned = cleaned.replace(",", ".")
+
+    try:
+        return float(cleaned)
+    except ValueError:
+        return None
+
+
+def is_human_resources_sheet(sheet_name: str) -> bool:
+    normalized = normalize_identifier(sheet_name)
+    if not normalized:
+        return False
+    return normalized == "rh" or normalized.startswith("rh ") or "recursos humanos" in normalized or "human resources" in normalized
+
+
+def header_implies_people(header: str) -> bool:
+    normalized = normalize_identifier(header)
+    if not normalized:
+        return False
+    return any(term in normalized.split() for term in PEOPLE_HEADER_TERMS)
+
+
+def looks_like_role(header: str, value: str) -> bool:
+    if not value:
+        return False
+
+    text = re.sub(r"\s+", " ", value).strip()
+    if not text or to_number(text) is not None or re.search(r"\d{4}-\d{2}-\d{2}", text):
+        return False
+
+    normalized = normalize_identifier(text)
+    if not normalized or normalized in ROLE_BLOCKLIST:
+        return False
+
+    tokens = re.findall(r"[A-Za-zÀ-ÿ]+", text)
+    if not tokens or len(tokens) > 12:
+        return False
+
+    normalized_header = normalize_identifier(header)
+    if normalized_header.startswith("column_") and len(tokens) <= 1:
+        return False
+
+    return True
+
+
+def extract_role_from_pairs(pairs: list[tuple[str, str]]) -> str | None:
+    for header, value in pairs:
+        if looks_like_role(header, value):
+            return value
+    return None
+
+
+def build_person_entry(
+    sheet_name: str,
+    row_number: int | None,
+    first_header: str,
+    first_value: str,
+    role: str | None,
+) -> dict | None:
+    if not _is_valid_person_candidate(first_value, first_header, sheet_name, role):
+        return None
+
+    return {
+        "name": first_value,
+        "role": role,
+        "row_number": row_number,
+        "sheet_name": sheet_name,
+        "source_header": first_header,
+    }
+
+
+def _is_valid_person_candidate(value: str, header: str, sheet_name: str, role: str | None) -> bool:
+    if not value:
+        return False
+
+    text = re.sub(r"\s+", " ", value).strip()
+    if len(text) < 5 or any(char.isdigit() for char in text):
+        return False
+    if to_number(text) is not None:
+        return False
+
+    normalized = normalize_identifier(text)
+    if not normalized or normalized in GENERIC_PERSON_BLOCKLIST:
+        return False
+    if any(normalized.startswith(prefix) for prefix in GENERIC_PERSON_PREFIX_BLOCKLIST):
+        return False
+    if normalized.startswith("rh ") or normalized.startswith("hr "):
+        return False
+
+    normalized_tokens = normalized.split()
+    if {"tbd", "placeholder"} & set(normalized_tokens):
+        return False
+    if "a definir" in normalized or "to be defined" in normalized:
+        return False
+
+    tokens = re.findall(r"[A-Za-zÀ-ÿ]+", text)
+    if len(tokens) < 2:
+        return False
+
+    significant_tokens = [token for token in tokens if normalize_identifier(token) not in LOWERCASE_CONNECTORS]
+    if len(significant_tokens) < 2:
+        return False
+
+    uppercase_like_count = sum(1 for token in significant_tokens if _is_name_cased_token(token))
+    lowercase_like_count = len(significant_tokens) - uppercase_like_count
+    if uppercase_like_count == 0:
+        return False
+
+    hr_sheet = is_human_resources_sheet(sheet_name)
+    people_header = header_implies_people(header)
+    valid_role = looks_like_role(header, role or "")
+
+    if hr_sheet or people_header:
+        if uppercase_like_count >= 2:
+            return True
+        return uppercase_like_count >= 1 and lowercase_like_count <= 1
+
+    if not valid_role:
+        return False
+
+    return uppercase_like_count >= 2 and lowercase_like_count <= 1
+
+
+def _is_name_cased_token(token: str) -> bool:
+    if not token:
+        return False
+    if token.isupper():
+        return True
+    return token[0].isupper()
 
 
 def extract_spreadsheet_markdown(file_bytes: bytes, suffix: str, file_name: str) -> str:
@@ -214,7 +478,7 @@ def _build_column_profiles(headers: list[str], rows: list[dict]) -> list[str]:
         if not values:
             continue
 
-        numeric_values = [_to_number(value) for value in values]
+        numeric_values = [to_number(value) for value in values]
         numeric_values = [value for value in numeric_values if value is not None]
 
         if len(numeric_values) >= 2:
@@ -265,81 +529,8 @@ def _extract_person_entry(sheet_name: str, row: dict) -> dict | None:
         return None
 
     first_header, first_value = row["pairs"][0]
-    if not _looks_like_person_name(first_value):
-        return None
-
-    role = _extract_role_from_pairs(row["pairs"][1:])
-    return {
-        "name": first_value,
-        "role": role,
-        "row_number": row["row_number"],
-        "sheet_name": sheet_name,
-        "source_header": first_header,
-    }
-
-
-def _extract_role_from_pairs(pairs: list[tuple[str, str]]) -> str | None:
-    for header, value in pairs:
-        if _looks_like_role(header, value):
-            return value
-    return None
-
-
-def _looks_like_person_name(value: str) -> bool:
-    if not value:
-        return False
-
-    text = re.sub(r"\s+", " ", value).strip()
-    if len(text) < 5 or any(char.isdigit() for char in text):
-        return False
-
-    if not any(char.islower() for char in text):
-        return False
-
-    normalized = _normalize_identifier(text)
-    if not normalized or normalized in PERSON_BLOCKLIST:
-        return False
-    if any(normalized.startswith(prefix) for prefix in PERSON_PREFIX_BLOCKLIST):
-        return False
-
-    tokens = re.findall(r"[A-Za-zÀ-ÿ]+", text)
-    if len(tokens) < 2:
-        return False
-
-    return True
-
-
-def _looks_like_role(header: str, value: str) -> bool:
-    if not value:
-        return False
-
-    text = re.sub(r"\s+", " ", value).strip()
-    normalized = _normalize_identifier(text)
-    if not normalized or normalized in ROLE_BLOCKLIST:
-        return False
-
-    if _to_number(text) is not None:
-        return False
-
-    if re.search(r"\d{4}-\d{2}-\d{2}", text):
-        return False
-
-    tokens = re.findall(r"[A-Za-zÀ-ÿ]+", text)
-    if not tokens or len(tokens) > 12:
-        return False
-
-    normalized_header = _normalize_identifier(header)
-    if normalized_header.startswith("column_") and len(tokens) <= 1:
-        return False
-
-    return True
-
-
-def _normalize_identifier(text: str) -> str:
-    normalized = unicodedata.normalize("NFKD", (text or "").lower())
-    normalized = "".join(char for char in normalized if not unicodedata.combining(char))
-    normalized = re.sub(r"[^a-z0-9]+", " ", normalized)
-    return re.sub(r"\s+", " ", normalized).strip()
+    role = extract_role_from_pairs(row["pairs"][1:])
+    return build_person_entry(sheet_name, row["row_number"], first_header, first_value, role)
 
 
 def _normalize_cell(value) -> str:
@@ -355,29 +546,6 @@ def _normalize_cell(value) -> str:
     if len(text) > MAX_CELL_CHARS:
         return text[: MAX_CELL_CHARS - 3] + "..."
     return text
-
-
-def _to_number(value: str) -> float | None:
-    if not value:
-        return None
-
-    cleaned = value.strip().replace("R$", "").replace("%", "").replace("\u00a0", " ")
-    cleaned = cleaned.replace(" ", "")
-    if not cleaned:
-        return None
-
-    if "," in cleaned and "." in cleaned:
-        if cleaned.rfind(",") > cleaned.rfind("."):
-            cleaned = cleaned.replace(".", "").replace(",", ".")
-        else:
-            cleaned = cleaned.replace(",", "")
-    elif "," in cleaned:
-        cleaned = cleaned.replace(",", ".")
-
-    try:
-        return float(cleaned)
-    except ValueError:
-        return None
 
 
 def _format_number(value: float) -> str:

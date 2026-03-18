@@ -1,5 +1,6 @@
 import asyncio
 import os
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -7,13 +8,11 @@ from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 try:
-    from .bot_support.collection_route import (
-        build_collection_route_response,
-        clear_collection_session,
-        ensure_collection_session,
-        update_collection_session,
-    )
     from .bot_support.drive_chat import (
         DRIVE_FOLDER_NAME,
         build_login_intro_messages,
@@ -30,12 +29,6 @@ try:
         normalize_extraction_method,
     )
 except ImportError:
-    from bot_support.collection_route import (
-        build_collection_route_response,
-        clear_collection_session,
-        ensure_collection_session,
-        update_collection_session,
-    )
     from bot_support.drive_chat import (
         DRIVE_FOLDER_NAME,
         build_login_intro_messages,
@@ -51,9 +44,6 @@ except ImportError:
         ensure_extraction_session,
         normalize_extraction_method,
     )
-
-
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
 load_dotenv(dotenv_path=PROJECT_ROOT / ".env", override=True)
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -68,7 +58,6 @@ def _ensure_session(context: ContextTypes.DEFAULT_TYPE) -> dict:
     session.setdefault("rag_service", None)
     session.setdefault("login_in_progress", False)
     session.setdefault("loading_in_progress", False)
-    ensure_collection_session(session)
     return ensure_extraction_session(session)
 
 
@@ -99,7 +88,6 @@ def _reset_loaded_collection(session: dict) -> None:
     session["files_count"] = 0
     session["messages"] = []
     session["rag_service"] = None
-    clear_collection_session(session)
 
 
 async def _send_extraction_choice_prompt(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -227,7 +215,6 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         session["rag_service"] = rag_service
         session["extraction_method"] = result["extraction_method"]
         session["awaiting_extraction_choice"] = False
-        update_collection_session(session, result)
 
         success_caption = build_success_caption(
             files_count,
@@ -320,12 +307,6 @@ async def handle_chat(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
     question = update.message.text.strip()
     recent_history = session["messages"][-6:]
     session["messages"].append({"role": "user", "content": question})
-
-    direct_answer = build_collection_route_response(question, session)
-    if direct_answer is not None:
-        session["messages"].append({"role": "assistant", "content": direct_answer})
-        await _reply(update, direct_answer)
-        return
 
     try:
         await context.bot.send_chat_action(chat_id=update.effective_chat.id, action=ChatAction.TYPING)

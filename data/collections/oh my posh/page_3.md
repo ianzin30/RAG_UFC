@@ -1,145 +1,54 @@
-[Skip to main content](https://ohmyposh.dev/docs/segments/health/strava#__docusaurus_skipToContent_fallback)
+Source URL: https://ohmyposh.dev/docs
 
-If you're enjoying Oh My Posh, consider becoming a [sponsor](https://github.com/sponsors/JanDeDobbeleer) to keep the project going strong 💪
+[Skip to main content](https://ohmyposh.dev/docs#__docusaurus_skipToContent_fallback)
+
+If you're enjoying Oh My Posh, consider becoming a [sponsor](https://github.com/sponsors/JanDeDobbeleer)
+ to keep the project going strong 💪
 
 On this page
 
-## What [​](https://ohmyposh.dev/docs/segments/health/strava\#what "Direct link to What")
+Oh My Posh is a custom prompt engine for any shell that has the ability to adjust the prompt string with a function or variable.
 
-[Strava](http://www.strava.com/) is a popular activity tracker for bike, run or any other training.
-To keep up with your training goals it is important to be reminded about it.
-An Oh My Posh Strava segment shows your last activity,
-and can also indicate by a color if it is time to get away from your computer and get active.
+Concept[​](https://ohmyposh.dev/docs#concept "Direct link to Concept")
 
-## Accessing your Strava data [​](https://ohmyposh.dev/docs/segments/health/strava\#accessing-your-strava-data "Direct link to Accessing your Strava data")
+-----------------------------------------------------------------------
 
-To allow Oh My Posh access your Strava data you need to grant access to read your public activities.
-This will give you an access and a refresh token. Paste the tokens into your Strava segment configuration.
+Traditionally, prompt tools work with custom scripts per theme (just like [Oh My Posh 2](https://github.com/JanDeDobbeleer/oh-my-posh2)
+ did) or a lot of CLI configuration switches to define what it looks like. With Oh My Posh, I wanted to start from a single configuration file that could easily be shared anywhere, removing the need to really grasp what goes on underneath.
 
-Click the following link to connect with Strava:
+When you look at prompts like Agnoster or Paradox, you notice they usually consist of a few building **blocks** which contain one or more **segments** that display some sort of information. The configuration of Oh My Posh works exactly like that. Blocks are a combination of one or more segments.
 
-[![strava-connect](https://ohmyposh.dev/assets/images/strava_connect-d61a51baedcfa2ed12801e956175a0ba.svg)](https://www.strava.com/oauth/authorize?client_id=76033&response_type=code&redirect_uri=https://ohmyposh.dev/api/auth&approval_prompt=force&scope=read,activity:read&state=strava)
+The basic layout of the config file is as follows.
 
-## Sample Configuration [​](https://ohmyposh.dev/docs/segments/health/strava\#sample-configuration "Direct link to Sample Configuration")
+*   json
+*   yaml
+*   toml
 
-This configuration sets the background green if you have an activity the last two days,
-orange if you have one last 5 days, and red otherwise. The `foreground_templates` example below could be set to just a single color,
-if that color is visible against any of your backgrounds.
+    {  "blocks": []}
 
-- json
-- yaml
-- toml
+    blocks: []
 
-```json
-{
-  "type": "strava",
-  "style": "powerline",
-  "powerline_symbol": "",
-  "foreground": "#ffffff",
-  "background": "#000000",
-  "background_templates": [\
-    "{{ if gt .Hours 100 }}#dc3545{{ end }}",\
-    "{{ if and (lt .Hours 100) (gt .Hours 50) }}#ffc107{{ end }}",\
-    "{{ if lt .Hours 50 }}#28a745{{ end }}"\
-  ],
-  "foreground_templates": [\
-    "{{ if gt .Hours 100 }}#FFFFFF{{ end }}",\
-    "{{ if and (lt .Hours 100) (gt .Hours 50) }}#343a40{{ end }}",\
-    "{{ if lt .Hours 50 }}#FFFFFF{{ end }}"\
-  ],
-  "template": "  {{.Name}} {{.Ago}} {{.Icon}} ",
-  "options": {
-    "access_token": "11111111111111111",
-    "refresh_token": "1111111111111111",
-    "http_timeout": 1500
-  }
-}
-```
+    blocks = []
 
-```yaml
-type: strava
-style: powerline
-powerline_symbol: 
-foreground: "#ffffff"
-background: "#000000"
-background_templates:
-  - "{{ if gt .Hours 100 }}#dc3545{{ end }}"
-  - "{{ if and (lt .Hours 100) (gt .Hours 50) }}#ffc107{{ end }}"
-  - "{{ if lt .Hours 50 }}#28a745{{ end }}"
-foreground_templates:
-  - "{{ if gt .Hours 100 }}#FFFFFF{{ end }}"
-  - "{{ if and (lt .Hours 100) (gt .Hours 50) }}#343a40{{ end }}"
-  - "{{ if lt .Hours 50 }}#FFFFFF{{ end }}"
-template: "  {{.Name}} {{.Ago}} {{.Icon}} "
-options:
-  access_token: "11111111111111111"
-  refresh_token: "1111111111111111"
-  http_timeout: 1500
-```
+A [block](https://ohmyposh.dev/docs/configuration/block)
+ has properties that indicate its position and the [segments](https://ohmyposh.dev/docs/configuration/segment)
+ it will render.
 
-```toml
-type = "strava"
-style = "powerline"
-powerline_symbol = ""
-foreground = "#ffffff"
-background = "#000000"
-background_templates = [ "{{ if gt .Hours 100 }}#dc3545{{ end }}", "{{ if and (lt .Hours 100) (gt .Hours 50) }}#ffc107{{ end }}", "{{ if lt .Hours 50 }}#28a745{{ end }}" ]
-foreground_templates = [ "{{ if gt .Hours 100 }}#FFFFFF{{ end }}", "{{ if and (lt .Hours 100) (gt .Hours 50) }}#343a40{{ end }}", "{{ if lt .Hours 50 }}#FFFFFF{{ end }}" ]
-template = "  {{.Name}} {{.Ago}} {{.Icon}} "
+*   json
+*   yaml
+*   toml
 
-[options]
-access_token = "11111111111111111"
-refresh_token = "1111111111111111"
-http_timeout = 1500
-```
+    {  "blocks": [    {      "segments": []    }  ]}
 
-## Options [​](https://ohmyposh.dev/docs/segments/health/strava\#options "Direct link to Options")
+    blocks:  - segments: []
 
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| `access_token` | [`template`](https://ohmyposh.dev/docs/configuration/templates) |  | token from Strava login, see login link in section above. |
-| `refresh_token` | [`template`](https://ohmyposh.dev/docs/configuration/templates) |  | token from Strava login, see login link in section above. |
-| `expires_in` | `int` | `0` | the default timeout of the token from the Strava login |
-| `http_timeout` | `int` | `20` | in milliseconds - how long do you want to wait before you want to see your prompt more than your strava data? |
-| `ride_icon` | `string` | `\uf206` |  |
-| `run_icon` | `string` | `\ue213` |  |
-| `skiing_icon` | `string` | `\ue213` |  |
-| `workout_icon` | `string` | `\ue213` |  |
-| `unknown_activity_icon` | `string` | `\ue213` |  |
+    [[blocks]]segments = []
 
-## Template ( [info](https://ohmyposh.dev/docs/configuration/templates)) [​](https://ohmyposh.dev/docs/segments/health/strava\#template-info "Direct link to template-info")
+A [segment](https://ohmyposh.dev/docs/configuration/segment)
+ renders a single context like showing the current folder, user information or git status when relevant. It can be styled any way you want, resulting in visualizing the prompt you are looking for.
 
-default template
+For your convenience, the existing [themes](https://github.com/JanDeDobbeleer/oh-my-posh/tree/main/themes)
+ from [Oh My Posh](https://github.com/JanDeDobbeleer/oh-my-posh/tree/main/themes)
+ have been added to version 4, so you can get started even without having to understand the theming. So, let's no longer waste time on theory, have a look at the installation guide to get started right away!
 
-```template
- {{ if .Error }}{{ .Error }}{{ else }}{{ .Ago }}{{ end }}
-```
-
-### Properties [​](https://ohmyposh.dev/docs/segments/health/strava\#properties "Direct link to Properties")
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `.ID` | `time` | The id of the entry |
-| `.DateString` | `time` | The timestamp of the entry |
-| `.Type` | `string` | Activity types as used in strava |
-| `.UtcOffset` | `int` | The UTC offset |
-| `.Hours` | `int` | Number of hours since last activity |
-| `.Name` | `string` | The name of the activity |
-| `.Duration` | `float64` | Total duration in seconds |
-| `.Distance` | `float64` | Total distance in meters |
-| `.DeviceWatts` | `bool` | Device has watts |
-| `.AverageWatts` | `float64` | Average watts |
-| `.WeightedAverageWatts` | `float64` | Weighted average watts |
-| `.AverageHeartRate` | `float64` | Average heart rate |
-| `.MaxHeartRate` | `float64` | Max heart rate |
-| `.KudosCount` | `int` | Kudos count |
-| `.Icon` | `string` | Activity based icon |
-
-Now, go out and have a fun ride or run!
-
-- [What](https://ohmyposh.dev/docs/segments/health/strava#what)
-- [Accessing your Strava data](https://ohmyposh.dev/docs/segments/health/strava#accessing-your-strava-data)
-- [Sample Configuration](https://ohmyposh.dev/docs/segments/health/strava#sample-configuration)
-- [Options](https://ohmyposh.dev/docs/segments/health/strava#options)
-- [Template (info)](https://ohmyposh.dev/docs/segments/health/strava#template-info)
-  - [Properties](https://ohmyposh.dev/docs/segments/health/strava#properties)
+*   [Concept](https://ohmyposh.dev/docs#concept)
