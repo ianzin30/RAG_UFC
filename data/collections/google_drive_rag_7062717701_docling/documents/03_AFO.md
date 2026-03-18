@@ -1,6 +1,10 @@
 # AFO.pdf
 
-Extraction method: docling-puro
+Source kind: google_drive
+Extraction method: docling
+Document type: pdf
+
+Summary: ## PROJETO DE PESQUISA E DESENVOLVIMENTO Plano de Trabalho ## Projeto AFO - Automation of Federation Onboarding II
 
 ## PROJETO DE PESQUISA E DESENVOLVIMENTO Plano de Trabalho
 

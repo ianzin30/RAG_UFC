@@ -1,22 +1,20 @@
 import json
 import os
-import re
 from io import BytesIO
 from pathlib import Path
 
 from dotenv import load_dotenv
-from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 from pypdf import PdfReader
 
-try:
-    from .docling_pure_extractor import DoclingPureExtractor
-    from .spreadsheet_markdown import extract_spreadsheet_markdown
-except ImportError:
-    from docling_pure_extractor import DoclingPureExtractor
-    from spreadsheet_markdown import extract_spreadsheet_markdown
+from .collections.contracts import SpreadsheetModel
+from .collections.document_normalizer import DocumentNormalizer
+from .collections.repository import CollectionRepository
+from .extractors.docling_pure import DoclingPureExtractor
+from .spreadsheets.markdown import extract_spreadsheet_markdown
+from .spreadsheets.normalizer import SpreadsheetNormalizer
 
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", "..", ".env"), override=True)
 
@@ -68,9 +66,10 @@ class GoogleDriveService:
         root_dir = Path(__file__).resolve().parents[2]
         # Arquivo com as credenciais OAuth do Google Cloud Console
         self.credentials_file = root_dir / "google-oauth-credentials.json"
-        # Pasta onde as coleções de documentos são salvas
-        self.collections_root = root_dir / "data" / "collections"
         self._docling_pure_extractor = DoclingPureExtractor()
+        self._collection_repository = CollectionRepository(root_dir)
+        self._document_normalizer = DocumentNormalizer()
+        self._spreadsheet_normalizer = SpreadsheetNormalizer()
 
     # ------------------------------------------------------------------ #
     # AUTENTICAÇÃO
@@ -87,10 +86,6 @@ class GoogleDriveService:
             access_type="offline",
             include_granted_scopes="false",
         )
-
-    def credentials_from_json(self, raw_json: str):
-        """Reconstrói as credenciais a partir de uma string JSON salva anteriormente."""
-        return Credentials.from_authorized_user_info(json.loads(raw_json), SCOPES)
 
     def _get_drive_service(self, credentials):
         """Cria o cliente da API do Google Drive."""
@@ -159,20 +154,6 @@ class GoogleDriveService:
             "message": None,
         }
 
-    def list_pdfs(self, folder_name="rag", credentials=None):
-        """
-        Compatibilidade com o fluxo antigo: lista apenas PDFs da pasta.
-        """
-        return self.list_supported_files(
-            folder_name=folder_name,
-            extraction_method=EXTRACTION_METHOD_PYPDF,
-            credentials=credentials,
-        )
-
-    # ------------------------------------------------------------------ #
-    # DOWNLOAD E EXTRAÇÃO DE TEXTO
-    # ------------------------------------------------------------------ #
-
     def _normalize_extraction_method(self, extraction_method: str | None) -> str:
         normalized = (extraction_method or EXTRACTION_METHOD_PYPDF).strip().lower()
         if normalized not in SUPPORTED_EXTRACTION_METHODS:
@@ -208,7 +189,7 @@ class GoogleDriveService:
         pages = [page.extract_text() or "" for page in reader.pages]
         return "\n\n".join(p.strip() for p in pages if p.strip())
 
-    def _extract_drive_file_text(self, service, drive_file: dict, extraction_method: str) -> str:
+    def _extract_drive_file_text(self, service, drive_file: dict, extraction_method: str) -> dict:
         if extraction_method in {EXTRACTION_METHOD_DOCLING, EXTRACTION_METHOD_DOCLING_PURE}:
             plan = self._build_docling_file_plan(drive_file)
             if not plan:
@@ -223,31 +204,44 @@ class GoogleDriveService:
             else:
                 file_bytes = self._download_drive_file_bytes(service, drive_file["id"])
 
+            spreadsheet_model = None
             if extraction_method == EXTRACTION_METHOD_DOCLING and plan["suffix"] in SPREADSHEET_SUFFIXES:
                 try:
-                    spreadsheet_text = extract_spreadsheet_markdown(
+                    content_markdown = extract_spreadsheet_markdown(
                         file_bytes=file_bytes,
                         suffix=plan["suffix"],
                         file_name=drive_file.get("name") or "spreadsheet",
                     ).strip()
-                    if spreadsheet_text:
-                        return spreadsheet_text
+                    if content_markdown:
+                        spreadsheet_model = self._spreadsheet_normalizer.normalize(
+                            drive_file.get("name") or "spreadsheet",
+                            content_markdown,
+                            plan["suffix"].lstrip("."),
+                        )
+                        return {
+                            "content_markdown": content_markdown,
+                            "spreadsheet_model": spreadsheet_model,
+                        }
                 except Exception:
                     pass
 
-            return self._docling_pure_extractor.extract_markdown(file_bytes, plan["suffix"])
+            content_markdown = self._docling_pure_extractor.extract_markdown(file_bytes, plan["suffix"])
+            if plan["suffix"] in SPREADSHEET_SUFFIXES:
+                spreadsheet_model = self._spreadsheet_normalizer.normalize(
+                    drive_file.get("name") or "spreadsheet",
+                    content_markdown,
+                    plan["suffix"].lstrip("."),
+                )
+            return {
+                "content_markdown": content_markdown,
+                "spreadsheet_model": spreadsheet_model,
+            }
 
         pdf_bytes = self._download_drive_file_bytes(service, drive_file["id"])
-        return self._extract_pdf_text_with_pypdf(pdf_bytes)
-
-    def _safe_filename(self, name: str) -> str:
-        """Remove caracteres especiais do nome do arquivo."""
-        cleaned = re.sub(r"[^A-Za-z0-9._-]+", "_", name).strip("._")
-        return cleaned or "document"
-
-    # ------------------------------------------------------------------ #
-    # SALVAR COLEÇÃO
-    # ------------------------------------------------------------------ #
+        return {
+            "content_markdown": self._extract_pdf_text_with_pypdf(pdf_bytes),
+            "spreadsheet_model": None,
+        }
 
     def ingest_folder_to_collection(
         self,
@@ -278,24 +272,23 @@ class GoogleDriveService:
                 raise RuntimeError(f"Nenhum arquivo compatível com Docling encontrado na pasta '{folder_name}'.")
             raise RuntimeError(f"Nenhum PDF encontrado na pasta '{folder_name}'.")
 
-        # Cria (ou limpa) a pasta da coleção local
-        collection_path = self.collections_root / collection_name
-        collection_path.mkdir(parents=True, exist_ok=True)
-        for old_file in collection_path.glob("*.md"):
-            old_file.unlink()
-
-        # Baixa cada arquivo suportado e salva como .md
+        normalized_documents = []
         saved_files = []
         for index, drive_file in enumerate(files, start=1):
-            text = self._extract_drive_file_text(service, drive_file, extraction_method).strip()
-            if not text:
+            payload = self._extract_drive_file_text(service, drive_file, extraction_method)
+            content_markdown = (payload.get("content_markdown") or "").strip()
+            spreadsheet_model = payload.get("spreadsheet_model")
+            if not content_markdown:
                 continue  # Pula arquivos sem conteúdo textual extraível
 
-            safe_name = self._safe_filename(Path(drive_file["name"]).stem)
-            output_path = collection_path / f"{index:02d}_{safe_name}.md"
-            output_path.write_text(
-                f"# {drive_file['name']}\n\nExtraction method: {extraction_method}\n\n{text}\n",
-                encoding="utf-8",
+            normalized_documents.append(
+                self._document_normalizer.normalize_drive_document(
+                    index=index,
+                    drive_file=drive_file,
+                    extraction_method=extraction_method,
+                    content_markdown=content_markdown,
+                    spreadsheet_model=spreadsheet_model if isinstance(spreadsheet_model, SpreadsheetModel) else None,
+                )
             )
             saved_files.append(
                 {
@@ -306,10 +299,17 @@ class GoogleDriveService:
                 }
             )
 
-        if not saved_files:
+        if not normalized_documents:
             if extraction_method in {EXTRACTION_METHOD_DOCLING, EXTRACTION_METHOD_DOCLING_PURE}:
                 raise RuntimeError("Arquivos compatíveis encontrados, mas nenhum conteúdo pôde ser extraído com Docling.")
             raise RuntimeError("PDFs encontrados, mas nenhum texto pôde ser extraído.")
+
+        self._collection_repository.save_collection(
+            collection_name=collection_name,
+            source_kind="google_drive",
+            extraction_method=extraction_method,
+            documents=normalized_documents,
+        )
 
         return {
             "collection_name": collection_name,

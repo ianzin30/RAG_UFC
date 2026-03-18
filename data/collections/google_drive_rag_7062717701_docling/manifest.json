@@ -1,0 +1,50 @@
+{
+  "collection_name": "google_drive_rag_7062717701_docling",
+  "source_kind": "google_drive",
+  "created_at": "2026-03-18T18:09:11.415764+00:00",
+  "extraction_method": "docling",
+  "documents": [
+    {
+      "document_id": "01_neymar",
+      "display_name": "neymar.jpg",
+      "document_type": "image",
+      "summary": "CBF BRASIL"
+    },
+    {
+      "document_id": "02_SAAR",
+      "display_name": "SAAR.pdf",
+      "document_type": "pdf",
+      "summary": "## PROJETO DE PESQUISA E DESENVOLVIMENTO Plano de Trabalho ## Projeto ## Storage Analytics and Auto-Reclamation II"
+    },
+    {
+      "document_id": "03_AFO",
+      "display_name": "AFO.pdf",
+      "document_type": "pdf",
+      "summary": "## PROJETO DE PESQUISA E DESENVOLVIMENTO Plano de Trabalho ## Projeto AFO - Automation of Federation Onboarding II"
+    },
+    {
+      "document_id": "04_RACK",
+      "display_name": "RACK.pdf",
+      "document_type": "pdf",
+      "summary": "## PROJETO DE PESQUISA E DESENVOLVIMENTO Plano de Trabalho ## Projeto Rack Build Deployment Validation and Provisioning II"
+    },
+    {
+      "document_id": "05_SAAR",
+      "display_name": "SAAR.xlsx",
+      "document_type": "spreadsheet",
+      "summary": "Arquivo da planilha: SAAR.xlsx Formato: xlsx Spreadsheet format: xlsx"
+    },
+    {
+      "document_id": "06_PlanilhaFinanceira",
+      "display_name": "PlanilhaFinanceira.xlsx",
+      "document_type": "spreadsheet",
+      "summary": "Arquivo da planilha: PlanilhaFinanceira.xlsx Formato: xlsx Spreadsheet format: xlsx"
+    },
+    {
+      "document_id": "07_AFO",
+      "display_name": "AFO.xlsx",
+      "document_type": "spreadsheet",
+      "summary": "Arquivo da planilha: AFO.xlsx Formato: xlsx Spreadsheet format: xlsx"
+    }
+  ]
+}

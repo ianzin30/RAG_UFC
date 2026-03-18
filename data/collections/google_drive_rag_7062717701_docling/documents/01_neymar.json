@@ -1,0 +1,16 @@
+{
+  "document_id": "01_neymar",
+  "display_name": "neymar.jpg",
+  "document_type": "image",
+  "source_kind": "google_drive",
+  "source_metadata": {
+    "id": "1dU9aUjhDIXn17ZuqToLdNiqqPoyjP9tv",
+    "mime_type": "image/jpeg",
+    "name": "neymar.jpg"
+  },
+  "extraction_method": "docling",
+  "content_markdown_path": "documents/01_neymar.md",
+  "content_text": "CBF\nBRASIL",
+  "summary": "CBF BRASIL",
+  "structured_data": null
+}

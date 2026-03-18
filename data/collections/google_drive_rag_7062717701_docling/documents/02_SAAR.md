@@ -1,6 +1,10 @@
 # SAAR.pdf
 
-Extraction method: docling-puro
+Source kind: google_drive
+Extraction method: docling
+Document type: pdf
+
+Summary: ## PROJETO DE PESQUISA E DESENVOLVIMENTO Plano de Trabalho ## Projeto ## Storage Analytics and Auto-Reclamation II
 
 ## PROJETO DE PESQUISA E DESENVOLVIMENTO Plano de Trabalho
 

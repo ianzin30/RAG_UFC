@@ -9,9 +9,11 @@ from dotenv import load_dotenv
 from firecrawl import FirecrawlApp
 from firecrawl.v1.client import V1ScrapeOptions
 
+from .collections.document_normalizer import DocumentNormalizer
+from .collections.repository import CollectionRepository
+
 # override=True forces dotenv to overwrite any stale OS-level env vars
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-COLLECTIONS_ROOT = PROJECT_ROOT / "data" / "collections"
 
 load_dotenv(dotenv_path=PROJECT_ROOT / ".env", override=True)
 
@@ -22,7 +24,6 @@ DOCS_PATH_MARKERS = ("docs", "documentation", "guide", "guides", "manual", "help
 DOCS_DISCOVERY_LIMIT = 120
 DOCS_MAP_TIMEOUT_MS = 120000
 DOCS_BATCH_SIZE = 25
-GENERIC_CRAWL_LIMIT = 40
 SCRAPE_TIMEOUT_MS = 60000
 SCRAPE_WAIT_MS = 1000
 STATIC_FILE_EXTENSIONS = (
@@ -65,6 +66,8 @@ class ScrapingService:
         self.api_key = os.getenv("SCRAPING_API_KEY") or os.getenv("FIRECRAWL_API_KEY")
         self.api_source = None
         self.app = self._build_firecrawl_client()
+        self._collection_repository = CollectionRepository(PROJECT_ROOT)
+        self._document_normalizer = DocumentNormalizer()
 
     def _is_local_firecrawl_available(self):
         try:
@@ -309,13 +312,8 @@ class ScrapingService:
 
         return self._crawl_documentation_site(docs_root), docs_root
 
-    def _save_markdown_documents(self, pages, collection_name):
-        collection_path = COLLECTIONS_ROOT / collection_name
-        collection_path.mkdir(parents=True, exist_ok=True)
-        for old_file in collection_path.glob("*.md"):
-            old_file.unlink()
-
-        count = 0
+    def _normalize_pages(self, pages):
+        normalized_documents = []
         seen_urls = set()
         for i, page in enumerate(pages, 1):
             content = None
@@ -342,11 +340,15 @@ class ScrapingService:
             if source_url:
                 seen_urls.add(source_url)
 
-            prefix = f"Source URL: {source_url}\n\n" if source_url else ""
-            (collection_path / f"page_{i}.md").write_text(f"{prefix}{content}", encoding="utf-8")
-            count += 1
+            normalized_documents.append(
+                self._document_normalizer.normalize_scraped_page(
+                    index=i,
+                    content_markdown=content,
+                    source_url=source_url,
+                )
+            )
 
-        return count
+        return normalized_documents
 
     def scrape_website(self, url, collection_name):
         try:
@@ -356,7 +358,8 @@ class ScrapingService:
             strategy = "documentation"
             target_url = docs_root or normalized_url
 
-            count = self._save_markdown_documents(scraped_data, collection_name)
+            normalized_documents = self._normalize_pages(scraped_data)
+            count = len(normalized_documents)
 
             if count == 0:
                 doc = self.app.v1.scrape_url(
@@ -370,7 +373,15 @@ class ScrapingService:
                 )
                 if not doc or not doc.markdown:
                     raise Exception("Scrape returned no content.")
-                count = self._save_markdown_documents([doc], collection_name)
+                normalized_documents = self._normalize_pages([doc])
+                count = len(normalized_documents)
+
+            self._collection_repository.save_collection(
+                collection_name=collection_name,
+                source_kind="scraped_web",
+                extraction_method="firecrawl",
+                documents=normalized_documents,
+            )
 
             return {
                 "ok": True,
