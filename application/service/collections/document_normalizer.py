@@ -25,9 +25,9 @@ class DocumentNormalizer:
     ) -> NormalizedDocument:
         display_name = drive_file.get("name") or f"document_{index}"
         document_type = self.infer_document_type(display_name)
+        document_id = self.build_document_id(index, display_name)
         content_text = spreadsheet_model.to_text() if spreadsheet_model else self.normalize_text(content_markdown)
         summary = self.extract_summary(content_text)
-        document_id = self.build_document_id(index, display_name)
 
         return NormalizedDocument(
             document_id=document_id,
@@ -45,6 +45,13 @@ class DocumentNormalizer:
             summary=summary,
             structured_data=spreadsheet_model.to_dict() if spreadsheet_model else None,
             content_markdown=content_markdown.strip(),
+            logical_item_id=document_id,
+            logical_item_name=display_name,
+            logical_item_kind="file",
+            catalog_visibility="visible",
+            parent_document_id=None,
+            component_kind=None,
+            component_name=None,
         )
 
     def normalize_scraped_page(
@@ -53,6 +60,9 @@ class DocumentNormalizer:
         content_markdown: str,
         source_url: str | None,
         extraction_method: str = "firecrawl",
+        logical_item_id: str | None = None,
+        logical_item_name: str | None = None,
+        logical_item_kind: str | None = None,
     ) -> NormalizedDocument:
         display_name = self._build_scraped_display_name(index, source_url)
         document_id = self.build_document_id(index, display_name)
@@ -71,6 +81,13 @@ class DocumentNormalizer:
             summary=summary,
             structured_data=None,
             content_markdown=content_markdown.strip(),
+            logical_item_id=logical_item_id or document_id,
+            logical_item_name=logical_item_name or display_name,
+            logical_item_kind=logical_item_kind or "file",
+            catalog_visibility="visible",
+            parent_document_id=None,
+            component_kind=None,
+            component_name=None,
         )
 
     def build_document_id(self, index: int, display_name: str) -> str:

@@ -38,13 +38,25 @@ class RetrievalCoordinator:
         if plan.intent == "spreadsheet_entity":
             documents = []
             target_ids = plan.target_document_ids or [
-                entry["document_id"] for entry in document_catalog if entry.get("document_type") == "spreadsheet"
+                document_id
+                for entry in document_catalog
+                if entry.get("document_type") == "spreadsheet" or "spreadsheet" in (entry.get("contained_document_types") or [])
+                for document_id in (entry.get("backing_document_ids") or [entry["document_id"]])
             ]
             for document_id in target_ids:
                 documents.extend(self._retrieve_spreadsheet_chunks(plan.resolved_query, document_id, spreadsheet_chunk_index))
             return self._deduplicate_docs(documents)
 
         if plan.target_document_ids:
+            if plan.retrieval_profile in {"parent_overview_first", "csv_child_first"}:
+                hybrid_entry = self._find_hybrid_catalog_entry(plan.target_document_ids, document_catalog)
+                if hybrid_entry:
+                    return self._retrieve_doc_csv_hybrid_docs(
+                        question=plan.resolved_query,
+                        entry=hybrid_entry,
+                        vector_store=vector_store,
+                        retrieval_profile=plan.retrieval_profile,
+                    )
             documents = []
             for document_id in plan.target_document_ids:
                 documents.extend(self._retrieve_target_document_docs(plan.resolved_query, document_id, vector_store))
@@ -55,11 +67,7 @@ class RetrievalCoordinator:
     def _build_generic_chunks(self, document: NormalizedDocument) -> list[Document]:
         source_document = Document(
             page_content=document.content_text,
-            metadata={
-                "document_id": document.document_id,
-                "document_name": document.display_name,
-                "document_type": document.document_type,
-            },
+            metadata=self._base_metadata(document),
         )
         chunks = self.text_splitter.split_documents([source_document])
         built_chunks = []
@@ -80,12 +88,12 @@ class RetrievalCoordinator:
             return self._build_generic_chunks(document)
 
         header = self._document_header(document)
-        base_metadata = {
-            "document_id": document.document_id,
-            "document_name": document.display_name,
-            "document_type": document.document_type,
-        }
+        base_metadata = self._base_metadata(document)
         chunks = []
+        overview_only = (
+            document.extraction_method == "doc-csv"
+            and document.component_kind == "spreadsheet_parent"
+        )
 
         if spreadsheet_model.summary_lines:
             chunks.append(
@@ -112,6 +120,9 @@ class RetrievalCoordinator:
                         metadata={**sheet_metadata, "chunk_kind": "sheet_summary"},
                     )
                 )
+
+            if overview_only:
+                continue
 
             for profile in sheet.column_profiles:
                 chunks.append(
@@ -219,6 +230,20 @@ class RetrievalCoordinator:
 
         return chunks
 
+    def _base_metadata(self, document: NormalizedDocument) -> dict:
+        return {
+            "document_id": document.document_id,
+            "document_name": document.display_name,
+            "document_type": document.document_type,
+            "logical_item_id": document.logical_item_id,
+            "catalog_visibility": document.catalog_visibility or "visible",
+            "parent_document_id": document.parent_document_id,
+            "component_kind": document.component_kind,
+            "component_name": document.component_name,
+            "component_name_normalized": normalize_identifier(document.component_name or ""),
+            "extraction_method": document.extraction_method,
+        }
+
     def _create_spreadsheet_chunk(self, header: str, title: str, body_lines: list[str], metadata: dict) -> Document:
         content_lines = [f"Cabecalho do documento:\n{header}", "", title, *body_lines]
         page_content = "\n".join(line for line in content_lines if line is not None).strip()
@@ -260,10 +285,10 @@ class RetrievalCoordinator:
             )
         ]
 
-    def _retrieve_target_document_docs(self, question: str, document_id: str, vector_store):
+    def _retrieve_target_document_docs(self, question: str, document_id: str, vector_store, k: int = 6):
         docs = vector_store.max_marginal_relevance_search(
             f"{document_id} {question}".strip(),
-            k=6,
+            k=k,
             fetch_k=100,
             lambda_mult=0.2,
             filter={"document_id": document_id},
@@ -273,10 +298,106 @@ class RetrievalCoordinator:
 
         return vector_store.similarity_search(
             question,
-            k=6,
+            k=k,
             fetch_k=100,
             filter={"document_id": document_id},
         )
+
+    def _retrieve_doc_csv_hybrid_docs(self, question: str, entry: dict, vector_store, retrieval_profile: str):
+        primary_document_id = entry.get("primary_document_id")
+        child_document_ids = list(entry.get("child_document_ids") or [])
+        targeted_child_ids = self._match_child_sheet_ids(question, entry) or child_document_ids
+        documents = []
+
+        if retrieval_profile == "parent_overview_first":
+            if primary_document_id:
+                documents.extend(self._retrieve_target_document_docs(question, primary_document_id, vector_store, k=3))
+            child_docs = self._retrieve_document_ids(
+                question,
+                targeted_child_ids,
+                vector_store,
+                per_document_k=2,
+                overall_limit=6,
+            )
+            if not child_docs and targeted_child_ids != child_document_ids:
+                child_docs = self._retrieve_document_ids(
+                    question,
+                    child_document_ids,
+                    vector_store,
+                    per_document_k=2,
+                    overall_limit=6,
+                )
+            documents.extend(child_docs)
+            return self._deduplicate_docs(documents)[:8]
+
+        child_docs = self._retrieve_document_ids(
+            question,
+            targeted_child_ids,
+            vector_store,
+            per_document_k=3,
+            overall_limit=8,
+        )
+        if not child_docs and targeted_child_ids != child_document_ids:
+            child_docs = self._retrieve_document_ids(
+                question,
+                child_document_ids,
+                vector_store,
+                per_document_k=3,
+                overall_limit=8,
+            )
+        documents.extend(child_docs)
+        if primary_document_id:
+            documents.extend(self._retrieve_target_document_docs(question, primary_document_id, vector_store, k=1))
+        return self._deduplicate_docs(documents)[:8]
+
+    def _retrieve_document_ids(
+        self,
+        question: str,
+        document_ids: list[str],
+        vector_store,
+        *,
+        per_document_k: int,
+        overall_limit: int,
+    ) -> list[Document]:
+        documents = []
+        for document_id in document_ids:
+            documents.extend(self._retrieve_target_document_docs(question, document_id, vector_store, k=per_document_k))
+            if len(documents) >= overall_limit:
+                break
+        return documents[:overall_limit]
+
+    def _find_hybrid_catalog_entry(self, target_document_ids: list[str], document_catalog: list[dict]) -> dict | None:
+        target_set = set(target_document_ids)
+        for entry in document_catalog:
+            if not entry.get("supports_doc_csv_hybrid"):
+                continue
+            backing_ids = set(entry.get("backing_document_ids") or [entry["document_id"]])
+            if target_set and target_set <= backing_ids:
+                return entry
+        for entry in document_catalog:
+            if not entry.get("supports_doc_csv_hybrid"):
+                continue
+            if entry.get("primary_document_id") in target_set:
+                return entry
+        return None
+
+    def _match_child_sheet_ids(self, question: str, entry: dict) -> list[str]:
+        normalized_question = normalize_identifier(question)
+        matches = []
+        for child in entry.get("child_components") or []:
+            component_name = child.get("component_name") or ""
+            component_name_normalized = normalize_identifier(component_name)
+            if not component_name_normalized:
+                continue
+            if component_name_normalized in normalized_question:
+                matches.append(child["document_id"])
+                continue
+            if f"aba {component_name_normalized}" in normalized_question or f"sheet {component_name_normalized}" in normalized_question:
+                matches.append(child["document_id"])
+                continue
+            if component_name_normalized == "rh" and re.search(r"\brh\b", normalized_question):
+                matches.append(child["document_id"])
+        return matches
 
     def _retrieve_spreadsheet_chunks(self, question: str, document_id: str, spreadsheet_chunk_index: dict[str, list[Document]]):
         chunks = spreadsheet_chunk_index.get(document_id) or []

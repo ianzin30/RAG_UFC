@@ -1,4 +1,5 @@
 import os
+import re
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urljoin, urlparse, urlunparse
@@ -350,6 +351,31 @@ class ScrapingService:
 
         return normalized_documents
 
+    def _build_scraped_folder_identity(self, url: str) -> tuple[str, str]:
+        parsed = urlparse(self._normalize_url(url))
+        path = parsed.path.rstrip("/")
+        logical_name = f"{parsed.netloc}{path}/" if path else f"{parsed.netloc}/"
+        safe_id = re.sub(r"[^A-Za-z0-9._-]+", "_", logical_name).strip("._") or "scraped_folder"
+        return f"group_{safe_id}", logical_name
+
+    def _assign_logical_folder(self, documents, source_url: str):
+        if len(documents) <= 1:
+            return documents
+
+        logical_item_id, logical_item_name = self._build_scraped_folder_identity(source_url)
+        for document in documents:
+            document.logical_item_id = logical_item_id
+            document.logical_item_name = logical_item_name
+            document.logical_item_kind = "folder"
+        return documents
+
+    def _count_logical_items(self, documents) -> int:
+        logical_ids = {
+            document.logical_item_id or document.document_id
+            for document in documents
+        }
+        return len(logical_ids)
+
     def scrape_website(self, url, collection_name):
         try:
             normalized_url = self._normalize_url(url)
@@ -359,7 +385,9 @@ class ScrapingService:
             target_url = docs_root or normalized_url
 
             normalized_documents = self._normalize_pages(scraped_data)
+            normalized_documents = self._assign_logical_folder(normalized_documents, target_url)
             count = len(normalized_documents)
+            logical_count = self._count_logical_items(normalized_documents)
 
             if count == 0:
                 doc = self.app.v1.scrape_url(
@@ -374,7 +402,9 @@ class ScrapingService:
                 if not doc or not doc.markdown:
                     raise Exception("Scrape returned no content.")
                 normalized_documents = self._normalize_pages([doc])
+                normalized_documents = self._assign_logical_folder(normalized_documents, target_url)
                 count = len(normalized_documents)
+                logical_count = self._count_logical_items(normalized_documents)
 
             self._collection_repository.save_collection(
                 collection_name=collection_name,
@@ -385,8 +415,8 @@ class ScrapingService:
 
             return {
                 "ok": True,
-                "files": count,
-                "message": f"{count} pages saved to '{collection_name}'.",
+                "files": logical_count,
+                "message": f"{logical_count} itens logicos salvos em '{collection_name}' a partir de {count} paginas.",
                 "source": self.api_source,
                 "strategy": strategy,
                 "target_url": target_url,

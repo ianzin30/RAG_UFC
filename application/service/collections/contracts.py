@@ -169,6 +169,13 @@ class NormalizedDocument:
     summary: str
     structured_data: dict[str, Any] | None = None
     content_markdown: str = field(default="", repr=False)
+    logical_item_id: str | None = None
+    logical_item_name: str | None = None
+    logical_item_kind: str | None = None
+    catalog_visibility: str | None = None
+    parent_document_id: str | None = None
+    component_kind: str | None = None
+    component_name: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -182,6 +189,13 @@ class NormalizedDocument:
             "content_text": self.content_text,
             "summary": self.summary,
             "structured_data": self.structured_data,
+            "logical_item_id": self.logical_item_id,
+            "logical_item_name": self.logical_item_name,
+            "logical_item_kind": self.logical_item_kind,
+            "catalog_visibility": self.catalog_visibility,
+            "parent_document_id": self.parent_document_id,
+            "component_kind": self.component_kind,
+            "component_name": self.component_name,
         }
 
     @classmethod
@@ -198,6 +212,13 @@ class NormalizedDocument:
             summary=data.get("summary") or "",
             structured_data=data.get("structured_data"),
             content_markdown=content_markdown,
+            logical_item_id=data.get("logical_item_id"),
+            logical_item_name=data.get("logical_item_name"),
+            logical_item_kind=data.get("logical_item_kind"),
+            catalog_visibility=data.get("catalog_visibility"),
+            parent_document_id=data.get("parent_document_id"),
+            component_kind=data.get("component_kind"),
+            component_name=data.get("component_name"),
         )
 
 
@@ -268,3 +289,4 @@ class QueryPlan:
     needs_structured_lookup: bool
     resolved_query: str
     inventory_mode: str | None = None
+    retrieval_profile: str = "default"

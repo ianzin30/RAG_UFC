@@ -316,7 +316,12 @@ def _is_name_cased_token(token: str) -> bool:
     return token[0].isupper()
 
 
-def extract_spreadsheet_markdown(file_bytes: bytes, suffix: str, file_name: str) -> str:
+def extract_spreadsheet_markdown(
+    file_bytes: bytes,
+    suffix: str,
+    file_name: str,
+    route_label: str | None = None,
+) -> str:
     normalized_suffix = (suffix or "").lower()
     if normalized_suffix == ".xlsx":
         sheets = _load_xlsx_sheets(file_bytes)
@@ -325,15 +330,64 @@ def extract_spreadsheet_markdown(file_bytes: bytes, suffix: str, file_name: str)
     else:
         raise ValueError(f"Unsupported spreadsheet suffix: {suffix}")
 
+    return _render_spreadsheet_markdown(
+        sheets=sheets,
+        normalized_suffix=normalized_suffix,
+        file_name=file_name,
+        route_label=route_label,
+    )
+
+
+def extract_spreadsheet_markdown_via_csv(file_bytes: bytes, suffix: str, file_name: str) -> str:
+    normalized_suffix = (suffix or "").lower()
+    if normalized_suffix != ".xlsx":
+        raise ValueError(f"CSV-per-sheet extraction only supports .xlsx files, got: {suffix}")
+
+    sheets = _load_xlsx_sheets_via_csv(file_bytes)
+    return _render_spreadsheet_markdown(
+        sheets=sheets,
+        normalized_suffix=normalized_suffix,
+        file_name=file_name,
+        route_label="csv-per-sheet",
+    )
+
+
+def extract_spreadsheet_csv_children(file_bytes: bytes, suffix: str) -> list[dict[str, str]]:
+    normalized_suffix = (suffix or "").lower()
+    if normalized_suffix != ".xlsx":
+        raise ValueError(f"CSV child extraction only supports .xlsx files, got: {suffix}")
+
+    workbook = load_workbook(filename=BytesIO(file_bytes), read_only=True, data_only=True)
+    children = []
+    for worksheet in workbook.worksheets:
+        children.append(
+            {
+                "sheet_name": worksheet.title or "Sheet",
+                "csv_text": _worksheet_to_csv_text(worksheet),
+            }
+        )
+    return children
+
+
+def _render_spreadsheet_markdown(
+    sheets: list[dict],
+    normalized_suffix: str,
+    file_name: str,
+    route_label: str | None = None,
+) -> str:
     sheet_names = ", ".join(sheet["name"] for sheet in sheets) or "Sem abas detectadas"
     lines = [
         "Document type: spreadsheet",
         f"Spreadsheet format: {normalized_suffix.lstrip('.') or 'unknown'}",
+    ]
+    if route_label:
+        lines.append(f"Spreadsheet route: {route_label}")
+    lines.extend([
         f"Spreadsheet file: {file_name}",
         f"Total sheets: {len(sheets)}",
         f"Sheet names: {sheet_names}",
         "",
-    ]
+    ])
 
     for sheet in sheets:
         lines.extend(_render_sheet(sheet, file_name))
@@ -354,8 +408,22 @@ def _load_xlsx_sheets(file_bytes: bytes) -> list[dict]:
     return sheets or [{"name": "Sheet", "headers": [], "rows": [], "omitted_rows": 0, "people_entries": []}]
 
 
+def _load_xlsx_sheets_via_csv(file_bytes: bytes) -> list[dict]:
+    workbook = load_workbook(filename=BytesIO(file_bytes), read_only=True, data_only=True)
+    sheets = []
+    for worksheet in workbook.worksheets:
+        sheet_name = worksheet.title or "Sheet"
+        csv_text = _worksheet_to_csv_text(worksheet)
+        sheets.append(_load_csv_sheet_from_text(csv_text, sheet_name))
+    return sheets or [{"name": "Sheet", "headers": [], "rows": [], "omitted_rows": 0, "people_entries": []}]
+
+
 def _load_csv_sheet(file_bytes: bytes) -> dict:
     text = _decode_csv_bytes(file_bytes)
+    return _load_csv_sheet_from_text(text, "CSV")
+
+
+def _load_csv_sheet_from_text(text: str, sheet_name: str) -> dict:
     dialect = _detect_csv_dialect(text)
     reader = csv.reader(StringIO(text), dialect)
     rows = []
@@ -363,7 +431,7 @@ def _load_csv_sheet(file_bytes: bytes) -> dict:
         normalized_row = [_normalize_cell(value) for value in row]
         if any(normalized_row):
             rows.append(normalized_row)
-    return _build_sheet("CSV", rows)
+    return _build_sheet(sheet_name, rows)
 
 
 def _decode_csv_bytes(file_bytes: bytes) -> str:
@@ -381,6 +449,14 @@ def _detect_csv_dialect(text: str):
         return csv.Sniffer().sniff(sample, delimiters=CSV_SNIFF_DELIMITERS)
     except csv.Error:
         return csv.excel
+
+
+def _worksheet_to_csv_text(worksheet) -> str:
+    buffer = StringIO()
+    writer = csv.writer(buffer)
+    for row in worksheet.iter_rows(values_only=True):
+        writer.writerow([_normalize_cell(value) for value in row])
+    return buffer.getvalue()
 
 
 def _build_sheet(sheet_name: str, raw_rows: list[list[str]]) -> dict:

@@ -1,5 +1,6 @@
 import os
 import re
+import json
 from pathlib import Path
 
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -24,6 +25,11 @@ class RAGService:
             reasoning_effort="medium",
             model_kwargs={"include_reasoning": False},
         )
+        self.intent_decider_llm = ChatGroq(
+            api_key=os.getenv("GROQ_API_KEY"),
+            model_name=os.getenv("GROQ_INTENT_MODEL", "llama-3.1-8b-instant"),
+            temperature=0,
+        )
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=500,
             chunk_overlap=100,
@@ -38,6 +44,7 @@ class RAGService:
         self.answer_chain = None
         self.small_talk_chain = None
         self.query_rewrite_chain = None
+        self.intent_decider_chain = None
         self.loaded_collection_id = None
         self.collection_name = None
         self.collection_manifest = None
@@ -52,15 +59,7 @@ class RAGService:
         normalized_collection = self.collection_repository.load_collection(collection_name)
         self.collection_manifest = normalized_collection.manifest
         self.normalized_documents = normalized_collection.documents
-        self.document_catalog = [
-            self.query_planner.build_catalog_entry(
-                document_id=document.document_id,
-                display_name=document.display_name,
-                document_type=document.document_type,
-                summary=document.summary,
-            )
-            for document in normalized_collection.documents
-        ]
+        self.document_catalog = self._build_document_catalog(normalized_collection.documents)
 
         (
             self.vector_store,
@@ -89,7 +88,13 @@ class RAGService:
             )
 
         resolved_question = self._rewrite_question_for_retrieval(question, history_text, chat_history)
-        plan = self.query_planner.plan(question, resolved_question, self.document_catalog)
+        intent_decision = self._decide_query_intent(question, resolved_question, history_text)
+        plan = self.query_planner.plan(
+            question,
+            resolved_question,
+            self.document_catalog,
+            intent_decision=intent_decision,
+        )
 
         if plan.intent == "inventory":
             return self.query_planner.answer_inventory(plan, self.document_catalog)
@@ -181,10 +186,95 @@ class RAGService:
                 "Consulta reescrita:"
             ),
         ])
+        intent_decider_prompt = ChatPromptTemplate.from_messages([
+            (
+                "system",
+                "Voce e um classificador de intencao para uma aplicacao de chat com documentos. "
+                "Sua tarefa e decidir se a pergunta atual deve ser tratada como uma consulta de inventario da colecao "
+                "ou como uma pergunta geral sobre o conteudo dos documentos. "
+                "Voce deve responder apenas com JSON valido, sem markdown, sem comentarios e sem texto extra. "
+                'Use exatamente este schema: {{"intent": "inventory_query" | "general", "confidence": 0.0}}. '
+                "A confidence deve ser um numero entre 0 e 1. "
+                "Classifique como inventory_query apenas quando a pergunta pede informacoes sobre a colecao em si, "
+                "como quantidade de arquivos, nomes dos arquivos, tipos de arquivos, quais planilhas, quais PDFs, "
+                "se existe alguma imagem, o que foi carregado ou o que foi importado. "
+                "Classifique como general quando a pergunta pede conteudo de algum documento, resumo, comparacao, "
+                "informacoes de pessoas, assuntos, tabelas, valores, ou qualquer pergunta que dependa do conteudo dos arquivos. "
+                "Se houver duvida relevante, prefira general com confidence menor. "
+                "Nao classifique como inventory_query apenas porque a pergunta menciona a palavra documento ou arquivo; "
+                "so use inventory_query se o foco for o inventario da colecao. "
+                "Exemplos: "
+                '{{"intent":"inventory_query","confidence":0.96}} para "quais arquivos foram carregados?"; '
+                '{{"intent":"inventory_query","confidence":0.94}} para "quantos documentos voce leu?"; '
+                '{{"intent":"general","confidence":0.92}} para "me fale sobre o arquivo planilha financeira"; '
+                '{{"intent":"general","confidence":0.95}} para "compare AFO.pdf e AFO.xlsx".'
+            ),
+            (
+                "human",
+                "Historico da conversa:\n{chat_history}\n\n"
+                "Pergunta original:\n{question}\n\n"
+                "Pergunta reescrita:\n{resolved_question}\n\n"
+                "JSON:"
+            ),
+        ])
 
         self.answer_chain = answer_prompt | self.llm | StrOutputParser()
         self.small_talk_chain = small_talk_prompt | self.llm | StrOutputParser()
         self.query_rewrite_chain = rewrite_prompt | self.llm | StrOutputParser()
+        self.intent_decider_chain = intent_decider_prompt | self.intent_decider_llm | StrOutputParser()
+
+    def _build_document_catalog(self, documents) -> list[dict]:
+        grouped_documents = {}
+        for document in documents:
+            logical_item_id = document.logical_item_id or document.document_id
+            grouped_documents.setdefault(logical_item_id, []).append(document)
+
+        catalog = []
+        for logical_item_id, grouped in grouped_documents.items():
+            visible_documents = [document for document in grouped if document.catalog_visibility != "internal"]
+            if not visible_documents:
+                continue
+            primary_document = visible_documents[0]
+            logical_item_name = primary_document.logical_item_name or primary_document.display_name
+            logical_item_kind = primary_document.logical_item_kind or ("folder" if len(visible_documents) > 1 else "file")
+            contained_types = sorted({document.document_type for document in grouped if document.document_type}) or ["document"]
+            visible_types = sorted({document.document_type for document in visible_documents if document.document_type}) or contained_types
+            document_type = visible_types[0] if len(visible_types) == 1 else "document"
+            summary = self._build_catalog_summary(visible_documents, logical_item_name, logical_item_kind)
+            child_documents = [document for document in grouped if document.catalog_visibility == "internal"]
+            supports_doc_csv_hybrid = (
+                primary_document.component_kind == "spreadsheet_parent"
+                and any(document.component_kind == "csv_sheet_child" for document in child_documents)
+            )
+            catalog.append(
+                self.query_planner.build_catalog_entry(
+                    document_id=logical_item_id,
+                    display_name=logical_item_name,
+                    document_type=document_type,
+                    summary=summary,
+                    backing_document_ids=[document.document_id for document in grouped],
+                    primary_document_id=primary_document.document_id,
+                    child_document_ids=[document.document_id for document in child_documents],
+                    supports_doc_csv_hybrid=supports_doc_csv_hybrid,
+                    logical_item_kind=logical_item_kind,
+                    member_count=len(visible_documents),
+                    match_names=[document.display_name for document in grouped],
+                    contained_document_types=contained_types,
+                    child_components=[
+                        {
+                            "document_id": document.document_id,
+                            "component_name": document.component_name,
+                        }
+                        for document in child_documents
+                    ],
+                )
+            )
+        return catalog
+
+    def _build_catalog_summary(self, documents, logical_item_name: str, logical_item_kind: str) -> str:
+        if logical_item_kind == "folder" and len(documents) > 1:
+            return f"Pasta logica {logical_item_name} com {len(documents)} arquivos relevantes."
+        return documents[0].summary if documents else ""
 
     def _format_chat_history(self, chat_history) -> str:
         if not chat_history:
@@ -261,6 +351,45 @@ class RAGService:
         rewritten = re.sub(r"^(consulta|pergunta reescrita|query)\s*:\s*", "", rewritten, flags=re.IGNORECASE).strip()
         return rewritten or question
 
+    def _decide_query_intent(self, question: str, resolved_question: str, history_text: str) -> dict:
+        if not self.intent_decider_chain:
+            return {"intent": "general", "confidence": 0.0}
+
+        raw_decision = self.intent_decider_chain.invoke(
+            {
+                "chat_history": history_text,
+                "question": question,
+                "resolved_question": resolved_question,
+            }
+        ).strip()
+        return self._parse_intent_decision(raw_decision)
+
+    def _parse_intent_decision(self, raw_decision: str) -> dict:
+        candidate = (raw_decision or "").strip()
+        if not candidate:
+            return {"intent": "general", "confidence": 0.0}
+
+        if "{" in candidate and "}" in candidate:
+            candidate = candidate[candidate.find("{") : candidate.rfind("}") + 1]
+
+        try:
+            parsed = json.loads(candidate)
+        except json.JSONDecodeError:
+            return {"intent": "general", "confidence": 0.0}
+
+        intent = (parsed.get("intent") or "general").strip().lower()
+        if intent not in {"inventory_query", "general"}:
+            intent = "general"
+
+        confidence = parsed.get("confidence", 0.0)
+        try:
+            confidence_value = float(confidence)
+        except (TypeError, ValueError):
+            confidence_value = 0.0
+        confidence_value = max(0.0, min(1.0, confidence_value))
+
+        return {"intent": intent, "confidence": confidence_value}
+
     def _format_docs(self, docs) -> str:
         if not docs:
             return "Nenhum trecho relevante foi recuperado."
@@ -272,6 +401,7 @@ class RAGService:
         names = []
         document_ids = set(target_document_ids)
         for entry in self.document_catalog:
-            if entry["document_id"] in document_ids:
+            backing_ids = set(entry.get("backing_document_ids") or [entry["document_id"]])
+            if backing_ids & document_ids:
                 names.append(entry["display_name"])
         return ", ".join(names) if names else "nenhum arquivo especifico"

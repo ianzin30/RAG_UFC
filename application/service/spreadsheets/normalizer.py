@@ -59,8 +59,9 @@ class SpreadsheetNormalizer:
 
         for raw_line in lines:
             line = raw_line.strip()
-            if line.startswith("Spreadsheet format:") and not spreadsheet_format:
-                spreadsheet_format = line.split(":", 1)[1].strip()
+            if line.startswith("Spreadsheet format:"):
+                if not spreadsheet_format:
+                    spreadsheet_format = line.split(":", 1)[1].strip()
                 continue
             if line.startswith("Spreadsheet file:"):
                 source_file = line.split(":", 1)[1].strip() or source_file

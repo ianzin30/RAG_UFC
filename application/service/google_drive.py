@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from io import BytesIO
 from pathlib import Path
 
@@ -9,11 +10,15 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 from pypdf import PdfReader
 
-from .collections.contracts import SpreadsheetModel
+from .collections.contracts import NormalizedDocument, SpreadsheetModel
 from .collections.document_normalizer import DocumentNormalizer
 from .collections.repository import CollectionRepository
 from .extractors.docling_pure import DoclingPureExtractor
-from .spreadsheets.markdown import extract_spreadsheet_markdown
+from .spreadsheets.markdown import (
+    extract_spreadsheet_csv_children,
+    extract_spreadsheet_markdown,
+    extract_spreadsheet_markdown_via_csv,
+)
 from .spreadsheets.normalizer import SpreadsheetNormalizer
 
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", "..", ".env"), override=True)
@@ -23,10 +28,12 @@ SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
 EXTRACTION_METHOD_PYPDF = "pypdf"
 EXTRACTION_METHOD_DOCLING = "docling"
 EXTRACTION_METHOD_DOCLING_PURE = "docling-puro"
+EXTRACTION_METHOD_DOC_CSV = "doc-csv"
 SUPPORTED_EXTRACTION_METHODS = {
     EXTRACTION_METHOD_PYPDF,
     EXTRACTION_METHOD_DOCLING,
     EXTRACTION_METHOD_DOCLING_PURE,
+    EXTRACTION_METHOD_DOC_CSV,
 }
 DOCX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 PPTX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
@@ -143,7 +150,11 @@ class GoogleDriveService:
             return {"folder_name": folder_name, "files": [], "message": f"Pasta '{folder_name}' não encontrada."}
 
         files = self._list_folder_files(service, folder["id"])
-        if extraction_method in {EXTRACTION_METHOD_DOCLING, EXTRACTION_METHOD_DOCLING_PURE}:
+        if extraction_method in {
+            EXTRACTION_METHOD_DOCLING,
+            EXTRACTION_METHOD_DOCLING_PURE,
+            EXTRACTION_METHOD_DOC_CSV,
+        }:
             supported_files = [drive_file for drive_file in files if self._build_docling_file_plan(drive_file)]
         else:
             supported_files = [drive_file for drive_file in files if drive_file.get("mimeType") == PDF_MIME_TYPE]
@@ -189,8 +200,133 @@ class GoogleDriveService:
         pages = [page.extract_text() or "" for page in reader.pages]
         return "\n\n".join(p.strip() for p in pages if p.strip())
 
-    def _extract_drive_file_text(self, service, drive_file: dict, extraction_method: str) -> dict:
-        if extraction_method in {EXTRACTION_METHOD_DOCLING, EXTRACTION_METHOD_DOCLING_PURE}:
+    def _build_doc_csv_child_document_id(self, parent_document_id: str, sheet_name: str, position: int) -> str:
+        safe_sheet = re.sub(r"[^A-Za-z0-9._-]+", "_", sheet_name or "").strip("._")
+        if not safe_sheet:
+            safe_sheet = f"sheet_{position}"
+        return f"{parent_document_id}__{safe_sheet}"
+
+    def _build_doc_csv_child_markdown(self, workbook_name: str, sheet_name: str, csv_text: str) -> str:
+        return (
+            f"Workbook: {workbook_name}\n"
+            f"Sheet: {sheet_name}\n"
+            f"Spreadsheet route: csv-per-sheet\n\n"
+            f"```csv\n{csv_text.rstrip()}\n```"
+        ).strip()
+
+    def _build_doc_csv_child_text(self, workbook_name: str, sheet_name: str, csv_text: str) -> str:
+        return (
+            f"Workbook: {workbook_name}\n"
+            f"Sheet: {sheet_name}\n"
+            f"Spreadsheet route: csv-per-sheet\n\n"
+            f"{csv_text.rstrip()}"
+        ).strip()
+
+    def _build_doc_csv_spreadsheet_documents(
+        self,
+        index: int,
+        drive_file: dict,
+        extraction_method: str,
+        file_bytes: bytes,
+        suffix: str,
+    ) -> list[NormalizedDocument]:
+        display_name = drive_file.get("name") or f"document_{index}"
+
+        if suffix == ".csv":
+            content_markdown = extract_spreadsheet_markdown(
+                file_bytes=file_bytes,
+                suffix=suffix,
+                file_name=display_name,
+                route_label="csv-direct",
+            ).strip()
+            spreadsheet_model = self._spreadsheet_normalizer.normalize(
+                display_name,
+                content_markdown,
+                suffix.lstrip("."),
+            )
+            return [
+                self._document_normalizer.normalize_drive_document(
+                    index=index,
+                    drive_file=drive_file,
+                    extraction_method=extraction_method,
+                    content_markdown=content_markdown,
+                    spreadsheet_model=spreadsheet_model,
+                )
+            ]
+
+        content_markdown = extract_spreadsheet_markdown_via_csv(
+            file_bytes=file_bytes,
+            suffix=suffix,
+            file_name=display_name,
+        ).strip()
+        spreadsheet_model = self._spreadsheet_normalizer.normalize(
+            display_name,
+            content_markdown,
+            suffix.lstrip("."),
+        )
+        parent_document = self._document_normalizer.normalize_drive_document(
+            index=index,
+            drive_file=drive_file,
+            extraction_method=extraction_method,
+            content_markdown=content_markdown,
+            spreadsheet_model=spreadsheet_model,
+        )
+        parent_document.catalog_visibility = "visible"
+        parent_document.component_kind = "spreadsheet_parent"
+        parent_document.component_name = None
+        parent_document.parent_document_id = None
+        parent_document.logical_item_id = parent_document.document_id
+        parent_document.logical_item_name = display_name
+        parent_document.logical_item_kind = "file"
+
+        child_documents = []
+        for position, child in enumerate(extract_spreadsheet_csv_children(file_bytes, suffix), start=1):
+            sheet_name = child["sheet_name"]
+            csv_text = child["csv_text"]
+            child_document_id = self._build_doc_csv_child_document_id(
+                parent_document.document_id,
+                sheet_name,
+                position,
+            )
+            child_display_name = f"{display_name}::{sheet_name}.csv"
+            child_content_markdown = self._build_doc_csv_child_markdown(display_name, sheet_name, csv_text)
+            child_content_text = self._build_doc_csv_child_text(display_name, sheet_name, csv_text)
+            child_documents.append(
+                NormalizedDocument(
+                    document_id=child_document_id,
+                    display_name=child_display_name,
+                    document_type="text_document",
+                    source_kind="google_drive",
+                    source_metadata={
+                        "id": drive_file.get("id"),
+                        "mime_type": drive_file.get("mimeType"),
+                        "name": display_name,
+                        "sheet_name": sheet_name,
+                    },
+                    extraction_method=extraction_method,
+                    content_markdown_path="",
+                    content_text=child_content_text,
+                    summary=self._document_normalizer.extract_summary(child_content_text),
+                    structured_data=None,
+                    content_markdown=child_content_markdown,
+                    logical_item_id=parent_document.document_id,
+                    logical_item_name=display_name,
+                    logical_item_kind="file",
+                    catalog_visibility="internal",
+                    parent_document_id=parent_document.document_id,
+                    component_kind="csv_sheet_child",
+                    component_name=sheet_name,
+                )
+            )
+
+        return [parent_document, *child_documents]
+
+    def _extract_drive_documents(self, service, drive_file: dict, extraction_method: str, index: int) -> list[NormalizedDocument]:
+        if extraction_method in {
+            EXTRACTION_METHOD_DOCLING,
+            EXTRACTION_METHOD_DOCLING_PURE,
+            EXTRACTION_METHOD_DOC_CSV,
+        }:
             plan = self._build_docling_file_plan(drive_file)
             if not plan:
                 raise RuntimeError(f"Tipo de arquivo não suportado pelo Docling: {drive_file.get('mimeType')}")
@@ -204,7 +340,15 @@ class GoogleDriveService:
             else:
                 file_bytes = self._download_drive_file_bytes(service, drive_file["id"])
 
-            spreadsheet_model = None
+            if extraction_method == EXTRACTION_METHOD_DOC_CSV and plan["suffix"] in SPREADSHEET_SUFFIXES:
+                return self._build_doc_csv_spreadsheet_documents(
+                    index=index,
+                    drive_file=drive_file,
+                    extraction_method=extraction_method,
+                    file_bytes=file_bytes,
+                    suffix=plan["suffix"],
+                )
+
             if extraction_method == EXTRACTION_METHOD_DOCLING and plan["suffix"] in SPREADSHEET_SUFFIXES:
                 try:
                     content_markdown = extract_spreadsheet_markdown(
@@ -218,30 +362,47 @@ class GoogleDriveService:
                             content_markdown,
                             plan["suffix"].lstrip("."),
                         )
-                        return {
-                            "content_markdown": content_markdown,
-                            "spreadsheet_model": spreadsheet_model,
-                        }
+                        return [
+                            self._document_normalizer.normalize_drive_document(
+                                index=index,
+                                drive_file=drive_file,
+                                extraction_method=extraction_method,
+                                content_markdown=content_markdown,
+                                spreadsheet_model=spreadsheet_model if isinstance(spreadsheet_model, SpreadsheetModel) else None,
+                            )
+                        ]
                 except Exception:
                     pass
 
             content_markdown = self._docling_pure_extractor.extract_markdown(file_bytes, plan["suffix"])
+            spreadsheet_model = None
             if plan["suffix"] in SPREADSHEET_SUFFIXES:
                 spreadsheet_model = self._spreadsheet_normalizer.normalize(
                     drive_file.get("name") or "spreadsheet",
                     content_markdown,
                     plan["suffix"].lstrip("."),
                 )
-            return {
-                "content_markdown": content_markdown,
-                "spreadsheet_model": spreadsheet_model,
-            }
+            return [
+                self._document_normalizer.normalize_drive_document(
+                    index=index,
+                    drive_file=drive_file,
+                    extraction_method=extraction_method,
+                    content_markdown=content_markdown,
+                    spreadsheet_model=spreadsheet_model if isinstance(spreadsheet_model, SpreadsheetModel) else None,
+                )
+            ]
 
         pdf_bytes = self._download_drive_file_bytes(service, drive_file["id"])
-        return {
-            "content_markdown": self._extract_pdf_text_with_pypdf(pdf_bytes),
-            "spreadsheet_model": None,
-        }
+        content_markdown = self._extract_pdf_text_with_pypdf(pdf_bytes)
+        return [
+            self._document_normalizer.normalize_drive_document(
+                index=index,
+                drive_file=drive_file,
+                extraction_method=extraction_method,
+                content_markdown=content_markdown,
+                spreadsheet_model=None,
+            )
+        ]
 
     def ingest_folder_to_collection(
         self,
@@ -268,28 +429,27 @@ class GoogleDriveService:
 
         files = listing.get("files", [])
         if not files:
-            if extraction_method in {EXTRACTION_METHOD_DOCLING, EXTRACTION_METHOD_DOCLING_PURE}:
-                raise RuntimeError(f"Nenhum arquivo compatível com Docling encontrado na pasta '{folder_name}'.")
+            if extraction_method in {
+                EXTRACTION_METHOD_DOCLING,
+                EXTRACTION_METHOD_DOCLING_PURE,
+                EXTRACTION_METHOD_DOC_CSV,
+            }:
+                raise RuntimeError(f"Nenhum arquivo compatível com o extrator '{extraction_method}' encontrado na pasta '{folder_name}'.")
             raise RuntimeError(f"Nenhum PDF encontrado na pasta '{folder_name}'.")
 
         normalized_documents = []
         saved_files = []
         for index, drive_file in enumerate(files, start=1):
-            payload = self._extract_drive_file_text(service, drive_file, extraction_method)
-            content_markdown = (payload.get("content_markdown") or "").strip()
-            spreadsheet_model = payload.get("spreadsheet_model")
-            if not content_markdown:
+            extracted_documents = self._extract_drive_documents(service, drive_file, extraction_method, index)
+            extracted_documents = [
+                document
+                for document in extracted_documents
+                if (document.content_markdown or "").strip() or (document.content_text or "").strip()
+            ]
+            if not extracted_documents:
                 continue  # Pula arquivos sem conteúdo textual extraível
 
-            normalized_documents.append(
-                self._document_normalizer.normalize_drive_document(
-                    index=index,
-                    drive_file=drive_file,
-                    extraction_method=extraction_method,
-                    content_markdown=content_markdown,
-                    spreadsheet_model=spreadsheet_model if isinstance(spreadsheet_model, SpreadsheetModel) else None,
-                )
-            )
+            normalized_documents.extend(extracted_documents)
             saved_files.append(
                 {
                     "id": drive_file["id"],
@@ -300,8 +460,14 @@ class GoogleDriveService:
             )
 
         if not normalized_documents:
-            if extraction_method in {EXTRACTION_METHOD_DOCLING, EXTRACTION_METHOD_DOCLING_PURE}:
-                raise RuntimeError("Arquivos compatíveis encontrados, mas nenhum conteúdo pôde ser extraído com Docling.")
+            if extraction_method in {
+                EXTRACTION_METHOD_DOCLING,
+                EXTRACTION_METHOD_DOCLING_PURE,
+                EXTRACTION_METHOD_DOC_CSV,
+            }:
+                raise RuntimeError(
+                    f"Arquivos compatíveis encontrados, mas nenhum conteúdo pôde ser extraído com '{extraction_method}'."
+                )
             raise RuntimeError("PDFs encontrados, mas nenhum texto pôde ser extraído.")
 
         self._collection_repository.save_collection(
