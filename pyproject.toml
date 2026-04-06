@@ -1,0 +1,31 @@
+[project]
+name = "rag-ufc"
+version = "0.1.0"
+description = "RAG project with Streamlit chat, scraping, Google Drive ingestion, and Telegram bot flows."
+readme = "docs/README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "docling",
+    "faiss-cpu",
+    "firecrawl",
+    "google-api-python-client",
+    "google-auth-httplib2",
+    "google-auth-oauthlib",
+    "langchain",
+    "langchain-community",
+    "openpyxl",
+    "pypdf",
+    "python-dotenv",
+    "python-telegram-bot",
+    "requests",
+    "sentence-transformers",
+    "streamlit",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+]
+
+[tool.uv]
+package = false

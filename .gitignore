@@ -2,3 +2,8 @@ google-oauth-credentials.json
 __pycache__/
 .env
 firecrawl/
+.venv/
+streamlit-*.log
+data/local_chat_sessions.json
+data/collections/google_drive_rag/
+data/collections/uploaded_files/

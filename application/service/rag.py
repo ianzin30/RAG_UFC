@@ -9,8 +9,14 @@ from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_groq import ChatGroq
+from langchain_core.runnables import RunnableLambda
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+from presentation.collection_selection import (
+    format_collection_selection_label,
+    normalize_collection_selection,
+)
+from .ufc_ollama import DEFAULT_UFC_API_URL, UFCOllamaClient
 
 
 PERSON_QUERY_TERMS = {
@@ -75,14 +81,30 @@ QUERY_STOPWORDS = {
     "uma",
 }
 SPREADSHEET_SUFFIXES = (".xlsx", ".csv")
+ROOT_COLLECTION_KEY = "__root__"
 
 
 class RAGService:
-    def __init__(self, collection_name=None):
+    def __init__(self, collection_name=None, model_name: str | None = None):
         self.project_root = Path(__file__).resolve().parents[2]
         self.collections_root = self.project_root / "data" / "collections"
-        self.embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-        self.llm = ChatGroq(api_key=os.getenv("GROQ_API_KEY"), model_name="llama-3.3-70b-versatile")
+        ufc_api_key = os.getenv("UFC_API_KEY")
+        if not ufc_api_key:
+            raise RuntimeError(
+                "Missing UFC_API_KEY. Create a `.env` in the project root based on `.env.example`."
+            )
+        self.api_key = ufc_api_key
+        default_model_name = os.getenv("UFC_MODEL_NAME")
+        if not default_model_name:
+            raise RuntimeError("Missing UFC_MODEL_NAME in `.env`.")
+        embedding_model_name = os.getenv("EMBEDDING_MODEL_NAME")
+        if not embedding_model_name:
+            raise RuntimeError("Missing EMBEDDING_MODEL_NAME in `.env`.")
+        self.api_url = os.getenv("UFC_API_URL", DEFAULT_UFC_API_URL)
+        self.embeddings = HuggingFaceEmbeddings(model_name=embedding_model_name)
+        self.model_name = ""
+        self.llm_client = None
+        self.llm = None
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=500,
             chunk_overlap=100,
@@ -95,11 +117,30 @@ class RAGService:
         self.small_talk_chain = None
         self.query_rewrite_chain = None
         self.collection_name = None
+        self.collection_names = []
         self.document_catalog = []
         self.spreadsheet_chunk_index = {}
 
+        self.set_model(model_name or default_model_name)
+
         if collection_name:
             self.load_collection(collection_name)
+
+    def set_model(self, model_name: str) -> None:
+        normalized_model_name = (model_name or "").strip()
+        if not normalized_model_name:
+            raise RuntimeError("Missing UFC model name.")
+        if normalized_model_name == self.model_name and self.answer_chain and self.small_talk_chain:
+            return
+
+        self.model_name = normalized_model_name
+        self.llm_client = UFCOllamaClient(
+            api_key=self.api_key,
+            model_name=self.model_name,
+            api_url=self.api_url,
+        )
+        self.llm = RunnableLambda(self.llm_client.invoke)
+        self._build_prompt_chains()
 
     def _normalize_whitespace(self, text: str) -> str:
         lines = [re.sub(r"\s+", " ", line).strip() for line in text.replace("\r\n", "\n").split("\n")]
@@ -838,62 +879,7 @@ class RAGService:
         except ValueError:
             return None
 
-    def load_collection(self, collection_name):
-        collection_path = self.collections_root / collection_name
-        if not collection_path.exists():
-            raise Exception(f"Collection '{collection_name}' not found.")
-
-        loader = DirectoryLoader(
-            str(collection_path),
-            glob="**/*.md",
-            show_progress=True,
-            loader_cls=TextLoader,
-            loader_kwargs={"encoding": "utf-8"},
-        )
-        documents = loader.load()
-        if not documents:
-            raise Exception(f"No documents found in collection '{collection_name}'.")
-
-        chunks = []
-        document_catalog = {}
-        spreadsheet_chunk_index = {}
-
-        for document in documents:
-            document.page_content = self._normalize_whitespace(document.page_content)
-            source = document.metadata.get("source")
-            document_name = self._extract_document_name(document.page_content, source)
-            document_type = self._extract_document_type(document.page_content)
-            document.metadata["document_name"] = document_name
-            document.metadata["document_name_normalized"] = self._normalize_identifier(document_name)
-            document.metadata["document_stem_normalized"] = self._normalize_identifier(Path(document_name).stem)
-            document.metadata["document_type"] = document_type
-
-            document_catalog[document_name] = {
-                "name": document_name,
-                "normalized_name": document.metadata["document_name_normalized"],
-                "normalized_stem": document.metadata["document_stem_normalized"],
-                "document_type": document_type,
-            }
-
-            header = self._extract_document_header(document.page_content)
-            if document_type == "spreadsheet":
-                document_chunks = self._build_spreadsheet_chunks(document, header)
-                spreadsheet_chunk_index[document_name] = document_chunks
-            else:
-                document_chunks = self._build_generic_chunks(document, header)
-
-            chunks.extend(document_chunks)
-
-        self.vector_store = FAISS.from_documents(chunks, self.embeddings)
-        self.collection_name = collection_name
-        self.document_catalog = list(document_catalog.values())
-        self.spreadsheet_chunk_index = spreadsheet_chunk_index
-
-        self.retriever = self.vector_store.as_retriever(
-            search_type="mmr",
-            search_kwargs={"k": 6, "fetch_k": 30, "lambda_mult": 0.2},
-        )
-
+    def _build_prompt_chains(self) -> None:
         answer_prompt = ChatPromptTemplate.from_messages([
             (
                 "system",
@@ -964,6 +950,78 @@ class RAGService:
         self.answer_chain = answer_prompt | self.llm | StrOutputParser()
         self.small_talk_chain = small_talk_prompt | self.llm | StrOutputParser()
         self.query_rewrite_chain = rewrite_prompt | self.llm | StrOutputParser()
+
+    def load_collection(self, collection_name):
+        collection_names = normalize_collection_selection(collection_name)
+        if not collection_names:
+            raise Exception("No collection selected.")
+
+        documents = []
+        for selected_collection in collection_names:
+            collection_path = (
+                self.collections_root
+                if selected_collection == ROOT_COLLECTION_KEY
+                else self.collections_root / selected_collection
+            )
+            if not collection_path.exists():
+                raise Exception(f"Collection '{selected_collection}' not found.")
+
+            loader = DirectoryLoader(
+                str(collection_path),
+                glob="**/*.md",
+                show_progress=True,
+                loader_cls=TextLoader,
+                loader_kwargs={"encoding": "utf-8"},
+            )
+            loaded_documents = loader.load()
+            if not loaded_documents:
+                raise Exception(f"No documents found in collection '{selected_collection}'.")
+
+            for document in loaded_documents:
+                document.metadata["collection_name"] = selected_collection
+
+            documents.extend(loaded_documents)
+
+        chunks = []
+        document_catalog = {}
+        spreadsheet_chunk_index = {}
+
+        for document in documents:
+            document.page_content = self._normalize_whitespace(document.page_content)
+            source = document.metadata.get("source")
+            document_name = self._extract_document_name(document.page_content, source)
+            document_type = self._extract_document_type(document.page_content)
+            document.metadata["document_name"] = document_name
+            document.metadata["document_name_normalized"] = self._normalize_identifier(document_name)
+            document.metadata["document_stem_normalized"] = self._normalize_identifier(Path(document_name).stem)
+            document.metadata["document_type"] = document_type
+
+            document_catalog[document_name] = {
+                "name": document_name,
+                "normalized_name": document.metadata["document_name_normalized"],
+                "normalized_stem": document.metadata["document_stem_normalized"],
+                "document_type": document_type,
+            }
+
+            header = self._extract_document_header(document.page_content)
+            if document_type == "spreadsheet":
+                document_chunks = self._build_spreadsheet_chunks(document, header)
+                spreadsheet_chunk_index[document_name] = document_chunks
+            else:
+                document_chunks = self._build_generic_chunks(document, header)
+
+            chunks.extend(document_chunks)
+
+        self.vector_store = FAISS.from_documents(chunks, self.embeddings)
+        self.collection_names = collection_names
+        self.collection_name = format_collection_selection_label(collection_names)
+        self.document_catalog = list(document_catalog.values())
+        self.spreadsheet_chunk_index = spreadsheet_chunk_index
+
+        self.retriever = self.vector_store.as_retriever(
+            search_type="mmr",
+            search_kwargs={"k": 6, "fetch_k": 30, "lambda_mult": 0.2},
+        )
 
     def ask_question(self, question: str, chat_history=None) -> str:
         if not self.retriever or not self.answer_chain or not self.small_talk_chain:

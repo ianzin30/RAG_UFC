@@ -64,7 +64,12 @@ class GoogleDriveService:
         # Caminho raiz do projeto (3 níveis acima deste arquivo)
         root_dir = Path(__file__).resolve().parents[2]
         # Arquivo com as credenciais OAuth do Google Cloud Console
-        self.credentials_file = root_dir / "google-oauth-credentials.json"
+        credentials_override = os.getenv("GOOGLE_OAUTH_CREDENTIALS_FILE")
+        self.credentials_file = (
+            Path(credentials_override).expanduser()
+            if credentials_override
+            else root_dir / "config" / "google-oauth-credentials.json"
+        )
         # Pasta onde as coleções de documentos são salvas
         self.collections_root = root_dir / "data" / "collections"
         self._docling_converter = None
@@ -75,6 +80,10 @@ class GoogleDriveService:
 
     def login(self):
         """Abre o navegador para o usuário fazer login com a conta Google."""
+        if not self.credentials_file.exists():
+            raise FileNotFoundError(
+                f"Google OAuth credentials file not found: '{self.credentials_file}'."
+            )
         config = json.loads(self.credentials_file.read_text(encoding="utf-8"))
         flow = InstalledAppFlow.from_client_config(config, SCOPES)
         return flow.run_local_server(
