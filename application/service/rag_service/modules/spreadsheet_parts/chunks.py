@@ -12,7 +12,9 @@ class SpreadsheetChunkBuilderMixin:
         if profile_chunk is not None:
             built_chunks.append(profile_chunk)
 
-        body_text = self._strip_document_wrapper(document.page_content) or self._normalize_whitespace(document.page_content)
+        body_text = self._prepare_generic_document_body(document.page_content)
+        if not body_text:
+            body_text = self._strip_document_wrapper(document.page_content) or self._normalize_whitespace(document.page_content)
         document_name = str(document.metadata.get("document_name") or "documento").strip()
         base_metadata = dict(document.metadata)
         sections = self._split_generic_sections(body_text)
@@ -79,13 +81,35 @@ class SpreadsheetChunkBuilderMixin:
             return False
         if self._is_section_heading(stripped):
             return True
-        if stripped.endswith(":") and len(stripped.split()) <= 10:
+        if self._is_noise_like_generic_heading(stripped):
+            return False
+        if stripped.endswith(":") and 2 <= len(stripped.split()) <= 10:
             return True
         letters = [char for char in stripped if char.isalpha()]
         if letters:
             uppercase_ratio = sum(char.isupper() for char in letters) / len(letters)
-            if uppercase_ratio >= 0.75 and len(stripped.split()) <= 10 and len(stripped) <= 120:
+            if uppercase_ratio >= 0.75 and 2 <= len(stripped.split()) <= 10 and len(stripped) <= 120:
                 return True
+        return False
+
+    def _is_noise_like_generic_heading(self, line: str) -> bool:
+        normalized = self._normalize_identifier(line)
+        if not normalized:
+            return True
+
+        tokens = normalized.split()
+        if len(tokens) == 1:
+            token = tokens[0]
+            if re.fullmatch(r"(?:[ivxlcdm]+|fy\d{2,4}|\d+)", token):
+                return True
+            if len(token) <= 6:
+                return True
+
+        compact = re.sub(r"[^A-Za-z0-9]", "", line or "")
+        if compact and compact.isupper() and len(tokens) <= 3:
+            return True
+        if re.fullmatch(r"[A-Z0-9/\-()]+", (line or "").strip()):
+            return True
         return False
 
     def _build_generic_section_payload(self, title: str, lines: list[str], order: int) -> dict:
@@ -96,11 +120,24 @@ class SpreadsheetChunkBuilderMixin:
             "text": section_text,
             "order": order,
             "section_key": section_key,
+            "is_header_metadata": self._looks_like_header_metadata_section(section_text),
             "names": self._extract_name_candidates(section_text, limit=60),
             "dates": self._extract_date_candidates(section_text, limit=12),
             "money_values": self._extract_money_candidates(section_text, limit=12),
             "labeled_facts": self._extract_labeled_facts(section_text, limit=20),
         }
+
+    def _looks_like_header_metadata_section(self, section_text: str) -> bool:
+        normalized = self._normalize_identifier(section_text)
+        metadata_markers = (
+            "coordenador",
+            "coordenadora",
+            "empresa",
+            "instituicao",
+            "versao",
+        )
+        marker_hits = sum(1 for marker in metadata_markers if marker in normalized)
+        return marker_hits >= 3 and len(section_text.split()) <= 120
 
     def _create_generic_section_overview_chunk(self, metadata: dict, section: dict) -> Document | None:
         section_text = str(section.get("text") or "").strip()
@@ -122,7 +159,7 @@ class SpreadsheetChunkBuilderMixin:
         return Document(page_content="\n".join(body_lines).strip(), metadata=chunk_metadata)
 
     def _create_generic_entity_index_chunk(self, metadata: dict, section: dict) -> Document | None:
-        names = list(section.get("names") or [])
+        names = [] if section.get("is_header_metadata") else list(section.get("names") or [])
         dates = list(section.get("dates") or [])
         money_values = list(section.get("money_values") or [])
         labeled_facts = list(section.get("labeled_facts") or [])
@@ -164,6 +201,8 @@ class SpreadsheetChunkBuilderMixin:
         return Document(page_content="\n".join(body_lines).strip(), metadata=chunk_metadata)
 
     def _create_generic_list_chunk(self, metadata: dict, section: dict) -> Document | None:
+        if section.get("is_header_metadata"):
+            return None
         section_text = str(section.get("text") or "").strip()
         if not section_text:
             return None
@@ -244,6 +283,7 @@ class SpreadsheetChunkBuilderMixin:
         chunk_metadata["section_title"] = str(section.get("title") or "").strip()
         chunk_metadata["section_title_normalized"] = self._normalize_identifier(chunk_metadata["section_title"])
         chunk_metadata["section_key"] = str(section.get("section_key") or "").strip()
+        chunk_metadata["section_is_header_metadata"] = bool(section.get("is_header_metadata"))
         if extra_metadata:
             chunk_metadata.update(extra_metadata)
         chunk_metadata["search_text_normalized"] = self._normalize_identifier(

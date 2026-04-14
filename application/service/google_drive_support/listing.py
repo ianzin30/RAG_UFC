@@ -15,13 +15,13 @@ from .constants import (
 from .models import DoclingFilePlan, SupportedFileListing
 
 
-# Este validador garante que o restante do fluxo receba um extrator suportado.
+# Este validador fixa o Google Drive em Docling, mesmo se algum chamador pedir outro extrator.
 def normalize_extraction_method(extraction_method: str | None) -> str:
-    normalized = (extraction_method or EXTRACTION_METHOD_PYPDF).strip().lower()
+    normalized = (extraction_method or EXTRACTION_METHOD_DOCLING).strip().lower()
     if normalized not in SUPPORTED_EXTRACTION_METHODS:
         supported = ", ".join(sorted(SUPPORTED_EXTRACTION_METHODS))
         raise ValueError(f"Método de extração inválido: '{extraction_method}'. Use um destes: {supported}.")
-    return normalized
+    return EXTRACTION_METHOD_DOCLING
 
 
 # Esta busca localiza a pasta-alvo pelo nome dentro do Google Drive.

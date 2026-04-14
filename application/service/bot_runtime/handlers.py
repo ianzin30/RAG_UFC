@@ -137,7 +137,7 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         session["loading_in_progress"] = False
 
 
-# Este comando reinicia apenas a escolha do extrator, sem encerrar o bot.
+# Este comando reapresenta o fluxo do Google Drive, sempre com Docling.
 async def extractor(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not update.message:
         return
@@ -147,7 +147,7 @@ async def extractor(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await reply(
             update,
             "Ainda estou processando a importação atual.\n"
-            "Aguarde terminar para trocar o extrator.",
+            "Aguarde terminar para reiniciar a conexão com o Google Drive.",
         )
         return
 

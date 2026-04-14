@@ -26,6 +26,8 @@ class PromptingMixin:
                 "Em perguntas sobre trabalhadores, pessoas, equipe ou coordenadores, priorize nomes e funcoes antes de resumos genericos da planilha. "
                 "Quando o usuario pedir nomes, liste os nomes exatos encontrados no contexto e nao os substitua por cargos ou resumos. "
                 "Em perguntas amplas como resumos ou pedidos de mais detalhes, cubra mais de uma secao ou topico quando o contexto mostrar essa diversidade. "
+                "Em resumos amplos de documentos, nao afirme quantas secoes principais existem a menos que a estrutura completa esteja explicita no contexto. "
+                "Nao transforme campos, rotulos ou cabecalhos administrativos em relacoes entre instituicoes, empresas e pessoas. "
                 "Se o contexto for insuficiente, diga isso de forma objetiva e breve.",
             ),
             (

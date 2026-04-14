@@ -23,6 +23,8 @@ SAMPLE_DOCUMENT_PATH = (
     / "data/collections/google_drive_rag/60_01-2022_Ata_de_Reuniao.md"
 )
 SAMPLE_DOCUMENT_NAME = "01-2022_Ata_de_Reuniao.pdf"
+AFO_DOCUMENT_PATH = PROJECT_ROOT / "data/collections/google_drive_rag/85_AFO.md"
+AFO_DOCUMENT_NAME = "AFO.pdf"
 
 
 class RetrievalPrecisionHarness(
@@ -64,6 +66,23 @@ def build_sample_chunks() -> tuple[RetrievalPrecisionHarness, list[Document]]:
         metadata={
             "source": str(SAMPLE_DOCUMENT_PATH),
             "document_name": SAMPLE_DOCUMENT_NAME,
+            "document_type": "document",
+        },
+    )
+    chunks = service._build_generic_chunks(document, service._extract_document_header(normalized_text))
+    service._vector_docs = chunks
+    return service, chunks
+
+
+def build_document_chunks(document_path: Path, document_name: str) -> tuple[RetrievalPrecisionHarness, list[Document]]:
+    service = RetrievalPrecisionHarness()
+    raw_text = document_path.read_text(encoding="utf-8")
+    normalized_text = service._normalize_whitespace(raw_text)
+    document = Document(
+        page_content=normalized_text,
+        metadata={
+            "source": str(document_path),
+            "document_name": document_name,
             "document_type": "document",
         },
     )
@@ -191,3 +210,50 @@ def test_aggregated_answer_context_surfaces_names_and_topics_from_sample_documen
     assert "Javam de Castro Machado" in context
     assert "João Bosco Ferreira Filho" in context
     assert "Secoes ou topicos cobertos:" in context
+
+
+def test_afo_chunk_builder_avoids_fragment_headings_and_noisy_header_entities():
+    service, chunks = build_document_chunks(AFO_DOCUMENT_PATH, AFO_DOCUMENT_NAME)
+
+    section_titles = {
+        str(chunk.metadata.get("section_title") or "").strip()
+        for chunk in chunks
+        if str(chunk.metadata.get("chunk_kind") or "") != "document_profile"
+    }
+    for unexpected_title in {"AFO", "MVP", "II", "FY27", "360", "CI/CD", "A", "O"}:
+        assert unexpected_title not in section_titles
+
+    chunk_text = "\n".join(chunk.page_content for chunk in chunks)
+    assert "Instituição Fernando Antonio Mota Trinta Empresa Instituição" not in chunk_text
+
+
+def test_afo_summary_context_prefers_sections_and_avoids_fake_names():
+    service, chunks = build_document_chunks(AFO_DOCUMENT_PATH, AFO_DOCUMENT_NAME)
+
+    selected_docs = service._select_docs_for_context(
+        chunks,
+        target_document_name=AFO_DOCUMENT_NAME,
+        retrieval_intent="summary",
+        resolved_question="me fale sobre o AFO",
+    )
+
+    selected_kinds = [str(doc.metadata.get("chunk_kind") or "") for doc in selected_docs]
+    assert selected_kinds
+    assert selected_kinds[0] == "document_profile"
+    assert "section_overview" in selected_kinds
+    assert not any(kind in {"entity_index", "list_block"} for kind in selected_kinds[:4])
+
+    aggregate = service._build_aggregated_evidence_block(
+        selected_docs,
+        retrieval_intent="summary",
+        target_document_name=AFO_DOCUMENT_NAME,
+        resolved_question="me fale sobre o AFO",
+    )
+
+    assert "Pessoas ou entidades consolidadas:" not in aggregate
+    for fragment in (
+        "Instituição Fernando Antonio Mota Trinta Empresa",
+        "Instituição Fernando Antonio Mota Trinta Empresa Instituição",
+        "Abertura Resumo da",
+    ):
+        assert fragment not in aggregate

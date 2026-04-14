@@ -106,13 +106,7 @@ class RetrievalCoreMixin:
             retrieval_intent=retrieval_intent,
             resolved_question=question,
         )
-        preferred_kinds = (
-            "document_profile",
-            "section_overview",
-            "entity_index",
-            "list_block",
-            "section_detail",
-        )
+        preferred_kinds = self._get_coverage_preferred_kinds(retrieval_intent)
         selected = []
         seen_doc_ids = set()
         seen_groups = set()
@@ -131,6 +125,8 @@ class RetrievalCoreMixin:
                 continue
             if self._looks_like_noisy_source(doc.page_content or "") and len(selected) >= 3:
                 continue
+            if retrieval_intent == "summary" and self._should_skip_summary_doc(doc):
+                continue
 
             group_key = self._build_coverage_group_key(doc)
             chunk_kind = str(doc.metadata.get("chunk_kind") or "").strip()
@@ -142,6 +138,19 @@ class RetrievalCoreMixin:
             if len(selected) >= limit:
                 break
         return selected[:limit]
+
+    def _get_coverage_preferred_kinds(self, retrieval_intent: str | None) -> tuple[str, ...]:
+        if retrieval_intent == "summary":
+            return ("document_profile", "section_overview", "section_detail")
+        if retrieval_intent == "list_extraction":
+            return ("entity_index", "list_block", "section_overview", "section_detail")
+        return (
+            "document_profile",
+            "section_overview",
+            "entity_index",
+            "list_block",
+            "section_detail",
+        )
 
     # Este agrupamento evita gastar todo o contexto em muitos trechos da mesma secao.
     def _build_coverage_group_key(self, doc) -> str:
@@ -297,8 +306,10 @@ class RetrievalCoreMixin:
                 score += 120
             if chunk_kind == "section_overview":
                 score += 75
-            if chunk_kind == "entity_index":
-                score += 36
+            if chunk_kind == "section_detail":
+                score += 28
+            if chunk_kind in {"entity_index", "list_block"}:
+                score -= 38
             if isinstance(chunk_order, int):
                 if chunk_order <= 2:
                     score += 45 - chunk_order * 10
@@ -308,6 +319,8 @@ class RetrievalCoreMixin:
                 score += 35
             if self._looks_numeric_heavy_source(page_content):
                 score -= 28
+            if metadata.get("section_is_header_metadata") and chunk_kind != "document_profile":
+                score -= 36
         elif retrieval_intent == "document_expansion":
             if chunk_kind == "document_profile":
                 score += 90
@@ -356,8 +369,56 @@ class RetrievalCoreMixin:
         if retrieval_intent == "document_expansion":
             return self._select_diverse_context_docs(ranked_docs, limit=8)
         if retrieval_intent == "summary":
-            return self._select_diverse_context_docs(ranked_docs, limit=6)
+            return self._select_summary_context_docs(ranked_docs, limit=6)
         return ranked_docs[:6]
+
+    def _select_summary_context_docs(self, ranked_docs, limit: int) -> list:
+        selected = []
+        seen_doc_ids = set()
+        seen_groups = set()
+
+        for kind in ("document_profile", "section_overview", "section_detail"):
+            for doc in ranked_docs:
+                if id(doc) in seen_doc_ids:
+                    continue
+                if str(doc.metadata.get("chunk_kind") or "").strip() != kind:
+                    continue
+                if self._should_skip_summary_doc(doc):
+                    continue
+                group_key = self._build_coverage_group_key(doc)
+                if group_key in seen_groups and kind != "document_profile":
+                    continue
+                selected.append(doc)
+                seen_doc_ids.add(id(doc))
+                seen_groups.add(group_key)
+                if len(selected) >= limit:
+                    return selected
+
+        for doc in ranked_docs:
+            if id(doc) in seen_doc_ids or self._should_skip_summary_doc(doc):
+                continue
+            chunk_kind = str(doc.metadata.get("chunk_kind") or "").strip()
+            if chunk_kind in {"entity_index", "list_block"}:
+                continue
+
+            group_key = self._build_coverage_group_key(doc)
+            if group_key in seen_groups and chunk_kind != "document_profile":
+                continue
+            selected.append(doc)
+            seen_doc_ids.add(id(doc))
+            seen_groups.add(group_key)
+            if len(selected) >= limit:
+                break
+        return selected or ranked_docs[:limit]
+
+    def _should_skip_summary_doc(self, doc) -> bool:
+        metadata = doc.metadata or {}
+        chunk_kind = str(metadata.get("chunk_kind") or "").strip()
+        if chunk_kind in {"entity_index", "list_block"}:
+            return True
+        if metadata.get("section_is_header_metadata") and chunk_kind != "document_profile":
+            return True
+        return self._looks_like_noisy_source(doc.page_content or "")
 
     # Esta diversificacao preserva recall em documentos longos ao cobrir secoes diferentes.
     def _select_diverse_context_docs(self, ranked_docs, limit: int) -> list:

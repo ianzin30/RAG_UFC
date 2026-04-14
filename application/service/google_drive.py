@@ -100,7 +100,7 @@ class GoogleDriveService:
             "export_mime_type": plan.export_mime_type,
         }
 
-    def list_supported_files(self, folder_name="rag", extraction_method=EXTRACTION_METHOD_PYPDF, credentials=None):
+    def list_supported_files(self, folder_name="rag", extraction_method=EXTRACTION_METHOD_DOCLING, credentials=None):
         service = self._get_drive_service(credentials or self.login())
         normalized_method = normalize_extraction_method(extraction_method)
         return list_supported_files(service, folder_name, normalized_method).to_dict()
@@ -108,7 +108,7 @@ class GoogleDriveService:
     def list_pdfs(self, folder_name="rag", credentials=None):
         return self.list_supported_files(
             folder_name=folder_name,
-            extraction_method=EXTRACTION_METHOD_PYPDF,
+            extraction_method=EXTRACTION_METHOD_DOCLING,
             credentials=credentials,
         )
 
@@ -144,7 +144,7 @@ class GoogleDriveService:
         folder_name="rag",
         collection_name="google_drive_rag",
         credentials=None,
-        extraction_method=EXTRACTION_METHOD_PYPDF,
+        extraction_method=EXTRACTION_METHOD_DOCLING,
     ):
         service = self._get_drive_service(credentials or self.login())
         result = ingest_folder_to_collection(

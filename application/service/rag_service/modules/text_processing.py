@@ -43,11 +43,83 @@ class TextProcessingMixin:
             lines = lines[1:]
         return "\n".join(line for line in lines if line).strip()
 
+    def _prepare_generic_document_body(self, text: str) -> str:
+        body = self._strip_document_wrapper(text)
+        lines = [line.strip() for line in body.split("\n") if line.strip()]
+        if not lines:
+            return ""
+
+        merged_lines: list[str] = []
+        index = 0
+        while index < len(lines):
+            line = lines[index]
+            next_line = lines[index + 1] if index + 1 < len(lines) else ""
+            if next_line and self._should_merge_heading_marker_with_next_line(line, next_line):
+                merged_lines.append(f"{line.rstrip()} {next_line.lstrip()}".strip())
+                index += 2
+                continue
+            merged_lines.append(line)
+            index += 1
+
+        reflowed_lines: list[str] = []
+        paragraph_parts: list[str] = []
+
+        def flush_paragraph() -> None:
+            if not paragraph_parts:
+                return
+            reflowed_lines.append(" ".join(paragraph_parts).strip())
+            paragraph_parts.clear()
+
+        for line in merged_lines:
+            if self._should_preserve_generic_line_break(line):
+                flush_paragraph()
+                reflowed_lines.append(line)
+                continue
+            paragraph_parts.append(line)
+
+        flush_paragraph()
+        return "\n".join(line for line in reflowed_lines if line).strip()
+
     def _normalize_identifier(self, text: str) -> str:
         normalized = unicodedata.normalize("NFKD", (text or "").lower())
         normalized = "".join(char for char in normalized if not unicodedata.combining(char))
         normalized = re.sub(r"[^a-z0-9]+", " ", normalized)
         return re.sub(r"\s+", " ", normalized).strip()
+
+    def _should_merge_heading_marker_with_next_line(self, line: str, next_line: str) -> bool:
+        stripped = (line or "").strip()
+        next_stripped = (next_line or "").strip()
+        if not stripped or not next_stripped:
+            return False
+        if not re.fullmatch(r"\d+(?:\.\d+)*\.?", stripped):
+            return False
+        if self._is_section_heading(next_stripped):
+            return False
+        if next_stripped.startswith(("-", "•", "*", "#")):
+            return False
+        return bool(re.search(r"[A-Za-zÁÀÃÂÉÊÍÓÔÕÚÇáàãâéêíóôõúç]", next_stripped))
+
+    def _should_preserve_generic_line_break(self, line: str) -> bool:
+        stripped = (line or "").strip()
+        if not stripped:
+            return False
+        if stripped.startswith(("#", "-", "•", "*")):
+            return True
+        if re.match(r"^\d+(?:\.\d+)*[\)\.]?\s+", stripped):
+            return True
+        if self._is_section_heading(stripped):
+            return True
+        if stripped.endswith(":"):
+            return True
+        return self._normalize_identifier(stripped) in {
+            "projeto",
+            "coordenador",
+            "coordenadora",
+            "coordenador na instituicao",
+            "coordenadora na instituicao",
+            "empresa",
+            "instituicao",
+        }
 
     def _find_token_phrase_index(self, haystack_tokens: list[str], needle_tokens: list[str]) -> int | None:
         if not haystack_tokens or not needle_tokens or len(needle_tokens) > len(haystack_tokens):
@@ -113,7 +185,7 @@ class TextProcessingMixin:
         return None
 
     def _extract_document_description_excerpt(self, text: str, max_lines: int = 6) -> str | None:
-        lines = self._normalize_whitespace(text).split("\n")
+        lines = self._prepare_generic_document_body(text).split("\n")
         start_index = None
 
         for index, line in enumerate(lines):
@@ -195,6 +267,8 @@ class TextProcessingMixin:
             normalized = self._normalize_identifier(compact)
             if len(compact) < 6 or len(normalized.split()) < 2:
                 continue
+            if self._is_noisy_name_candidate(compact):
+                continue
             if normalized in seen:
                 continue
             seen.add(normalized)
@@ -202,6 +276,41 @@ class TextProcessingMixin:
             if limit is not None and len(names) >= limit:
                 break
         return names
+
+    def _is_noisy_name_candidate(self, candidate: str) -> bool:
+        normalized = self._normalize_identifier(candidate)
+        if not normalized:
+            return True
+
+        tokens = normalized.split()
+        noisy_terms = {
+            "abertura",
+            "coordenador",
+            "coordenadora",
+            "documento",
+            "empresa",
+            "enumeracao",
+            "extracao",
+            "instituicao",
+            "lista",
+            "metodo",
+            "perfil",
+            "plano",
+            "projeto",
+            "resumo",
+            "secao",
+            "titulo",
+            "trabalho",
+            "versao",
+        }
+        noisy_count = sum(1 for token in tokens if token in noisy_terms)
+        if noisy_count >= 2:
+            return True
+        if tokens[0] in noisy_terms or tokens[-1] in noisy_terms:
+            return True
+        if any(token in {"empresa", "instituicao", "versao"} for token in tokens):
+            return True
+        return False
 
     def _extract_date_candidates(self, text: str, limit: int | None = None) -> list[str]:
         patterns = (

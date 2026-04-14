@@ -9,26 +9,28 @@ from .session import ensure_session, reset_loaded_collection
 try:
     from ..bot_support.drive_chat import build_login_intro_messages
     from ..bot_support.extraction_selection import (
-        build_extraction_choice_prompt,
         build_extraction_selected_message,
-        build_invalid_extraction_choice_message,
+        EXTRACTION_METHOD_DOCLING,
         normalize_extraction_method,
     )
 except ImportError:
     from bot_support.drive_chat import build_login_intro_messages
     from bot_support.extraction_selection import (
-        build_extraction_choice_prompt,
         build_extraction_selected_message,
-        build_invalid_extraction_choice_message,
+        EXTRACTION_METHOD_DOCLING,
         normalize_extraction_method,
     )
 
 
-# Esta mensagem pede a escolha inicial do extrator quando ainda nao existe sessao pronta.
+# Este helper fixa Docling como extrator do Google Drive e avanca para o login.
 async def send_extraction_choice_prompt(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     session = ensure_session(context)
-    session["awaiting_extraction_choice"] = True
-    await reply(update, build_extraction_choice_prompt())
+    previous_method = session.get("extraction_method")
+    session["extraction_method"] = EXTRACTION_METHOD_DOCLING
+    session["awaiting_extraction_choice"] = False
+    if previous_method != EXTRACTION_METHOD_DOCLING:
+        await reply(update, build_extraction_selected_message(EXTRACTION_METHOD_DOCLING))
+    await send_login_intro(update, context)
 
 
 # Esta introducao explica o proximo passo do login de acordo com o extrator escolhido.
@@ -44,7 +46,7 @@ async def send_login_intro(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     await reply(update, details)
 
 
-# Esta etapa valida a escolha do extrator e reposiciona o fluxo do onboarding.
+# Esta etapa mantem compatibilidade com mensagens antigas, mas sempre fixa Docling.
 async def handle_extraction_choice(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE,
@@ -53,15 +55,11 @@ async def handle_extraction_choice(
     session = ensure_session(context)
     selected_method = normalize_extraction_method(choice_text)
 
-    if selected_method:
+    if selected_method or session["awaiting_extraction_choice"]:
         reset_loaded_collection(session)
-        session["extraction_method"] = selected_method
+        session["extraction_method"] = EXTRACTION_METHOD_DOCLING
         session["awaiting_extraction_choice"] = False
-        await reply(update, build_extraction_selected_message(selected_method))
+        await reply(update, build_extraction_selected_message(EXTRACTION_METHOD_DOCLING))
         await send_login_intro(update, context)
-        return True
-
-    if session["awaiting_extraction_choice"]:
-        await reply(update, build_invalid_extraction_choice_message())
         return True
     return False

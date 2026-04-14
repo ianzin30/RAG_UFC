@@ -10,7 +10,7 @@ from .listing import list_supported_files, normalize_extraction_method
 from .models import CollectionIngestResult, SavedDriveFile
 
 
-# Esta etapa completa baixa a pasta do Drive e grava a colecao local em markdown.
+# Esta etapa completa baixa a pasta do Drive e grava a colecao local em markdown usando Docling.
 def ingest_folder_to_collection(
     owner,
     service,
@@ -25,9 +25,7 @@ def ingest_folder_to_collection(
         raise RuntimeError(listing.message)
 
     if not listing.files:
-        if normalized_method == EXTRACTION_METHOD_DOCLING:
-            raise RuntimeError(f"Nenhum arquivo compatível com Docling encontrado na pasta '{folder_name}'.")
-        raise RuntimeError(f"Nenhum PDF encontrado na pasta '{folder_name}'.")
+        raise RuntimeError(f"Nenhum arquivo compatível com Docling encontrado na pasta '{folder_name}'.")
 
     collection_path = collections_root / collection_name
     collection_path.mkdir(parents=True, exist_ok=True)
@@ -56,9 +54,7 @@ def ingest_folder_to_collection(
         )
 
     if not saved_files:
-        if normalized_method == EXTRACTION_METHOD_DOCLING:
-            raise RuntimeError("Arquivos compatíveis encontrados, mas nenhum conteúdo pôde ser extraído com Docling.")
-        raise RuntimeError("PDFs encontrados, mas nenhum texto pôde ser extraído.")
+        raise RuntimeError("Arquivos compatíveis encontrados, mas nenhum conteúdo pôde ser extraído com Docling.")
 
     return CollectionIngestResult(
         collection_name=collection_name,

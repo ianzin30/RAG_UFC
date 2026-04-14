@@ -48,7 +48,13 @@ class RetrievalAggregationMixin:
             limit=10,
         )
         names = self._collect_unique_values(
-            self._collect_metadata_or_text_values(docs, metadata_key="entity_names", extractor=self._extract_name_candidates),
+            self._collect_metadata_or_text_values(
+                docs,
+                metadata_key="entity_names",
+                extractor=self._extract_name_candidates,
+                use_cleaned_text=True,
+                fallback_chunk_kinds={"section_detail", "list_block", "row_record", "people_index"},
+            ),
             limit=80 if retrieval_intent == "list_extraction" else 24,
         )
         dates = self._collect_unique_values(
@@ -84,7 +90,15 @@ class RetrievalAggregationMixin:
         return "\n".join(lines).strip()
 
     # Este helper reaproveita metadados estruturados e cai para regex quando eles faltam.
-    def _collect_metadata_or_text_values(self, docs, *, metadata_key: str, extractor) -> list[str]:
+    def _collect_metadata_or_text_values(
+        self,
+        docs,
+        *,
+        metadata_key: str,
+        extractor,
+        use_cleaned_text: bool = False,
+        fallback_chunk_kinds: set[str] | None = None,
+    ) -> list[str]:
         values = []
         for doc in docs:
             raw_value = doc.metadata.get(metadata_key)
@@ -94,7 +108,11 @@ class RetrievalAggregationMixin:
             if isinstance(raw_value, str) and raw_value.strip():
                 values.append(raw_value.strip())
                 continue
-            values.extend(extractor(doc.page_content or ""))
+            chunk_kind = str(doc.metadata.get("chunk_kind") or "").strip()
+            if fallback_chunk_kinds is not None and chunk_kind not in fallback_chunk_kinds:
+                continue
+            source_text = self._strip_retrieval_wrapper(doc.page_content or "") if use_cleaned_text else (doc.page_content or "")
+            values.extend(extractor(source_text))
         return values
 
     # Esta etapa recolhe fatos no formato campo: valor espalhados pelos chunks.
@@ -132,6 +150,10 @@ class RetrievalAggregationMixin:
             compact = line.strip()
             if compact.startswith("Documento:") or compact.startswith("Secao:"):
                 continue
+            for prefix in ("Resumo da secao:", "Lista ou enumeracao detectada:"):
+                if compact.startswith(prefix):
+                    compact = compact.split(":", 1)[1].strip()
+                    break
             cleaned_lines.append(compact)
         return "\n".join(line for line in cleaned_lines if line).strip()
 

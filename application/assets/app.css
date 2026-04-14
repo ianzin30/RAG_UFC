@@ -117,7 +117,7 @@ body,
     width: 100%;
     height: calc(100dvh - 0.85rem);
     min-height: calc(100dvh - 0.85rem);
-    padding: 0.9rem 0.72rem 0.8rem;
+    padding: 0.9rem 0.72rem 4.2rem;
     border-radius: 0;
     background: var(--app-rail-bg);
     border: none;
@@ -148,16 +148,16 @@ body,
     height: 2.85rem;
     margin: 0 auto;
     border-radius: 999px;
-    background: linear-gradient(180deg, #acc4ff 0%, #7ea1ff 48%, #4c70eb 100%);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    box-shadow: 0 12px 24px rgba(76, 112, 235, 0.24);
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    box-shadow: none;
 }
 
 .nav-rail-brand img {
     width: 1.2rem;
     height: 1.2rem;
     object-fit: contain;
-    filter: var(--app-logo-filter);
+    filter: grayscale(1) brightness(0) invert(1);
 }
 
 .st-key-sidebar_nav_rail_header,
@@ -185,8 +185,19 @@ body,
 }
 
 .st-key-sidebar_nav_rail_footer {
-    margin-top: auto !important;
-    padding-top: 1.1rem;
+    position: absolute;
+    left: 50%;
+    bottom: 0.8rem;
+    transform: translateX(-50%);
+    width: auto;
+    margin-top: 0 !important;
+    padding-top: 0;
+}
+
+.st-key-sidebar_nav_rail_footer > [data-testid="stVerticalBlock"] {
+    width: auto;
+    display: flex;
+    justify-content: center;
 }
 
 [data-testid="stSidebar"] .st-key-sidebar_nav_rail [data-testid="stButton"] {
@@ -201,7 +212,7 @@ body,
     min-height: 2.7rem;
     padding: 0;
     margin: 0 auto;
-    border-radius: 999px;
+    border-radius: 1rem;
     border: 1px solid transparent !important;
     background: transparent !important;
     color: var(--app-rail-icon) !important;
@@ -776,7 +787,18 @@ body,
 
 .model-toolbar {
     max-width: 240px;
+    overflow: visible;
+    padding-top: 0.3rem;
     margin-bottom: 0.85rem;
+}
+
+.st-key-main_view_toolbar_shell > [data-testid="stVerticalBlock"],
+[data-testid="stMain"] [data-testid="stSelectbox"] {
+    overflow: visible;
+}
+
+[data-testid="stMain"] [data-testid="stSelectbox"] {
+    padding-top: 0.1rem;
 }
 
 .chat-loading-shell {
@@ -1060,6 +1082,8 @@ body,
         top: 0;
         z-index: 2;
         background: var(--app-bg);
+        overflow: visible;
+        padding-top: 1rem;
         padding-bottom: 0.5rem;
     }
 
@@ -1114,6 +1138,10 @@ body,
         padding-left: 0.55rem;
         padding-right: 0.55rem;
         min-height: 100vh;
+    }
+
+    .st-key-sidebar_nav_rail_footer {
+        left: 50%;
     }
 
     [data-testid="stSidebar"] .st-key-sidebar_panel_shell {

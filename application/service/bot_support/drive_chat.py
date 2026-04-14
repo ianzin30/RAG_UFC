@@ -26,13 +26,13 @@ def build_loaded_collection_label(extraction_method: str) -> str:
 def build_login_intro_messages(extraction_method: str) -> tuple[str, str]:
     extractor_label = format_extraction_method(extraction_method)
     intro = (
-        f"Extractor selecionado: {extractor_label}.\n\n"
+        f"Extrator configurado para o Google Drive: {extractor_label}.\n\n"
         "Para continuar, clique em /login para conectar o Google Drive 🔐"
     )
     details = (
         f"📂 Depois disso, eu importo os arquivos compatíveis da pasta '{DRIVE_FOLDER_NAME}' usando {extractor_label}.\n"
         "💬 Assim que tudo estiver pronto, libero o chat para voce conversar com os documentos.\n"
-        "🔁 Para comparar com outro extrator, use /extractor."
+        "🔁 Se quiser refazer a importação, use /extractor."
     )
     return intro, details
 
@@ -41,7 +41,7 @@ def build_ready_message(files_count: int, extraction_method: str) -> str:
     return (
         f"Tudo certo por aqui. Ja estou com {format_files_count(files_count)} carregados "
         f"usando {format_extraction_method(extraction_method)} e pronto para responder as suas perguntas.\n"
-        "Se quiser comparar com outro extrator, use /extractor."
+        "Se quiser refazer a importação do Google Drive, use /extractor."
     )
 
 

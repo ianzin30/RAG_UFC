@@ -78,34 +78,31 @@ def extract_file_text_with_docling(owner, file_bytes: bytes, suffix: str) -> str
         temp_path.unlink(missing_ok=True)
 
 
-# Este fluxo escolhe entre planilha, Docling e pypdf conforme o arquivo e o metodo ativos.
+# Este fluxo do Google Drive usa Docling em todos os arquivos suportados.
 def extract_drive_file_text(owner, service, drive_file: dict, extraction_method: str) -> str:
-    if extraction_method == EXTRACTION_METHOD_DOCLING:
-        plan = build_docling_file_plan(drive_file)
-        if not plan:
-            raise RuntimeError(f"Tipo de arquivo não suportado pelo Docling: {drive_file.get('mimeType')}")
+    _ = extraction_method
+    plan = build_docling_file_plan(drive_file)
+    if not plan:
+        raise RuntimeError(f"Tipo de arquivo não suportado pelo Docling: {drive_file.get('mimeType')}")
 
-        if plan.mode == "export":
-            file_bytes = export_google_workspace_file_bytes(service, drive_file["id"], plan.export_mime_type)
-        else:
-            file_bytes = download_drive_file_bytes(service, drive_file["id"])
+    if plan.mode == "export":
+        file_bytes = export_google_workspace_file_bytes(service, drive_file["id"], plan.export_mime_type)
+    else:
+        file_bytes = download_drive_file_bytes(service, drive_file["id"])
 
-        if plan.suffix in SPREADSHEET_SUFFIXES:
-            try:
-                spreadsheet_text = extract_spreadsheet_markdown(
-                    file_bytes=file_bytes,
-                    suffix=plan.suffix,
-                    file_name=drive_file.get("name") or "spreadsheet",
-                ).strip()
-                if spreadsheet_text:
-                    return spreadsheet_text
-            except Exception:
-                pass
+    if plan.suffix in SPREADSHEET_SUFFIXES:
+        try:
+            spreadsheet_text = extract_spreadsheet_markdown(
+                file_bytes=file_bytes,
+                suffix=plan.suffix,
+                file_name=drive_file.get("name") or "spreadsheet",
+            ).strip()
+            if spreadsheet_text:
+                return spreadsheet_text
+        except Exception:
+            pass
 
-        return extract_file_text_with_docling(owner, file_bytes, plan.suffix)
-
-    pdf_bytes = download_drive_file_bytes(service, drive_file["id"])
-    return extract_pdf_text_with_pypdf(pdf_bytes)
+    return extract_file_text_with_docling(owner, file_bytes, plan.suffix)
 
 
 # Este helper sanitiza o nome do arquivo para virar nome de markdown local.
