@@ -27,6 +27,10 @@ body,
     border-right: 1px solid var(--app-border) !important;
 }
 
+[data-testid="stSidebar"] > div:first-child {
+    padding-left: 0 !important;
+}
+
 [data-testid="stMain"] .block-container {
     padding-bottom: 0.75rem;
 }
@@ -38,7 +42,7 @@ body,
 }
 
 [data-testid="stSidebar"] .block-container {
-    padding: 0 0.45rem 0 0;
+    padding: 0 0.45rem 0 0 !important;
     min-height: 100vh;
 }
 
@@ -127,6 +131,7 @@ body,
 }
 
 .st-key-sidebar_nav_rail > [data-testid="stVerticalBlock"] {
+    flex: 1 1 auto;
     width: 100%;
     height: 100%;
     min-height: 0;
@@ -158,6 +163,7 @@ body,
 .st-key-sidebar_nav_rail_header,
 .st-key-sidebar_nav_rail_items,
 .st-key-sidebar_nav_rail_footer {
+    flex: 0 0 auto;
     width: 100%;
 }
 
@@ -179,7 +185,7 @@ body,
 }
 
 .st-key-sidebar_nav_rail_footer {
-    margin-top: auto;
+    margin-top: auto !important;
     padding-top: 1.1rem;
 }
 
