@@ -1,16 +1,26 @@
 # Config Notes
 
-This folder groups movable configuration and setup templates for readability.
+This folder groups runtime configuration and setup templates.
 
-## Files moved here
+## Primary runtime config
 
+- `config.toml`
+  - non-secret runtime tuning lives here
+  - this is the file to edit for model defaults, embedding device, quantization, batch size, and max length
+
+## Secret template / credentials
+
+- `.env.example`
+  - template for secrets and machine-specific values
 - `google-oauth-credentials.json`
+  - Google OAuth desktop client credentials
 
 ## Files that must stay in the project root
 
 - `.python-version`: `uv` and Python version managers expect it at the project root.
 - `pyproject.toml`: `uv` resolves the project from the root `pyproject.toml`.
 - `uv.lock`: `uv` expects the lockfile beside `pyproject.toml`.
+- `.env`: runtime secrets stay at the root, but non-secret tuning now belongs in `config/config.toml`.
 
 ## Git ignore rules
 

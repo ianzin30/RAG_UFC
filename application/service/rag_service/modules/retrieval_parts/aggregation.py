@@ -5,6 +5,10 @@ import re
 
 # Este mixin resume a evidencia recuperada antes da resposta final do modelo.
 class RetrievalAggregationMixin:
+    def _get_aggregation_config_value(self, key: str, default):
+        aggregation_config = getattr(self, "aggregation_config", None)
+        return getattr(aggregation_config, key, default)
+
     # Este helper combina um pacote agregado com o contexto bruto selecionado.
     def _build_answer_context(
         self,
@@ -45,7 +49,7 @@ class RetrievalAggregationMixin:
                 for doc in docs
                 if str(doc.metadata.get("section_title") or "").strip()
             ],
-            limit=10,
+            limit=int(self._get_aggregation_config_value("topics_limit", 10)),
         )
         names = self._collect_unique_values(
             self._collect_metadata_or_text_values(
@@ -55,18 +59,28 @@ class RetrievalAggregationMixin:
                 use_cleaned_text=True,
                 fallback_chunk_kinds={"section_detail", "list_block", "row_record", "people_index"},
             ),
-            limit=80 if retrieval_intent == "list_extraction" else 24,
+            limit=int(
+                self._get_aggregation_config_value("list_extraction_names_limit", 80)
+                if retrieval_intent == "list_extraction"
+                else self._get_aggregation_config_value("names_limit", 24)
+            ),
         )
         dates = self._collect_unique_values(
             self._collect_metadata_or_text_values(docs, metadata_key="date_values", extractor=self._extract_date_candidates),
-            limit=12,
+            limit=int(self._get_aggregation_config_value("dates_limit", 12)),
         )
         money_values = self._collect_unique_values(
             self._collect_metadata_or_text_values(docs, metadata_key="money_values", extractor=self._extract_money_candidates),
-            limit=12,
+            limit=int(self._get_aggregation_config_value("money_values_limit", 12)),
         )
-        fact_lines = self._collect_unique_values(self._collect_fact_lines(docs), limit=14)
-        key_points = self._collect_unique_values(self._collect_key_evidence_lines(docs), limit=10)
+        fact_lines = self._collect_unique_values(
+            self._collect_fact_lines(docs),
+            limit=int(self._get_aggregation_config_value("fact_lines_limit", 14)),
+        )
+        key_points = self._collect_unique_values(
+            self._collect_key_evidence_lines(docs),
+            limit=int(self._get_aggregation_config_value("key_points_limit", 10)),
+        )
 
         lines = ["Pacote agregado de evidencias"]
         if target_document_name:

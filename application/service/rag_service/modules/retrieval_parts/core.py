@@ -5,6 +5,10 @@ import re
 
 # Este mixin recupera, pontua e seleciona os trechos usados na resposta final.
 class RetrievalCoreMixin:
+    def _get_retrieval_config_value(self, key: str, default):
+        retrieval_config = getattr(self, "retrieval_config", None)
+        return getattr(retrieval_config, key, default)
+
     # Esta busca tenta primeiro o caminho estruturado das planilhas e depois o vetor store geral.
     def _retrieve_docs(
         self,
@@ -19,20 +23,29 @@ class RetrievalCoreMixin:
 
         if target_document_name:
             focused_question = f"{target_document_name} {question}".strip()
+            focused_search_k = int(self._get_retrieval_config_value("focused_search_k", 6))
+            focused_fetch_k = int(self._get_retrieval_config_value("focused_fetch_k", 100))
+            focused_lambda_mult = float(self._get_retrieval_config_value("focused_lambda_mult", 0.2))
+            lexical_limit = int(self._get_retrieval_config_value("lexical_limit", 12))
+            coverage_limit = int(self._get_retrieval_config_value("coverage_limit", 10))
             docs = self.vector_store.max_marginal_relevance_search(
                 focused_question,
-                k=6,
-                fetch_k=100,
-                lambda_mult=0.2,
+                k=focused_search_k,
+                fetch_k=focused_fetch_k,
+                lambda_mult=focused_lambda_mult,
                 filter={"document_name": target_document_name},
             )
             fallback_docs = self.vector_store.similarity_search(
                 target_document_name,
-                k=6,
-                fetch_k=100,
+                k=focused_search_k,
+                fetch_k=focused_fetch_k,
                 filter={"document_name": target_document_name},
             )
-            lexical_docs = self._retrieve_lexical_docs(question, target_document_name=target_document_name, limit=12)
+            lexical_docs = self._retrieve_lexical_docs(
+                question,
+                target_document_name=target_document_name,
+                limit=lexical_limit,
+            )
             docs = self._merge_unique_docs(docs, fallback_docs, lexical_docs)
             if self._is_coverage_oriented_intent(retrieval_intent):
                 docs = self._merge_unique_docs(
@@ -41,13 +54,18 @@ class RetrievalCoreMixin:
                         question,
                         target_document_name=target_document_name,
                         retrieval_intent=retrieval_intent,
+                        limit=coverage_limit,
                     ),
                 )
             if docs:
                 return docs
 
         dense_docs = self.retriever.invoke(question)
-        lexical_docs = self._retrieve_lexical_docs(question, target_document_name=target_document_name, limit=12)
+        lexical_docs = self._retrieve_lexical_docs(
+            question,
+            target_document_name=target_document_name,
+            limit=int(self._get_retrieval_config_value("lexical_limit", 12)),
+        )
         return self._merge_unique_docs(dense_docs, lexical_docs)
 
     # Esta busca lexical complementa o embedding com termos exatos e metadados estruturados.
@@ -365,12 +383,21 @@ class RetrievalCoreMixin:
         if not ranked_docs:
             return []
         if retrieval_intent == "list_extraction":
-            return self._select_diverse_context_docs(ranked_docs, limit=8)
+            return self._select_diverse_context_docs(
+                ranked_docs,
+                limit=int(self._get_retrieval_config_value("context_diverse_limit", 8)),
+            )
         if retrieval_intent == "document_expansion":
-            return self._select_diverse_context_docs(ranked_docs, limit=8)
+            return self._select_diverse_context_docs(
+                ranked_docs,
+                limit=int(self._get_retrieval_config_value("context_diverse_limit", 8)),
+            )
         if retrieval_intent == "summary":
-            return self._select_summary_context_docs(ranked_docs, limit=6)
-        return ranked_docs[:6]
+            return self._select_summary_context_docs(
+                ranked_docs,
+                limit=int(self._get_retrieval_config_value("context_summary_limit", 6)),
+            )
+        return ranked_docs[: int(self._get_retrieval_config_value("context_default_limit", 6))]
 
     def _select_summary_context_docs(self, ranked_docs, limit: int) -> list:
         selected = []

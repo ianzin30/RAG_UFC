@@ -110,9 +110,14 @@ class RAGServiceCollectionLoadingMixin:
 
     # Este retriever aplica MMR para equilibrar relevancia e diversidade dos trechos.
     def _build_retriever(self):
+        retrieval_config = getattr(self, "retrieval_config", None)
         return self.vector_store.as_retriever(
             search_type="mmr",
-            search_kwargs={"k": 6, "fetch_k": 30, "lambda_mult": 0.2},
+            search_kwargs={
+                "k": int(getattr(retrieval_config, "base_search_k", 6)),
+                "fetch_k": int(getattr(retrieval_config, "base_fetch_k", 30)),
+                "lambda_mult": float(getattr(retrieval_config, "base_lambda_mult", 0.2)),
+            },
         )
 
     # Esta leitura inspeciona os documentos guardados no docstore do FAISS.
@@ -179,6 +184,8 @@ class RAGServiceCollectionLoadingMixin:
             selected_collections=collection_names,
             file_hashes=file_hashes,
             embedding_model_name=self.embedding_model_name,
+            embedding_quantization=self.embedding_quantization,
+            embedding_max_length=self.embedding_max_length,
             splitter_config=splitter_config,
             cache_version=RAG_INDEX_CACHE_VERSION,
         )

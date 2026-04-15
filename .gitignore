@@ -1,9 +1,21 @@
-google-oauth-credentials.json
-__pycache__/
+# Secrets and local configuration
 .env
+google-oauth-credentials.json
+config/google-oauth-credentials.json
 firecrawl/
+
+# Python environments and caches
 .venv/
+.pytest_cache/
+__pycache__/
+*.py[cod]
+
+# Runtime logs
+logs/
 streamlit-*.log
+
+# Local app state and generated data
 data/local_chat_sessions.json
+data/cache/
 data/collections/google_drive_rag/
 data/collections/uploaded_files/

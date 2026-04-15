@@ -1,11 +1,10 @@
 """Top-level page composition for the Streamlit app."""
 
-import os
-
 import streamlit as st
 
 from presentation import chat, chat_sessions
 from presentation.collection_selection import normalize_collection_selection, sanitize_collection_selection
+from service.runtime_config import get_runtime_config
 
 from .collections import list_available_collections, list_collection_documents
 from .config import LOGO_PATH
@@ -28,7 +27,7 @@ def render_application() -> None:
     available_documents = list_collection_documents()
     available_collections = list_available_collections(available_documents)
     default_collection = [available_collections[0]] if available_collections else None
-    default_model = os.getenv("UFC_MODEL_NAME")
+    default_model = get_runtime_config().ufc_model_name
     chat_sessions.initialize_chat_sessions(default_collection=default_collection, default_model=default_model)
 
     selected_collections = sanitize_collection_selection(st.session_state.get("collection"), available_collections)

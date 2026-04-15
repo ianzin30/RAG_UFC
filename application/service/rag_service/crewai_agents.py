@@ -17,9 +17,9 @@ class CrewAIAgentBundle:
 
 
 # Esta fabrica liga ou desliga o conjunto de agentes de acordo com o modo atual.
-def build_crewai_agent_bundle(agent_mode: str) -> CrewAIAgentBundle:
+def build_crewai_agent_bundle(agent_mode: str, llm: object | None = None) -> CrewAIAgentBundle:
     bundle = CrewAIAgentBundle()
-    if agent_mode != "crewai":
+    if agent_mode != "crewai" or llm is None:
         return bundle
 
     try:
@@ -35,6 +35,7 @@ def build_crewai_agent_bundle(agent_mode: str) -> CrewAIAgentBundle:
             backstory="Especialista em conversas de abertura e mensagens sociais.",
             allow_delegation=False,
             verbose=False,
+            llm=llm,
         )
         # Este agente decide se a pergunta continua no mesmo documento ou muda de escopo.
         bundle.scope_agent = Agent(
@@ -43,6 +44,7 @@ def build_crewai_agent_bundle(agent_mode: str) -> CrewAIAgentBundle:
             backstory="Especialista em continuidade conversacional e mudanca de escopo em chats documentais.",
             allow_delegation=False,
             verbose=False,
+            llm=llm,
         )
         # Este agente escolhe o melhor documento quando ha varios candidatos plausiveis.
         bundle.document_selection_agent = Agent(
@@ -51,6 +53,7 @@ def build_crewai_agent_bundle(agent_mode: str) -> CrewAIAgentBundle:
             backstory="Especialista em ranking e desambiguacao de documentos com base em metadados e historico.",
             allow_delegation=False,
             verbose=False,
+            llm=llm,
         )
         # Este agente classifica a intencao da pergunta antes da recuperacao de evidencias.
         bundle.evidence_planning_agent = Agent(
@@ -59,6 +62,7 @@ def build_crewai_agent_bundle(agent_mode: str) -> CrewAIAgentBundle:
             backstory="Especialista em planejamento de retrieval e definicao de intencao de perguntas documentais.",
             allow_delegation=False,
             verbose=False,
+            llm=llm,
         )
         bundle.available = True
         return bundle

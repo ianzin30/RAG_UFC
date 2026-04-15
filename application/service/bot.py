@@ -1,16 +1,13 @@
 import os
-from pathlib import Path
-
-from dotenv import load_dotenv
 
 try:
+    from .runtime_config import load_project_environment
     from .bot_runtime.bootstrap import build_bot_application
 except ImportError:
+    from runtime_config import load_project_environment
     from bot_runtime.bootstrap import build_bot_application
 
-
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-load_dotenv(dotenv_path=PROJECT_ROOT / ".env", override=True)
+load_project_environment()
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 

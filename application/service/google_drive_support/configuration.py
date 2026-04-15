@@ -5,13 +5,15 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from dotenv import load_dotenv
+try:
+    from ..runtime_config import PROJECT_ROOT, load_project_environment
+except ImportError:
+    from runtime_config import PROJECT_ROOT, load_project_environment
 
 from .models import GoogleDrivePaths
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
-load_dotenv(dotenv_path=PROJECT_ROOT / ".env", override=True)
+load_project_environment()
 
 
 def build_google_drive_paths() -> GoogleDrivePaths:

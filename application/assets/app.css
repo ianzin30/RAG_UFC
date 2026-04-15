@@ -25,10 +25,35 @@ body,
 [data-testid="stSidebar"] {
     background: var(--app-sidebar-bg) !important;
     border-right: 1px solid var(--app-border) !important;
+    --app-sidebar-width: clamp(19rem, 24vw, 25rem);
+    --sidebar-rail-width: clamp(3.2rem, 18%, 4.7rem);
+    --sidebar-rail-inline-padding: clamp(0.3rem, 10%, 0.72rem);
+    --sidebar-rail-brand-size: clamp(2.35rem, 78%, 2.85rem);
+    --sidebar-rail-button-size: clamp(2.2rem, 72%, 2.7rem);
+    --sidebar-panel-padding-inline-start: clamp(0.78rem, 4%, 1.1rem);
+    --sidebar-panel-padding-inline-end: clamp(0.7rem, 3.5%, 0.95rem);
+    width: var(--app-sidebar-width) !important;
+    min-width: var(--app-sidebar-width) !important;
+    max-width: var(--app-sidebar-width) !important;
+    flex-basis: var(--app-sidebar-width) !important;
+    flex-shrink: 0 !important;
+    overflow-x: hidden !important;
 }
 
 [data-testid="stSidebar"] > div:first-child {
     padding-left: 0 !important;
+    width: 100%;
+    min-width: 0;
+}
+
+[data-testid="stSidebarContent"] {
+    padding-left: 0 !important;
+    padding-inline-start: 0 !important;
+    scrollbar-gutter: auto !important;
+}
+
+[data-testid="stSidebarUserContent"] {
+    padding-bottom: 0 !important;
 }
 
 [data-testid="stMain"] .block-container {
@@ -75,13 +100,18 @@ body,
     gap: 0;
     height: 100%;
     min-height: 0;
+    width: 100%;
+    min-width: 0;
 }
 
 [data-testid="stSidebar"] .st-key-sidebar_layout_shell > [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"] > [data-testid="column"]:has(.st-key-sidebar_nav_rail) {
     align-self: stretch;
-    flex: 0 0 4.7rem;
-    width: 4.7rem !important;
-    min-width: 4.7rem;
+    flex: 0 0 var(--sidebar-rail-width);
+    width: var(--sidebar-rail-width) !important;
+    min-width: var(--sidebar-rail-width);
+    max-width: 22%;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
 }
 
 [data-testid="stSidebar"] .st-key-sidebar_layout_shell > [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"] > [data-testid="column"]:has(.st-key-sidebar_nav_rail) > div,
@@ -91,10 +121,14 @@ body,
     flex-direction: column;
     height: 100%;
     min-height: 0;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    width: 100%;
 }
 
 [data-testid="stSidebar"] .st-key-sidebar_layout_shell > [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"] > [data-testid="column"]:has(.st-key-sidebar_panel_shell) {
     display: flex;
+    flex: 1 1 0;
     flex-direction: column;
     min-width: 0;
     height: 100%;
@@ -115,9 +149,9 @@ body,
     top: 0;
     flex: 1 1 auto;
     width: 100%;
-    height: calc(100dvh - 0.85rem);
-    min-height: calc(100dvh - 0.85rem);
-    padding: 0.9rem 0.72rem 4.2rem;
+    height: 100dvh;
+    min-height: 100dvh;
+    padding: 0.9rem var(--sidebar-rail-inline-padding) 0 0;
     border-radius: 0;
     background: var(--app-rail-bg);
     border: none;
@@ -144,8 +178,8 @@ body,
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.85rem;
-    height: 2.85rem;
+    width: var(--sidebar-rail-brand-size);
+    height: var(--sidebar-rail-brand-size);
     margin: 0 auto;
     border-radius: 999px;
     background: transparent;
@@ -154,8 +188,8 @@ body,
 }
 
 .nav-rail-brand img {
-    width: 1.2rem;
-    height: 1.2rem;
+    width: clamp(1rem, 42%, 1.2rem);
+    height: clamp(1rem, 42%, 1.2rem);
     object-fit: contain;
     filter: grayscale(1) brightness(0) invert(1);
 }
@@ -181,13 +215,13 @@ body,
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.8rem;
+    gap: clamp(0.45rem, 7%, 0.8rem);
 }
 
 .st-key-sidebar_nav_rail_footer {
     position: absolute;
     left: 50%;
-    bottom: 0.8rem;
+    bottom: 0;
     transform: translateX(-50%);
     width: auto;
     margin-top: 0 !important;
@@ -204,19 +238,23 @@ body,
     margin: 0;
     display: flex;
     justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 [data-testid="stSidebar"] .st-key-sidebar_nav_rail .stButton > button {
-    width: 2.7rem;
-    min-width: 2.7rem;
-    min-height: 2.7rem;
+    width: min(100%, var(--sidebar-rail-button-size));
+    min-width: var(--sidebar-rail-button-size);
+    min-height: var(--sidebar-rail-button-size);
     padding: 0;
     margin: 0 auto;
-    border-radius: 1rem;
+    border-radius: clamp(0.8rem, 30%, 1rem);
     border: 1px solid transparent !important;
     background: transparent !important;
     color: var(--app-rail-icon) !important;
     box-shadow: none !important;
+    display: flex;
+    align-items: center;
     justify-content: center;
     gap: 0;
     font-size: 0 !important;
@@ -261,8 +299,14 @@ body,
 }
 
 [data-testid="stSidebar"] .st-key-sidebar_nav_rail .stButton > button svg {
-    width: 1.05rem;
-    height: 1.05rem;
+    width: clamp(0.95rem, 34%, 1.05rem);
+    height: clamp(0.95rem, 34%, 1.05rem);
+    display: block;
+    margin: 0 auto;
+}
+
+.st-key-sidebar_nav_rail_footer {
+    bottom: 0.35rem;
 }
 
 [data-testid="stSidebar"] .st-key-sidebar_panel_shell {
@@ -270,7 +314,7 @@ body,
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
-    padding: 0.95rem 0.95rem 1rem 1.1rem;
+    padding: 0.95rem var(--sidebar-panel-padding-inline-end) 1rem var(--sidebar-panel-padding-inline-start);
     border-radius: 0;
     border: none;
     background: var(--app-panel-bg);
@@ -1097,6 +1141,16 @@ body,
 }
 
 @media (max-width: 1100px) {
+    [data-testid="stSidebar"] {
+        --app-sidebar-width: clamp(16rem, 36vw, 21rem);
+        --sidebar-rail-width: clamp(3rem, 20%, 4.15rem);
+        --sidebar-rail-inline-padding: clamp(0.25rem, 9%, 0.55rem);
+        --sidebar-rail-brand-size: clamp(2.2rem, 74%, 2.55rem);
+        --sidebar-rail-button-size: clamp(2.05rem, 68%, 2.45rem);
+        --sidebar-panel-padding-inline-start: clamp(0.72rem, 4.5%, 0.95rem);
+        --sidebar-panel-padding-inline-end: clamp(0.55rem, 3.5%, 0.75rem);
+    }
+
     html,
     body,
     #root,
@@ -1129,14 +1183,12 @@ body,
     }
 
     [data-testid="stSidebar"] .st-key-sidebar_layout_shell [data-testid="column"]:has(.st-key-sidebar_nav_rail) {
-        flex-basis: 4.2rem;
-        width: 4.2rem !important;
-        min-width: 4.2rem;
+        flex-basis: var(--sidebar-rail-width);
+        width: var(--sidebar-rail-width) !important;
+        min-width: var(--sidebar-rail-width);
     }
 
     .st-key-sidebar_nav_rail {
-        padding-left: 0.55rem;
-        padding-right: 0.55rem;
         min-height: 100vh;
     }
 
@@ -1145,7 +1197,7 @@ body,
     }
 
     [data-testid="stSidebar"] .st-key-sidebar_panel_shell {
-        padding: 0.85rem 0.75rem 0.9rem 0.95rem;
+        padding: 0.85rem var(--sidebar-panel-padding-inline-end) 0.9rem var(--sidebar-panel-padding-inline-start);
     }
 
     .st-key-main_chat_input_shell {
@@ -1155,6 +1207,24 @@ body,
 
     .st-key-main_chat_messages_shell > [data-testid="stVerticalBlock"] {
         padding-right: 0;
+        padding-bottom: 0;
+    }
+}
+
+@media (max-width: 780px) {
+    [data-testid="stSidebar"] {
+        --app-sidebar-width: min(94vw, 19rem);
+        --sidebar-rail-width: clamp(2.95rem, 17vw, 3.75rem);
+        --sidebar-rail-inline-padding: clamp(0.2rem, 5vw, 0.45rem);
+        --sidebar-panel-padding-inline-start: 0.7rem;
+        --sidebar-panel-padding-inline-end: 0.65rem;
+    }
+
+    [data-testid="stSidebar"] .block-container {
+        padding-right: 0.15rem;
+    }
+
+    .st-key-sidebar_nav_rail {
         padding-bottom: 0;
     }
 }

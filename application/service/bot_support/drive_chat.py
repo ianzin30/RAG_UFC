@@ -7,7 +7,7 @@ except ImportError:
     from rag import RAGService
     from bot_support.extraction_selection import format_extraction_method
 
-
+# nome da pasta no Google Drive onde os arquivos devem estar para serem importados
 DRIVE_FOLDER_NAME = "RAG"
 
 

@@ -21,6 +21,8 @@ def build_rag_index_fingerprint_inputs(
     selected_collections: list[str],
     file_hashes: list[dict[str, str]],
     embedding_model_name: str,
+    embedding_quantization: str,
+    embedding_max_length: int,
     splitter_config: dict[str, Any],
     cache_version: int | str,
 ) -> dict[str, Any]:
@@ -43,6 +45,8 @@ def build_rag_index_fingerprint_inputs(
         "selected_collections": [str(item) for item in selected_collections],
         "files": normalized_files,
         "embedding_model_name": str(embedding_model_name or ""),
+        "embedding_quantization": str(embedding_quantization or ""),
+        "embedding_max_length": int(embedding_max_length or 0),
         "splitter": normalized_splitter,
         "cache_version": cache_version,
     }

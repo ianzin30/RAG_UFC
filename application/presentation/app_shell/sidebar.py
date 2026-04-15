@@ -14,7 +14,7 @@ def render_sidebar(available_documents: list[dict[str, str]], default_collection
         chat_feedback = st.session_state.pop("chat_feedback", None)
         upload_feedback_kind = st.session_state.pop("upload_feedback_kind", "neutral")
         with st.container(key="sidebar_layout_shell"):
-            rail_col, panel_col = st.columns([0.17, 0.83], gap="small")
+            rail_col, panel_col = st.columns([18, 82], gap=None)
 
             with rail_col:
                 render_navigation_rail()
