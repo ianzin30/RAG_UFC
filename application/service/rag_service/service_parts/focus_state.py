@@ -8,8 +8,28 @@ class RAGServiceFocusStateMixin:
     # Este historico efetivo remove a mensagem de refinamento quando ela nao deve contaminar o retrieval.
     def _build_effective_history_text(self, chat_history, pending_refinement: dict[str, object] | None = None) -> str:
         history = list(chat_history or [])
-        if pending_refinement and history:
+        
+        # Strip pending refinement or empty interaction turns where the bot asked for clarification that was ignored.
+        cleaned_history = []
+        for i in range(len(history)):
+            msg = history[i]
+            role = str(msg.get("role", "")).strip().lower()
+            if role == "assistant":
+                content = str(msg.get("content", ""))
+                # If this message was a clarification/disambiguation prompt:
+                if "Responda apenas com o numero da opcao desejada." in content or "Por favor, digite apenas o" in content:
+                    # If this is the most recent assistant message and we are ignoring it/re-routing
+                    if i == len(history) - 2 or (pending_refinement and i == len(history) - 1):
+                        # Also pop the immediately preceding user question to completely erase the aborted topic
+                        if cleaned_history and cleaned_history[-1].get("role") == "user":
+                            cleaned_history.pop()
+                        continue
+            cleaned_history.append(msg)
+            
+        history = list(cleaned_history)
+        if pending_refinement and history and history[-1].get("role") == "assistant" and "needs_document_refinement" in history[-1]:
             history = history[:-1]
+            
         return self._format_chat_history(history)
 
     # Esta leitura devolve o foco atual ja normalizado para um dicionario simples.

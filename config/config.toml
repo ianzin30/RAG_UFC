@@ -68,4 +68,4 @@ agent_mode = "crewai"
 # Whether the answer flow should abstain when evidence is too weak.
 strict_grounding = true
 # Minimum evidence score required before answering in retrieval mode.
-min_evidence_score = 0.22
+min_evidence_score = 0.50
