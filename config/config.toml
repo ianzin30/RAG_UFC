@@ -16,21 +16,21 @@ max_length = 1024
 
 [splitter]
 # Character size of each text chunk created before indexing.
-chunk_size = 500
+chunk_size = 800
 # Character overlap preserved between adjacent chunks.
-chunk_overlap = 100
+chunk_overlap = 150
 # Ordered separators used to split documents into chunks.
 separators = ["\n\n", "\n", ". ", "? ", "! ", "; ", ": ", "  ", " ", ""]
 
 [retrieval]
 # Top-k returned by the base MMR retriever used for collection-wide searches.
-base_search_k = 6
+base_search_k = 12
 # Candidate pool size fetched before MMR reranking in collection-wide searches.
 base_fetch_k = 30
 # Diversity weight used by the base MMR retriever.
 base_lambda_mult = 0.2
 # Top-k returned by focused document retrieval before merging other signals.
-focused_search_k = 6
+focused_search_k = 8
 # Candidate pool size fetched before focused document reranking.
 focused_fetch_k = 100
 # Diversity weight used by focused document MMR retrieval.
@@ -40,7 +40,7 @@ lexical_limit = 12
 # Maximum number of extra document-coverage chunks added for broad questions.
 coverage_limit = 10
 # Maximum number of chunks kept for normal answer context building.
-context_default_limit = 6
+context_default_limit = 8
 # Maximum number of chunks kept for broad or list-oriented context building.
 context_diverse_limit = 8
 # Maximum number of chunks kept for summary-oriented context building.

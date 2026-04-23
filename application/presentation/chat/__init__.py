@@ -1,0 +1,1 @@
+"""Main chat content area."""

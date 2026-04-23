@@ -1,0 +1,1 @@
+"""Left icon navigation rail."""

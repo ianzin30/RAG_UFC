@@ -1,11 +1,18 @@
 """Streamlit bootstrap for the local RAG application."""
 
-from service.runtime_config import load_project_environment
+import logging
+import warnings
+
+# Suppress noisy __path__ alias warnings emitted by transformers' lazy-loader.
+logging.getLogger("transformers").setLevel(logging.ERROR)
+warnings.filterwarnings("ignore", message=r"Accessing `__path__`")
+
+from service.RuntimeConfig import load_project_environment
 
 
 load_project_environment()
 
-from presentation.app_shell.page import render_application
+from presentation.Page import render_application
 
 
 def main() -> None:

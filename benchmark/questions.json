@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "collection": "google_drive_rag",
+    "question": "Quem era o Chefe do Departamento que convocou a reunião de 14 de janeiro de 2022?",
+    "expected_answer": "Prof. Fernando Antonio Mota Trinta",
+    "accepted_answers": [
+      "Fernando Antonio Mota Trinta",
+      "Prof. Fernando Antônio Mota Trinta",
+      "Fernando Antônio Mota Trinta"
+    ],
+    "category": "leadership",
+    "source_document": "01_01-2022_Ata_de_Reuniao.md"
+  },
+  {
+    "id": 2,
+    "collection": "google_drive_rag",
+    "question": "Qual empresa é a parceira do projeto \"AI for Customer Support\"?",
+    "expected_answer": "Dell",
+    "accepted_answers": [
+      "DELL"
+    ],
+    "category": "projects",
+    "source_document": "01_01-2022_Ata_de_Reuniao.md"
+  },
+  {
+    "id": 3,
+    "collection": "google_drive_rag",
+    "question": "Qual o nome da empresa júnior do curso de Ciência da Computação da UFC?",
+    "expected_answer": "CEOS",
+    "accepted_answers": [
+      "Ceos",
+      "Empresa Júnior CEOS"
+    ],
+    "category": "extension",
+    "source_document": "14_04-2023_Ata_de_Reuniao.md"
+  },
+  {
+    "id": 4,
+    "collection": "google_drive_rag",
+    "question": "Em qual cidade e país ocorreu o evento ACL23, para o qual o Prof. José Antônio Fernandes de Macêdo solicitou afastamento em julho de 2023?",
+    "expected_answer": "Toronto, Canadá",
+    "accepted_answers": [
+      "Toronto - Canadá",
+      "Toronto, Canada"
+    ],
+    "category": "travel",
+    "source_document": "02_07-2023_Ata_de_Reuniao.md"
+  },
+  {
+    "id": 5,
+    "collection": "google_drive_rag",
+    "question": "Quem assumiu a chefia do departamento para o biênio 2024-2026?",
+    "expected_answer": "Prof. Pablo Mayckon Silva Farias (Chefe) e Prof. Lincoln Souza Rocha (Subchefe)",
+    "accepted_answers": [
+      "Pablo Mayckon Silva Farias e Lincoln Souza Rocha",
+      "Prof. Pablo Mayckon Silva Farias e Prof. Lincoln Souza Rocha",
+      "Pablo Mayckon Silva Farias (Chefe) e Lincoln Souza Rocha (Subchefe)"
+    ],
+    "category": "leadership",
+    "source_document": "41_07-2024_Ata_de_Reuniao.md"
+  },
+  {
+    "id": 6,
+    "collection": "google_drive_rag",
+    "question": "Qual o objetivo do projeto de extensão \"OCI\"?",
+    "expected_answer": "Despertar o interesse dos alunos dos ensinos fundamental e médio pela Computação.",
+    "accepted_answers": [
+      "Estimular o interesse dos alunos dos ensinos fundamental e médio pela Computação.",
+      "Despertar o interesse de alunos do ensino fundamental e médio no campo da computação.",
+      "Estimular o interesse de alunos do ensino fundamental e médio no campo da computação."
+    ],
+    "category": "extension",
+    "source_document": "45_04-2024_Ata_de_Reuniao.md"
+  },
+  {
+    "id": 7,
+    "collection": "google_drive_rag",
+    "question": "Qual servidor técnico de laboratório costuma apresentar as demandas de materiais e infraestrutura nas reuniões?",
+    "expected_answer": "Vlademiro Landim",
+    "accepted_answers": [
+      "Servidor Vlademiro Landim"
+    ],
+    "category": "infrastructure",
+    "source_document": "03_05-2023_Ata_de_Reuniao.md"
+  },
+  {
+    "id": 8,
+    "collection": "google_drive_rag",
+    "question": "Quantos anos de criação o Departamento de Computação celebrou em 2025?",
+    "expected_answer": "35 anos",
+    "accepted_answers": [
+      "trinta e cinco anos"
+    ],
+    "category": "history",
+    "source_document": "28_05-2025_Ata_de_Reuniao.md"
+  },
+  {
+    "id": 9,
+    "collection": "google_drive_rag",
+    "question": "Qual o nome do novo servidor que chegou para atuar no LIA no final de 2022?",
+    "expected_answer": "Francisco Eudo da Silva",
+    "accepted_answers": [
+      "Francisco Eudo",
+      "Francisco Eudo da Silva (Técnico de Tecnologia da Informação)"
+    ],
+    "category": "staff",
+    "source_document": "48_12-2022_Ata_de_Reuniao.md"
+  },
+  {
+    "id": 10,
+    "collection": "google_drive_rag",
+    "question": "Em qual cidade brasileira o Prof. Carlos Fisch de Brito solicitou realizar seu estágio pós-doutoral na COPPE/UFRJ?",
+    "expected_answer": "Rio de Janeiro - RJ",
+    "accepted_answers": [
+      "Rio de Janeiro, RJ",
+      "Rio de Janeiro"
+    ],
+    "category": "travel",
+    "source_document": "28_05-2025_Ata_de_Reuniao.md"
+  }
+]

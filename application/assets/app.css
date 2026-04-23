@@ -25,6 +25,7 @@ body,
 [data-testid="stSidebar"] {
     background: var(--app-sidebar-bg) !important;
     border-right: 1px solid var(--app-border) !important;
+    color: var(--app-text) !important;
     --app-sidebar-width: clamp(19rem, 24vw, 25rem);
     --sidebar-rail-width: clamp(3.2rem, 18%, 4.7rem);
     --sidebar-rail-inline-padding: clamp(0.3rem, 10%, 0.72rem);
@@ -182,16 +183,16 @@ body,
     height: var(--sidebar-rail-brand-size);
     margin: 0 auto;
     border-radius: 999px;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    box-shadow: none;
+    background: var(--app-rail-brand-bg);
+    border: 1px solid var(--app-rail-brand-border);
+    box-shadow: var(--app-rail-brand-shadow);
 }
 
 .nav-rail-brand img {
     width: clamp(1rem, 42%, 1.2rem);
     height: clamp(1rem, 42%, 1.2rem);
     object-fit: contain;
-    filter: grayscale(1) brightness(0) invert(1);
+    filter: var(--app-logo-filter);
 }
 
 .st-key-sidebar_nav_rail_header,
@@ -240,17 +241,21 @@ body,
     justify-content: center;
     align-items: center;
     width: 100%;
+    background: var(--app-rail-icon-bg) !important;
+    background-color: var(--app-rail-icon-bg) !important;
 }
 
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail .stButton > button {
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail .stButton > button,
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail [data-testid="stButton"] > button {
     width: min(100%, var(--sidebar-rail-button-size));
     min-width: var(--sidebar-rail-button-size);
     min-height: var(--sidebar-rail-button-size);
     padding: 0;
     margin: 0 auto;
     border-radius: clamp(0.8rem, 30%, 1rem);
-    border: 1px solid transparent !important;
-    background: transparent !important;
+    border: 1px solid var(--app-rail-border) !important;
+    background: var(--app-rail-icon-bg) !important;
+    background-color: var(--app-rail-icon-bg) !important;
     color: var(--app-rail-icon) !important;
     box-shadow: none !important;
     display: flex;
@@ -272,19 +277,23 @@ body,
 [data-testid="stSidebar"] .st-key-sidebar_nav_rail .stButton > button:hover {
     border-color: transparent !important;
     background: var(--app-rail-hover-bg) !important;
-    color: var(--app-text) !important;
+    color: var(--app-muted-strong) !important;
     transform: none;
 }
 
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail .stButton > button[kind="primary"] {
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail .stButton > button[kind="primary"],
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail [data-testid="stButton"] > button[kind="primary"] {
     background: var(--app-rail-active-bg) !important;
+    background-color: var(--app-rail-active-bg) !important;
     border-color: var(--app-rail-active-border) !important;
     color: var(--app-rail-active-text) !important;
-    box-shadow: none !important;
+    box-shadow: var(--app-shadow-sm) !important;
 }
 
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail .stButton > button[kind="primary"]:hover {
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail .stButton > button[kind="primary"]:hover,
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail [data-testid="stButton"] > button[kind="primary"]:hover {
     background: var(--app-rail-active-bg) !important;
+    background-color: var(--app-rail-active-bg) !important;
     border-color: var(--app-rail-active-border) !important;
     color: var(--app-rail-active-text) !important;
 }
@@ -303,6 +312,21 @@ body,
     height: clamp(0.95rem, 34%, 1.05rem);
     display: block;
     margin: 0 auto;
+    fill: var(--app-rail-icon) !important;
+}
+
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail .stButton > button svg * {
+    fill: var(--app-rail-icon) !important;
+}
+
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail .stButton > button[kind="primary"] svg,
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail [data-testid="stButton"] > button[kind="primary"] svg {
+    fill: var(--app-rail-active-text) !important;
+}
+
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail .stButton > button[kind="primary"] svg *,
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail [data-testid="stButton"] > button[kind="primary"] svg * {
+    fill: var(--app-rail-active-text) !important;
 }
 
 .st-key-sidebar_nav_rail_footer {
@@ -316,9 +340,9 @@ body,
     flex-direction: column;
     padding: 0.95rem var(--sidebar-panel-padding-inline-end) 1rem var(--sidebar-panel-padding-inline-start);
     border-radius: 0;
-    border: none;
+    border: 1px solid var(--app-panel-border);
     background: var(--app-panel-bg);
-    box-shadow: none;
+    box-shadow: var(--app-panel-shadow);
     backdrop-filter: none;
     height: 100%;
     max-height: 100%;
@@ -327,6 +351,22 @@ body,
     overflow-x: hidden;
     overscroll-behavior: contain;
     scrollbar-gutter: stable;
+    contain: paint;
+    isolation: isolate;
+}
+
+/* Hide stale sidebar nodes during Streamlit reruns.
+   The previous rule forced stale elements to stay visible, which stacked
+   the old and new sidebar trees during loading states. */
+[data-testid="stSidebar"] [data-testid="stElementContainer"][data-stale="true"] {
+    display: none !important;
+    pointer-events: none !important;
+}
+
+[data-testid="stSidebar"] > div:first-child,
+[data-testid="stSidebarContent"],
+[data-testid="stSidebarUserContent"] {
+    opacity: 1 !important;
 }
 
 [data-testid="stSidebar"] .st-key-sidebar_panel_shell > [data-testid="stVerticalBlock"] {
@@ -408,13 +448,15 @@ body,
     overflow-x: hidden;
     overscroll-behavior: contain;
     padding-right: 0.35rem;
-    padding-bottom: 0.5rem;
+    padding-bottom: 0.85rem;
     scrollbar-gutter: stable;
 }
 
 .st-key-main_chat_input_shell {
     flex: 0 0 auto;
+    margin-top: auto;
     padding-top: 0.5rem;
+    padding-bottom: 0.75rem;
     border-top: 1px solid var(--app-divider);
     background: var(--app-bg);
 }
@@ -464,13 +506,13 @@ body,
 }
 
 .app-note.error {
-    border-color: #7f1d1d;
-    background: rgba(127, 29, 29, 0.15);
+    border-color: var(--app-note-error-border);
+    background: var(--app-note-error-bg);
 }
 
 .app-note.success {
-    border-color: #166534;
-    background: rgba(22, 101, 52, 0.14);
+    border-color: var(--app-note-success-border);
+    background: var(--app-note-success-bg);
 }
 
 [data-testid="stSidebar"] .st-key-sidebar_chat_shell {
@@ -557,7 +599,7 @@ body,
     border-radius: 22px;
     border: 1px solid var(--app-border-soft);
     background: var(--app-card-bg);
-    box-shadow: none;
+    box-shadow: var(--app-shadow-sm);
 }
 
 [data-testid="stSidebar"] .st-key-sidebar_files_shell .stButton > button,
@@ -582,7 +624,7 @@ body,
 
 [data-testid="stSidebar"] .st-key-sidebar_files_shell .stButton > button[kind="primary"] {
     background: var(--app-button-active-bg) !important;
-    border-color: var(--app-border) !important;
+    border-color: var(--app-button-active-border) !important;
     color: var(--app-text) !important;
 }
 
@@ -657,7 +699,7 @@ body,
     justify-content: center;
     padding: 0;
     border-radius: 12px;
-    color: var(--app-muted);
+    color: var(--app-icon);
     border: 1px solid transparent;
     background: transparent;
     box-shadow: none;
@@ -666,7 +708,7 @@ body,
 [data-testid="stSidebar"] .st-key-sidebar_chat_shell [data-testid="stPopover"] button:hover {
     color: var(--app-text);
     background: var(--app-surface-soft);
-    border-color: var(--app-border-soft);
+    border-color: var(--app-border);
 }
 
 [data-testid="stSidebar"] .st-key-sidebar_chat_shell [data-testid="stPopover"] button svg {
@@ -702,8 +744,8 @@ body,
     width: 34px;
     height: 40px;
     border-radius: 11px;
-    background: #dc2626;
-    box-shadow: inset 0 -10px 16px rgba(0, 0, 0, 0.1), 0 10px 18px rgba(220, 38, 38, 0.18);
+    background: var(--app-pdf-icon-bg);
+    box-shadow: var(--app-pdf-icon-shadow);
     margin-top: 0.08rem;
 }
 
@@ -713,7 +755,7 @@ body,
     right: 0;
     width: 12px;
     height: 12px;
-    background: rgba(255, 255, 255, 0.92);
+    background: var(--app-pdf-icon-corner-bg);
     clip-path: polygon(0 0, 100% 0, 100% 100%);
     border-top-right-radius: 10px;
 }
@@ -724,7 +766,7 @@ body,
     right: 0;
     bottom: 7px;
     text-align: center;
-    color: #ffffff;
+    color: var(--app-pdf-icon-label);
     font-size: 0.54rem;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -789,12 +831,34 @@ body,
     flex-shrink: 0;
 }
 
+[data-testid="stTextInput"] [data-baseweb="input"] > div {
+    background: var(--app-input-bg) !important;
+    border: 1px solid var(--app-input-border) !important;
+    border-radius: 14px;
+    box-shadow: none !important;
+}
+
+[data-testid="stTextInput"] input {
+    color: var(--app-text) !important;
+    -webkit-text-fill-color: var(--app-text) !important;
+    caret-color: var(--app-input-border-focus) !important;
+}
+
+[data-testid="stTextInput"] input::placeholder {
+    color: var(--app-input-placeholder) !important;
+    -webkit-text-fill-color: var(--app-input-placeholder) !important;
+}
+
 [data-testid="stMain"] [data-testid="stSelectbox"] [data-baseweb="select"] > div {
     border-radius: 16px;
     border: 1px solid var(--app-input-border) !important;
-    background: var(--app-input-bg) !important;
+    background: var(--app-elevated-bg) !important;
     min-height: 48px;
-    box-shadow: none !important;
+    box-shadow: var(--app-shadow-sm) !important;
+}
+
+[data-testid="stMain"] [data-testid="stSelectbox"] [data-baseweb="select"] > div:hover {
+    border-color: var(--app-border-strong) !important;
 }
 
 [data-testid="stMain"] [data-testid="stSelectbox"] [data-baseweb="select"] input,
@@ -812,11 +876,27 @@ body,
     opacity: 1 !important;
 }
 
+[data-testid="stMain"] [data-testid="stSelectbox"] [data-baseweb="select"] > div:focus-within,
+[data-testid="stTextInput"] [data-baseweb="input"] > div:focus-within,
+[data-testid="stChatInput"] [data-baseweb="textarea"] > div:focus-within {
+    border-color: var(--app-input-border-focus) !important;
+    box-shadow: var(--app-input-shadow) !important;
+}
+
+[data-baseweb="popover"] {
+    color: var(--app-text) !important;
+}
+
+[data-baseweb="popover"] > div {
+    border-radius: 18px !important;
+}
+
 [data-baseweb="popover"] [data-baseweb="menu"],
 [data-baseweb="popover"] [role="listbox"] {
-    background: var(--app-surface) !important;
-    border: 1px solid var(--app-border) !important;
-    box-shadow: 0 18px 34px rgba(15, 23, 42, 0.16) !important;
+    background: var(--app-menu-bg) !important;
+    border: 1px solid var(--app-menu-border) !important;
+    border-radius: 18px !important;
+    box-shadow: var(--app-menu-shadow) !important;
 }
 
 [data-baseweb="popover"] [role="option"] {
@@ -824,9 +904,46 @@ body,
     background: transparent !important;
 }
 
+[data-baseweb="popover"] [role="option"]:hover {
+    background: var(--app-menu-option-hover) !important;
+}
+
 [data-baseweb="popover"] [role="option"][aria-selected="true"] {
-    background: var(--app-surface-soft) !important;
+    background: var(--app-menu-option-active) !important;
     color: var(--app-text) !important;
+}
+
+[data-baseweb="popover"] [data-baseweb="menu"] *,
+[data-baseweb="popover"] [role="listbox"] * {
+    color: var(--app-text) !important;
+    -webkit-text-fill-color: var(--app-text) !important;
+}
+
+[data-baseweb="popover"] [data-baseweb="input"] > div {
+    background: var(--app-input-bg) !important;
+    border: 1px solid var(--app-input-border) !important;
+    border-radius: 14px !important;
+    box-shadow: none !important;
+}
+
+[data-baseweb="popover"] input {
+    color: var(--app-text) !important;
+    -webkit-text-fill-color: var(--app-text) !important;
+    caret-color: var(--app-input-border-focus) !important;
+}
+
+[data-baseweb="popover"] .stButton > button {
+    min-height: 2.5rem;
+    border-radius: 14px;
+    border: 1px solid var(--app-button-border) !important;
+    background: var(--app-button-bg) !important;
+    color: var(--app-text) !important;
+    box-shadow: none !important;
+}
+
+[data-baseweb="popover"] .stButton > button:hover {
+    background: var(--app-button-bg-hover) !important;
+    border-color: var(--app-border-strong) !important;
 }
 
 .model-toolbar {
@@ -891,13 +1008,41 @@ body,
     display: none !important;
 }
 
-.chat-empty-shell {
-    border: 1px solid var(--app-border);
-    border-radius: 24px;
-    padding: 1.35rem;
-    background: var(--app-card-bg);
-    margin: 1.4rem auto 1rem;
-    max-width: 760px;
+.chat-empty-state-shell {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 0 2.2rem;
+}
+
+.chat-empty-state-copy {
+    width: min(100%, 760px);
+}
+
+.st-key-main_chat_locked_state_shell,
+.st-key-main_chat_locked_state_shell > [data-testid="stVerticalBlock"] {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100%;
+}
+
+.st-key-main_chat_locked_state_shell > [data-testid="stVerticalBlock"] {
+    gap: 1rem;
+    padding: 1rem 0 1.6rem;
+}
+
+.chat-empty-state-copy-locked {
+    width: min(100%, 760px);
+    margin: 0 auto;
+}
+
+.chat-empty-state-copy-locked .chat-empty-message:last-child {
+    margin-bottom: 0;
 }
 
 .chat-empty-message {
@@ -907,6 +1052,7 @@ body,
     padding: 0.9rem 1rem;
     margin-bottom: 0.8rem;
     color: var(--app-text);
+    box-shadow: var(--app-shadow-sm);
 }
 
 .chat-empty-input {
@@ -915,6 +1061,12 @@ body,
     padding: 0.9rem 1rem;
     background: var(--app-input-bg);
     color: var(--app-input-placeholder);
+}
+
+.chat-empty-input-bottom {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
 }
 
 .chat-empty-cta {
@@ -926,10 +1078,10 @@ body,
     margin: 0 auto 1rem;
     max-width: 760px;
     color: var(--app-text);
+    box-shadow: var(--app-shadow-sm);
 }
 
 .chat-welcome {
-    margin-top: 6.8rem;
     text-align: center;
     font-size: 2.25rem;
     line-height: 1.1;
@@ -940,17 +1092,17 @@ body,
 .chat-welcome-subtitle {
     text-align: center;
     margin-top: 0.55rem;
-    margin-bottom: 2.5rem;
     font-size: 0.98rem;
     color: var(--app-muted);
 }
 
 [data-testid="stChatMessage"] {
     background: var(--app-chat-assistant-bg) !important;
-    border: 1px solid var(--app-border) !important;
+    border: 1px solid var(--app-border-soft) !important;
     border-radius: 16px !important;
     padding: 0.35rem 0.7rem !important;
     margin-bottom: 0.7rem !important;
+    box-shadow: var(--app-shadow-sm) !important;
 }
 
 [data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]),
@@ -965,18 +1117,28 @@ body,
 }
 
 [data-testid="stChatInput"] {
-    background: transparent !important;
+    background: var(--app-surface) !important;
+    border: 1px solid var(--app-border) !important;
+    border-radius: 20px !important;
+    box-shadow: var(--app-shadow-sm) !important;
     margin-top: 0 !important;
+    padding: 0.35rem !important;
+}
+
+[data-testid="stChatInput"] > div {
+    background: transparent !important;
 }
 
 [data-testid="stChatInput"] [data-baseweb="textarea"] > div {
     background: var(--app-input-bg) !important;
     border: 1px solid var(--app-input-border) !important;
+    box-shadow: none !important;
 }
 
 [data-testid="stChatInput"] textarea {
     color: var(--app-text) !important;
     -webkit-text-fill-color: var(--app-text) !important;
+    caret-color: var(--app-input-border-focus) !important;
 }
 
 [data-testid="stChatInput"] textarea::placeholder {
@@ -985,14 +1147,29 @@ body,
 }
 
 [data-testid="stChatInput"] button {
-    background: var(--app-surface-soft) !important;
-    border: 1px solid var(--app-border) !important;
-    color: var(--app-text) !important;
+    background: var(--app-button-primary-bg) !important;
+    border: 1px solid var(--app-button-primary-bg) !important;
+    color: var(--app-button-primary-text) !important;
+    box-shadow: var(--app-shadow-sm) !important;
 }
 
 [data-testid="stChatInput"] button:hover {
-    background: var(--app-button-bg-hover) !important;
+    background: var(--app-button-primary-bg-hover) !important;
+    border-color: var(--app-button-primary-bg-hover) !important;
+}
+
+[data-testid="stChatInput"] button:disabled {
+    background: var(--app-surface-strong) !important;
     border-color: var(--app-border) !important;
+    color: var(--app-muted) !important;
+    box-shadow: none !important;
+}
+
+.stButton > button:focus-visible,
+[data-testid="stChatInput"] button:focus-visible,
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail .stButton > button:focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 3px var(--app-focus-ring) !important;
 }
 
 @media (min-width: 1101px) {
@@ -1075,19 +1252,6 @@ body,
         min-height: 0;
     }
 
-    .st-key-main_view_shell,
-    .st-key-main_view_shell > [data-testid="stVerticalBlock"],
-    .st-key-main_view_body_shell,
-    .st-key-main_view_body_shell > [data-testid="stVerticalBlock"],
-    .st-key-main_chat_shell,
-    .st-key-main_chat_shell > [data-testid="stVerticalBlock"],
-    .st-key-main_chat_messages_shell,
-    .st-key-main_chat_messages_shell > [data-testid="stVerticalBlock"] {
-        height: auto;
-        max-height: none;
-        min-height: 0;
-    }
-
     [data-testid="stSidebar"] .st-key-sidebar_layout_shell,
     [data-testid="stSidebar"] .st-key-sidebar_layout_shell > [data-testid="stVerticalBlock"],
     [data-testid="stSidebar"] .st-key-sidebar_layout_shell > [data-testid="stVerticalBlock"] > [data-testid="stHorizontalBlock"],
@@ -1111,13 +1275,6 @@ body,
         height: auto;
         max-height: none;
         min-height: auto;
-        overflow: visible;
-    }
-
-    .st-key-main_view_body_shell,
-    .st-key-main_chat_shell,
-    .st-key-main_chat_messages_shell,
-    .st-key-main_chat_messages_shell > [data-testid="stVerticalBlock"] {
         overflow: visible;
     }
 
