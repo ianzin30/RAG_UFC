@@ -311,8 +311,6 @@ class RetrievalCoreMixin:
     ):
         normalized_shortlist = self._normalize_document_shortlist(document_shortlist, target_document_name)
         primary_document_name = target_document_name
-        if primary_document_name is None and normalized_shortlist and retrieval_intent in {"specific_fact", "entity_lookup"}:
-            primary_document_name = normalized_shortlist[0]
 
         if self._is_spreadsheet_document_name(primary_document_name):
             structured_docs = self._retrieve_spreadsheet_chunks(question, primary_document_name)
@@ -331,8 +329,8 @@ class RetrievalCoreMixin:
                 return docs
 
         if normalized_shortlist:
+            shortlist_limit = 3 if self._is_coverage_oriented_intent(retrieval_intent) else 3
             shortlist_docs = []
-            shortlist_limit = 3 if self._is_coverage_oriented_intent(retrieval_intent) else 2
             for document_name in normalized_shortlist[:shortlist_limit]:
                 shortlist_docs.append(
                     self._retrieve_focused_docs_for_document(

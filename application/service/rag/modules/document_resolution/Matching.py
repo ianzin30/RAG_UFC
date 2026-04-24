@@ -297,13 +297,13 @@ class DocumentMatchingMixin:
                 if document["meeting_month"] in normalized_text and document["meeting_year"] in normalized_text:
                     score += 15
             if alias_kind in {"meeting_month_year", "meeting_kind_month_year"}:
-                score += 30
+                score += 60
             if alias_kind in {"meeting_date", "meeting_kind_date"}:
-                score += 40
+                score += 60
             if alias_kind == "document_month_year":
-                score += 25
+                score += 40
             if alias_kind == "document_full_date":
-                score += 35
+                score += 55
 
             candidate = {
                 "score": score,
@@ -387,7 +387,7 @@ class DocumentMatchingMixin:
         coverage = len(overlap) / max(len(query_terms), 1)
         specificity_score = (
             len(specific_overlap) * 24
-            + len(year_overlap) * 18
+            + len(year_overlap) * 28
             + len(acronym_overlap) * 18
             + len(name_overlap) * 14
         )
@@ -563,9 +563,15 @@ class DocumentMatchingMixin:
         score = signal_score + specificity_score + phrase_score - generic_penalty
 
         document_year = str(document.get("meeting_year") or "").strip()
+        all_year_terms_in_query = set(profile.get("year_terms") or set())
         if document_year and document_year in normalized_text:
-            specificity_score += 22
-            score += 22
+            specificity_score += 50
+            score += 50
+        elif requires_specific and all_year_terms_in_query:
+            if not document_year:
+                score -= 30
+            else:
+                score -= 40
         meeting_month = str(document.get("meeting_month") or "").strip()
         if meeting_month and meeting_month in normalized_text:
             signal_score += 16

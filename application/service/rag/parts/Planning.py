@@ -208,19 +208,7 @@ class RAGServicePlanningMixin(RAGServicePlanningSupportMixin):
             if selection == "multiple" and selected_documents:
                 candidate_names = selected_documents
 
-        if len(candidate_names) > 1 and retrieval_intent_hint in {"specific_fact", "entity_lookup"}:
-            return {
-                "status": "single_match",
-                "matched_documents": candidate_names[:1],
-                "document_shortlist": candidate_names,
-                "resolver_candidates": list(resolver_result.get("resolver_candidates") or candidate_names),
-                "matched_aliases": list(resolver_result.get("matched_aliases") or []),
-                "document_scores": document_scores,
-                "resolver_confidence": float(resolver_result.get("resolver_confidence") or 0.0),
-                "resolver_selection_mode": "auto_top_document",
-            }
-
-        if len(candidate_names) > 1 and retrieval_intent_hint in {"summary", "document_expansion", "list_extraction"}:
+        if len(candidate_names) > 1:
             return {
                 "status": "shortlist",
                 "matched_documents": [],

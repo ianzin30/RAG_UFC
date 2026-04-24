@@ -33,6 +33,7 @@ class PromptingMixin:
                 "Em perguntas amplas como resumos ou pedidos de mais detalhes, cubra mais de uma secao ou topico quando o contexto mostrar essa diversidade. "
                 "Em resumos amplos de documentos, nao afirme quantas secoes principais existem a menos que a estrutura completa esteja explicita no contexto. "
                 "Nao transforme campos, rotulos ou cabecalhos administrativos em relacoes entre instituicoes, empresas e pessoas. "
+                "Quando o contexto mostrar o resultado de uma decisao, votacao, eleicao ou aprovacao, prefira citar o resultado final confirmado em vez de candidatos, propostas ou etapas anteriores ao resultado. "
                 "Se o contexto for insuficiente, diga isso de forma objetiva e breve.",
             ),
             (
