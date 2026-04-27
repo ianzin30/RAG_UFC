@@ -571,6 +571,9 @@ class BenchmarkAnalyzer:
                 "answer_repair_applied": bool(trace.get("answer_repair_applied")),
                 "answer_repair_reason": str(trace.get("answer_repair_reason") or "").strip() or None,
                 "final_answer_origin": str(trace.get("final_answer_origin") or "").strip() or "llm",
+                "prompt_text": str(trace.get("prompt_text") or ""),
+                "raw_llm_response": str(trace.get("raw_llm_response") or ""),
+                "generation_params": dict(trace.get("generation_params") or {}),
             },
             "failure": {
                 "classification": failure_classification,

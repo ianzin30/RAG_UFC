@@ -80,6 +80,7 @@ class RAGServiceBootstrapMixin:
         self.agent_mode = self.runtime_config.rag.agent_mode
         self.strict_grounding = self.runtime_config.rag.strict_grounding
         self.min_evidence_score = self.runtime_config.rag.min_evidence_score
+        self.generation_config = self.runtime_config.generation
 
         self.crewai_available = False
         self.crewai_casual_agent = None
@@ -419,6 +420,25 @@ class RAGServiceBootstrapMixin:
         except Exception:
             logger.debug("Failed to write CPU int8 invalid-cache marker.", exc_info=True)
 
+    def _build_ollama_generation_options(self) -> dict:
+        """Translate the [generation] config into Ollama options.
+
+        Sampling params live in `options`. We use temperature=0 by default for
+        copy-fidelity on factual answers; downstream code can override per-call
+        if needed (e.g. small_talk).
+        """
+        gen = self.generation_config
+        options: dict = {
+            "temperature": float(gen.temperature),
+            "top_p": float(gen.top_p),
+            "repeat_penalty": float(gen.repeat_penalty),
+        }
+        if gen.seed is not None:
+            options["seed"] = int(gen.seed)
+        if gen.num_ctx is not None:
+            options["num_ctx"] = int(gen.num_ctx)
+        return options
+
     # Esta troca recria apenas as cadeias dependentes do modelo atual.
     def set_model(self, model_name: str, rebuild_crewai_agents: bool = True) -> None:
         normalized_model_name = (model_name or "").strip()
@@ -432,6 +452,7 @@ class RAGServiceBootstrapMixin:
             api_key=self.api_key,
             model_name=self.model_name,
             api_url=self.api_url,
+            generation_options=self._build_ollama_generation_options(),
         )
         self.llm = RunnableLambda(self.llm_client.invoke)
         self._build_prompt_chains()

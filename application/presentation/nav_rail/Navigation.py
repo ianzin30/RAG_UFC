@@ -1,14 +1,21 @@
-"""Left navigation rail for the switchable sidebar panels."""
+"""
+Navigation rail for the sidebar.
+
+Provides vertical navigation to switch between Chat and Files panels,
+plus a theme toggle button.
+"""
 
 import streamlit as st
 
 from presentation.shared.Config import LOGO_DATA_URI
 from presentation.shared.Theme import get_active_theme_name, toggle_app_theme
 
-
+# Sidebar panel constants
 SIDEBAR_CHAT_PANEL = "chat"
 SIDEBAR_FILES_PANEL = "files"
-ICON_ONLY_BUTTON_LABEL = "\u200b"
+ICON_ONLY_BUTTON_LABEL = "\u200b"  # Zero-width space for button styling
+
+# Navigation items configuration
 NAVIGATION_ITEMS = (
     {
         "panel": SIDEBAR_CHAT_PANEL,
@@ -27,8 +34,8 @@ NAVIGATION_ITEMS = (
 )
 
 
-# Este helper garante que o painel ativo sempre seja um dos paines conhecidos.
 def get_active_sidebar_panel() -> str:
+    """Get the currently active sidebar panel, defaulting to Chat if invalid."""
     panel_name = str(st.session_state.get("sidebar_panel") or SIDEBAR_CHAT_PANEL).strip().lower()
     if panel_name not in {SIDEBAR_CHAT_PANEL, SIDEBAR_FILES_PANEL}:
         panel_name = SIDEBAR_CHAT_PANEL
@@ -36,8 +43,8 @@ def get_active_sidebar_panel() -> str:
     return panel_name
 
 
-# Esta escrita troca o painel visivel sem alterar o restante do estado do app.
 def set_active_sidebar_panel(panel_name: str) -> None:
+    """Switch the active sidebar panel without affecting other app state."""
     st.session_state.sidebar_panel = panel_name
 
 

@@ -1,4 +1,10 @@
-"""Top-level page composition for the Streamlit app."""
+"""
+Main page layout and composition for the RAG Chat application.
+
+This module orchestrates the overall page structure: initializes session state,
+configures the page, loads available collections and documents, and renders
+the sidebar and main chat area. It serves as the entry point for the presentation layer.
+"""
 
 import streamlit as st
 

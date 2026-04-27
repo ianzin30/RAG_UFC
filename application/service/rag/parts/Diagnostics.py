@@ -17,6 +17,8 @@ class RAGServiceDiagnosticsMixin:
             "evidence_score": 0.0,
             "abstained": False,
             "answer_context": "",
+            "prompt_text": "",
+            "raw_llm_response": "",
             "answer_shape": None,
             "explicit_answer_candidates": [],
             "consensus_dominant_candidate": None,

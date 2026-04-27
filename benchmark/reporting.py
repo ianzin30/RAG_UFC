@@ -315,6 +315,38 @@ def render_markdown_report(run_payload: dict[str, object]) -> str:
             lines.extend(_format_rank_movement_simple(rank_movement))
             lines.append("")
 
+        if (
+            failure_class == "generation_failure"
+            and metrics.get("expected_answer_in_context")
+        ):
+            answer_context = str(retrieval.get("answer_context") or "")
+            expected_answer = str(q_data.get("expected_answer") or "")
+            prompt_text = str(generation.get("prompt_text") or "")
+            raw_llm_response = str(generation.get("raw_llm_response") or "")
+            gen_params = dict(generation.get("generation_params") or {})
+
+            lines.append("**Diagnostico de falha de geracao:**")
+            lines.append("")
+            if expected_answer and answer_context:
+                idx = answer_context.lower().find(expected_answer.lower())
+                if idx >= 0:
+                    start = max(0, idx - 80)
+                    end = min(len(answer_context), idx + len(expected_answer) + 80)
+                    span = answer_context[start:end].replace("\n", " ")
+                    lines.append(f"- Trecho do contexto com a resposta esperada (offset {idx}):")
+                    lines.append(f"  > …{_safe_cell(span)}…")
+                else:
+                    lines.append("- Resposta esperada nao encontrada literalmente no contexto.")
+            if raw_llm_response:
+                lines.append(f"- Resposta bruta do LLM: `{_safe_cell(raw_llm_response[:200])}`")
+            if gen_params:
+                param_str = ", ".join(f"{k}={v}" for k, v in gen_params.items())
+                lines.append(f"- Parametros de geracao: `{param_str}`")
+            if prompt_text:
+                lines.append(f"- Prompt enviado ao LLM (primeiros 400 chars):")
+                lines.append(f"  > {_safe_cell(prompt_text[:400])}")
+            lines.append("")
+
         if dominant_candidate or generation.get("answer_repair_applied") or generation.get("answer_shape"):
             lines.append("**Consenso da resposta:**")
             lines.append("")

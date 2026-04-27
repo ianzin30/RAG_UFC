@@ -1,3 +1,9 @@
+"""
+Google Drive integration - allows users to import documents from Google Drive.
+
+Provides UI for connecting to Google Drive and ingesting files into a collection.
+"""
+
 import streamlit as st
 
 from presentation.shared.CollectionSelection import add_collection_selection
@@ -9,8 +15,15 @@ def render_connect_button(
     help_text: str | None = None,
     key: str = "google_drive_connect",
 ) -> bool:
+    """
+    Render a button to connect to Google Drive and import documents.
+
+    When clicked, authenticates with Google Drive, imports files from the 'rag' folder,
+    adds them to the collection, and resets the chat to start fresh.
+    """
     service = GoogleDriveService()
 
+    # Render and handle the connection button
     if st.button(button_label, key=key, use_container_width=True, help=help_text):
         with st.spinner("Conectando ao Google Drive e preparando o chat..."):
             try:

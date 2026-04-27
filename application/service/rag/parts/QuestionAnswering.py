@@ -393,4 +393,20 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
         enriched_trace["retrieval_stages"] = dict(diagnostics.get("retrieval_stages") or {})
         enriched_trace["retrieval_stage_order"] = list(diagnostics.get("stage_order") or [])
         enriched_trace["candidate_catalog"] = dict(diagnostics.get("candidate_catalog") or {})
+        enriched_trace["prompt_text"] = str(diagnostics.get("prompt_text") or "")
+        enriched_trace["raw_llm_response"] = str(diagnostics.get("raw_llm_response") or "")
+        gen = getattr(self, "generation_config", None)
+        if gen is not None:
+            gen_params: dict[str, object] = {
+                "temperature": float(gen.temperature),
+                "top_p": float(gen.top_p),
+                "repeat_penalty": float(gen.repeat_penalty),
+            }
+            if getattr(gen, "seed", None) is not None:
+                gen_params["seed"] = int(gen.seed)
+            if getattr(gen, "num_ctx", None) is not None:
+                gen_params["num_ctx"] = int(gen.num_ctx)
+            enriched_trace["generation_params"] = gen_params
+        else:
+            enriched_trace["generation_params"] = {}
         return enriched_trace

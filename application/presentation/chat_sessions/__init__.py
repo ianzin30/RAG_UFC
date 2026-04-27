@@ -1,4 +1,12 @@
-"""Public facade for chat session helpers."""
+"""
+Chat session management - handles creating, loading, and maintaining chat conversations.
+
+This module provides functions to:
+- Create and activate chat sessions
+- Store and retrieve conversation history
+- Manage session metadata (title, model, collections)
+- Persist sessions to storage for recovery across app restarts
+"""
 
 from .Operations import (
     activate_chat,

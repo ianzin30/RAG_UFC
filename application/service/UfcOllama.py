@@ -12,11 +12,13 @@ class UFCOllamaClient:
         model_name: str,
         api_url: str = DEFAULT_UFC_API_URL,
         timeout_seconds: int = 210,
+        generation_options: dict | None = None,
     ) -> None:
         self.api_key = api_key
         self.model_name = model_name
         self.api_url = api_url
         self.timeout_seconds = timeout_seconds
+        self.generation_options = dict(generation_options or {})
 
     def _coerce_prompt(self, prompt_value) -> str:
         if isinstance(prompt_value, str):
@@ -38,6 +40,8 @@ class UFCOllamaClient:
             "stream": False,
             "keep_alive": "10m",
         }
+        if self.generation_options:
+            payload["options"] = dict(self.generation_options)
 
         try:
             response = requests.post(

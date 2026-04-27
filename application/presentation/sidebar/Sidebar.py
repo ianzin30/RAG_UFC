@@ -1,4 +1,11 @@
-"""Sidebar composition for the Streamlit app shell."""
+"""
+Sidebar layout and composition - renders the left navigation panel.
+
+The sidebar contains:
+- Vertical navigation rail (narrow left column) for theme, etc.
+- Main content panel (wider right area) for chat or files view
+- Feedback messages for uploads and chat operations
+"""
 
 import streamlit as st
 
@@ -9,14 +16,19 @@ from .Uploads import render_notice
 
 
 def render_sidebar(available_documents: list[dict[str, str]], default_collection, default_model: str | None) -> None:
+    """Render the main sidebar with navigation rail and content panels."""
     with st.sidebar:
+        # Retrieve any pending feedback messages
         upload_feedback = st.session_state.pop("upload_feedback", None)
         chat_feedback = st.session_state.pop("chat_feedback", None)
         upload_feedback_kind = st.session_state.pop("upload_feedback_kind", "neutral")
+
         with st.container(key="sidebar_layout_shell"):
+            # Two-column layout: narrow rail + wide content panel
             rail_col, panel_col = st.columns([18, 82], gap=None)
 
             with rail_col:
+                # Navigation rail (narrow vertical menu)
                 render_navigation_rail()
 
             with panel_col:

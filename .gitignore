@@ -10,6 +10,10 @@ firecrawl/
 __pycache__/
 *.py[cod]
 
+# Editor temp and backup files
+*.bak
+*.tmp.*
+
 # Runtime logs
 logs/
 streamlit-*.log

@@ -59,12 +59,22 @@ class RagRuntimeConfig:
 
 
 @dataclass(frozen=True)
+class GenerationRuntimeConfig:
+    temperature: float
+    top_p: float
+    repeat_penalty: float
+    seed: int | None
+    num_ctx: int | None
+
+
+@dataclass(frozen=True)
 class AppRuntimeConfig:
     ufc_model_name: str
     embedding: EmbeddingRuntimeConfig
     splitter: SplitterRuntimeConfig
     retrieval: RetrievalRuntimeConfig
     rag: RagRuntimeConfig
+    generation: GenerationRuntimeConfig
 
 
 def load_project_environment() -> None:
@@ -152,6 +162,16 @@ def _get_positive_int(table: dict[str, Any], key: str, default: int) -> int:
     return parsed if parsed > 0 else default
 
 
+def _get_optional_int(table: dict[str, Any], key: str) -> int | None:
+    value = table.get(key)
+    if value is None:
+        return None
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
 def _get_float(table: dict[str, Any], key: str, default: float) -> float:
     value = table.get(key, default)
     try:
@@ -196,6 +216,7 @@ def get_runtime_config() -> AppRuntimeConfig:
     splitter_table = _get_optional_table(payload, "splitter")
     retrieval_table = _get_optional_table(payload, "retrieval")
     rag_table = _require_table(payload, "rag")
+    generation_table = _get_optional_table(payload, "generation")
 
     return AppRuntimeConfig(
         ufc_model_name=_require_str(model_table, "ufc_model_name", "model.ufc_model_name"),
@@ -243,6 +264,13 @@ def get_runtime_config() -> AppRuntimeConfig:
             ),
             min_evidence_score=max(0.0, _get_float(rag_table, "min_evidence_score", 0.22)),
         ),
+        generation=GenerationRuntimeConfig(
+            temperature=max(0.0, _get_float(generation_table, "temperature", 0.0)),
+            top_p=max(0.0, min(1.0, _get_float(generation_table, "top_p", 0.9))),
+            repeat_penalty=max(0.0, _get_float(generation_table, "repeat_penalty", 1.05)),
+            seed=_get_optional_int(generation_table, "seed"),
+            num_ctx=_get_optional_int(generation_table, "num_ctx"),
+        ),
     )
 
 
@@ -255,6 +283,7 @@ __all__ = [
     "CONFIG_FILE",
     "ENV_FILE",
     "EmbeddingRuntimeConfig",
+    "GenerationRuntimeConfig",
     "PROJECT_ROOT",
     "RagRuntimeConfig",
     "RetrievalRuntimeConfig",

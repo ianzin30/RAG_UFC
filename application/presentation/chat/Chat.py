@@ -1,3 +1,14 @@
+"""
+Chat interface for the RAG application.
+
+This module handles:
+- Model selection toolbar
+- Message display and chat input
+- Chat state management (loading, empty, locked states)
+- Answer retrieval from the RAG service
+- Source document rendering
+"""
+
 from html import escape
 import time
 
@@ -7,6 +18,8 @@ from presentation import chat_sessions
 from presentation.shared.CollectionSelection import clone_collection_selection, normalize_collection_selection
 from presentation.integrations import GoogleDrive as google_drive
 from service.rag import RAGService
+
+# Available LLM models with display names
 CHAT_MODELS = {
     "llama3.1:8b": "Llama 3.1 8B",
     "qwen2.5:14b": "Qwen 2.5 14B",
@@ -141,10 +154,13 @@ def render_locked_chat_input_placeholder() -> None:
 
 
 def show(selected_model: str) -> None:
+    """Display the main chat interface with messages and input."""
     with st.container(key="main_chat_shell"):
+        # Create layout containers for messages and input
         messages_shell = st.container(key="main_chat_messages_shell")
         input_shell = st.container(key="main_chat_input_shell")
 
+        # Update model if it changed in the toolbar
         current_model = st.session_state.get("model_name") or next(iter(CHAT_MODELS))
         if selected_model != current_model:
             chat_sessions.update_active_chat_model(selected_model)
@@ -152,6 +168,7 @@ def show(selected_model: str) -> None:
             if st.session_state.get("rag_service") is not None:
                 st.session_state.rag_service.set_model(current_model)
 
+        # Check if collections are selected
         selected_collections = normalize_collection_selection(st.session_state.get("collection"))
         if not selected_collections:
             with messages_shell:
@@ -160,11 +177,13 @@ def show(selected_model: str) -> None:
                 render_locked_chat_input_placeholder()
             return
 
+        # Display feedback from integrations (e.g., Google Drive connection)
         feedback = st.session_state.pop("drive_feedback", None)
         if feedback:
             with messages_shell:
                 render_notice(feedback)
 
+        # Check if RAG service needs to be reloaded (collection or model changed)
         current_collection = normalize_collection_selection(st.session_state.get("current_collection"))
         collection_changed = current_collection != selected_collections
         model_changed = (
@@ -172,6 +191,7 @@ def show(selected_model: str) -> None:
             and st.session_state.rag_service is not None
             and st.session_state.rag_service.model_name != current_model
         )
+        # Reload RAG service if collections changed or service not initialized
         if "rag_service" not in st.session_state or st.session_state.rag_service is None or collection_changed:
             st.session_state.rag_service = RAGService(model_name=current_model)
             loader = messages_shell.empty()
@@ -189,19 +209,23 @@ def show(selected_model: str) -> None:
             st.session_state.rag_service.set_model(current_model)
             loader.empty()
 
+        # Display chat history
         with messages_shell:
             if not st.session_state.messages:
                 render_empty_state()
 
+            # Render each message with sources if it's a retrieval-based answer
             for message in st.session_state.messages:
                 with st.chat_message(message["role"]):
                     st.write(message["content"])
                     if message.get("role") == "assistant" and message.get("route") == "retrieval":
                         render_sources(message.get("sources"))
 
+        # Input area for user questions
         with input_shell:
             prompt = st.chat_input("Faca uma pergunta sobre os documentos carregados...")
 
+        # Process user input and get answer from RAG service
         if prompt:
             recent_history = st.session_state.messages[-6:]
             with messages_shell:

@@ -14,15 +14,16 @@ def test_build_embedding_settings_uses_cpu_int8_onnx_model(monkeypatch) -> None:
     harness.embedding_quantization = "int8"
     harness.embedding_device = "cpu"
     harness.embedding_model_name = "BAAI/bge-m3"
+    fake_model_path = Path("/tmp/embedding-model")
     monkeypatch.setattr(
         harness,
         "_ensure_cpu_int8_embedding_model",
-        lambda: (Path("/tmp/embedding-model"), "onnx/model_qint8_arm64.onnx"),
+        lambda: (fake_model_path, "onnx/model_qint8_arm64.onnx"),
     )
 
     model_name, model_kwargs, encode_kwargs = harness._build_embedding_settings()
 
-    assert model_name == "/tmp/embedding-model"
+    assert model_name == str(fake_model_path)
     assert model_kwargs == {
         "backend": "onnx",
         "model_kwargs": {
@@ -66,16 +67,17 @@ def test_build_huggingface_embeddings_falls_back_when_cpu_int8_load_fails(
     harness.embedding_max_length = 1024
     harness.embedding_model_cache_root = tmp_path
     created_models: list[tuple[str, dict, dict]] = []
+    fake_int8_path = Path("/tmp/embedding-model")
     monkeypatch.setattr(
         harness,
         "_ensure_cpu_int8_embedding_model",
-        lambda: (Path("/tmp/embedding-model"), "onnx/model_qint8_arm64.onnx"),
+        lambda: (fake_int8_path, "onnx/model_qint8_arm64.onnx"),
     )
 
     class FakeEmbeddings:
         def __init__(self, *, model_name, model_kwargs, encode_kwargs):
             created_models.append((model_name, model_kwargs, encode_kwargs))
-            if model_name == "/tmp/embedding-model":
+            if model_name == str(fake_int8_path):
                 raise RuntimeError("invalid onnx cache")
             self._client = SimpleNamespace(max_seq_length=None)
 
@@ -88,7 +90,7 @@ def test_build_huggingface_embeddings_falls_back_when_cpu_int8_load_fails(
 
     assert created_models == [
         (
-            "/tmp/embedding-model",
+            str(fake_int8_path),
             {
                 "backend": "onnx",
                 "model_kwargs": {

@@ -220,17 +220,18 @@ class RetrievalCoreMixin:
             return 0
 
         chunk_kind = str(metadata.get("chunk_kind") or "text").strip()
+        # Small uniform bonus: phrase + date hits should dominate ranking.
+        # Spreadsheet-shaped chunks (row_record / people_index) get a tiny
+        # edge because their structure already pre-extracts entities.
         kind_bonus = {
-            "section_detail": 18,
-            "row_record": 14,
-            "entity_index": 12,
-            "people_index": 12,
-            "list_block": 8,
-            "section_overview": 6,
-            "document_profile": 2,
+            "row_record": 4,
+            "people_index": 4,
+            "section_detail": 3,
             "summary": 2,
             "sheet_summary": 2,
-        }.get(chunk_kind, 4)
+            "column_profile": 2,
+            "document_profile": 1,
+        }.get(chunk_kind, 2)
         return exact_overlap * 12 + phrase_hits * 44 + date_hits * 72 + kind_bonus
 
     def _expand_query_for_lexical_search(self, question: str) -> str:
@@ -325,6 +326,15 @@ class RetrievalCoreMixin:
             return []
 
         limit = int(self._get_retrieval_config_value("llm_selection_limit", 8))
+        # When the LLM selector is disabled, take the top-`limit` candidates
+        # directly. The merged dense+lexical pool is already ranked by
+        # retrieval signals and the LLM selector tends to discard the
+        # answer chunk on small models; trusting retrieval is more reliable.
+        if not bool(self._get_retrieval_config_value("llm_selector_enabled", True)):
+            selected = list(candidates)[:limit]
+            self._record_retrieval_stage("llm_selected", selected)
+            return selected
+
         llm_selected_docs = self._select_docs_with_llm(
             resolved_question or "",
             candidates,

@@ -1,4 +1,9 @@
-"""Compact chat history layout helpers for the sidebar."""
+"""
+Chat history display for the sidebar.
+
+Handles organizing chats into time-based sections (Today, Yesterday, Older)
+and rendering the chat list with controls for switching between chats.
+"""
 
 from __future__ import annotations
 
@@ -9,8 +14,8 @@ import streamlit as st
 from presentation import chat_sessions
 
 
-# Este parser le o timestamp salvo na sessao e cai para agora se ele vier ausente.
 def parse_chat_session_datetime(chat: dict[str, object]) -> datetime:
+    """Parse chat timestamp from session data, defaulting to current time if missing."""
     raw_timestamp = (
         str(chat.get("updated_at") or "").strip()
         or str(chat.get("created_at") or "").strip()
@@ -29,12 +34,12 @@ def parse_chat_session_datetime(chat: dict[str, object]) -> datetime:
     return timestamp.astimezone(timezone.utc)
 
 
-# Este agrupamento organiza as conversas em secoes leves como Today e Yesterday.
 def build_chat_history_sections(
     chat_items: list[dict[str, object]],
     *,
     now: datetime | None = None,
 ) -> list[dict[str, object]]:
+    """Organize chats into time-based sections: Today, Yesterday, Older."""
     reference = (now or datetime.now(timezone.utc)).astimezone(timezone.utc).date()
     grouped: dict[str, list[tuple[datetime, dict[str, object]]]] = {
         "Today": [],

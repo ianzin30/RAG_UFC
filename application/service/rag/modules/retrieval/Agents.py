@@ -75,17 +75,27 @@ class RetrievalAgentMixin:
         context: str,
         question: str,
     ) -> str:
-        return self.answer_chain.invoke(
-            {
-                "collection_name": collection_name,
-                "chat_history": history_text,
-                "resolved_question": resolved_question,
-                "matched_documents": matched_documents,
-                "target_document_name": target_document_name or "nenhum arquivo especifico",
-                "context": context,
-                "question": question,
-            }
-        )
+        input_dict = {
+            "collection_name": collection_name,
+            "chat_history": history_text,
+            "resolved_question": resolved_question,
+            "matched_documents": matched_documents,
+            "target_document_name": target_document_name or "nenhum arquivo especifico",
+            "context": context,
+            "question": question,
+        }
+        prompt_template = getattr(self, "_answer_prompt_template", None)
+        llm_client = getattr(self, "llm_client", None)
+        if self._is_retrieval_diagnostics_enabled() and prompt_template is not None and llm_client is not None:
+            prompt_value = prompt_template.invoke(input_dict)
+            prompt_text = prompt_value.to_string()
+            raw_response = llm_client.invoke(prompt_value)
+            self._update_retrieval_diagnostics_summary(
+                prompt_text=prompt_text,
+                raw_llm_response=raw_response,
+            )
+            return raw_response
+        return self.answer_chain.invoke(input_dict)
 
     def _invoke_benchmark_grading_agent(self, grading_payload: dict[str, object]) -> dict[str, object]:
         agent = getattr(self, "crewai_benchmark_grading_agent", None)

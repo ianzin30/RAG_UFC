@@ -1,14 +1,39 @@
+# Runtime configuration for the RAG system.
+# All values here apply uniformly to every collection under data/collections/;
+# nothing in this file is collection-specific.
+
 [model]
+# Default Ollama model for answer/small-talk/rewrite chains.
+# Tested alternatives that improve Portuguese factuality on the benchmark
+# (pick based on available VRAM):
+#   "qwen2.5:14b-instruct"
+#   "mistral-nemo:12b-instruct"
+#   "gemma3:12b"
 ufc_model_name = "llama3.1:8b"
+
+[generation]
+# Ollama sampling options. temperature=0.0 is the highest-leverage knob for
+# copy-fidelity on factual questions: it stops the model from paraphrasing
+# proper nouns, dates, and numeric values that appear verbatim in the context.
+temperature = 0.0
+top_p = 0.9
+repeat_penalty = 1.05
+# Optional. Uncomment to make answers reproducible across runs:
+# seed = 42
+# Optional. Uncomment to override the model's default context length:
+# num_ctx = 8192
 
 [embeddings]
 model_name = "BAAI/bge-m3"
-device = "cpu"
-quantization = "none"
+device = "cuda"          # cuda | mps | cpu (auto-downgrades if unavailable)
+quantization = "4bit"     # 4bit (CUDA only) | int8 (CPU ONNX) | none
 batch_size = 2
 max_length = 1024
 
 [splitter]
+# Window-based paragraph splitting via RecursiveCharacterTextSplitter.
+# 800/150 keeps each window large enough to fit a full named-entity
+# announcement plus surrounding evidence; smaller windows fragment answers.
 chunk_size = 800
 chunk_overlap = 150
 separators = [
@@ -30,10 +55,21 @@ base_fetch_k = 30
 base_lambda_mult = 0.2
 lexical_limit = 12
 candidate_pool_limit = 30
-llm_selection_limit = 8
-llm_selector_enabled = true
+# Top-N chunks passed to the answer LLM. Raising this from 8 to 12 covers
+# more of the candidate pool when the answer chunk lands at rank 9-11.
+llm_selection_limit = 12
+# When false, the final selection takes the top `llm_selection_limit` items
+# from the merged dense+lexical pool directly. The LLM-based selector adds
+# latency and (with an 8B model) frequently drops the chunk that holds the
+# answer; disabled by default. Set true to experiment.
+llm_selector_enabled = false
 
 [rag]
 agent_mode = "crewai"
+# When true, the service abstains ("Nao encontrei...") if the heuristic
+# evidence score is below `min_evidence_score`. Set false to always attempt
+# an answer from whatever was retrieved.
 strict_grounding = true
-min_evidence_score = 0.5
+# Lowered from 0.5: the heuristic score is conservative and 0.5 caused
+# legitimate questions to abstain even when the right chunk was selected.
+min_evidence_score = 0.25

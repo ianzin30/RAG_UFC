@@ -3,6 +3,7 @@ from pathlib import Path
 from application.service.RuntimeConfig import (
     AppRuntimeConfig,
     EmbeddingRuntimeConfig,
+    GenerationRuntimeConfig,
     RagRuntimeConfig,
     RetrievalRuntimeConfig,
     SplitterRuntimeConfig,
@@ -39,6 +40,13 @@ def make_runtime_config() -> AppRuntimeConfig:
             agent_mode="crewai",
             strict_grounding=True,
             min_evidence_score=0.5,
+        ),
+        generation=GenerationRuntimeConfig(
+            temperature=0.0,
+            top_p=0.9,
+            repeat_penalty=1.05,
+            seed=None,
+            num_ctx=None,
         ),
     )
 
