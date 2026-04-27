@@ -1,14 +1,14 @@
 """Typed state containers for RAG orchestration."""
-# Simple: Data structures for search results and queries
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 
 
-# Esta opcao representa uma escolha exibida quando o retrieval pede clarificacao.
 @dataclass
 class ClarificationOption:
+    """A single choice presented to the user when retrieval needs clarification."""
+
     label: str
     normalized: str
 
@@ -30,9 +30,13 @@ class ClarificationOption:
         return cls(label=label, normalized=normalized)
 
 
-# Este estado guarda a pergunta original e as opcoes pendentes de clarificacao.
 @dataclass
 class PendingRetrievalClarification:
+    """State when retrieval asks the user to clarify which documents or intent they meant.
+
+    Stores the original and resolved questions plus the list of options to choose from.
+    """
+
     original_question: str
     resolved_question: str
     target_document_name: str | None
@@ -73,9 +77,13 @@ class PendingRetrievalClarification:
         )
 
 
-# Este estado guarda a lista de arquivos quando o usuario ainda precisa escolher um deles.
 @dataclass
 class PendingDocumentRefinement:
+    """State when the user must choose which document(s) to search in.
+
+    Stores matched document names and the question being refined.
+    """
+
     matched_documents: list[str]
     resolved_question: str
     original_question: str
@@ -88,9 +96,14 @@ class PendingDocumentRefinement:
         }
 
 
-# Este foco lembra qual documento e qual intencao continuam ativos entre mensagens.
 @dataclass
 class RetrievalFocusState:
+    """Persistent retrieval context across chat messages.
+
+    Remembers the target document, retrieval intent, and focus terms so users
+    can ask follow-up questions without re-specifying scope.
+    """
+
     scope_type: str
     target_document_name: str | None = None
     resolved_question: str | None = None

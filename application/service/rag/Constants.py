@@ -1,4 +1,10 @@
-# Simple: Keywords and settings for the search system
+"""RAG service constants — query terms, intent keywords, and retrieval modes.
+
+Defines keyword lists for query classification (person queries, date queries, etc.),
+stopwords for text normalization, intent modes (specific_fact, list_facts, etc.),
+and other configuration constants used throughout the retrieval pipeline.
+"""
+
 PERSON_QUERY_TERMS = {
     "nome",
     "nomes",

@@ -1,7 +1,10 @@
-"""Thin public facade for the RAG service."""
-# Simple: Main search system that answers questions from documents
+"""Main RAG service — question answering from document collections.
 
-# Estes aliases ficam no facade para manter compatibilidade com testes antigos.
+Aggregates functionality from multiple specialized mixins (retrieval, routing,
+document resolution, planning, selection, diagnostics, etc.) to provide a
+unified interface for loading collections and answering questions with full
+tracing for debugging.
+"""
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_community.vectorstores import FAISS
 
@@ -21,7 +24,6 @@ from .parts.Selection import RAGServiceSelectionMixin
 from .parts.TraceBuilders import RAGServiceTraceBuilderMixin
 
 
-# Esta classe junta os blocos pequenos que formam o comportamento completo do RAG.
 class RAGService(
     PromptingMixin,
     SpreadsheetMixin,
@@ -38,4 +40,17 @@ class RAGService(
     RAGServiceCollectionLoadingMixin,
     RAGServiceQuestionAnsweringMixin,
 ):
+    """Unified RAG service combining all retrieval, answering, and diagnostic capabilities.
+
+    Aggregates specialized mixins to provide methods for:
+    - Loading document collections and building FAISS indices
+    - Answering questions with full context tracing
+    - Disambiguating queries and resolving document focus
+    - Planning retrieval scope and selecting relevant chunks
+    - Generating formatted prompts and extracting answers from LLM responses
+    - Capturing comprehensive diagnostics for debugging
+
+    Usage: load_collection() → ask_question_with_trace() → returns full trace dict.
+    """
+
     pass

@@ -1,9 +1,17 @@
-# Simple: Instructions for the AI to answer user questions
+"""System and answer prompt templates for the RAG LLM.
+
+Builds LangChain ChatPromptTemplate instances with instructions for:
+- Copy-fidelity: exact copying of names, dates, numbers from context
+- Grounding: using only provided context (no external knowledge)
+- Format: Portuguese, max 2 sentences, no saudações or disclaimers
+"""
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 
 
 class PromptingMixin:
+    """Build answer and small-talk prompt chains."""
+
     def _build_prompt_chains(self) -> None:
         answer_prompt = ChatPromptTemplate.from_messages([
             (

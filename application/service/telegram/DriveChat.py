@@ -1,4 +1,8 @@
-# Simple: Chat with documents from Google Drive via Telegram
+"""Telegram bot handlers for Google Drive document ingestion and RAG chat.
+
+Manages the flow of logging in with Google Drive, selecting extraction method,
+importing documents, and answering questions about them via chat.
+"""
 from ..GoogleDrive import GoogleDriveService
 from ..rag import RAGService
 from .ExtractionSelection import format_extraction_method

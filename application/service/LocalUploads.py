@@ -1,4 +1,9 @@
-# Simple: Handle files uploaded locally to the application
+"""Local file upload ingestion.
+
+Handles extraction and ingest of files uploaded directly through the UI,
+supporting PDFs (pypdf or docling), Office documents, spreadsheets, plain text,
+and images. All extracts are saved to the 'uploaded_files' collection as Markdown.
+"""
 from pathlib import Path
 
 from .GoogleDrive import (
@@ -29,6 +34,13 @@ SUPPORTED_UPLOAD_SUFFIXES = {
 
 
 class LocalUploadService:
+    """Extract and ingest uploaded files into the collection system.
+
+    Supports multiple file types (PDFs, Office, spreadsheets, images, text)
+    and extraction methods (docling, pypdf). Saves extracted text as Markdown
+    to the collections root.
+    """
+
     def __init__(self) -> None:
         self.drive_service = GoogleDriveService()
         self.collections_root = self.drive_service.collections_root

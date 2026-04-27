@@ -1,4 +1,8 @@
-# Simple: Clean and prepare text for searching
+"""Text cleaning and normalization utilities for documents and queries.
+
+Handles whitespace normalization, document header/name extraction, type detection,
+identifier normalization (for matching), and query keyword extraction with stopword filtering.
+"""
 import re
 import unicodedata
 from pathlib import Path
@@ -7,6 +11,8 @@ from ..Constants import QUERY_STOPWORDS
 
 
 class TextProcessingMixin:
+    """Clean, normalize, and extract features from text."""
+
     def _normalize_whitespace(self, text: str) -> str:
         lines = [re.sub(r"\s+", " ", line).strip() for line in text.replace("\r\n", "\n").split("\n")]
         return "\n".join(line for line in lines if line)

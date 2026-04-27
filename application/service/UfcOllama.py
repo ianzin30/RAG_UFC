@@ -1,4 +1,8 @@
-# Simple: Connect to local AI model for text generation
+"""Ollama API client for local text generation.
+
+Provides a wrapper around the Ollama generate endpoint at UFC's internal server,
+handling authentication, request/response formatting, and generation options.
+"""
 import requests
 
 
@@ -6,6 +10,8 @@ DEFAULT_UFC_API_URL = "http://ollama.atlab.ufc.br:8080/ollama/api/generate"
 
 
 class UFCOllamaClient:
+    """HTTP client for Ollama text generation at UFC's internal Ollama server."""
+
     def __init__(
         self,
         api_key: str,

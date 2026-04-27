@@ -1,4 +1,8 @@
-# Simple: Main entry point to start the Telegram chat bot
+"""Telegram bot entry point.
+
+Initializes the environment, loads configuration, and starts the Telegram bot
+application with the token from .env.
+"""
 import os
 
 try:

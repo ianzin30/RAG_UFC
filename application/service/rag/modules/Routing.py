@@ -1,4 +1,9 @@
-# Simple: Choose between search mode and casual conversation
+"""Query routing — classify questions as retrieval or casual conversation.
+
+Decides whether to answer from documents or use a general chat model, extracts
+focus terms for persistent retrieval context, and formats responses with
+mode-specific headers and footers.
+"""
 import re
 
 from ..Constants import (
@@ -16,6 +21,8 @@ from ..Constants import (
 
 
 class RoutingMixin:
+    """Classify questions and route to retrieval or casual mode."""
+
     def _extract_focus_terms(self, text: str, limit: int = 12) -> list[str]:
         normalized = self._normalize_identifier(text)
         focus_terms = []

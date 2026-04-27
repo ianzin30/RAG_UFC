@@ -1,4 +1,9 @@
-# Simple: Let user choose how to convert documents
+"""Telegram UI for selecting PDF/document extraction method.
+
+Offers users a choice between pypdf (fast, text-only) and docling (slower, layout-aware)
+for converting PDF and Office documents to markdown for ingestion.
+"""
+
 EXTRACTION_METHOD_PYPDF = "pypdf"
 EXTRACTION_METHOD_DOCLING = "docling"
 

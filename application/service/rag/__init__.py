@@ -1,4 +1,7 @@
-# Simple: Public search system interface
+"""RAG service public interface.
+
+Lazy-loads RAGService to avoid circular imports and keep startup time low.
+"""
 
 __all__ = ["RAGService"]
 

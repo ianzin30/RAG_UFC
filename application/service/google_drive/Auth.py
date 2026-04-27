@@ -1,5 +1,7 @@
-"""Authentication helpers for the Google Drive service."""
-# Simple: Log in with Google account to access Drive files
+"""Authentication helpers for the Google Drive service.
+
+Handles OAuth 2.0 flow, credential persistence, and Drive API client initialization.
+"""
 
 from __future__ import annotations
 
@@ -13,7 +15,6 @@ from googleapiclient.discovery import build
 from .Constants import SCOPES
 
 
-# Esta funcao abre o fluxo OAuth local para o usuario autorizar o Drive.
 def login_with_google_drive(credentials_file: Path):
     if not credentials_file.exists():
         raise FileNotFoundError(

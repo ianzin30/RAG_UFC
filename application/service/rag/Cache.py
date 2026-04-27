@@ -1,4 +1,8 @@
-# Simple: Store and check file versions to avoid reprocessing
+"""Cache fingerprinting for FAISS indices.
+
+Tracks file hashes, embedding model config, and splitter settings to invalidate
+indices when source documents or configuration change, avoiding stale embeddings.
+"""
 from __future__ import annotations
 
 import hashlib
