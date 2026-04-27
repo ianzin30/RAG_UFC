@@ -188,13 +188,13 @@ class BenchmarkAnalyzer:
 
     def _extract_top_documents(
         self,
-        prioritized_ids: list[str],
+        candidate_ids: list[str],
         candidate_catalog: dict[str, dict[str, object]],
         corpus_lookup: dict[str, dict[str, object]],
     ) -> list[str]:
         documents: list[str] = []
         seen: set[str] = set()
-        for candidate_id in prioritized_ids:
+        for candidate_id in candidate_ids:
             candidate = self._lookup_candidate(candidate_id, candidate_catalog, corpus_lookup) or {}
             document_name = str(candidate.get("document_name") or "").strip()
             if not document_name or document_name in seen:
@@ -204,6 +204,27 @@ class BenchmarkAnalyzer:
             if len(documents) >= 5:
                 break
         return documents
+
+    def _find_source_document_rank(
+        self,
+        source_document: str,
+        candidate_ids: list[str],
+        candidate_catalog: dict[str, dict[str, object]],
+        corpus_lookup: dict[str, dict[str, object]],
+    ) -> int | None:
+        if not source_document:
+            return None
+        seen_documents: list[str] = []
+        for candidate_id in candidate_ids:
+            candidate = self._lookup_candidate(candidate_id, candidate_catalog, corpus_lookup)
+            if candidate is None:
+                continue
+            document_name = str(candidate.get("document_name") or "").strip()
+            if document_name and document_name not in seen_documents:
+                seen_documents.append(document_name)
+            if self._matches_source_document(source_document, candidate):
+                return len(seen_documents) or 1
+        return None
 
     def _extract_candidate_list(
         self,
@@ -230,9 +251,9 @@ class BenchmarkAnalyzer:
         relevant_documents: list[str],
         stage_order: list[str],
         stage_positions: dict[str, dict[str, int]],
-        prioritized_ids: list[str],
+        candidate_pool_ids: list[str],
         selected_context_ids: list[str],
-        retrieved_candidate_ids: set[str],
+        pool_candidate_ids: set[str],
         retrieved_documents: set[str],
         answer_presence_in_evidence: str,
         generated_answer_has_expected: bool,
@@ -257,12 +278,18 @@ class BenchmarkAnalyzer:
         target_document_name = str(trace.get("target_document_name") or "").strip() or None
         resolver_status = str(trace.get("resolver_status") or "").strip() or "no_match"
         source_document_provided = bool(question.source_document)
+        resolver_selection_mode = str(trace.get("resolver_selection_mode") or "").strip()
+        explicit_document_scope = resolver_selection_mode in {
+            "explicit_reference",
+            "manual_selection",
+            "clarification_selection",
+        } or resolver_status in {"multiple_matches", "selection_resolved"}
 
         if not relevant_hits and not source_document_provided:
             notes.append("Expected answer variants were not found anywhere in the indexed corpus.")
             return "benchmark_data_mismatch", notes
 
-        if relevant_docs_set:
+        if explicit_document_scope and relevant_docs_set:
             shortlist_excludes_relevant = bool(
                 document_shortlist and relevant_docs_set.isdisjoint(document_shortlist)
             )
@@ -281,55 +308,27 @@ class BenchmarkAnalyzer:
                 notes.append(f"Resolver status: {resolver_status}")
                 return "document_resolution_failure", notes
 
-        if relevant_hit_ids and relevant_hit_ids.isdisjoint(retrieved_candidate_ids):
-            if relevant_docs_set and relevant_docs_set & retrieved_documents:
-                notes.append(
-                    "The right document was retrieved, but the chunk containing the expected answer never surfaced."
-                )
-                return "chunking_failure", notes
-            notes.append("Relevant evidence never appeared in the retrieval stages.")
-            return "semantic_search_failure", notes
+        if relevant_hit_ids and relevant_hit_ids.isdisjoint(pool_candidate_ids):
+            notes.append("Expected-answer evidence did not enter the dense/lexical candidate pool.")
+            return "retrieval_failure", notes
 
         if relevant_hit_ids and relevant_hit_ids.isdisjoint(set(selected_context_ids)):
-            prioritized_positions = stage_positions.get("prioritized", {})
-            selected_position_cutoff = len(selected_context_ids)
             best_relevant_rank = min(
                 (
-                    prioritized_positions[candidate_id]
+                    stage_positions.get("candidate_pool", {}).get(candidate_id)
                     for candidate_id in relevant_hit_ids
-                    if candidate_id in prioritized_positions
+                    if candidate_id in stage_positions.get("candidate_pool", {})
                 ),
                 default=None,
             )
-            selected_prioritized_ranks = [
-                prioritized_positions[candidate_id]
-                for candidate_id in selected_context_ids
-                if candidate_id in prioritized_positions
-            ]
-            worst_selected_rank = max(selected_prioritized_ranks, default=selected_position_cutoff)
-            if best_relevant_rank is not None and best_relevant_rank > selected_position_cutoff:
+            if best_relevant_rank is not None:
                 notes.append(
-                    "Relevant evidence was present before context assembly but fell below the selected-context cutoff after reranking."
+                    f"Expected-answer evidence was in the candidate pool at rank {best_relevant_rank}, "
+                    "but the selector did not keep it."
                 )
-                return "reranking_failure", notes
-
-            if best_relevant_rank is not None and best_relevant_rank < worst_selected_rank:
-                notes.append(
-                    "A relevant chunk ranked above at least one selected chunk but was still omitted from the final context."
-                )
-                return "context_assembly_failure", notes
-
-            selected_is_prefix = prioritized_ids[: len(selected_context_ids)] == selected_context_ids
-            if not selected_is_prefix:
-                notes.append(
-                    "Relevant evidence remained in prioritized results but was filtered out during context assembly."
-                )
-                return "context_assembly_failure", notes
-
-            notes.append(
-                "Relevant evidence was ranked too low after prioritization to enter the final context."
-            )
-            return "reranking_failure", notes
+            else:
+                notes.append("Expected-answer evidence was not selected for final context.")
+            return "selection_failure", notes
 
         if answer_presence_in_evidence == "explicit" and not generated_answer_has_expected:
             notes.append(
@@ -339,8 +338,8 @@ class BenchmarkAnalyzer:
 
         if bool(trace.get("abstained")):
             notes.append("The system abstained because retrieved evidence remained weak.")
-        else:
-            notes.append("Retrieved evidence and the final answer path are aligned.")
+            return "retrieval_failure", notes
+        notes.append("Retrieved evidence and the final answer path are aligned.")
         return "no_failure", notes
 
     def build_question_result(
@@ -365,15 +364,17 @@ class BenchmarkAnalyzer:
         }
         stage_order = list(trace.get("retrieval_stage_order") or stage_snapshots.keys())
         stage_positions = self._build_stage_positions(stage_snapshots, stage_order)
-        prioritized_ids = list((stage_snapshots.get("prioritized") or {}).get("candidate_ids") or [])
+        candidate_pool_ids = list((stage_snapshots.get("candidate_pool") or {}).get("candidate_ids") or [])
+        if not candidate_pool_ids:
+            candidate_pool_ids = list((stage_snapshots.get("merged") or {}).get("candidate_ids") or [])
+        if not candidate_pool_ids:
+            candidate_pool_ids = list((stage_snapshots.get("prioritized") or {}).get("candidate_ids") or [])
+        llm_selected_ids = list((stage_snapshots.get("llm_selected") or {}).get("candidate_ids") or [])
         selected_context_ids = list(
             (stage_snapshots.get("selected_context") or {}).get("candidate_ids") or []
         )
-        retrieved_candidate_ids = {
-            candidate_id
-            for stage_name in stage_order
-            for candidate_id in list((stage_snapshots.get(stage_name) or {}).get("candidate_ids") or [])
-        }
+        pool_candidate_ids = set(candidate_pool_ids)
+        retrieved_candidate_ids = set(candidate_pool_ids) | set(llm_selected_ids) | set(selected_context_ids)
         retrieved_documents = {
             str(
                 (
@@ -388,6 +389,11 @@ class BenchmarkAnalyzer:
         corpus_scan = self._scan_corpus(question, expected_variants, corpus_entries)
         relevant_hits = list(corpus_scan["relevant_hits"])
         relevant_documents = list(corpus_scan["relevant_documents"])
+        relevant_hit_ids = {
+            str(hit.get("candidate_id") or "")
+            for hit in relevant_hits
+            if str(hit.get("candidate_id") or "")
+        }
         selected_context_entries = self._extract_candidate_list(
             selected_context_ids,
             candidate_catalog,
@@ -432,9 +438,9 @@ class BenchmarkAnalyzer:
             relevant_documents=relevant_documents,
             stage_order=stage_order,
             stage_positions=stage_positions,
-            prioritized_ids=prioritized_ids,
+            candidate_pool_ids=candidate_pool_ids,
             selected_context_ids=selected_context_ids,
-            retrieved_candidate_ids=retrieved_candidate_ids,
+            pool_candidate_ids=pool_candidate_ids,
             retrieved_documents=retrieved_documents,
             answer_presence_in_evidence=answer_presence_in_evidence,
             generated_answer_has_expected=generated_answer_has_expected,
@@ -468,10 +474,23 @@ class BenchmarkAnalyzer:
             corpus_lookup,
         )
         top_chunks = self._extract_candidate_list(
-            prioritized_ids,
+            candidate_pool_ids,
             candidate_catalog,
             corpus_lookup,
             limit=5,
+        )
+        expected_answer_in_pool = bool(relevant_hit_ids & pool_candidate_ids)
+        expected_answer_in_context = bool(relevant_hit_ids & set(selected_context_ids))
+        source_document_rank = self._find_source_document_rank(
+            question.source_document,
+            candidate_pool_ids,
+            candidate_catalog,
+            corpus_lookup,
+        )
+        context_hit_rate = (
+            round(len(relevant_hit_ids & set(selected_context_ids)) / len(relevant_hit_ids), 4)
+            if relevant_hit_ids
+            else 0.0
         )
 
         return {
@@ -510,7 +529,7 @@ class BenchmarkAnalyzer:
                 "stages": stage_snapshots,
                 "candidate_catalog": candidate_catalog,
                 "top_documents": self._extract_top_documents(
-                    prioritized_ids,
+                    candidate_pool_ids,
                     candidate_catalog,
                     corpus_lookup,
                 ),
@@ -518,6 +537,13 @@ class BenchmarkAnalyzer:
                 "rank_movement": rank_movement,
                 "relevant_corpus_hits": relevant_hits,
                 "missed_relevant_corpus_hits": missed_relevant_hits,
+                "metrics": {
+                    "source_document_rank": source_document_rank,
+                    "source_document_in_pool": source_document_rank is not None,
+                    "expected_answer_in_pool": expected_answer_in_pool,
+                    "expected_answer_in_context": expected_answer_in_context,
+                    "context_hit_rate": context_hit_rate,
+                },
             },
             "grounding": {
                 "retrieval_confidence": retrieval_confidence,

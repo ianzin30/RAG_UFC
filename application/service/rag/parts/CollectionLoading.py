@@ -24,6 +24,12 @@ from ..Constants import RAG_INDEX_CACHE_VERSION, ROOT_COLLECTION_KEY
 
 # Este mixin cuida da carga da colecao e do cache persistente do indice vetorial.
 class RAGServiceCollectionLoadingMixin:
+    def _emit_collection_progress(self, event: str, **payload) -> None:
+        callback = getattr(self, "_benchmark_progress_callback", None)
+        if not callable(callback):
+            return
+        callback({"event": event, **payload})
+
     # Esta funcao traduz o nome selecionado para a pasta real da colecao.
     def _resolve_collection_path(self, selected_collection: str) -> Path:
         if selected_collection == ROOT_COLLECTION_KEY:
@@ -83,8 +89,15 @@ class RAGServiceCollectionLoadingMixin:
         document_seeds = {}
         document_chunk_buckets = {}
         spreadsheet_chunk_index = {}
+        document_total = len(documents)
+        self._emit_collection_progress(
+            "index_chunking_started",
+            completed=0,
+            total=document_total,
+            chunk_count=0,
+        )
 
-        for document in documents:
+        for document_index, document in enumerate(documents, start=1):
             document.page_content = self._normalize_whitespace(document.page_content)
             source = document.metadata.get("source")
             document_name = self._extract_document_name(document.page_content, source)
@@ -112,6 +125,14 @@ class RAGServiceCollectionLoadingMixin:
                     "source": source,
                 }
 
+            self._emit_collection_progress(
+                "index_chunking_progress",
+                completed=document_index,
+                total=document_total,
+                chunk_count=len(chunks),
+                document_name=document_name,
+            )
+
         for document_name, seed in document_seeds.items():
             document_registry[document_name] = self._build_document_registry_entry(
                 document_name=document_name,
@@ -122,6 +143,51 @@ class RAGServiceCollectionLoadingMixin:
             )
 
         return chunks, list(document_registry.values()), spreadsheet_chunk_index
+
+    def _build_vector_store_from_chunks(self, chunks: list):
+        texts = [chunk.page_content for chunk in chunks]
+        metadatas = [chunk.metadata for chunk in chunks]
+        ids = [getattr(chunk, "id", None) for chunk in chunks]
+        kwargs = {"ids": ids} if any(ids) else {}
+        chunk_total = len(texts)
+        batch_size = max(1, int(getattr(self, "embedding_batch_size", 8) or 8))
+        embeddings = []
+
+        self._emit_collection_progress(
+            "index_embedding_started",
+            completed=0,
+            total=chunk_total,
+            batch_size=batch_size,
+        )
+        for start in range(0, chunk_total, batch_size):
+            end = min(start + batch_size, chunk_total)
+            embeddings.extend(self.embeddings.embed_documents(texts[start:end]))
+            self._emit_collection_progress(
+                "index_embedding_progress",
+                completed=end,
+                total=chunk_total,
+                batch_size=batch_size,
+            )
+
+        self._emit_collection_progress(
+            "index_faiss_build_started",
+            completed=0,
+            total=1,
+            chunk_count=chunk_total,
+        )
+        vector_store = FAISS.from_embeddings(
+            zip(texts, embeddings),
+            self.embeddings,
+            metadatas=metadatas,
+            **kwargs,
+        )
+        self._emit_collection_progress(
+            "index_faiss_build_completed",
+            completed=1,
+            total=1,
+            chunk_count=chunk_total,
+        )
+        return vector_store
 
     # Este retriever aplica MMR para equilibrar relevancia e diversidade dos trechos.
     def _build_retriever(self):
@@ -193,6 +259,13 @@ class RAGServiceCollectionLoadingMixin:
         if not collection_names:
             raise Exception("No collection selected.")
 
+        collection_label = format_collection_selection_label(collection_names)
+        self._emit_collection_progress(
+            "collection_load_started",
+            collection=collection_label,
+            completed=0,
+            total=1,
+        )
         file_hashes = self._enumerate_collection_markdown_files(collection_names)
         splitter_config = self._get_text_splitter_config()
         fingerprint_inputs = build_rag_index_fingerprint_inputs(
@@ -207,24 +280,69 @@ class RAGServiceCollectionLoadingMixin:
         fingerprint = build_rag_index_fingerprint(fingerprint_inputs)
         cache_dir = get_rag_index_cache_dir(self.rag_index_cache_root, fingerprint)
         manifest = read_rag_index_manifest(cache_dir)
+        self._emit_collection_progress(
+            "collection_fingerprint_ready",
+            collection=collection_label,
+            completed=1,
+            total=1,
+            file_count=len(file_hashes),
+            cache_dir=str(cache_dir),
+            splitter=splitter_config,
+        )
 
         # Se o cache for valido, pulamos a etapa cara de leitura, chunking e indexacao.
         if manifest is not None:
             try:
+                self._emit_collection_progress(
+                    "collection_cache_restore_started",
+                    collection=collection_label,
+                    completed=0,
+                    total=1,
+                    cache_dir=str(cache_dir),
+                )
                 self._restore_cached_collection(cache_dir, manifest, collection_names)
+                self._emit_collection_progress(
+                    "collection_cache_restored",
+                    collection=collection_label,
+                    completed=1,
+                    total=1,
+                    cache_dir=str(cache_dir),
+                )
                 return
             except Exception:
                 pass
 
         # Em cache miss, seguimos pelo pipeline completo e persistimos o resultado ao final.
+        self._emit_collection_progress(
+            "collection_index_build_started",
+            collection=collection_label,
+            completed=0,
+            total=1,
+            file_count=len(file_hashes),
+            cache_dir=str(cache_dir),
+        )
         documents = self._load_collection_documents(collection_names)
+        self._emit_collection_progress(
+            "collection_documents_loaded",
+            collection=collection_label,
+            completed=len(documents),
+            total=len(file_hashes),
+            document_count=len(documents),
+        )
         chunks, document_registry, spreadsheet_chunk_index = self._build_index_state(documents)
 
         cache_dir.mkdir(parents=True, exist_ok=True)
-        self.vector_store = FAISS.from_documents(chunks, self.embeddings)
+        self.vector_store = self._build_vector_store_from_chunks(chunks)
+        self._emit_collection_progress(
+            "collection_cache_write_started",
+            collection=collection_label,
+            completed=0,
+            total=1,
+            cache_dir=str(cache_dir),
+        )
         self.vector_store.save_local(str(cache_dir))
         self.collection_names = collection_names
-        self.collection_name = format_collection_selection_label(collection_names)
+        self.collection_name = collection_label
         self.document_registry = document_registry
         self.document_catalog = self.document_registry
         self.spreadsheet_chunk_index = spreadsheet_chunk_index
@@ -241,4 +359,11 @@ class RAGServiceCollectionLoadingMixin:
                 "collection_label": self.collection_name,
                 "created_at": datetime.now(timezone.utc).isoformat(),
             },
+        )
+        self._emit_collection_progress(
+            "collection_cache_written",
+            collection=collection_label,
+            completed=1,
+            total=1,
+            cache_dir=str(cache_dir),
         )

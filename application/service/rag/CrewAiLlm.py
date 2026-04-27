@@ -8,6 +8,10 @@ from typing import Any
 from pydantic import PrivateAttr
 
 from ..UfcOllama import UFCOllamaClient
+from .CrewAiTelemetry import disable_crewai_telemetry_by_default
+
+
+disable_crewai_telemetry_by_default()
 
 try:
     from crewai.llms.base_llm import BaseLLM

@@ -45,25 +45,10 @@ class RetrievalRuntimeConfig:
     base_search_k: int
     base_fetch_k: int
     base_lambda_mult: float
-    focused_search_k: int
-    focused_fetch_k: int
-    focused_lambda_mult: float
     lexical_limit: int
-    coverage_limit: int
-    context_default_limit: int
-    context_diverse_limit: int
-    context_summary_limit: int
-
-
-@dataclass(frozen=True)
-class AggregationRuntimeConfig:
-    topics_limit: int
-    names_limit: int
-    list_extraction_names_limit: int
-    dates_limit: int
-    money_values_limit: int
-    fact_lines_limit: int
-    key_points_limit: int
+    candidate_pool_limit: int
+    llm_selection_limit: int
+    llm_selector_enabled: bool
 
 
 @dataclass(frozen=True)
@@ -79,7 +64,6 @@ class AppRuntimeConfig:
     embedding: EmbeddingRuntimeConfig
     splitter: SplitterRuntimeConfig
     retrieval: RetrievalRuntimeConfig
-    aggregation: AggregationRuntimeConfig
     rag: RagRuntimeConfig
 
 
@@ -185,22 +169,22 @@ def _get_string_list(table: dict[str, Any], key: str, default: tuple[str, ...]) 
 
 
 def _normalize_embedding_device(device: str) -> str:
-    normalized = (device or "cuda").strip().lower()
+    normalized = (device or "cpu").strip().lower()
     if normalized == "gpu":
         return "cuda"
-    if normalized in {"cuda", "cpu"}:
+    if normalized in {"cuda", "cpu", "mps"}:
         return normalized
-    raise RuntimeError(f"Unsupported embedding device '{device}'. Use 'cuda' or 'cpu'.")
+    raise RuntimeError(f"Unsupported embedding device '{device}'. Use 'cuda', 'mps', or 'cpu'.")
 
 
 def _normalize_embedding_quantization(quantization: str) -> str:
     normalized = (quantization or "none").strip().lower()
     if not normalized:
         return "none"
-    if normalized in {"none", "4bit"}:
+    if normalized in {"none", "4bit", "int8"}:
         return normalized
     raise RuntimeError(
-        f"Unsupported embedding quantization '{quantization}'. Use 'none' or '4bit'."
+        f"Unsupported embedding quantization '{quantization}'. Use 'none', '4bit', or 'int8'."
     )
 
 
@@ -211,7 +195,6 @@ def get_runtime_config() -> AppRuntimeConfig:
     embeddings_table = _require_table(payload, "embeddings")
     splitter_table = _get_optional_table(payload, "splitter")
     retrieval_table = _get_optional_table(payload, "retrieval")
-    aggregation_table = _get_optional_table(payload, "aggregation")
     rag_table = _require_table(payload, "rag")
 
     return AppRuntimeConfig(
@@ -219,7 +202,7 @@ def get_runtime_config() -> AppRuntimeConfig:
         embedding=EmbeddingRuntimeConfig(
             model_name=_require_str(embeddings_table, "model_name", "embeddings.model_name"),
             device=_normalize_embedding_device(
-                _get_optional_str(embeddings_table, "device", "cuda")
+                _get_optional_str(embeddings_table, "device", "cpu")
             ),
             quantization=_normalize_embedding_quantization(
                 _get_optional_str(embeddings_table, "quantization", "none")
@@ -244,25 +227,13 @@ def get_runtime_config() -> AppRuntimeConfig:
             base_search_k=_get_positive_int(retrieval_table, "base_search_k", 6),
             base_fetch_k=_get_positive_int(retrieval_table, "base_fetch_k", 30),
             base_lambda_mult=_get_float(retrieval_table, "base_lambda_mult", 0.2),
-            focused_search_k=_get_positive_int(retrieval_table, "focused_search_k", 6),
-            focused_fetch_k=_get_positive_int(retrieval_table, "focused_fetch_k", 100),
-            focused_lambda_mult=_get_float(retrieval_table, "focused_lambda_mult", 0.2),
             lexical_limit=_get_positive_int(retrieval_table, "lexical_limit", 12),
-            coverage_limit=_get_positive_int(retrieval_table, "coverage_limit", 10),
-            context_default_limit=_get_positive_int(retrieval_table, "context_default_limit", 6),
-            context_diverse_limit=_get_positive_int(retrieval_table, "context_diverse_limit", 8),
-            context_summary_limit=_get_positive_int(retrieval_table, "context_summary_limit", 6),
-        ),
-        aggregation=AggregationRuntimeConfig(
-            topics_limit=_get_positive_int(aggregation_table, "topics_limit", 10),
-            names_limit=_get_positive_int(aggregation_table, "names_limit", 24),
-            list_extraction_names_limit=_get_positive_int(
-                aggregation_table, "list_extraction_names_limit", 80
+            candidate_pool_limit=_get_positive_int(retrieval_table, "candidate_pool_limit", 30),
+            llm_selection_limit=_get_positive_int(retrieval_table, "llm_selection_limit", 8),
+            llm_selector_enabled=_coerce_bool(
+                retrieval_table.get("llm_selector_enabled"),
+                default=True,
             ),
-            dates_limit=_get_positive_int(aggregation_table, "dates_limit", 12),
-            money_values_limit=_get_positive_int(aggregation_table, "money_values_limit", 12),
-            fact_lines_limit=_get_positive_int(aggregation_table, "fact_lines_limit", 14),
-            key_points_limit=_get_positive_int(aggregation_table, "key_points_limit", 10),
         ),
         rag=RagRuntimeConfig(
             agent_mode=_get_optional_str(rag_table, "agent_mode", "crewai").lower() or "crewai",
@@ -281,7 +252,6 @@ def reset_runtime_config_cache() -> None:
 
 __all__ = [
     "AppRuntimeConfig",
-    "AggregationRuntimeConfig",
     "CONFIG_FILE",
     "ENV_FILE",
     "EmbeddingRuntimeConfig",

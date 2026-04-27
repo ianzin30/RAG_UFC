@@ -20,22 +20,20 @@ def make_candidate(
     *,
     document_name: str,
     text: str,
-    priority_score: int,
     chunk_kind: str = "text",
-    priority_score_components: dict[str, int] | None = None,
 ) -> dict[str, object]:
     return {
         "candidate_id": candidate_id,
         "document_name": document_name,
-        "source": None,
-        "source_name": None,
+        "source": f"data/collections/google_drive_rag/{document_name}",
+        "source_name": document_name,
         "chunk_kind": chunk_kind,
         "chunk_order": 1,
         "section_title": None,
         "excerpt": text[:120],
         "text": text,
-        "priority_score": priority_score,
-        "priority_score_components": dict(priority_score_components or {}),
+        "priority_score": None,
+        "priority_score_components": None,
         "entity_names": [],
         "date_values": [],
         "money_values": [],
@@ -48,10 +46,9 @@ def make_trace(
     generated_answer: str,
     candidate_catalog: dict[str, dict[str, object]],
     stages: dict[str, list[str]],
-    answer_context: str = "",
     evidence_score: float = 0.7,
-    resolver_status: str = "single_match",
-    resolver_selection_mode: str | None = "top_ranked_single",
+    resolver_status: str = "collection_wide",
+    resolver_selection_mode: str | None = "collection_wide",
     document_shortlist: list[str] | None = None,
     matched_documents: list[str] | None = None,
     target_document_name: str | None = None,
@@ -70,11 +67,11 @@ def make_trace(
         "target_document_name": target_document_name,
         "evidence_score": evidence_score,
         "abstained": False,
-        "answer_context": answer_context,
+        "answer_context": "",
         "selected_evidence_spans": [],
         "focused_evidence_context_built": False,
         "resolver_status": resolver_status,
-        "resolver_confidence": 0.88,
+        "resolver_confidence": 0.0,
         "resolver_selection_mode": resolver_selection_mode,
         "document_shortlist": list(document_shortlist or []),
         "matched_documents": list(matched_documents or []),
@@ -92,23 +89,35 @@ def make_trace(
     }
 
 
+def make_question() -> BenchmarkQuestion:
+    return BenchmarkQuestion(
+        id="q1",
+        collection="google_drive_rag",
+        question="Qual empresa e parceira do projeto?",
+        expected_answer="Dell",
+        source_document="RACK.pdf",
+    )
+
+
 @pytest.mark.parametrize(
     ("expected_classification", "trace_builder"),
     [
         (
-            "semantic_search_failure",
+            "retrieval_failure",
             lambda relevant, distractor: make_trace(
                 generated_answer="**RETRIEVAL**\n\nResposta errada",
                 candidate_catalog={distractor["candidate_id"]: distractor},
                 stages={
-                    "merged": [distractor["candidate_id"]],
-                    "prioritized": [distractor["candidate_id"]],
+                    "dense_mmr": [distractor["candidate_id"]],
+                    "lexical": [],
+                    "candidate_pool": [distractor["candidate_id"]],
+                    "llm_selected": [distractor["candidate_id"]],
                     "selected_context": [distractor["candidate_id"]],
                 },
             ),
         ),
         (
-            "reranking_failure",
+            "selection_failure",
             lambda relevant, distractor: make_trace(
                 generated_answer="**RETRIEVAL**\n\nResposta errada",
                 candidate_catalog={
@@ -116,40 +125,12 @@ def make_trace(
                     distractor["candidate_id"]: distractor,
                 },
                 stages={
-                    "merged": [relevant["candidate_id"], distractor["candidate_id"]],
-                    "prioritized": [distractor["candidate_id"], relevant["candidate_id"]],
+                    "dense_mmr": [relevant["candidate_id"], distractor["candidate_id"]],
+                    "lexical": [],
+                    "candidate_pool": [relevant["candidate_id"], distractor["candidate_id"]],
+                    "llm_selected": [distractor["candidate_id"]],
                     "selected_context": [distractor["candidate_id"]],
                 },
-            ),
-        ),
-        (
-            "context_assembly_failure",
-            lambda relevant, distractor: make_trace(
-                generated_answer="**RETRIEVAL**\n\nResposta errada",
-                candidate_catalog={
-                    relevant["candidate_id"]: relevant,
-                    distractor["candidate_id"]: distractor,
-                },
-                stages={
-                    "merged": [relevant["candidate_id"], distractor["candidate_id"]],
-                    "prioritized": [relevant["candidate_id"], distractor["candidate_id"]],
-                    "selected_context": [distractor["candidate_id"]],
-                },
-            ),
-        ),
-        (
-            "chunking_failure",
-            lambda relevant, distractor: make_trace(
-                generated_answer="**RETRIEVAL**\n\nResposta errada",
-                candidate_catalog={distractor["candidate_id"]: distractor},
-                stages={
-                    "merged": [distractor["candidate_id"]],
-                    "prioritized": [distractor["candidate_id"]],
-                    "selected_context": [distractor["candidate_id"]],
-                },
-                target_document_name="RACK.pdf",
-                matched_documents=["RACK.pdf"],
-                document_shortlist=["RACK.pdf"],
             ),
         ),
         (
@@ -158,26 +139,31 @@ def make_trace(
                 generated_answer="**RETRIEVAL**\n\nNao sei responder.",
                 candidate_catalog={relevant["candidate_id"]: relevant},
                 stages={
-                    "merged": [relevant["candidate_id"]],
-                    "prioritized": [relevant["candidate_id"]],
+                    "dense_mmr": [relevant["candidate_id"]],
+                    "lexical": [],
+                    "candidate_pool": [relevant["candidate_id"]],
+                    "llm_selected": [relevant["candidate_id"]],
                     "selected_context": [relevant["candidate_id"]],
                 },
-                answer_context=relevant["text"],
-                target_document_name="RACK.pdf",
-                matched_documents=["RACK.pdf"],
-                document_shortlist=["RACK.pdf"],
             ),
         ),
         (
-            "benchmark_data_mismatch",
+            "document_resolution_failure",
             lambda relevant, distractor: make_trace(
                 generated_answer="**RETRIEVAL**\n\nResposta errada",
                 candidate_catalog={distractor["candidate_id"]: distractor},
                 stages={
-                    "merged": [distractor["candidate_id"]],
-                    "prioritized": [distractor["candidate_id"]],
+                    "dense_mmr": [distractor["candidate_id"]],
+                    "lexical": [],
+                    "candidate_pool": [distractor["candidate_id"]],
+                    "llm_selected": [distractor["candidate_id"]],
                     "selected_context": [distractor["candidate_id"]],
                 },
+                resolver_status="single_match",
+                resolver_selection_mode="explicit_reference",
+                target_document_name="OUTRO.pdf",
+                matched_documents=["OUTRO.pdf"],
+                document_shortlist=["OUTRO.pdf"],
             ),
         ),
     ],
@@ -188,44 +174,90 @@ def test_failure_classification_scenarios(expected_classification: str, trace_bu
         "cand_relevant",
         document_name="RACK.pdf",
         text="A empresa parceira do projeto e a Dell.",
-        priority_score=95,
     )
     distractor = make_candidate(
         "cand_distractor",
         document_name="OUTRO.pdf",
         text="Trecho irrelevante sem a resposta.",
-        priority_score=99,
     )
     trace = trace_builder(relevant, distractor)
-    question = BenchmarkQuestion(
-        id="q1",
-        collection="google_drive_rag",
-        question="Qual empresa e parceira do projeto?",
-        expected_answer="Dell",
-    )
-    corpus_entries = [] if expected_classification == "benchmark_data_mismatch" else [relevant, distractor]
 
-    if expected_classification == "chunking_failure":
-        distractor["document_name"] = "RACK.pdf"
-
-    result = analyzer.build_question_result(question, trace, corpus_entries)
+    result = analyzer.build_question_result(make_question(), trace, [relevant, distractor])
 
     assert result["failure"]["classification"] == expected_classification
 
 
-def test_report_includes_missed_evidence_section() -> None:
+def test_non_explicit_miss_is_not_document_resolution_failure() -> None:
     analyzer = BenchmarkAnalyzer(normalize_text=normalize_text, tokenize_text=tokenize_text)
     relevant = make_candidate(
         "cand_relevant",
         document_name="RACK.pdf",
         text="A empresa parceira do projeto e a Dell.",
-        priority_score=95,
     )
     distractor = make_candidate(
         "cand_distractor",
         document_name="OUTRO.pdf",
         text="Trecho irrelevante sem a resposta.",
-        priority_score=99,
+    )
+    trace = make_trace(
+        generated_answer="**RETRIEVAL**\n\nResposta errada",
+        candidate_catalog={distractor["candidate_id"]: distractor},
+        stages={
+            "dense_mmr": [distractor["candidate_id"]],
+            "lexical": [],
+            "candidate_pool": [distractor["candidate_id"]],
+            "llm_selected": [distractor["candidate_id"]],
+            "selected_context": [distractor["candidate_id"]],
+        },
+        resolver_status="collection_wide",
+        resolver_selection_mode="collection_wide",
+    )
+
+    result = analyzer.build_question_result(make_question(), trace, [relevant, distractor])
+
+    assert result["failure"]["classification"] == "retrieval_failure"
+
+
+def test_retriever_first_metrics_are_reported() -> None:
+    analyzer = BenchmarkAnalyzer(normalize_text=normalize_text, tokenize_text=tokenize_text)
+    relevant = make_candidate(
+        "cand_relevant",
+        document_name="RACK.pdf",
+        text="A empresa parceira do projeto e a Dell.",
+    )
+    trace = make_trace(
+        generated_answer="**RETRIEVAL**\n\nA empresa parceira e a Dell.",
+        candidate_catalog={relevant["candidate_id"]: relevant},
+        stages={
+            "dense_mmr": [relevant["candidate_id"]],
+            "lexical": [],
+            "candidate_pool": [relevant["candidate_id"]],
+            "llm_selected": [relevant["candidate_id"]],
+            "selected_context": [relevant["candidate_id"]],
+        },
+    )
+
+    result = analyzer.build_question_result(make_question(), trace, [relevant])
+
+    assert result["failure"]["classification"] == "no_failure"
+    assert result["retrieval"]["metrics"]["source_document_rank"] == 1
+    assert result["retrieval"]["metrics"]["source_document_in_pool"] is True
+    assert result["retrieval"]["metrics"]["expected_answer_in_pool"] is True
+    assert result["retrieval"]["metrics"]["expected_answer_in_context"] is True
+    assert result["retrieval"]["metrics"]["context_hit_rate"] == 1.0
+
+
+def test_report_includes_retriever_metrics_and_selection_failures() -> None:
+    analyzer = BenchmarkAnalyzer(normalize_text=normalize_text, tokenize_text=tokenize_text)
+    relevant = make_candidate(
+        "cand_relevant",
+        document_name="RACK.pdf",
+        text="A empresa parceira do projeto e a Dell.",
+    )
+    distractor = make_candidate(
+        "cand_distractor",
+        document_name="OUTRO.pdf",
+        text="Trecho irrelevante sem a resposta.",
     )
     trace = make_trace(
         generated_answer="**RETRIEVAL**\n\nResposta errada",
@@ -234,163 +266,31 @@ def test_report_includes_missed_evidence_section() -> None:
             distractor["candidate_id"]: distractor,
         },
         stages={
-            "merged": [relevant["candidate_id"], distractor["candidate_id"]],
-            "prioritized": [distractor["candidate_id"], relevant["candidate_id"]],
+            "dense_mmr": [relevant["candidate_id"], distractor["candidate_id"]],
+            "lexical": [],
+            "candidate_pool": [relevant["candidate_id"], distractor["candidate_id"]],
+            "llm_selected": [distractor["candidate_id"]],
             "selected_context": [distractor["candidate_id"]],
         },
     )
-    question = BenchmarkQuestion(
-        id="q2",
-        collection="google_drive_rag",
-        question="Qual empresa e parceira do projeto?",
-        expected_answer="Dell",
-    )
-    result = analyzer.build_question_result(question, trace, [relevant, distractor])
+    result = analyzer.build_question_result(make_question(), trace, [relevant, distractor])
     report = render_markdown_report(
         {
             "run_id": "test-run",
             "generated_at": "2026-04-22T00:00:00+00:00",
             "questions_file": "benchmark/questions.json",
             "collections": ["google_drive_rag"],
-            "config_snapshot": {"ufc_model_name": "llama3.1:8b", "rag": {"strict_grounding": True, "min_evidence_score": 0.5}},
-            "abstained_count": 0,
-            "results": [result],
-        }
-    )
-
-    assert "A empresa parceira do projeto e a Dell" in report
-    assert "reranking_failure" in report
-
-
-def test_generation_consensus_diagnostics_are_preserved() -> None:
-    analyzer = BenchmarkAnalyzer(normalize_text=normalize_text, tokenize_text=tokenize_text)
-    relevant = make_candidate(
-        "cand_relevant",
-        document_name="RACK.pdf",
-        text="A empresa parceira do projeto e a Dell.",
-        priority_score=95,
-    )
-    trace = make_trace(
-        generated_answer="**RETRIEVAL**\n\nA Dell",
-        candidate_catalog={relevant["candidate_id"]: relevant},
-        stages={
-            "merged": [relevant["candidate_id"]],
-            "prioritized": [relevant["candidate_id"]],
-            "selected_context": [relevant["candidate_id"]],
-        },
-        answer_context=relevant["text"],
-    )
-    trace.update(
-        {
-            "answer_shape": "person_or_org",
-            "consensus_dominant_candidate": {
-                "text": "Dell",
-                "consensus_score": 182,
-                "mention_count": 3,
+            "config_snapshot": {
+                "ufc_model_name": "llama3.1:8b",
+                "rag": {"strict_grounding": True, "min_evidence_score": 0.5},
             },
-            "candidate_consensus_details": [
-                {
-                    "text": "Dell",
-                    "consensus_score": 182,
-                    "mention_count": 3,
-                    "question_alignment_score": 92,
-                }
-            ],
-            "explicit_answer_candidates": [
-                {
-                    "text": "Dell",
-                    "consensus_score": 182,
-                    "mention_count": 3,
-                    "question_alignment_score": 92,
-                }
-            ],
-            "answer_repair_applied": True,
-            "answer_repair_reason": "lower_consensus_prefix_variant",
-            "final_answer_origin": "grounded_repair",
-        }
-    )
-    question = BenchmarkQuestion(
-        id="q3",
-        collection="google_drive_rag",
-        question="Qual empresa e parceira do projeto?",
-        expected_answer="Dell",
-    )
-
-    result = analyzer.build_question_result(question, trace, [relevant])
-
-    assert result["generation"]["answer_shape"] == "person_or_org"
-    assert result["generation"]["consensus_dominant_candidate"]["text"] == "Dell"
-    assert result["generation"]["candidate_consensus_details"][0]["question_alignment_score"] == 92
-    assert result["generation"]["answer_repair_reason"] == "lower_consensus_prefix_variant"
-
-
-def test_report_includes_generation_diagnostics_and_priority_components() -> None:
-    analyzer = BenchmarkAnalyzer(normalize_text=normalize_text, tokenize_text=tokenize_text)
-    relevant = make_candidate(
-        "cand_relevant",
-        document_name="01-2022_Ata_de_Reuniao.pdf",
-        text="A empresa parceira do projeto e a Dell.",
-        priority_score=118,
-        chunk_kind="section_detail",
-        priority_score_components={
-            "base_kind_score": 45,
-            "target_bonus": 120,
-            "exact_overlap_bonus": 24,
-            "phrase_hit_bonus": 72,
-            "detail_specificity_bonus": 58,
-        },
-    )
-    trace = make_trace(
-        generated_answer="**RETRIEVAL**\n\nDell",
-        candidate_catalog={relevant["candidate_id"]: relevant},
-        stages={
-            "prioritized": [relevant["candidate_id"]],
-            "selected_context": [relevant["candidate_id"]],
-        },
-        answer_context=relevant["text"],
-        target_document_name="01-2022_Ata_de_Reuniao.pdf",
-        matched_documents=["01-2022_Ata_de_Reuniao.pdf"],
-        document_shortlist=["01-2022_Ata_de_Reuniao.pdf"],
-    )
-    trace["explicit_answer_candidates"] = [
-        {"text": "Dell", "score": 92, "mentions": 2, "source_kinds": ["organization_pattern"]}
-    ]
-    trace["selected_evidence_spans"] = [
-        {
-            "document_name": "01-2022_Ata_de_Reuniao.pdf",
-            "chunk_kind": "section_detail",
-            "section_title": "Projetos",
-            "text": 'O projeto "AI for Customer Support" ocorreu em parceria com a empresa Dell.',
-            "score_components": {"alignment_score": 88, "shape_bonus": 18},
-        }
-    ]
-    trace["focused_evidence_context_built"] = True
-    trace["answer_matches_top_evidence_span"] = True
-    trace["answer_repair_applied"] = True
-    trace["answer_repair_reason"] = "truncated_prefix_match"
-    trace["final_answer_origin"] = "grounded_repair"
-    question = BenchmarkQuestion(
-        id="q3",
-        collection="google_drive_rag",
-        question='Qual empresa e a parceira do projeto "AI for Customer Support"?',
-        expected_answer="Dell",
-    )
-
-    result = analyzer.build_question_result(question, trace, [relevant])
-    report = render_markdown_report(
-        {
-            "run_id": "test-run",
-            "generated_at": "2026-04-22T00:00:00+00:00",
-            "questions_file": "benchmark/questions.json",
-            "collections": ["google_drive_rag"],
-            "config_snapshot": {"ufc_model_name": "llama3.1:8b", "rag": {"strict_grounding": True, "min_evidence_score": 0.5}},
             "abstained_count": 0,
             "results": [result],
         }
     )
 
-    assert "Consenso da resposta" in report
-    assert "Origem final" in report
-    assert "Evidencia focalizada" in report
-    assert "Seguiu evidencia focalizada" in report
-    assert "detail_specificity_bonus=58" in report
+    assert "Documento-fonte no pool" in report
+    assert "Resposta esperada no contexto" in report
+    assert "Avaliacao por agente" in report
+    assert "selection_failure" in report
+    assert "pool=1" in report

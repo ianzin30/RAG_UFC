@@ -1,676 +1,10 @@
 """Question orchestration for the RAG service."""
-# Simple: Process user questions and generate answers
-
-import re
 
 from ..Constants import MODE_CASUAL, MODE_RETRIEVAL
 from .QuestionFollowUp import RAGServiceFollowUpMixin
 
 
-# Este mixin coordena o fluxo completo de uma pergunta em modo casual ou retrieval.
 class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
-    def _build_retrieval_priority_resolver(
-        self,
-        *,
-        target_document_name: str | None,
-        retrieval_intent: str | None,
-        resolved_question: str | None,
-        document_shortlist: list[str] | None,
-    ):
-        def resolve_priority(doc) -> int:
-            return self._score_source_priority(
-                doc,
-                target_document_name,
-                retrieval_intent=retrieval_intent,
-                resolved_question=resolved_question,
-                document_shortlist=document_shortlist,
-            )
-
-        return resolve_priority
-
-    def _build_retrieval_priority_breakdown_resolver(
-        self,
-        *,
-        target_document_name: str | None,
-        retrieval_intent: str | None,
-        resolved_question: str | None,
-        document_shortlist: list[str] | None,
-    ):
-        def resolve_breakdown(doc) -> dict[str, int]:
-            return self._score_source_priority_details(
-                doc,
-                target_document_name=target_document_name,
-                retrieval_intent=retrieval_intent,
-                resolved_question=resolved_question,
-                document_shortlist=document_shortlist,
-            )[1]
-
-        return resolve_breakdown
-
-    def _is_grounded_short_answer_intent(
-        self,
-        retrieval_intent: str | None,
-        *,
-        resolved_question: str = "",
-        target_document_name: str | None = None,
-    ) -> bool:
-        if retrieval_intent in {"specific_fact", "entity_lookup"}:
-            return True
-        if retrieval_intent != "document_expansion" or not target_document_name:
-            return False
-        normalized_question = self._normalize_identifier(resolved_question)
-        return bool(
-            normalized_question
-            and len(self._tokenize_search_text(resolved_question)) <= 14
-            and any(
-                marker in normalized_question.split()
-                for marker in ("qual", "quem", "empresa", "chefe", "coordenador", "nome", "cidade", "pais")
-            )
-        )
-
-    def _compute_candidate_shape_penalty(
-        self,
-        payload: dict[str, object],
-        *,
-        answer_shape: str,
-    ) -> int:
-        text = str(payload.get("text") or "")
-        normalized = str(payload.get("comparison_normalized") or payload.get("normalized") or "")
-        source_kinds = {str(value).strip() for value in list(payload.get("source_kinds") or []) if str(value).strip()}
-        token_count = len(normalized.split())
-        penalty = 0
-
-        if normalized in {"sei", "pdf", "crc", "ata", "pg", "dc", "cc"}:
-            penalty += 220
-        if normalized in {
-            "chefe de",
-            "departamento",
-            "centro",
-            "colegiado",
-            "empresa junior",
-            "curso",
-        }:
-            penalty += 220
-
-        if answer_shape == "person_or_org":
-            if self._extract_date_candidates(text, limit=1):
-                penalty += 200
-            if self._extract_money_candidates(text, limit=1):
-                penalty += 200
-            if source_kinds == {"acronym"}:
-                penalty += 180
-            if any(char.isdigit() for char in text):
-                penalty += 80
-            if token_count >= 5 and not (source_kinds & {"entity_name", "organization_pattern", "quoted_span"}):
-                penalty += 42
-        elif answer_shape == "location":
-            if not self._extract_location_candidates(text, limit=1):
-                penalty += 180
-            if source_kinds == {"acronym"}:
-                penalty += 120
-            if any(char.isdigit() for char in text):
-                penalty += 80
-        elif answer_shape == "date":
-            if not self._extract_date_candidates(text, limit=1):
-                penalty += 180
-        elif answer_shape == "money":
-            if not self._extract_money_candidates(text, limit=1):
-                penalty += 180
-        elif answer_shape == "acronym_or_title":
-            if source_kinds == {"organization_pattern"} and token_count <= 2:
-                penalty += 24
-        elif answer_shape == "generic_short_fact":
-            if source_kinds == {"acronym"} and token_count <= 1:
-                penalty += 80
-
-        return penalty
-
-    def _build_candidate_prefix_family(
-        self,
-        normalized_candidate: str,
-        all_candidates: list[str],
-    ) -> str:
-        family = normalized_candidate
-        for other_candidate in all_candidates:
-            if other_candidate == normalized_candidate:
-                continue
-            shorter, longer = sorted(
-                [normalized_candidate, other_candidate],
-                key=lambda item: (len(item), item),
-            )
-            if len(shorter) < 3 or not longer.startswith(shorter):
-                continue
-            if len(shorter) < len(family):
-                family = shorter
-        return family
-
-    def _register_explicit_answer_candidate(
-        self,
-        candidate_map: dict[str, dict[str, object]],
-        candidate_text: str,
-        *,
-        score: int,
-        source_kind: str,
-        chunk_kind: str,
-    ) -> None:
-        compact = re.sub(r"\s+", " ", str(candidate_text or "")).strip(" -:;,.")
-        normalized = self._normalize_answer_comparison_text(compact)
-        if not normalized or len(normalized) < 2:
-            return
-        if len(normalized.split()) > 8 or len(compact) > 120:
-            return
-
-        payload = candidate_map.get(normalized)
-        if payload is None:
-            candidate_map[normalized] = {
-                "text": compact,
-                "normalized": normalized,
-                "comparison_normalized": normalized,
-                "base_score": int(score),
-                "source_kinds": [source_kind],
-                "chunk_kinds": [chunk_kind],
-            }
-            return
-
-        payload["base_score"] = int(payload.get("base_score") or 0) + int(score)
-        if source_kind not in payload["source_kinds"]:
-            payload["source_kinds"].append(source_kind)
-        if chunk_kind not in payload["chunk_kinds"]:
-            payload["chunk_kinds"].append(chunk_kind)
-        if len(compact) > len(str(payload.get("text") or "")):
-            payload["text"] = compact
-
-    def _collect_explicit_answer_candidate_consensus(
-        self,
-        docs,
-        *,
-        retrieval_intent: str | None,
-        resolved_question: str,
-        target_document_name: str | None = None,
-    ) -> tuple[str | None, list[dict[str, object]], dict[str, object] | None]:
-        if not self._is_grounded_short_answer_intent(
-            retrieval_intent,
-            resolved_question=resolved_question,
-            target_document_name=target_document_name,
-        ):
-            return None, [], None
-
-        answer_shape = self._infer_short_answer_shape(resolved_question)
-        question_signal_phrases = {
-            self._normalize_answer_comparison_text(phrase)
-            for phrase in [
-                *list(self._collect_query_signal_phrases(resolved_question or "") or []),
-                *list(self._extract_explicit_query_phrases(resolved_question or "") or []),
-            ]
-            if self._normalize_answer_comparison_text(phrase)
-        }
-        query_profile = self._build_retrieval_query_profile(resolved_question or "")
-        company_question = bool(query_profile.get("company_question"))
-        person_question = bool(query_profile.get("person_question"))
-
-        candidate_map: dict[str, dict[str, object]] = {}
-        for rank, doc in enumerate(list(docs or [])[:6]):
-            metadata = getattr(doc, "metadata", {}) or {}
-            chunk_kind = str(metadata.get("chunk_kind") or "text").strip()
-            cleaned_text = self._clean_answer_candidate_text(getattr(doc, "page_content", "") or "")
-            doc_bonus = max(12, 48 - rank * 7)
-            if chunk_kind == "section_detail":
-                doc_bonus += 24
-            elif chunk_kind == "entity_index":
-                doc_bonus += 12
-
-            for quoted in self._extract_explicit_query_phrases(cleaned_text):
-                self._register_explicit_answer_candidate(
-                    candidate_map,
-                    quoted,
-                    score=doc_bonus + 14,
-                    source_kind="quoted_span",
-                    chunk_kind=chunk_kind,
-                )
-
-            if answer_shape in {"person_or_org", "generic_short_fact"}:
-                entity_names = [
-                    str(value).strip()
-                    for value in list(metadata.get("entity_names") or [])
-                    if str(value).strip()
-                ]
-                if person_question and chunk_kind == "section_detail":
-                    entity_names.extend(self._extract_name_candidates(cleaned_text, limit=6))
-                for entity_name in entity_names:
-                    self._register_explicit_answer_candidate(
-                        candidate_map,
-                        entity_name,
-                        score=doc_bonus + (26 if person_question else 14),
-                        source_kind="entity_name",
-                        chunk_kind=chunk_kind,
-                    )
-
-            fact_values = list(metadata.get("labeled_facts") or metadata.get("fact_lines") or [])
-            if not fact_values:
-                fact_values = [
-                    f"{label}: {value}"
-                    for label, value in self._extract_labeled_facts(cleaned_text, limit=8)
-                ]
-            for fact_value in fact_values:
-                label, _, value = str(fact_value).partition(":")
-                candidate_text = value.strip() if value.strip() else label.strip()
-                self._register_explicit_answer_candidate(
-                    candidate_map,
-                    candidate_text,
-                    score=doc_bonus + 18,
-                    source_kind="labeled_fact",
-                    chunk_kind=chunk_kind,
-                )
-
-            if answer_shape in {"date", "generic_short_fact"}:
-                date_values = [
-                    str(value).strip()
-                    for value in list(metadata.get("date_values") or [])
-                    if str(value).strip()
-                ]
-                if not date_values:
-                    date_values = self._extract_date_candidates(cleaned_text, limit=6)
-                for date_value in date_values:
-                    self._register_explicit_answer_candidate(
-                        candidate_map,
-                        date_value,
-                        score=doc_bonus + 22,
-                        source_kind="date_value",
-                        chunk_kind=chunk_kind,
-                    )
-
-            if answer_shape in {"money", "generic_short_fact"}:
-                money_values = [
-                    str(value).strip()
-                    for value in list(metadata.get("money_values") or [])
-                    if str(value).strip()
-                ]
-                if not money_values:
-                    money_values = self._extract_money_candidates(cleaned_text, limit=6)
-                for money_value in money_values:
-                    self._register_explicit_answer_candidate(
-                        candidate_map,
-                        money_value,
-                        score=doc_bonus + 24,
-                        source_kind="money_value",
-                        chunk_kind=chunk_kind,
-                    )
-
-            if answer_shape in {"person_or_org", "generic_short_fact"}:
-                for company_name in self._extract_company_like_candidates(cleaned_text):
-                    self._register_explicit_answer_candidate(
-                        candidate_map,
-                        company_name,
-                        score=doc_bonus + 34,
-                        source_kind="organization_pattern",
-                        chunk_kind=chunk_kind,
-                    )
-
-            if answer_shape in {"location", "generic_short_fact"}:
-                for location_value in self._extract_location_candidates(cleaned_text, limit=6):
-                    self._register_explicit_answer_candidate(
-                        candidate_map,
-                        location_value,
-                        score=doc_bonus + 28,
-                        source_kind="location_pattern",
-                        chunk_kind=chunk_kind,
-                    )
-
-            if answer_shape in {"acronym_or_title", "generic_short_fact"} or company_question:
-                for acronym in re.findall(r"\b[A-Z]{2,}[A-Z0-9&./-]{0,10}\b", cleaned_text):
-                    normalized_acronym = self._normalize_identifier(acronym)
-                    if len(normalized_acronym) < 3 or normalized_acronym in {"ufc", "pdf", "ata", "de", "da", "do"}:
-                        continue
-                    self._register_explicit_answer_candidate(
-                        candidate_map,
-                        acronym,
-                        score=doc_bonus + 12,
-                        source_kind="acronym",
-                        chunk_kind=chunk_kind,
-                    )
-
-        if not candidate_map:
-            return answer_shape, [], None
-
-        all_candidate_keys = list(candidate_map.keys())
-        for payload in candidate_map.values():
-            normalized_candidate = str(payload.get("comparison_normalized") or payload.get("normalized") or "")
-            payload["base_score"] = int(payload.get("base_score") or 0)
-            payload["mention_count"] = 0
-            payload["mentions"] = 0
-            payload["distinct_chunk_count"] = 0
-            payload["distinct_support_span_count"] = 0
-            payload["question_alignment_score"] = 0
-            payload["noise_penalty"] = 0
-            payload["best_chunk_kind"] = None
-            payload["prefix_family"] = self._build_candidate_prefix_family(normalized_candidate, all_candidate_keys)
-            payload["_support_chunk_ids"] = set()
-            payload["_support_span_ids"] = set()
-            payload["_chunk_kind_rank"] = -1
-            payload["shape_penalty"] = self._compute_candidate_shape_penalty(payload, answer_shape=answer_shape)
-
-            if normalized_candidate in question_signal_phrases:
-                payload["base_score"] -= 60
-            if answer_shape == "person_or_org":
-                if len(normalized_candidate) <= 3:
-                    payload["base_score"] -= 20
-                token_count = len(normalized_candidate.split())
-                if person_question and 2 <= token_count <= 5:
-                    payload["base_score"] += 18
-                elif token_count <= 2:
-                    payload["base_score"] += 8
-                elif token_count >= 6:
-                    payload["base_score"] -= 18
-            elif answer_shape == "location":
-                if self._extract_location_candidates(str(payload.get("text") or ""), limit=1):
-                    payload["base_score"] += 18
-                elif len(normalized_candidate.split()) <= 1:
-                    payload["base_score"] -= 18
-            if person_question and len(normalized_candidate.split()) >= 2:
-                payload["base_score"] += 12
-            if company_question and ("organization_pattern" in set(payload.get("source_kinds") or [])):
-                payload["base_score"] += 12
-
-        support_spans = self._collect_selected_evidence_spans(
-            docs,
-            retrieval_intent=retrieval_intent,
-            resolved_question=resolved_question,
-            target_document_name=target_document_name,
-            limit=10,
-        )
-        for span in support_spans:
-            chunk_kind = str(span.get("chunk_kind") or "text").strip()
-            chunk_identifier = (
-                f"{str(span.get('document_name') or '').strip()}:{chunk_kind}:"
-                f"{span.get('chunk_order') if span.get('chunk_order') is not None else span.get('span_index')}"
-            )
-            span_identifier = f"{chunk_identifier}:{int(span.get('span_index') or 0)}"
-            span_text = str(span.get("text") or "")
-            span_components = dict(span.get("score_components") or {})
-            for payload in candidate_map.values():
-                occurrence_count = self._candidate_supported_in_span(payload, span_text)
-                if occurrence_count <= 0:
-                    continue
-
-                payload["mention_count"] = int(payload.get("mention_count") or 0) + occurrence_count
-                payload["mentions"] = int(payload.get("mentions") or 0) + occurrence_count
-                payload["_support_chunk_ids"].add(chunk_identifier)
-                payload["_support_span_ids"].add(span_identifier)
-                payload["question_alignment_score"] = int(payload.get("question_alignment_score") or 0) + int(
-                    span_components.get("alignment_score") or 0
-                )
-                payload["noise_penalty"] = int(payload.get("noise_penalty") or 0) + max(
-                    0,
-                    -int(span_components.get("noise_penalty") or 0),
-                )
-
-                current_rank = int(payload.get("_chunk_kind_rank") or -1)
-                next_rank = self._candidate_chunk_kind_rank(chunk_kind)
-                if next_rank > current_rank:
-                    payload["_chunk_kind_rank"] = next_rank
-                    payload["best_chunk_kind"] = chunk_kind
-
-        for payload in candidate_map.values():
-            payload["distinct_chunk_count"] = len(payload.get("_support_chunk_ids") or set())
-            payload["distinct_support_span_count"] = len(payload.get("_support_span_ids") or set())
-            payload["support_kind_bonus"] = self._candidate_chunk_kind_bonus(str(payload.get("best_chunk_kind") or "text"))
-
-            consensus_score = int(payload.get("base_score") or 0)
-            consensus_score += int(payload.get("mention_count") or 0) * 32
-            consensus_score += int(payload.get("distinct_chunk_count") or 0) * 20
-            consensus_score += int(payload.get("distinct_support_span_count") or 0) * 16
-            consensus_score += min(180, int(payload.get("question_alignment_score") or 0))
-            consensus_score += int(payload.get("support_kind_bonus") or 0)
-            consensus_score -= int(payload.get("noise_penalty") or 0)
-            consensus_score -= int(payload.get("shape_penalty") or 0)
-            if int(payload.get("mention_count") or 0) <= 0:
-                consensus_score -= 120
-            payload["consensus_score"] = consensus_score
-            payload["score"] = consensus_score
-
-        payloads = list(candidate_map.values())
-        for payload in payloads:
-            normalized_candidate = str(payload.get("comparison_normalized") or payload.get("normalized") or "")
-            if not normalized_candidate:
-                continue
-            prefix_penalty = 0
-            for other_payload in payloads:
-                if other_payload is payload:
-                    continue
-                other_normalized = str(other_payload.get("comparison_normalized") or other_payload.get("normalized") or "")
-                if not other_normalized or str(other_payload.get("prefix_family") or "") != str(payload.get("prefix_family") or ""):
-                    continue
-                if len(normalized_candidate) >= len(other_normalized):
-                    continue
-                if not other_normalized.startswith(normalized_candidate):
-                    continue
-                if int(other_payload.get("question_alignment_score") or 0) < int(payload.get("question_alignment_score") or 0):
-                    continue
-                if int(other_payload.get("mention_count") or 0) >= int(payload.get("mention_count") or 0):
-                    prefix_penalty = max(prefix_penalty, 42)
-            if prefix_penalty:
-                payload["consensus_score"] = int(payload.get("consensus_score") or 0) - prefix_penalty
-                payload["score"] = int(payload.get("consensus_score") or 0)
-
-        candidates = [
-            {
-                "text": str(payload.get("text") or ""),
-                "score": int(payload.get("consensus_score") or 0),
-                "consensus_score": int(payload.get("consensus_score") or 0),
-                "base_score": int(payload.get("base_score") or 0),
-                "mentions": int(payload.get("mention_count") or 0),
-                "mention_count": int(payload.get("mention_count") or 0),
-                "distinct_chunk_count": int(payload.get("distinct_chunk_count") or 0),
-                "distinct_support_span_count": int(payload.get("distinct_support_span_count") or 0),
-                "question_alignment_score": int(payload.get("question_alignment_score") or 0),
-                "noise_penalty": int(payload.get("noise_penalty") or 0),
-                "best_chunk_kind": str(payload.get("best_chunk_kind") or "").strip() or None,
-                "prefix_family": str(payload.get("prefix_family") or "").strip() or None,
-                "source_kinds": list(payload.get("source_kinds") or []),
-                "chunk_kinds": list(payload.get("chunk_kinds") or []),
-                "comparison_normalized": str(payload.get("comparison_normalized") or ""),
-            }
-            for payload in candidate_map.values()
-            if int(payload.get("consensus_score") or 0) > 0
-        ]
-        candidates.sort(
-            key=lambda item: (
-                -int(item.get("consensus_score") or 0),
-                -int(item.get("question_alignment_score") or 0),
-                -int(item.get("mention_count") or 0),
-                len(str(item.get("text") or "")),
-            )
-        )
-        candidates = candidates[:8]
-        dominant_candidate = self._select_dominant_explicit_answer_candidate(candidates)
-        return answer_shape, candidates, dominant_candidate
-
-    def _select_dominant_explicit_answer_candidate(
-        self,
-        candidates: list[dict[str, object]],
-    ) -> dict[str, object] | None:
-        if not candidates:
-            return None
-
-        top_candidate = candidates[0]
-        top_score = int(top_candidate.get("consensus_score") or top_candidate.get("score") or 0)
-        if top_score < 72:
-            return None
-
-        runner_up_score = (
-            int(candidates[1].get("consensus_score") or candidates[1].get("score") or 0)
-            if len(candidates) > 1
-            else 0
-        )
-        if runner_up_score:
-            alignment_gap = int(top_candidate.get("question_alignment_score") or 0) - int(
-                candidates[1].get("question_alignment_score") or 0
-            )
-            mention_gap = int(top_candidate.get("mention_count") or top_candidate.get("mentions") or 0) - int(
-                candidates[1].get("mention_count") or candidates[1].get("mentions") or 0
-            )
-            if top_score < runner_up_score + 18 and alignment_gap < 18 and mention_gap < 2:
-                return None
-        if int(top_candidate.get("mention_count") or top_candidate.get("mentions") or 0) <= 0:
-            return None
-        return top_candidate
-
-    def _find_matching_explicit_answer_candidate(
-        self,
-        answer_text: str,
-        candidates: list[dict[str, object]],
-    ) -> dict[str, object] | None:
-        comparison_text = self._normalize_answer_comparison_text(answer_text)
-        if not comparison_text:
-            return None
-
-        for candidate in candidates:
-            candidate_comparison = str(candidate.get("comparison_normalized") or "")
-            if comparison_text == candidate_comparison:
-                return candidate
-
-        for candidate in candidates:
-            candidate_comparison = str(candidate.get("comparison_normalized") or "")
-            if not candidate_comparison:
-                continue
-            if (
-                len(comparison_text) >= 3
-                and len(candidate_comparison) >= 3
-                and (
-                    candidate_comparison.startswith(comparison_text)
-                    or comparison_text.startswith(candidate_comparison)
-                )
-            ):
-                return candidate
-        return None
-
-    def _answer_is_grounded_in_selected_context(self, answer_text: str, docs) -> bool:
-        normalized_answer = self._normalize_answer_comparison_text(answer_text)
-        if not normalized_answer:
-            return False
-
-        for doc in docs or []:
-            metadata = getattr(doc, "metadata", {}) or {}
-            combined_text = " ".join(
-                part
-                for part in [
-                    getattr(doc, "page_content", "") or "",
-                    " ".join(str(value).strip() for value in list(metadata.get("entity_names") or []) if str(value).strip()),
-                    " ".join(str(value).strip() for value in list(metadata.get("labeled_facts") or []) if str(value).strip()),
-                    " ".join(str(value).strip() for value in list(metadata.get("date_values") or []) if str(value).strip()),
-                    " ".join(str(value).strip() for value in list(metadata.get("money_values") or []) if str(value).strip()),
-                ]
-                if part
-            )
-            if self._normalize_answer_comparison_text(combined_text).find(normalized_answer) >= 0:
-                return True
-        return False
-
-    def _answer_matches_top_evidence_span(
-        self,
-        answer_text: str,
-        selected_evidence_spans: list[dict[str, object]],
-        dominant_candidate: dict[str, object] | None,
-    ) -> bool:
-        if not selected_evidence_spans or not dominant_candidate:
-            return False
-        candidate_text = str(dominant_candidate.get("text") or "").strip()
-        if not candidate_text:
-            return False
-        top_span_text = str(selected_evidence_spans[0].get("text") or "").strip()
-        if not top_span_text or not self._answer_mentions_candidate_text(top_span_text, candidate_text):
-            return False
-        return self._answer_mentions_candidate_text(answer_text, candidate_text)
-
-    def _repair_grounded_short_answer(
-        self,
-        generated_answer: str,
-        *,
-        selected_docs,
-        retrieval_intent: str | None,
-        resolved_question: str,
-        target_document_name: str | None = None,
-    ) -> tuple[str, str | None, list[dict[str, object]], dict[str, object] | None, bool, str | None, str]:
-        answer_shape, candidates, dominant_candidate = self._collect_explicit_answer_candidate_consensus(
-            selected_docs,
-            retrieval_intent=retrieval_intent,
-            resolved_question=resolved_question,
-            target_document_name=target_document_name,
-        )
-        if not dominant_candidate:
-            return generated_answer, answer_shape, candidates, None, False, None, "llm"
-
-        candidate_text = str(dominant_candidate.get("text") or "").strip()
-        candidate_normalized = self._normalize_answer_comparison_text(candidate_text)
-        generated_normalized = self._normalize_answer_comparison_text(generated_answer)
-        short_answer = len(self._tokenize_search_text(generated_answer)) <= 8 and len(str(generated_answer or "").strip()) <= 96
-        matched_generated_candidate = self._find_matching_explicit_answer_candidate(generated_answer, candidates)
-        dominant_score = int(dominant_candidate.get("consensus_score") or dominant_candidate.get("score") or 0)
-        matched_generated_score = (
-            int(matched_generated_candidate.get("consensus_score") or matched_generated_candidate.get("score") or 0)
-            if matched_generated_candidate
-            else 0
-        )
-        selected_evidence_spans = self._collect_selected_evidence_spans(
-            selected_docs,
-            retrieval_intent=retrieval_intent,
-            resolved_question=resolved_question,
-            target_document_name=target_document_name,
-            limit=6,
-        )
-        top_evidence_supports_candidate = self._answer_mentions_candidate_text(
-            str(selected_evidence_spans[0].get("text") or "") if selected_evidence_spans else "",
-            candidate_text,
-        )
-        dominant_family = str(dominant_candidate.get("prefix_family") or "").strip()
-        generated_family = (
-            str(matched_generated_candidate.get("prefix_family") or "").strip()
-            if matched_generated_candidate
-            else ""
-        )
-
-        if not generated_normalized:
-            return candidate_text, answer_shape, candidates, dominant_candidate, True, "empty_short_factoid_answer", "grounded_repair"
-        if generated_normalized == candidate_normalized or candidate_normalized in generated_normalized:
-            return generated_answer, answer_shape, candidates, dominant_candidate, False, None, "llm"
-        if (
-            matched_generated_candidate is not None
-            and dominant_score >= matched_generated_score + 36
-            and generated_family
-            and dominant_family
-            and generated_family == dominant_family
-            and candidate_normalized != str(matched_generated_candidate.get("comparison_normalized") or "")
-        ):
-            return candidate_text, answer_shape, candidates, dominant_candidate, True, "lower_consensus_prefix_variant", "grounded_repair"
-        if (
-            matched_generated_candidate is not None
-            and dominant_score >= matched_generated_score + 54
-            and candidate_normalized != str(matched_generated_candidate.get("comparison_normalized") or "")
-        ):
-            return candidate_text, answer_shape, candidates, dominant_candidate, True, "lower_consensus_sibling_variant", "grounded_repair"
-        if len(generated_normalized) >= 3 and candidate_normalized.startswith(generated_normalized):
-            return candidate_text, answer_shape, candidates, dominant_candidate, True, "lower_consensus_prefix_variant", "grounded_repair"
-        if generated_normalized in candidate_normalized and len(generated_normalized.split()) <= len(candidate_normalized.split()):
-            return candidate_text, answer_shape, candidates, dominant_candidate, True, "lower_consensus_prefix_variant", "grounded_repair"
-        if (
-            short_answer
-            and matched_generated_candidate is None
-            and dominant_score >= 120
-            and candidate_normalized != generated_normalized
-        ):
-            return candidate_text, answer_shape, candidates, dominant_candidate, True, "dominant_consensus_factoid_answer", "grounded_repair"
-        if short_answer and not self._answer_is_grounded_in_selected_context(generated_answer, selected_docs):
-            return candidate_text, answer_shape, candidates, dominant_candidate, True, "dominant_consensus_factoid_answer", "grounded_repair"
-        if (
-            matched_generated_candidate is None
-            and dominant_score >= 160
-            and len(self._tokenize_search_text(generated_answer)) <= 40
-            and top_evidence_supports_candidate
-            and not self._answer_mentions_candidate_text(generated_answer, candidate_text)
-        ):
-            return candidate_text, answer_shape, candidates, dominant_candidate, True, "ignored_top_evidence_span", "grounded_repair"
-        return generated_answer, answer_shape, candidates, dominant_candidate, False, None, "llm"
-
     def _execute_retrieval_pass(
         self,
         *,
@@ -686,31 +20,6 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
             target_document_name,
             retrieval_intent=retrieval_intent,
             document_shortlist=document_shortlist,
-        )
-        docs = self._prioritize_retrieved_docs(
-            docs,
-            target_document_name,
-            retrieval_intent=retrieval_intent,
-            resolved_question=resolved_question,
-            document_shortlist=document_shortlist,
-        )
-        priority_resolver = self._build_retrieval_priority_resolver(
-            target_document_name=target_document_name,
-            retrieval_intent=retrieval_intent,
-            resolved_question=resolved_question,
-            document_shortlist=document_shortlist,
-        )
-        priority_breakdown_resolver = self._build_retrieval_priority_breakdown_resolver(
-            target_document_name=target_document_name,
-            retrieval_intent=retrieval_intent,
-            resolved_question=resolved_question,
-            document_shortlist=document_shortlist,
-        )
-        self._record_retrieval_stage(
-            "prioritized",
-            docs,
-            priority_score_resolver=priority_resolver,
-            priority_breakdown_resolver=priority_breakdown_resolver,
         )
 
         clarification_options = []
@@ -738,12 +47,7 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
             resolved_question=resolved_question,
             document_shortlist=document_shortlist,
         )
-        self._record_retrieval_stage(
-            "selected_context",
-            selected_docs,
-            priority_score_resolver=priority_resolver,
-            priority_breakdown_resolver=priority_breakdown_resolver,
-        )
+        self._record_retrieval_stage("selected_context", selected_docs)
         evidence_score = self._score_retrieval_evidence(
             resolved_question,
             selected_docs,
@@ -766,7 +70,6 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
             "sources": sources,
         }
 
-    # Esta funcao principal resolve modo, documento, retrieval e rastros de depuracao.
     def ask_question_with_trace(self, question: str, chat_history=None) -> dict[str, object]:
         if not self.retriever or not self.answer_chain or not self.small_talk_chain:
             raise Exception("No collection loaded. Please load a collection before asking questions.")
@@ -780,7 +83,6 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
         if route == MODE_CASUAL:
             return self._build_casual_trace(question, collection_name, history_text)
 
-        # Primeiro resolvemos selecoes pendentes, como escolha de arquivo ou clarificacao interna.
         pending_refinement = self._get_pending_document_refinement(chat_history)
         refinement_resolution = self._resolve_pending_document_refinement(question, pending_refinement)
         pending_clarification = self._get_pending_retrieval_clarification()
@@ -820,14 +122,11 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
         document_shortlist = list(matched_documents)
         document_scores: list[dict[str, object]] = []
         resolver_confidence = 0.0
-        extraction_diagnostics = self._build_trace_extraction_diagnostics(document_shortlist)
         focus_decision = None
         focus_release_reason = None
         recovery_search_performed = False
         recovery_matched_documents: list[str] = []
-        used_inherited_lock = False
 
-        # Se ainda nao ha pergunta resolvida, planejamos escopo e documento a partir do contexto atual.
         if resolved_question is None:
             force_rewrite = self.last_retrieval_focus is not None and self._is_follow_up_ambiguous(question)
             resolved_question = self._rewrite_question_for_retrieval(
@@ -853,22 +152,21 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
             document_shortlist = list(
                 resolution.get("document_shortlist")
                 or matched_documents
-                or resolver_candidates
                 or []
             )
             document_scores = list(resolution.get("document_scores") or [])
             resolver_confidence = float(resolution.get("resolver_confidence") or 0.0)
             resolver_selection_mode = str(resolution.get("resolver_selection_mode") or "").strip() or None
-            extraction_diagnostics = self._build_trace_extraction_diagnostics(document_shortlist)
-            used_inherited_lock = str(scope_plan.get("scope_type") or "") == "locked_document" and bool(locked_document_name)
         elif resolver_status == "selection_resolved":
-            focus_decision = "keep_locked_document"
+            focus_decision = "manual_selection"
             focus_release_reason = "document_selection"
             resolver_selection_mode = "manual_selection"
         elif resolver_status == "clarification_resolved":
-            focus_decision = "keep_locked_document"
+            focus_decision = "clarification_selection"
             focus_release_reason = "clarification_selection"
             resolver_selection_mode = "clarification_selection"
+
+        extraction_diagnostics = self._build_trace_extraction_diagnostics(document_shortlist)
 
         if len(matched_documents) > 1:
             return self._attach_debug_trace_fields(
@@ -891,8 +189,6 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
             )
 
         target_document_name = matched_documents[0] if matched_documents else None
-        if target_document_name and not matched_documents:
-            matched_documents = [target_document_name]
         if not document_shortlist and target_document_name:
             document_shortlist = [target_document_name]
         extraction_diagnostics = self._build_trace_extraction_diagnostics(document_shortlist)
@@ -909,7 +205,6 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
             target_document_name=target_document_name,
         )
 
-        # Aqui recuperamos, reordenamos e eventualmente pedimos nova clarificacao antes de responder.
         retrieval_pass = self._execute_retrieval_pass(
             user_question=user_question,
             resolved_question=resolved_question,
@@ -957,142 +252,23 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
         selected_docs = list(retrieval_pass.get("selected_docs") or [])
         evidence_score = float(retrieval_pass.get("evidence_score") or 0.0)
         sources = list(retrieval_pass.get("sources") or [])
-
-        if self.strict_grounding and evidence_score < self.min_evidence_score and used_inherited_lock:
-            recovery_search_performed = True
-            recovery_scope_plan = self._plan_scope(question, resolved_question, chat_history, None)
-            recovery_resolution = self._plan_document_selection(
-                question,
-                resolved_question,
-                chat_history,
-                recovery_scope_plan,
-                None,
-            )
-            recovery_focus_reason = "recovery_after_weak_locked_evidence"
-            recovery_matches = list(recovery_resolution.get("matched_documents") or [])
-            recovery_shortlist = list(
-                recovery_resolution.get("document_shortlist")
-                or recovery_matches
-                or recovery_resolution.get("resolver_candidates")
-                or []
-            )
-            recovery_selection_mode = str(recovery_resolution.get("resolver_selection_mode") or "").strip() or None
-            recovery_matched_documents = recovery_matches or recovery_shortlist
-
-            if len(recovery_matches) > 1:
-                return self._attach_debug_trace_fields(
-                    self._build_document_refinement_trace(
-                        resolved_question,
-                        recovery_matches,
-                        str(recovery_resolution.get("status") or "multiple_matches"),
-                        list(recovery_resolution.get("resolver_candidates") or []),
-                        list(recovery_resolution.get("matched_aliases") or []),
-                    ),
-                    document_shortlist=recovery_shortlist,
-                    document_scores=list(recovery_resolution.get("document_scores") or []),
-                    resolver_confidence=float(recovery_resolution.get("resolver_confidence") or 0.0),
-                    extraction_diagnostics=self._build_trace_extraction_diagnostics(recovery_shortlist),
-                    resolver_selection_mode=recovery_selection_mode,
-                    focus_decision="release_to_discovery",
-                    focus_release_reason=recovery_focus_reason,
-                    recovery_search_performed=recovery_search_performed,
-                    recovery_matched_documents=recovery_matched_documents,
-                )
-
-            recovered_target_document_name = recovery_matches[0] if recovery_matches else None
-            if not recovery_shortlist and recovered_target_document_name:
-                recovery_shortlist = [recovered_target_document_name]
-            if (
-                not recovered_target_document_name
-                and len(recovery_shortlist) > 1
-                and retrieval_intent in {"specific_fact", "entity_lookup"}
-            ):
-                recovered_target_document_name = recovery_shortlist[0]
-                recovery_matches = [recovered_target_document_name]
-                recovery_selection_mode = recovery_selection_mode or "auto_top_document"
-
-            recovery_pass = self._execute_retrieval_pass(
-                user_question=user_question,
-                resolved_question=resolved_question,
-                target_document_name=recovered_target_document_name,
-                retrieval_intent=retrieval_intent,
-                document_shortlist=recovery_shortlist,
-                clarification_resolution=clarification_resolution,
-            )
-            recovery_clarification_options = list(recovery_pass.get("clarification_options") or [])
-            if len(recovery_clarification_options) > 1:
-                self._set_retrieval_focus(
-                    scope_type="clarification_pending",
-                    target_document_name=recovered_target_document_name,
-                    resolved_question=resolved_question,
-                    retrieval_intent=retrieval_intent,
-                    document_shortlist=recovery_shortlist,
-                    focus_decision="release_to_discovery",
-                    focus_reason=recovery_focus_reason,
-                    pending_clarification={
-                        "original_question": user_question,
-                        "resolved_question": resolved_question,
-                        "target_document_name": recovered_target_document_name,
-                        "retrieval_intent": retrieval_intent,
-                        "options": recovery_clarification_options,
-                    },
-                )
-                return self._attach_debug_trace_fields(
-                    self._build_clarification_required_trace(
-                        resolved_question,
-                        recovery_matches,
-                        recovery_clarification_options,
-                    ),
-                    document_shortlist=recovery_shortlist,
-                    document_scores=list(recovery_resolution.get("document_scores") or []),
-                    resolver_confidence=float(recovery_resolution.get("resolver_confidence") or 0.0),
-                    extraction_diagnostics=self._build_trace_extraction_diagnostics(recovery_shortlist),
-                    resolver_selection_mode=recovery_selection_mode,
-                    focus_decision="release_to_discovery",
-                    focus_release_reason=recovery_focus_reason,
-                    recovery_search_performed=recovery_search_performed,
-                    recovery_matched_documents=recovery_matched_documents,
-                )
-
-            target_document_name = recovered_target_document_name
-            matched_documents = recovery_matches if recovery_matches else ([target_document_name] if target_document_name else [])
-            resolver_status = str(recovery_resolution.get("status") or "no_match")
-            resolver_candidates = list(recovery_resolution.get("resolver_candidates") or [])
-            matched_aliases = list(recovery_resolution.get("matched_aliases") or [])
-            document_shortlist = recovery_shortlist
-            document_scores = list(recovery_resolution.get("document_scores") or [])
-            resolver_confidence = float(recovery_resolution.get("resolver_confidence") or 0.0)
-            resolver_selection_mode = recovery_selection_mode
-            extraction_diagnostics = self._build_trace_extraction_diagnostics(document_shortlist)
-            selected_docs = list(recovery_pass.get("selected_docs") or [])
-            evidence_score = float(recovery_pass.get("evidence_score") or 0.0)
-            sources = list(recovery_pass.get("sources") or [])
-            focus_decision = "release_to_discovery"
-            focus_release_reason = recovery_focus_reason
-
-        selected_evidence_spans = self._collect_selected_evidence_spans(
-            selected_docs,
-            retrieval_intent=retrieval_intent,
-            resolved_question=resolved_question,
-            target_document_name=target_document_name,
-            limit=6,
-        )
         answer_context = self._build_answer_context(
             selected_docs,
             retrieval_intent=retrieval_intent,
             target_document_name=target_document_name,
             resolved_question=resolved_question,
-            selected_evidence_spans=selected_evidence_spans,
+            selected_evidence_spans=[],
         )
         self._update_retrieval_diagnostics_summary(
             retrieval_intent=retrieval_intent,
             target_document_name=target_document_name,
             evidence_score=evidence_score,
             answer_context=answer_context,
-            selected_evidence_spans=selected_evidence_spans,
-            focused_evidence_context_built=bool(selected_evidence_spans),
+            selected_evidence_spans=[],
+            focused_evidence_context_built=False,
             abstained=False,
         )
+
         if self.strict_grounding and evidence_score < self.min_evidence_score:
             self._set_retrieval_focus(
                 scope_type="document" if target_document_name else "collection_wide",
@@ -1103,7 +279,12 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
                 focus_decision=focus_decision,
                 focus_reason=focus_release_reason,
             )
-            self._update_retrieval_diagnostics_summary(abstained=True)
+            self._update_retrieval_diagnostics_summary(
+                abstained=True,
+                answer_repair_applied=False,
+                answer_repair_reason=None,
+                final_answer_origin="llm",
+            )
             return self._attach_debug_trace_fields(
                 {
                     "route": MODE_RETRIEVAL,
@@ -1136,47 +317,16 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
             context=answer_context,
             question=user_question,
         )
-        (
-            retrieval_answer,
-            answer_shape,
-            explicit_answer_candidates,
-            consensus_dominant_candidate,
-            answer_repair_applied,
-            answer_repair_reason,
-            final_answer_origin,
-        ) = self._repair_grounded_short_answer(
-            retrieval_answer,
-            selected_docs=selected_docs,
-            retrieval_intent=retrieval_intent,
-            resolved_question=resolved_question,
-            target_document_name=target_document_name,
-        )
         self._update_retrieval_diagnostics_summary(
-            answer_shape=answer_shape,
-            explicit_answer_candidates=explicit_answer_candidates,
-            consensus_dominant_candidate=consensus_dominant_candidate,
-            candidate_consensus_details=explicit_answer_candidates,
-            answer_matches_top_evidence_span=self._answer_matches_top_evidence_span(
-                retrieval_answer,
-                selected_evidence_spans,
-                consensus_dominant_candidate,
-            ),
-            answer_ignored_top_evidence_span=bool(
-                selected_evidence_spans
-                and consensus_dominant_candidate
-                and not self._answer_matches_top_evidence_span(
-                    retrieval_answer,
-                    selected_evidence_spans,
-                    consensus_dominant_candidate,
-                )
-                and self._answer_mentions_candidate_text(
-                    str(selected_evidence_spans[0].get("text") or ""),
-                    str((consensus_dominant_candidate or {}).get("text") or ""),
-                )
-            ),
-            answer_repair_applied=answer_repair_applied,
-            answer_repair_reason=answer_repair_reason,
-            final_answer_origin=final_answer_origin,
+            answer_shape=None,
+            explicit_answer_candidates=[],
+            consensus_dominant_candidate=None,
+            candidate_consensus_details=[],
+            answer_matches_top_evidence_span=None,
+            answer_ignored_top_evidence_span=False,
+            answer_repair_applied=False,
+            answer_repair_reason=None,
+            final_answer_origin="llm",
         )
         self._set_retrieval_focus(
             scope_type="document" if target_document_name else "collection_wide",
@@ -1210,7 +360,6 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
             recovery_matched_documents=recovery_matched_documents,
         )
 
-    # Esta versao enxuta so devolve o texto final quando o chamador nao precisa do trace detalhado.
     def ask_question(self, question: str, chat_history=None) -> str:
         trace = self.ask_question_with_trace(question, chat_history)
         return str(trace.get("answer_text", "")).strip()
@@ -1230,35 +379,17 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
         enriched_trace["evidence_score"] = float(diagnostics.get("evidence_score") or 0.0)
         enriched_trace["abstained"] = bool(diagnostics.get("abstained"))
         enriched_trace["answer_context"] = str(diagnostics.get("answer_context") or "")
-        enriched_trace["answer_shape"] = (
-            str(diagnostics.get("answer_shape") or "").strip() or None
-        )
-        enriched_trace["selected_evidence_spans"] = list(diagnostics.get("selected_evidence_spans") or [])
-        enriched_trace["focused_evidence_context_built"] = bool(
-            diagnostics.get("focused_evidence_context_built")
-        )
-        enriched_trace["answer_matches_top_evidence_span"] = diagnostics.get(
-            "answer_matches_top_evidence_span"
-        )
-        enriched_trace["answer_ignored_top_evidence_span"] = bool(
-            diagnostics.get("answer_ignored_top_evidence_span")
-        )
-        enriched_trace["explicit_answer_candidates"] = list(diagnostics.get("explicit_answer_candidates") or [])
-        enriched_trace["consensus_dominant_candidate"] = (
-            dict(diagnostics.get("consensus_dominant_candidate") or {})
-            if isinstance(diagnostics.get("consensus_dominant_candidate"), dict)
-            else None
-        )
-        enriched_trace["candidate_consensus_details"] = list(
-            diagnostics.get("candidate_consensus_details") or []
-        )
-        enriched_trace["answer_repair_applied"] = bool(diagnostics.get("answer_repair_applied"))
-        enriched_trace["answer_repair_reason"] = (
-            str(diagnostics.get("answer_repair_reason") or "").strip() or None
-        )
-        enriched_trace["final_answer_origin"] = (
-            str(diagnostics.get("final_answer_origin") or "").strip() or "llm"
-        )
+        enriched_trace["answer_shape"] = None
+        enriched_trace["selected_evidence_spans"] = []
+        enriched_trace["focused_evidence_context_built"] = False
+        enriched_trace["answer_matches_top_evidence_span"] = None
+        enriched_trace["answer_ignored_top_evidence_span"] = False
+        enriched_trace["explicit_answer_candidates"] = []
+        enriched_trace["consensus_dominant_candidate"] = None
+        enriched_trace["candidate_consensus_details"] = []
+        enriched_trace["answer_repair_applied"] = False
+        enriched_trace["answer_repair_reason"] = None
+        enriched_trace["final_answer_origin"] = "llm"
         enriched_trace["retrieval_stages"] = dict(diagnostics.get("retrieval_stages") or {})
         enriched_trace["retrieval_stage_order"] = list(diagnostics.get("stage_order") or [])
         enriched_trace["candidate_catalog"] = dict(diagnostics.get("candidate_catalog") or {})

@@ -7,6 +7,8 @@ This folder groups runtime configuration and setup templates.
 - `config.toml`
   - non-secret runtime tuning lives here
   - this is the file to edit for model defaults, embedding device, quantization, batch size, and max length
+  - retrieval tuning includes the dense/lexical candidate pool size and LLM evidence selector limits
+  - the checked-in defaults are CPU-safe and use a local CPU `int8` embedding export on first run
 
 ## Secret template / credentials
 

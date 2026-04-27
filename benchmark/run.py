@@ -30,6 +30,7 @@ def _write_outputs(
     run_payload: dict[str, object],
     *,
     output_dir: Path,
+    write_latest: bool = True,
 ) -> tuple[Path, Path]:
     output_dir.mkdir(parents=True, exist_ok=True)
     run_id = str(run_payload.get("run_id") or "benchmark_run")
@@ -44,8 +45,9 @@ def _write_outputs(
         json.dumps(run_payload, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    shutil.copyfile(markdown_path, latest_markdown_path)
-    shutil.copyfile(json_path, latest_json_path)
+    if write_latest:
+        shutil.copyfile(markdown_path, latest_markdown_path)
+        shutil.copyfile(json_path, latest_json_path)
     return markdown_path, json_path
 
 
@@ -102,4 +104,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

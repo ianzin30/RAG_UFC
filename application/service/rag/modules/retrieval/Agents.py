@@ -1,11 +1,24 @@
 """CrewAI invocation and answer-chain helpers."""
 # Simple: Run specialized AI agents to improve search results
 
+import contextlib
+import io
+import json
+
+
 # Este mixin concentra as chamadas aos agentes e ao chain final de resposta.
 class RetrievalAgentMixin:
     # Este helper executa um agente isolado e desliga o modo CrewAI se a chamada falhar.
-    def _kickoff_crewai_agent(self, agent, description: str, expected_output: str) -> str | None:
-        if not self.crewai_available or agent is None:
+    def _kickoff_crewai_agent(
+        self,
+        agent,
+        description: str,
+        expected_output: str,
+        *,
+        disable_on_failure: bool = True,
+        require_available: bool = True,
+    ) -> str | None:
+        if agent is None or (require_available and not self.crewai_available):
             return None
 
         try:
@@ -22,11 +35,13 @@ class RetrievalAgentMixin:
                 process=Process.sequential,
                 verbose=False,
             )
-            result = crew.kickoff()
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                result = crew.kickoff()
             text = str(result).strip()
             return text or None
         except Exception:
-            self.crewai_available = False
+            if disable_on_failure:
+                self.crewai_available = False
             return None
 
     # Esta resposta tenta usar o agente casual antes de cair no prompt-chain tradicional.
@@ -71,3 +86,51 @@ class RetrievalAgentMixin:
                 "question": question,
             }
         )
+
+    def _invoke_benchmark_grading_agent(self, grading_payload: dict[str, object]) -> dict[str, object]:
+        agent = getattr(self, "crewai_benchmark_grading_agent", None)
+        if not self.crewai_available or agent is None:
+            return {
+                "status": "fallback",
+                "reason": "benchmark_grading_agent_unavailable",
+            }
+
+        payload_json = json.dumps(grading_payload, ensure_ascii=False, indent=2)
+        raw_output = self._kickoff_crewai_agent(
+            agent,
+            description=(
+                "Avalie uma resposta de benchmark RAG usando a resposta esperada, "
+                "a resposta gerada e o contexto selecionado.\n"
+                "Use as metricas deterministicas apenas como diagnostico auxiliar.\n"
+                "Retorne somente JSON valido.\n\n"
+                f"Payload:\n{payload_json}\n\n"
+                "Classificacoes permitidas:\n"
+                '- correctness: "correct", "partially_correct", "incorrect" ou "abstained"\n'
+                '- grounding_status: "grounded", "weakly_grounded" ou "unsupported"\n'
+                '- failure_classification: "no_failure", "retrieval_failure", "selection_failure", '
+                '"generation_failure", "document_resolution_failure" ou "benchmark_data_mismatch"\n'
+                '- evidence_support: "direct", "partial" ou "none"\n'
+                "- confidence: numero entre 0.0 e 1.0\n"
+                "- rationale: explicacao curta\n"
+            ),
+            expected_output=(
+                "JSON valido com correctness, grounding_status, failure_classification, "
+                "evidence_support, confidence e rationale."
+            ),
+            disable_on_failure=False,
+            require_available=False,
+        )
+        parser = getattr(self, "_parse_agent_payload", None)
+        parsed = parser(raw_output) if callable(parser) else None
+        if not isinstance(parsed, dict):
+            return {
+                "status": "fallback",
+                "reason": "invalid_agent_json",
+                "raw_response": raw_output,
+            }
+
+        return {
+            "status": "graded",
+            "raw_response": raw_output,
+            "parsed": parsed,
+        }

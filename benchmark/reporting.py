@@ -31,8 +31,10 @@ def _failure_label(classification: str) -> str:
     labels = {
         "no_failure": "Sem falha",
         "generation_failure": "Falha na geração",
-        "retrieval_failure": "Falha na recuperação",
-        "abstention": "Abstinência",
+        "retrieval_failure": "Falha na recuperacao",
+        "selection_failure": "Falha na selecao",
+        "document_resolution_failure": "Falha de documento explicito",
+        "benchmark_data_mismatch": "Dado esperado ausente",
     }
     return labels.get(classification, classification or "desconhecida")
 
@@ -42,6 +44,7 @@ def _grounding_label(status: str) -> str:
         "grounded": "✅ Bem fundamentada",
         "weakly_grounded": "⚠️ Fracamente fundamentada",
         "ungrounded": "❌ Sem fundamentação",
+        "unsupported": "❌ Sem fundamentação",
         "unknown": "Desconhecida",
     }
     return labels.get(status, status or "desconhecida")
@@ -87,10 +90,10 @@ def _format_chunk_simple(candidate: dict, index: int) -> str:
 
 def _format_rank_movement_simple(entries: list) -> list[str]:
     stage_short = {
-        "dense_mmr": "sem",
+        "dense_mmr": "mmr",
         "lexical": "lex",
-        "merged": "merg",
-        "prioritized": "prior",
+        "candidate_pool": "pool",
+        "llm_selected": "sel-llm",
         "selected_context": "sel",
     }
 
@@ -101,7 +104,7 @@ def _format_rank_movement_simple(entries: list) -> list[str]:
 
         pos_str = " → ".join(
             f"{stage_short.get(stage, stage)}={positions[stage]}"
-            for stage in ["dense_mmr", "lexical", "merged", "prioritized", "selected_context"]
+            for stage in ["dense_mmr", "lexical", "candidate_pool", "llm_selected", "selected_context"]
             if positions.get(stage) is not None
         )
 
@@ -150,6 +153,21 @@ def render_markdown_report(run_payload: dict[str, object]) -> str:
     total = len(results)
     ok_count = failure_counts.get("no_failure", 0)
     grounded_count = grounding_counts.get("grounded", 0)
+    agent_graded_count = sum(
+        1 for result in results if str((result.get("agent_grading") or {}).get("status") or "") == "graded"
+    )
+    agent_fallback_count = sum(
+        1 for result in results if str((result.get("agent_grading") or {}).get("status") or "") == "fallback"
+    )
+    retrieval_metrics = [dict((result.get("retrieval") or {}).get("metrics") or {}) for result in results]
+    source_in_pool_count = sum(1 for metrics in retrieval_metrics if metrics.get("source_document_in_pool"))
+    expected_in_pool_count = sum(1 for metrics in retrieval_metrics if metrics.get("expected_answer_in_pool"))
+    expected_in_context_count = sum(1 for metrics in retrieval_metrics if metrics.get("expected_answer_in_context"))
+    avg_context_hit_rate = (
+        sum(float(metrics.get("context_hit_rate") or 0.0) for metrics in retrieval_metrics) / total
+        if total
+        else 0.0
+    )
     pct_ok = f"{ok_count / total * 100:.0f}%" if total else "—"
     pct_grounded = f"{grounded_count / total * 100:.0f}%" if total else "—"
 
@@ -185,6 +203,12 @@ def render_markdown_report(run_payload: dict[str, object]) -> str:
         f"- Perguntas: {total}",
         f"- Sem falha: {ok_count}/{total} ({pct_ok})",
         f"- Bem fundamentada: {grounded_count}/{total} ({pct_grounded})",
+        f"- Documento-fonte no pool: {source_in_pool_count}/{total}",
+        f"- Resposta esperada no pool: {expected_in_pool_count}/{total}",
+        f"- Resposta esperada no contexto: {expected_in_context_count}/{total}",
+        f"- Hit rate medio do contexto: {avg_context_hit_rate:.2f}",
+        f"- Avaliacao por agente: {agent_graded_count}/{total}",
+        f"- Fallback deterministico: {agent_fallback_count}/{total}",
     ])
 
     non_ok = {cls: cnt for cls, cnt in failure_counts.items() if cls != "no_failure"}
@@ -202,6 +226,8 @@ def render_markdown_report(run_payload: dict[str, object]) -> str:
         grounding = dict(result.get("grounding") or {})
         failure = dict(result.get("failure") or {})
         generation = dict(result.get("generation") or {})
+        agent_grading = dict(result.get("agent_grading") or {})
+        metrics = dict(retrieval.get("metrics") or {})
 
         failure_class = str(failure.get("classification") or "")
         grounding_status = str(grounding.get("grounding_status") or "")
@@ -241,7 +267,12 @@ def render_markdown_report(run_payload: dict[str, object]) -> str:
             f"| Gerado | {_safe_cell(clean_ans)} |",
             f"| Esperado | {_safe_cell(expected)} |",
             f"| Fundamentação | {_grounding_label(grounding_status)} |",
+            f"| Falha | `{failure_class or 'no_failure'}` |",
+            f"| Avaliador | `{agent_grading.get('status') or 'deterministic'}` |",
             f"| Documentos | {top_docs} |",
+            f"| Fonte no pool | {'sim' if metrics.get('source_document_in_pool') else 'nao'}"
+            f"{' (rank ' + str(metrics.get('source_document_rank')) + ')' if metrics.get('source_document_rank') else ''} |",
+            f"| Esperado no contexto | {'sim' if metrics.get('expected_answer_in_context') else 'nao'} |",
         ])
 
         if failure_notes:

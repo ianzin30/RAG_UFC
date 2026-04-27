@@ -5,6 +5,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from .CrewAiTelemetry import disable_crewai_telemetry_by_default
+
 
 # Este bundle reune todos os agentes opcionais usados pelo fluxo de retrieval.
 @dataclass
@@ -15,6 +17,7 @@ class CrewAIAgentBundle:
     scope_agent: object | None = None
     document_selection_agent: object | None = None
     evidence_planning_agent: object | None = None
+    benchmark_grading_agent: object | None = None
 
 
 # Esta fabrica liga ou desliga o conjunto de agentes de acordo com o modo atual.
@@ -23,6 +26,7 @@ def build_crewai_agent_bundle(agent_mode: str, llm: object | None = None) -> Cre
     if agent_mode != "crewai" or llm is None:
         return bundle
 
+    disable_crewai_telemetry_by_default()
     try:
         from crewai import Agent
     except Exception:
@@ -61,6 +65,15 @@ def build_crewai_agent_bundle(agent_mode: str, llm: object | None = None) -> Cre
             role="EvidencePlanningAgent",
             goal="Classificar a intencao de retrieval da pergunta para orientar a recuperacao de evidencias.",
             backstory="Especialista em planejamento de retrieval e definicao de intencao de perguntas documentais.",
+            allow_delegation=False,
+            verbose=False,
+            llm=llm,
+        )
+        # Este agente e usado apenas pelo benchmark, depois que a resposta ja foi gerada.
+        bundle.benchmark_grading_agent = Agent(
+            role="BenchmarkGradingAgent",
+            goal="Avaliar se uma resposta de benchmark esta correta e fundamentada nas evidencias selecionadas.",
+            backstory="Especialista em avaliacao de QA/RAG, comparando resposta esperada, resposta gerada e contexto recuperado.",
             allow_delegation=False,
             verbose=False,
             llm=llm,

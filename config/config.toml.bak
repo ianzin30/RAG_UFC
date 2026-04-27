@@ -1,0 +1,47 @@
+[model]
+# Default UFC-hosted chat model used by the app and CrewAI adapter.
+ufc_model_name = "llama3.1:8b"
+
+[embeddings]
+# Hugging Face embedding model used to build and query the FAISS index.
+model_name = "BAAI/bge-m3"
+# Device used to run the embedding model. Use "cuda" on NVIDIA machines, "mps" on Apple Silicon, or "cpu".
+device = "cpu"
+# Quantization mode for the embedding model. "4bit" is CUDA-only and "int8" uses a CPU ONNX export.
+quantization = "int8"
+# Number of texts encoded at the same time during indexing and retrieval.
+batch_size = 2
+# Maximum token length sent to the embedding model.
+max_length = 1024
+
+[splitter]
+# Character size of each text chunk created before indexing.
+chunk_size = 800
+# Character overlap preserved between adjacent chunks.
+chunk_overlap = 150
+# Ordered separators used to split documents into chunks.
+separators = ["\n\n", "\n", ". ", "? ", "! ", "; ", ": ", "  ", " ", ""]
+
+[retrieval]
+# Top-k returned by the base MMR retriever used for collection-wide searches.
+base_search_k = 12
+# Candidate pool size fetched before MMR reranking in collection-wide searches.
+base_fetch_k = 30
+# Diversity weight used by the base MMR retriever.
+base_lambda_mult = 0.2
+# Maximum number of lexical matches merged with dense retrieval.
+lexical_limit = 12
+# Maximum number of merged dense/lexical candidates shown to the evidence selector.
+candidate_pool_limit = 30
+# Maximum number of candidates the evidence selector can keep for answer context.
+llm_selection_limit = 8
+# Whether to ask the UFC/Ollama model to select evidence from the candidate pool.
+llm_selector_enabled = true
+
+[rag]
+# Agent backend used for planning and optional orchestration.
+agent_mode = "crewai"
+# Whether the answer flow should abstain when evidence is too weak.
+strict_grounding = true
+# Minimum evidence score required before answering in retrieval mode.
+min_evidence_score = 0.50

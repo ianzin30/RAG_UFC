@@ -1,71 +1,39 @@
 [model]
-# Default UFC-hosted chat model used by the app and CrewAI adapter.
 ufc_model_name = "llama3.1:8b"
 
 [embeddings]
-# Hugging Face embedding model used to build and query the FAISS index.
 model_name = "BAAI/bge-m3"
-# Device used to run the embedding model.
-device = "cuda"
-# Quantization mode for the embedding model.
-quantization = "4bit"
-# Number of texts encoded at the same time during indexing and retrieval.
+device = "cpu"
+quantization = "none"
 batch_size = 2
-# Maximum token length sent to the embedding model.
 max_length = 1024
 
 [splitter]
-# Character size of each text chunk created before indexing.
 chunk_size = 800
-# Character overlap preserved between adjacent chunks.
 chunk_overlap = 150
-# Ordered separators used to split documents into chunks.
-separators = ["\n\n", "\n", ". ", "? ", "! ", "; ", ": ", "  ", " ", ""]
+separators = [
+    "\n\n",
+    "\n",
+    ". ",
+    "? ",
+    "! ",
+    "; ",
+    ": ",
+    "  ",
+    " ",
+    "",
+]
 
 [retrieval]
-# Top-k returned by the base MMR retriever used for collection-wide searches.
 base_search_k = 12
-# Candidate pool size fetched before MMR reranking in collection-wide searches.
 base_fetch_k = 30
-# Diversity weight used by the base MMR retriever.
 base_lambda_mult = 0.2
-# Top-k returned by focused document retrieval before merging other signals.
-focused_search_k = 8
-# Candidate pool size fetched before focused document reranking.
-focused_fetch_k = 100
-# Diversity weight used by focused document MMR retrieval.
-focused_lambda_mult = 0.2
-# Maximum number of lexical matches merged with dense retrieval.
 lexical_limit = 12
-# Maximum number of extra document-coverage chunks added for broad questions.
-coverage_limit = 10
-# Maximum number of chunks kept for normal answer context building.
-context_default_limit = 8
-# Maximum number of chunks kept for broad or list-oriented context building.
-context_diverse_limit = 8
-# Maximum number of chunks kept for summary-oriented context building.
-context_summary_limit = 6
-
-[aggregation]
-# Maximum number of section or topic labels surfaced in aggregated evidence.
-topics_limit = 10
-# Maximum number of names shown in aggregated evidence for normal retrieval.
-names_limit = 24
-# Maximum number of names shown in aggregated evidence for list extraction.
-list_extraction_names_limit = 80
-# Maximum number of dates surfaced in aggregated evidence.
-dates_limit = 12
-# Maximum number of money values surfaced in aggregated evidence.
-money_values_limit = 12
-# Maximum number of labeled fact lines surfaced in aggregated evidence.
-fact_lines_limit = 14
-# Maximum number of synthesized key points surfaced in aggregated evidence.
-key_points_limit = 10
+candidate_pool_limit = 30
+llm_selection_limit = 8
+llm_selector_enabled = true
 
 [rag]
-# Agent backend used for planning and optional orchestration.
 agent_mode = "crewai"
-# Whether the answer flow should abstain when evidence is too weak.
 strict_grounding = true
-# Minimum evidence score required before answering in retrieval mode.
-min_evidence_score = 0.50
+min_evidence_score = 0.5

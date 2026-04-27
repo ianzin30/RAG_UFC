@@ -72,10 +72,6 @@ class RetrievalIntentMixin:
             return "entity_lookup"
         return "specific_fact"
 
-    # Esta classificacao agrupa as intencoes que pedem mais cobertura do documento.
-    def _is_coverage_oriented_intent(self, retrieval_intent: str | None) -> bool:
-        return retrieval_intent in {"summary", "list_extraction", "document_expansion"}
-
     # Estes fragmentos curtos ajudam a detectar variantes de termos parecidos no contexto.
     def _build_query_fragments(self, query_terms: list[str]) -> set[str]:
         return {term[:6] for term in query_terms if len(term) >= 5}
@@ -87,32 +83,3 @@ class RetrievalIntentMixin:
             text or "",
         )
         return len(candidates)
-
-    # Esta checagem penaliza trechos dominados por numeros, tabelas ou orcamentos.
-    def _looks_numeric_heavy_source(self, text: str) -> bool:
-        digits = sum(char.isdigit() for char in text or "")
-        letters = sum(char.isalpha() for char in text or "")
-        if digits >= 10 and digits > max(letters // 2, 0):
-            return True
-        lowered = (text or "").lower()
-        return any(marker in lowered for marker in ("r$", "%", "orcamento", "orçamento", "cnpj", "cpf"))
-
-    # Esta checagem tenta afastar assinaturas, rodapes e blocos administrativos repetitivos.
-    def _looks_like_noisy_source(self, text: str) -> bool:
-        normalized = self._normalize_identifier(text)
-        digits = sum(char.isdigit() for char in text)
-        letters = sum(char.isalpha() for char in text)
-        if digits > letters and digits >= 20:
-            return True
-
-        noisy_markers = (
-            "documento assinado eletronicamente",
-            "cpf",
-            "cnpj",
-            "sei",
-            "pg ",
-            "rubrica",
-            "orcamento",
-            "assinatura eletronica",
-        )
-        return any(marker in normalized for marker in noisy_markers)

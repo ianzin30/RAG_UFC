@@ -5,7 +5,7 @@ description = "RAG project with Streamlit chat, scraping, Google Drive ingestion
 readme = "docs/README.md"
 requires-python = ">=3.11,<3.13"
 dependencies = [
-    "bitsandbytes",
+    "bitsandbytes; sys_platform == 'linux' or sys_platform == 'win32'",
     "crewai",
     "docling",
     "faiss-cpu",
@@ -17,12 +17,15 @@ dependencies = [
     "langchain-community",
     "langchain-huggingface",
     "openpyxl",
+    "optimum[onnxruntime]",
     "pypdf",
     "python-dotenv",
     "python-telegram-bot",
     "requests",
+    "rich",
     "sentence-transformers",
     "streamlit",
+    "tomli-w>=1.1.0",
     "torch",
     "torchvision",
 ]
