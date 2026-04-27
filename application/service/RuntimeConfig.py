@@ -8,7 +8,10 @@ This module centralizes two config sources:
 
 from __future__ import annotations
 
-import tomllib
+try:
+    import tomllib
+except ImportError:
+    import tomli as tomllib
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path

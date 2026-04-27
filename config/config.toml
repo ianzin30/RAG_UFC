@@ -32,10 +32,10 @@ max_length = 1024
 
 [splitter]
 # Window-based paragraph splitting via RecursiveCharacterTextSplitter.
-# 800/150 keeps each window large enough to fit a full named-entity
+# 500/100 keeps each window large enough to fit a full named-entity
 # announcement plus surrounding evidence; smaller windows fragment answers.
-chunk_size = 800
-chunk_overlap = 150
+chunk_size = 500
+chunk_overlap = 100
 separators = [
     "\n\n",
     "\n",

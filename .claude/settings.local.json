@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m py_compile application/service/rag/modules/DocumentResolution.py)",
+      "Bash(python -m py_compile application/service/rag/modules/Prompting.py)"
+    ]
+  }
+}

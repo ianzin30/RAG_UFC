@@ -4,6 +4,7 @@
 import contextlib
 import io
 import json
+import re
 
 
 # Este mixin concentra as chamadas aos agentes e ao chain final de resposta.
@@ -64,6 +65,43 @@ class RetrievalAgentMixin:
             {"collection_name": collection_name, "chat_history": history_text, "question": question}
         )
 
+    # Esta funcao limpa a resposta bruta do LLM removendo artefatos de conversa.
+    def _clean_retrieval_response(self, raw_response: str) -> str:
+        """
+        Remove conversation history markers and UI navigation text from LLM response.
+        Extracts only the actual answer content.
+        """
+        if not raw_response or not isinstance(raw_response, str):
+            return raw_response
+
+        response = raw_response.strip()
+
+        # Remove "**RETRIEVAL**" markers and surrounding asterisks/bold formatting
+        response = re.sub(r'\*{2,}RETRIEVAL\*{2,}', '', response)
+        response = re.sub(r'(?:^|\n)\*{2,}RETRIEVAL\*{2,}(?:\n|$)', '\n', response)
+
+        # Remove lines containing conversation/mode indicators
+        lines_to_remove = [
+            r'.*Base carregada:.*',
+            r'.*Historico da conversa:.*',
+            r'.*Modo retrieval ativado.*',
+            r'.*Para sair do modo de retrieval.*',
+            r'.*Assistente:.*RETRIEVAL.*',
+            r'.*Modo de retrieval.*',
+            r'.*fim da conversa.*',
+        ]
+
+        for pattern in lines_to_remove:
+            response = re.sub(pattern, '', response, flags=re.IGNORECASE | re.MULTILINE)
+
+        # Remove excessive newlines
+        response = re.sub(r'\n{3,}', '\n\n', response)
+
+        # Clean up leading/trailing whitespace
+        response = response.strip()
+
+        return response
+
     # Esta chamada monta o payload final que o chain de retrieval usa para responder.
     def _invoke_retrieval_agent(
         self,
@@ -90,11 +128,12 @@ class RetrievalAgentMixin:
             prompt_value = prompt_template.invoke(input_dict)
             prompt_text = prompt_value.to_string()
             raw_response = llm_client.invoke(prompt_value)
+            cleaned_response = self._clean_retrieval_response(raw_response)
             self._update_retrieval_diagnostics_summary(
                 prompt_text=prompt_text,
                 raw_llm_response=raw_response,
             )
-            return raw_response
+            return cleaned_response
         return self.answer_chain.invoke(input_dict)
 
     def _invoke_benchmark_grading_agent(self, grading_payload: dict[str, object]) -> dict[str, object]:

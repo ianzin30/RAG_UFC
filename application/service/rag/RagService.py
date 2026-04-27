@@ -8,7 +8,10 @@ tracing for debugging.
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_community.vectorstores import FAISS
 
+from .modules.AnswerProcessing import AnswerProcessingMixin
+from .modules.ChunkExpansion import ChunkExpansionMixin
 from .modules.DocumentResolution import DocumentResolutionMixin
+from .modules.GraderPayloadOptimization import GraderPayloadOptimizationMixin
 from .modules.Prompting import PromptingMixin
 from .modules.Retrieval import RetrievalMixin
 from .modules.Routing import RoutingMixin
@@ -25,6 +28,9 @@ from .parts.TraceBuilders import RAGServiceTraceBuilderMixin
 
 
 class RAGService(
+    AnswerProcessingMixin,
+    ChunkExpansionMixin,
+    GraderPayloadOptimizationMixin,
     PromptingMixin,
     SpreadsheetMixin,
     RetrievalMixin,

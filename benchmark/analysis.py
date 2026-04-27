@@ -409,7 +409,11 @@ class BenchmarkAnalyzer:
             if support_level == "implicit":
                 answer_presence_in_evidence = "implicit"
 
-        generated_answer = str(trace.get("answer_text") or "").strip()
+        # P0 Fix: Use generated_answer (clean) if available, otherwise extract from answer_text
+        generated_answer = str(trace.get("generated_answer") or "").strip()
+        if not generated_answer:
+            # Fallback for older traces without generated_answer field
+            generated_answer = str(trace.get("answer_text") or "").strip()
         generated_answer_support = self._text_support_level(generated_answer, expected_variants)
         generated_answer_has_expected = generated_answer_support in {"explicit", "implicit"}
         abstained = bool(trace.get("abstained"))

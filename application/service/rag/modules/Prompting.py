@@ -22,13 +22,16 @@ class PromptingMixin:
                 "2. Quando a resposta exigir um nome proprio, copie-o EXATAMENTE como aparece no trecho - incluindo "
                 "titulacoes (Prof., Profa., Dr.), preposicoes (de, da, do, dos, das) e todos os nomes do meio. Nao abrevie "
                 "nem normalize a grafia.\n"
-                "3. Quando a resposta for um numero, data, valor monetario, sigla ou cidade, copie-o EXATAMENTE como "
+                "3. Se a pergunta exige um nome proprio e nenhum trecho contem esse nome de forma completa "
+                "(titulacao + nome + sobrenome), NAO escreva uma resposta parcial nem deixe a frase truncada. "
+                "Responda apenas: \"Nao encontrei essa informacao nos trechos fornecidos.\"\n"
+                "4. Quando a resposta for um numero, data, valor monetario, sigla ou cidade, copie-o EXATAMENTE como "
                 "aparece no trecho.\n"
-                "4. Se nenhum trecho contiver a resposta, responda apenas: \"Nao encontrei essa informacao nos trechos "
+                "5. Se nenhum trecho contiver a resposta, responda apenas: \"Nao encontrei essa informacao nos trechos "
                 "fornecidos.\"\n"
-                "5. Nao use saudacoes, introducoes, desculpas, comentarios sobre o processo nem frases como \"baseado no "
+                "6. Nao use saudacoes, introducoes, desculpas, comentarios sobre o processo nem frases como \"baseado no "
                 "contexto\" ou \"de acordo com os trechos\".\n"
-                "6. Responda em portugues, de forma direta, em ate duas frases - exceto quando a pergunta pedir "
+                "7. Responda em portugues, de forma direta, em ate duas frases - exceto quando a pergunta pedir "
                 "explicitamente uma lista, resumo ou explicacao mais longa.",
             ),
             (

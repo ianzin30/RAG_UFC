@@ -281,23 +281,40 @@ class DocumentResolutionMixin:
         if not question_dates:
             return []
 
-        matches = []
+        matches: list[str] = []
         for normalized_date in question_dates:
-            documents_for_date = []
-            for document in self._get_document_registry():
-                document_dates = set(str(value) for value in list(document.get("document_full_dates") or []))
-                meeting_date = str(document.get("meeting_date") or "").strip()
-                if meeting_date:
-                    document_dates.add(meeting_date)
-                if normalized_date in document_dates:
-                    document_name = str(document.get("name") or document.get("document_name") or "").strip()
-                    if document_name:
-                        documents_for_date.append(document_name)
+            # Prefer documents whose meeting_date equals the query date.
+            # This avoids cross-reference noise: an ATA that mentions "14/01/2022"
+            # in the body is not the meeting that happened on that day.
+            meeting_match = [
+                str(document.get("name") or document.get("document_name") or "").strip()
+                for document in self._get_document_registry()
+                if str(document.get("meeting_date") or "").strip() == normalized_date
+            ]
+            meeting_match = [name for name in meeting_match if name]
+            if len(set(meeting_match)) == 1:
+                matches.extend(meeting_match)
+                continue
+
+            # Fallback: the document_full_dates intersection (preserves prior
+            # behavior for documents with no meeting_date).
+            documents_for_date = [
+                str(document.get("name") or document.get("document_name") or "").strip()
+                for document in self._get_document_registry()
+                if normalized_date in set(str(value) for value in list(document.get("document_full_dates") or []))
+            ]
+            documents_for_date = [name for name in documents_for_date if name]
             if len(set(documents_for_date)) == 1:
                 matches.extend(documents_for_date)
         return list(dict.fromkeys(matches))
 
     def _extract_meeting_metadata(self, document_name: str, text: str, source: str | None = None) -> dict:
+        # Prefer dates in the first 8 non-empty lines (where ATAs put their
+        # canonical "realizada em DD de MMMM de YYYY" header). This avoids
+        # picking a stale cross-reference that happens to appear before the
+        # real meeting date in the body.
+        head_text = "\n".join(line for line in (text or "").splitlines()[:8] if line.strip())
+        head_dates = self._extract_normalized_full_dates(head_text)
         full_dates = self._collect_unique_document_values(
             [
                 *self._extract_normalized_full_dates(document_name),
@@ -306,7 +323,7 @@ class DocumentResolutionMixin:
             ],
             limit=12,
         )
-        meeting_date = full_dates[0] if full_dates else None
+        meeting_date = head_dates[0] if head_dates else (full_dates[0] if full_dates else None)
         meeting_day = meeting_month = meeting_year = None
         if meeting_date:
             year, month, day = meeting_date.split("-", 2)

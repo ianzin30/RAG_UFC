@@ -34,9 +34,15 @@ from .run import _resolve_user_path, _write_outputs
 
 
 GRID: tuple[tuple[int, int], ...] = (
+    (1600, 300),
+    (1000, 200),
+    (1200, 200),
     (800, 150),
     (500, 100),
     (200, 50),
+    (100, 20),
+    (50, 10),
+
 )
 
 

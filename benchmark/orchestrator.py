@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import copy
+import json
 from collections import Counter
 from dataclasses import asdict, is_dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Callable
+from typing import Any, Callable
 
 from .analysis import BenchmarkAnalyzer
 from .questions import BenchmarkQuestion
@@ -29,6 +30,9 @@ ALLOWED_AGENT_SUPPORT = {"direct", "partial", "none"}
 
 
 class BenchmarkRunner:
+    MAX_CONTEXT_CHARS = 6000  # P1: Safe threshold for JSON serialization
+    CONTEXT_FALLBACK_CHARS = 4000
+
     def __init__(
         self,
         *,
@@ -45,6 +49,93 @@ class BenchmarkRunner:
         self.progress_context = dict(progress_context or {})
         self._services: dict[str, object] = {}
         self._corpus_cache: dict[str, list[dict[str, object]]] = {}
+
+    def _truncate_context_safely(self, context: str, max_chars: int = MAX_CONTEXT_CHARS) -> str:
+        """P1 Fix: Truncate context with word boundary preservation."""
+        if len(context) <= max_chars:
+            return context
+        truncated = context[:max_chars]
+        last_space = truncated.rfind(' ')
+        if last_space > max_chars * 0.8:
+            truncated = truncated[:last_space] + ' [...truncated]'
+        else:
+            truncated = truncated.strip() + ' [...truncated]'
+        return truncated
+
+    def _validate_grader_payload_json(self, payload: dict[str, Any]) -> bool:
+        """P1 Fix: Validate that payload can be serialized to JSON."""
+        try:
+            json.dumps(payload, ensure_ascii=False)
+            return True
+        except (TypeError, ValueError, UnicodeEncodeError):
+            return False
+
+    def _optimize_grader_payload(self, grader_payload: dict[str, object]) -> dict[str, object]:
+        """P1 Fix: Optimize grader payload to fix JSON serialization."""
+        optimized = dict(grader_payload)
+        answer_context = str(optimized.get("answer_context") or "")
+
+        if len(answer_context) > self.MAX_CONTEXT_CHARS:
+            optimized["answer_context"] = self._truncate_context_safely(answer_context, self.MAX_CONTEXT_CHARS)
+            optimized["answer_context_truncated"] = True
+
+        if self._validate_grader_payload_json(optimized):
+            return optimized
+
+        # Further truncate on failure
+        answer_context = str(optimized.get("answer_context") or "")
+        if len(answer_context) > self.CONTEXT_FALLBACK_CHARS:
+            optimized["answer_context"] = self._truncate_context_safely(answer_context, self.CONTEXT_FALLBACK_CHARS)
+
+        # Use selected_context excerpts if still failing
+        if not self._validate_grader_payload_json(optimized):
+            selected = optimized.get("selected_context", [])
+            excerpt_texts = [
+                str(entry.get("text") or "")[:400] for entry in (selected or []) if entry
+            ]
+            combined_excerpts = "\n---\n".join(excerpt_texts)
+            optimized["answer_context"] = combined_excerpts
+            optimized["answer_context_fallback_to_excerpts"] = True
+
+        return optimized
+
+    def _build_safe_grader_payload(
+        self,
+        question_id: str,
+        question: str,
+        expected_answer: str,
+        generated_answer: str,
+        selected_context: list[dict[str, object]],
+        answer_context: str,
+        deterministic_metrics: dict[str, object],
+        deterministic_grounding: dict[str, object],
+        deterministic_failure: dict[str, object],
+    ) -> dict[str, object]:
+        """P1 Fix: Build grader payload with size and encoding safety."""
+        payload = {
+            "question_id": str(question_id),
+            "question": str(question)[:1000],
+            "expected_answer": str(expected_answer)[:500],
+            "generated_answer": str(generated_answer)[:500],
+            "selected_context": selected_context[:5],
+            "answer_context": str(answer_context)[:self.MAX_CONTEXT_CHARS],
+            "deterministic_retrieval_metrics": dict(deterministic_metrics or {}),
+            "deterministic_grounding": dict(deterministic_grounding or {}),
+            "deterministic_failure": dict(deterministic_failure or {}),
+        }
+        optimized = self._optimize_grader_payload(payload)
+        if not self._validate_grader_payload_json(optimized):
+            # Minimal fallback
+            optimized = {
+                "question_id": str(question_id),
+                "question": str(question)[:200],
+                "expected_answer": str(expected_answer)[:200],
+                "generated_answer": str(generated_answer)[:200],
+                "deterministic_retrieval_metrics": {},
+                "deterministic_grounding": {},
+                "deterministic_failure": {},
+            }
+        return optimized
 
     def _emit_progress(self, event: dict[str, object]) -> None:
         if self.progress_callback is None:
@@ -176,7 +267,7 @@ class BenchmarkRunner:
                 }
             )
 
-        return {
+        payload = {
             "question_id": question.normalized_id,
             "collection": question.collection,
             "question": question.question,
@@ -191,6 +282,21 @@ class BenchmarkRunner:
             "deterministic_failure": failure,
             "deterministic_failure_notes": list(failure.get("notes") or []),
         }
+
+        # P1 Fix: Optimize grader payload for reliable JSON parsing
+        payload = self._build_safe_grader_payload(
+            question_id=question.normalized_id,
+            question=question.question,
+            expected_answer=question.expected_answer,
+            generated_answer=str(generation.get("generated_answer") or ""),
+            selected_context=selected_context,
+            answer_context=str(retrieval.get("answer_context") or ""),
+            deterministic_metrics=retrieval.get("metrics") or {},
+            deterministic_grounding=grounding,
+            deterministic_failure=failure,
+        )
+
+        return payload
 
     def _fallback_agent_grading(self, reason: str) -> dict[str, object]:
         return {

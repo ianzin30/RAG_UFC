@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import shutil
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from .bootstrap import (
@@ -17,6 +18,22 @@ from .bootstrap import (
 from .orchestrator import BenchmarkRunner
 from .questions import load_questions
 from .reporting import render_markdown_report
+from .ui import get_ui
+from .warnings_filter import suppress_noisy_warnings
+
+
+def _progress_handler(event: dict[str, object], ui) -> None:
+    """Handle progress events from the benchmark runner."""
+    event_type = str(event.get("event") or "").strip()
+
+    if event_type == "question_started":
+        question_id = str(event.get("question_id") or "?")
+        question_index = int(event.get("question_index") or 0)
+        question_total = int(event.get("question_total") or 0)
+        ui.update_question(question_id, question_index, question_total)
+
+    elif event_type == "question_completed":
+        ui.advance_progress()
 
 
 def _resolve_user_path(raw_path: str) -> Path:
@@ -73,6 +90,9 @@ def _build_argument_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    # Suppress non-critical warnings early
+    suppress_noisy_warnings()
+
     bootstrap_python_path()
     parser = _build_argument_parser()
     args = parser.parse_args(argv)
@@ -89,16 +109,64 @@ def main(argv: list[str] | None = None) -> int:
         if not questions:
             parser.error("No benchmark questions matched the provided --question-id filter.")
 
+    # Initialize UI
+    ui = get_ui()
+    ui.show_header("Benchmark: RAG Evaluation")
+
+    # Setup steps
+    ui.step_setup("Loading configuration")
+    try:
+        runtime_config = get_runtime_config()
+        ui.step_complete("Configuration loaded")
+    except Exception as exc:
+        ui.step_error("Configuration", str(exc))
+        return 1
+
+    ui.step_setup("Initializing service")
+    try:
+        service_cls = get_rag_service_class()
+        ui.step_complete("Service initialized")
+    except Exception as exc:
+        ui.step_error("Service initialization", str(exc))
+        return 1
+
+    ui.step_setup("Setting up retrieval mode")
+    try:
+        retrieval_mode = get_retrieval_mode_command()
+        ui.step_complete("Retrieval mode ready")
+    except Exception as exc:
+        ui.step_error("Retrieval mode setup", str(exc))
+        return 1
+
+    # Create runner with progress callback
     runner = BenchmarkRunner(
-        service_cls=get_rag_service_class(),
+        service_cls=service_cls,
         runtime_config_loader=get_runtime_config,
-        retrieval_mode_command=get_retrieval_mode_command(),
+        retrieval_mode_command=retrieval_mode,
+        progress_callback=lambda event: _progress_handler(event, ui),
     )
-    run_payload = runner.run(questions, questions_path=questions_path)
+
+    # Start progress tracking and run benchmark
+    progress_bar = ui.start_progress(len(questions))
+    start_time = datetime.now()
+
+    try:
+        run_payload = runner.run(questions, questions_path=questions_path)
+    finally:
+        ui.stop_progress()
+
+    elapsed = datetime.now() - start_time
+
+    # Write outputs
     markdown_path, json_path = _write_outputs(run_payload, output_dir=output_dir)
 
-    print(f"Benchmark study written to: {markdown_path}")
-    print(f"Benchmark diagnostics written to: {json_path}")
+    # Display results
+    ui.show_results_summary(len(questions), run_payload)
+    results = list(run_payload.get("results") or [])
+    ui.show_results_table(results)
+    ui.show_file_output(markdown_path, json_path)
+    ui.show_completion(elapsed)
+
     return 0
 
 

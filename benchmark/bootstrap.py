@@ -27,7 +27,7 @@ def get_runtime_config():
 
 def get_rag_service_class():
     bootstrap_python_path()
-    from service.rag import RAGService
+    from service.rag.RAGService import RAGService
 
     return RAGService
 

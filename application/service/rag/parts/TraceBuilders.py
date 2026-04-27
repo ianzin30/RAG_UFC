@@ -29,6 +29,15 @@ class RAGServiceTraceBuilderMixin:
         trace["focus_release_reason"] = str(focus_release_reason or "").strip() or None
         trace["recovery_search_performed"] = bool(recovery_search_performed)
         trace["recovery_matched_documents"] = list(recovery_matched_documents or [])
+
+        # P0 Fix: Extract clean answer for evaluation (without mode wrapper)
+        # Store both formatted answer (for display) and clean answer (for evaluation)
+        answer_text = str(trace.get("answer_text") or "").strip()
+        if answer_text:
+            trace["generated_answer"] = self._extract_clean_answer(answer_text)
+        else:
+            trace["generated_answer"] = ""
+
         return trace
 
     # Este trace cobre a troca explicita entre modo casual e modo retrieval.
