@@ -17,7 +17,7 @@ import streamlit as st
 from presentation import chat_sessions
 from presentation.shared.CollectionSelection import clone_collection_selection, normalize_collection_selection
 from presentation.integrations import GoogleDrive as google_drive
-from service.rag import RAGService
+from service.rag.RAGService import RAGService
 
 # Available LLM models with display names
 CHAT_MODELS = {
