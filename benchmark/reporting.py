@@ -173,6 +173,7 @@ def render_markdown_report(run_payload: dict[str, object]) -> str:
 
     run_id = str(run_payload.get("run_id") or "")
     generated_at = str(run_payload.get("generated_at") or "")
+    elapsed_formatted = str(run_payload.get("elapsed_formatted") or "—")
     collections = ", ".join(list(run_payload.get("collections") or [])) or "—"
 
     lines: list[str] = [
@@ -180,6 +181,7 @@ def render_markdown_report(run_payload: dict[str, object]) -> str:
         "",
         f"**Execução:** {run_id}  ",
         f"**Data:** {generated_at}  ",
+        f"**Tempo Decorrido:** {elapsed_formatted}  ",
         f"**Coleção:** {collections}  ",
         "",
     ]

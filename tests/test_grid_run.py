@@ -83,7 +83,60 @@ def test_grid_run_label_uses_embedding_model_leaf() -> None:
     assert label == "bge-m3-800chunk-150overlap"
 
 
-def test_run_grid_dispatches_one_output_directory_per_parameter_pair(
+def test_extract_llm_model_candidates_reads_active_and_commented_models(capsys) -> None:
+    config_text = """
+[model]
+# Tested alternatives:
+#   "qwen2.5:14b"
+#   "cow/gemma2_tools:2b"
+#   "qwen3:8b
+ufc_model_name = "gpt-oss:20b"
+
+[generation]
+temperature = 0.2
+"""
+
+    models = GridRun._extract_llm_model_candidates(config_text)
+
+    assert models == ["qwen2.5:14b", "cow/gemma2_tools:2b", "gpt-oss:20b"]
+    assert "Skipping malformed commented model candidate" in capsys.readouterr().out
+
+
+def test_extract_llm_model_candidates_deduplicates_in_config_order() -> None:
+    config_text = """
+[model]
+#   "gpt-oss:20b"
+#   "qwen2.5:14b"
+#   "gpt-oss:20b"
+ufc_model_name = "qwen2.5:14b"
+"""
+
+    assert GridRun._extract_llm_model_candidates(config_text) == [
+        "gpt-oss:20b",
+        "qwen2.5:14b",
+    ]
+
+
+def test_model_slug_removes_colons_and_keeps_path_context() -> None:
+    assert GridRun._slug_model_name("gpt-oss:20b") == "gpt-oss20b"
+    assert GridRun._slug_model_name("cow/gemma2_tools:2b") == "cow_gemma2_tools2b"
+
+
+def test_model_config_override_preserves_base_config_except_model_name() -> None:
+    base_config = make_runtime_config()
+
+    model_config = GridRun._build_model_config(base_config, model_name="gpt-oss:20b")
+
+    assert base_config.ufc_model_name == "llama3.1:8b"
+    assert model_config.ufc_model_name == "gpt-oss:20b"
+    assert model_config.embedding == base_config.embedding
+    assert model_config.splitter == base_config.splitter
+    assert model_config.retrieval == base_config.retrieval
+    assert model_config.rag == base_config.rag
+    assert model_config.generation == base_config.generation
+
+
+def test_run_grid_dispatches_one_output_directory_per_detected_model(
     tmp_path: Path,
     monkeypatch,
 ) -> None:
@@ -131,22 +184,23 @@ def test_run_grid_dispatches_one_output_directory_per_parameter_pair(
                     "retrieval_mode_command": self.retrieval_mode_command,
                     "question_ids": [question.normalized_id for question in run_questions],
                     "questions_path": questions_path,
-                    "snapshot_chunk_size": snapshot_config.splitter.chunk_size,
+                    "snapshot_model_name": snapshot_config.ufc_model_name,
+                    "patched_model_name": patched_config.ufc_model_name,
                     "patched_chunk_size": patched_config.splitter.chunk_size,
-                    "patched_chunk_overlap": patched_config.splitter.chunk_overlap,
                     "progress_callback": self.progress_callback,
+                    "progress_context": self.progress_context,
                 }
             )
             return {
-                "run_id": f"{patched_config.splitter.chunk_size}_{patched_config.splitter.chunk_overlap}",
+                "run_id": f"run_{GridRun._slug_model_name(patched_config.ufc_model_name)}",
                 "generated_at": "2026-04-24T00:00:00+00:00",
                 "questions_file": str(questions_path),
                 "collections": ["google_drive_rag"],
-                "config_snapshot": {},
+                "config_snapshot": {"ufc_model_name": "wrong-model"},
                 "results": [],
             }
 
-    stale_json = tmp_path / "bge-m3-800chunk-150overlap" / "latest_diagnostics.json"
+    stale_json = tmp_path / "gpt-oss20b" / "latest_diagnostics.json"
     stale_json.parent.mkdir(parents=True)
     stale_json.write_text("stale", encoding="utf-8")
 
@@ -168,6 +222,11 @@ def test_run_grid_dispatches_one_output_directory_per_parameter_pair(
     monkeypatch.setattr(GridRun, "get_rag_service_class", lambda: "FakeService")
     monkeypatch.setattr(GridRun, "get_retrieval_mode_command", lambda: "BUSCAR")
     monkeypatch.setattr(GridRun, "load_questions", lambda questions_path: questions)
+    monkeypatch.setattr(
+        GridRun,
+        "_read_llm_model_candidates",
+        lambda: ["gpt-oss:20b", "cow/gemma2_tools:2b"],
+    )
     monkeypatch.setattr(GridRun, "BenchmarkRunner", FakeBenchmarkRunner)
     monkeypatch.setattr(GridRun, "_write_outputs", fake_write_outputs)
 
@@ -175,27 +234,34 @@ def test_run_grid_dispatches_one_output_directory_per_parameter_pair(
         questions_path=Path("benchmark/questions.json"),
         output_root=tmp_path,
         question_ids=["q2"],
-        grid=((800, 150), (500, 100)),
         show_progress=False,
     )
 
     assert [output.label for output in outputs] == [
-        "bge-m3-800chunk-150overlap",
-        "bge-m3-500chunk-100overlap",
+        "gpt-oss20b",
+        "cow_gemma2_tools2b",
     ]
     assert [output.output_dir for output in outputs] == [
-        tmp_path / "bge-m3-800chunk-150overlap",
-        tmp_path / "bge-m3-500chunk-100overlap",
+        tmp_path / "gpt-oss20b",
+        tmp_path / "cow_gemma2_tools2b",
     ]
     assert [call["question_ids"] for call in calls] == [["q2"], ["q2"]]
-    assert [call["snapshot_chunk_size"] for call in calls] == [800, 500]
-    assert [call["patched_chunk_size"] for call in calls] == [800, 500]
-    assert [call["patched_chunk_overlap"] for call in calls] == [150, 100]
+    assert [call["snapshot_model_name"] for call in calls] == [
+        "gpt-oss:20b",
+        "cow/gemma2_tools:2b",
+    ]
+    assert [call["patched_model_name"] for call in calls] == [
+        "gpt-oss:20b",
+        "cow/gemma2_tools:2b",
+    ]
+    assert [call["patched_chunk_size"] for call in calls] == [800, 800]
     assert [call["progress_callback"] for call in calls] == [None, None]
     assert all(call["service_cls"] == "FakeService" for call in calls)
     assert all(call["retrieval_mode_command"] == "BUSCAR" for call in calls)
     assert all(output.markdown_path.exists() for output in outputs)
     assert all(output.json_path.exists() for output in outputs)
+    assert outputs[0].markdown_path == tmp_path / "gpt-oss20b" / "gpt-oss20b_study.md"
+    assert outputs[0].json_path == tmp_path / "gpt-oss20b" / "gpt-oss20b_diagnostics.json"
     assert not stale_json.exists()
 
 
@@ -290,6 +356,7 @@ def test_run_grid_progress_path_updates_grid_and_question_tasks(
     monkeypatch.setattr(GridRun, "get_rag_service_class", lambda: "FakeService")
     monkeypatch.setattr(GridRun, "get_retrieval_mode_command", lambda: "BUSCAR")
     monkeypatch.setattr(GridRun, "load_questions", lambda questions_path: questions)
+    monkeypatch.setattr(GridRun, "_read_llm_model_candidates", lambda: ["gpt-oss:20b"])
     monkeypatch.setattr(GridRun, "BenchmarkRunner", FakeBenchmarkRunner)
     monkeypatch.setattr(GridRun, "_write_outputs", fake_write_outputs)
     monkeypatch.setattr(GridRun, "_create_progress", lambda: fake_progress)
@@ -297,16 +364,15 @@ def test_run_grid_progress_path_updates_grid_and_question_tasks(
     outputs = GridRun.run_grid(
         questions_path=Path("benchmark/questions.json"),
         output_root=tmp_path,
-        grid=((200, 50),),
         show_progress=True,
     )
 
-    assert [output.label for output in outputs] == ["bge-m3-200chunk-50overlap"]
+    assert [output.label for output in outputs] == ["gpt-oss20b"]
     assert fake_progress.added_tasks[0]["description"] == "Grid runs"
     assert fake_progress.added_tasks[1]["description"] == "Questions"
     assert any(
         update.get("task_id") == 1
-        and "running bge-m3-200chunk-50overlap" in str(update.get("status"))
+        and "running gpt-oss20b" in str(update.get("status"))
         for update in fake_progress.updates
     )
     assert any(

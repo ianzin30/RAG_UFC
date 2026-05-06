@@ -1,22 +1,25 @@
 # Runtime configuration for the RAG system.
 # All values here apply uniformly to every collection under data/collections/;
 # nothing in this file is collection-specific.
+#   "phi4:latest"
+#   "granite3-dense:8b"
+#   "deepseek-r1:14b"
+#   "glm-4.7-flash:latest"
+
 
 [model]
 # Default Ollama model for answer/small-talk/rewrite chains.
 # Tested alternatives that improve Portuguese factuality on the benchmark
 # (pick based on available VRAM):
-#   "qwen2.5:14b"
-#   "qwen3:14b"
 #   "phi4:latest"
-#   "gemma3:12b"
-ufc_model_name = "qwen2.5:14b"
+
+ufc_model_name = "phi4:latest"
 
 [generation]
 # Ollama sampling options. temperature=0.0 is the highest-leverage knob for
 # copy-fidelity on factual questions: it stops the model from paraphrasing
 # proper nouns, dates, and numeric values that appear verbatim in the context.
-temperature = 0.5
+temperature = 0.2
 top_p = 0.9
 repeat_penalty = 1.05
 # Optional. Uncomment to make answers reproducible across runs:
@@ -28,7 +31,7 @@ repeat_penalty = 1.05
 model_name = "BAAI/bge-m3"
 device = "cuda"          # cuda | mps | cpu (auto-downgrades if unavailable)
 quantization = "none"     # 4bit (CUDA only) | int8 (CPU ONNX) | none
-batch_size = 2
+batch_size = 16
 max_length = 1024
 
 [splitter]
@@ -53,7 +56,7 @@ separators = [
 [retrieval]
 base_search_k = 12
 base_fetch_k = 30
-base_lambda_mult = 0.2
+base_lambda_mult = 0.8
 lexical_limit = 12
 candidate_pool_limit = 30
 # Top-N chunks passed to the answer LLM. Raising this from 8 to 12 covers

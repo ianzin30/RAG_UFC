@@ -1,4 +1,4 @@
-"""Lightweight benchmark grid runner for splitter experiments."""
+"""Lightweight benchmark runner for LLM comparison sweeps."""
 
 from __future__ import annotations
 
@@ -71,6 +71,82 @@ def _build_grid_config(base_config, *, chunk_size: int, chunk_overlap: int):
     return replace(base_config, splitter=splitter_config)
 
 
+def _slug_model_name(model_name: str) -> str:
+    slug = str(model_name or "").strip()
+    slug = slug.replace("\\", "_").replace("/", "_").replace(":", "")
+    slug = re.sub(r"[^A-Za-z0-9._-]+", "_", slug).strip("._-")
+    return slug or "model"
+
+
+def _build_model_config(base_config, *, model_name: str):
+    normalized_model_name = str(model_name or "").strip()
+    if not normalized_model_name:
+        raise ValueError("Missing model name for benchmark run.")
+    return replace(base_config, ufc_model_name=normalized_model_name)
+
+
+def _default_config_path() -> Path:
+    bootstrap_python_path()
+    import service.RuntimeConfig as runtime_config_module
+
+    return runtime_config_module.CONFIG_FILE
+
+
+def _add_unique_model(models: list[str], seen: set[str], model_name: str) -> None:
+    normalized_model_name = str(model_name or "").strip()
+    if not normalized_model_name or normalized_model_name in seen:
+        return
+    models.append(normalized_model_name)
+    seen.add(normalized_model_name)
+
+
+def _extract_llm_model_candidates(config_text: str) -> list[str]:
+    models: list[str] = []
+    seen: set[str] = set()
+    in_model_table = False
+    malformed_comments: list[str] = []
+
+    for line_number, raw_line in enumerate(config_text.splitlines(), start=1):
+        stripped = raw_line.strip()
+        if not stripped:
+            continue
+
+        table_match = re.fullmatch(r"\[([A-Za-z0-9_.-]+)\]", stripped)
+        if table_match:
+            in_model_table = table_match.group(1) == "model"
+            continue
+
+        if not in_model_table:
+            continue
+
+        active_match = re.match(r'ufc_model_name\s*=\s*"([^"]+)"', stripped)
+        if active_match:
+            _add_unique_model(models, seen, active_match.group(1))
+            continue
+
+        if not stripped.startswith("#"):
+            continue
+
+        comment_body = stripped.lstrip("#").strip()
+        quoted_match = re.fullmatch(r'"([^"]+)"', comment_body)
+        if quoted_match:
+            _add_unique_model(models, seen, quoted_match.group(1))
+            continue
+        if '"' in comment_body:
+            malformed_comments.append(f"line {line_number}: {comment_body}")
+
+    for malformed_comment in malformed_comments:
+        print(f"Skipping malformed commented model candidate in config.toml ({malformed_comment})")
+
+    return models
+
+
+def _read_llm_model_candidates(config_path: Path | None = None) -> list[str]:
+    resolved_config_path = Path(config_path) if config_path is not None else _default_config_path()
+    config_text = resolved_config_path.read_text(encoding="utf-8")
+    return _extract_llm_model_candidates(config_text)
+
+
 def _embedding_model_slug(runtime_config) -> str:
     embedding_config = getattr(runtime_config, "embedding", None)
     model_name = str(
@@ -85,6 +161,10 @@ def _embedding_model_slug(runtime_config) -> str:
 
 def _build_run_label(runtime_config, *, chunk_size: int, chunk_overlap: int) -> str:
     return f"{_embedding_model_slug(runtime_config)}-{int(chunk_size)}chunk-{int(chunk_overlap)}overlap"
+
+
+def _build_model_run_label(model_name: str) -> str:
+    return _slug_model_name(model_name)
 
 
 def _filter_questions(
@@ -110,6 +190,34 @@ def _clear_grid_output_reports(output_dir: Path) -> None:
         for output_file in output_dir.glob(pattern):
             if output_file.is_file():
                 output_file.unlink()
+
+
+def _write_model_outputs(
+    run_payload: dict[str, object],
+    *,
+    output_dir: Path,
+    model_slug: str,
+) -> tuple[Path, Path]:
+    markdown_path, json_path = _write_outputs(
+        run_payload,
+        output_dir=output_dir,
+        write_latest=False,
+    )
+    target_markdown_path = output_dir / f"{model_slug}_study.md"
+    target_json_path = output_dir / f"{model_slug}_diagnostics.json"
+
+    if markdown_path != target_markdown_path:
+        if target_markdown_path.exists():
+            target_markdown_path.unlink()
+        markdown_path.replace(target_markdown_path)
+        markdown_path = target_markdown_path
+    if json_path != target_json_path:
+        if target_json_path.exists():
+            target_json_path.unlink()
+        json_path.replace(target_json_path)
+        json_path = target_json_path
+
+    return markdown_path, json_path
 
 
 def _create_progress() -> Progress:
@@ -280,26 +388,21 @@ def run_grid(
         raise ValueError("No benchmark questions matched the provided --question-id filter.")
 
     base_config = get_runtime_config()
+    model_names = _read_llm_model_candidates()
+    if not model_names:
+        model_names = [base_config.ufc_model_name]
     service_cls = get_rag_service_class()
     retrieval_mode_command = get_retrieval_mode_command()
     outputs: list[GridRunOutput] = []
 
     with _progress_tasks(
         enabled=show_progress,
-        total_grid_runs=len(grid),
+        total_grid_runs=len(model_names),
         total_questions=len(questions),
     ) as progress_tasks:
-        for chunk_size, chunk_overlap in grid:
-            run_config = _build_grid_config(
-                base_config,
-                chunk_size=chunk_size,
-                chunk_overlap=chunk_overlap,
-            )
-            label = _build_run_label(
-                run_config,
-                chunk_size=chunk_size,
-                chunk_overlap=chunk_overlap,
-            )
+        for model_name in model_names:
+            run_config = _build_model_config(base_config, model_name=model_name)
+            label = _build_model_run_label(model_name)
             output_dir = output_root / label
             if progress_tasks is not None:
                 progress_tasks.progress.update(
@@ -312,7 +415,7 @@ def run_grid(
                     total=len(questions),
                     visible=True,
                     description=f"Questions ({label})",
-                    status=f"waiting for index | chunk={chunk_size}, overlap={chunk_overlap}",
+                    status=f"waiting for index | model={model_name}",
                 )
                 progress_tasks.progress.update(
                     progress_tasks.index_task,
@@ -320,7 +423,7 @@ def run_grid(
                     total=1,
                     visible=True,
                     description=f"Index ({label})",
-                    status=f"chunk={chunk_size}, overlap={chunk_overlap}",
+                    status=f"model={model_name}",
                 )
 
             runner = BenchmarkRunner(
@@ -334,19 +437,22 @@ def run_grid(
                 ),
                 progress_context={
                     "run_label": label,
-                    "chunk_size": int(chunk_size),
-                    "chunk_overlap": int(chunk_overlap),
+                    "model_name": model_name,
                     "output_dir": str(output_dir),
                 },
             )
             with _patched_runtime_config(run_config):
                 run_payload = runner.run(questions, questions_path=questions_path)
 
+            config_snapshot = dict(run_payload.get("config_snapshot") or {})
+            config_snapshot["ufc_model_name"] = model_name
+            run_payload["config_snapshot"] = config_snapshot
+
             _clear_grid_output_reports(output_dir)
-            markdown_path, json_path = _write_outputs(
+            markdown_path, json_path = _write_model_outputs(
                 run_payload,
                 output_dir=output_dir,
-                write_latest=False,
+                model_slug=label,
             )
             outputs.append(
                 GridRunOutput(
@@ -367,7 +473,7 @@ def run_grid(
 
 
 def _build_argument_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Run benchmark diagnostics over a parameter grid.")
+    parser = argparse.ArgumentParser(description="Run benchmark diagnostics over configured LLMs.")
     parser.add_argument(
         "--questions",
         default="benchmark/questions.json",
@@ -382,7 +488,7 @@ def _build_argument_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--output-root",
         default="benchmark/results",
-        help="Root directory where one folder per grid run will be written.",
+        help="Root directory where one folder per LLM run will be written.",
     )
     parser.add_argument(
         "--no-progress",
@@ -409,7 +515,7 @@ def main(argv: list[str] | None = None) -> int:
         parser.error(str(exc))
 
     for output in outputs:
-        print(f"Grid run {output.label}")
+        print(f"LLM run {output.label}")
         print(f"  Benchmark study written to: {output.markdown_path}")
         print(f"  Benchmark diagnostics written to: {output.json_path}")
     return 0

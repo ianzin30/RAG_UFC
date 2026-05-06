@@ -118,5 +118,112 @@
     ],
     "category": "travel",
     "source_document": "28_05-2025_Ata_de_Reuniao.md"
+  },
+  {
+    "id": 11,
+    "collection": "google_drive_rag",
+    "question": "Quais foram os nomes indicados para a Comissão de Avaliação Final do Estágio Probatório do Prof. João Paulo do Vale Madeiro em janeiro de 2022?",
+    "expected_answer": "João Fernando Lima Alcântara (Presidente), João Paulo Pordeus Gomes e Rudini Menezes Sampaio",
+    "accepted_answers": [
+      "João Fernando Lima Alcântara, João Paulo Pordeus Gomes e Rudini Menezes Sampaio"
+    ],
+    "category": "committee",
+    "source_document": "01_01-2022_Ata_de_Reuniao.md"
+  },
+  {
+    "id": 12,
+    "collection": "google_drive_rag",
+    "question": "Por qual motivo a Profa. Cláudia Linhares solicitou Licença Prêmio em março de 2023?",
+    "expected_answer": "Para exercer o cargo de Secretária Geral da Sociedade Brasileira para o Progresso da Ciência (SBPC)",
+    "accepted_answers": [
+      "Secretária Geral da Sociedade Brasileira para o Progresso da Ciência (SBPC)",
+      "Para exercer o cargo de Secretária Geral da SBPC"
+    ],
+    "category": "leave",
+    "source_document": "03_03-2023_Ata_de_Reuniao.md"
+  },
+  {
+    "id": 13,
+    "collection": "google_drive_rag",
+    "question": "Quais salas foram propostas para serem unidas na criação do novo laboratório (LEC 3)?",
+    "expected_answer": "A Sala de Estudo 1 (MDCC), a Sala do PET (Computação) e a Sala da Empresa Júnior (Matemática Industrial).",
+    "accepted_answers": [
+      "Sala de Estudo 1 (MDCC), Sala do PET (Computação) e Sala da Empresa Júnior (Matemática Industrial)",
+      "Sala de Estudo 1, Sala do PET e Sala da Empresa Júnior"
+    ],
+    "category": "infrastructure"
+  },
+  {
+    "id": 14,
+    "collection": "google_drive_rag",
+    "question": "Qual foi a alteração de nome aprovada para o projeto \"LDEC - Lenovo Diagnostics Evolution Chatbot\"?",
+    "expected_answer": "CH-IA: Chat-based Hardware dIAgnostics",
+    "accepted_answers": [
+      "O nome foi alterado para \"CH-IA: Chat-based Hardware dIAgnostics\"."
+    ],
+    "category": "projects"
+  },
+  {
+    "id": 15,
+    "collection": "google_drive_rag",
+    "question": "Quais as três possibilidades que a servidora Rosely Araújo vislumbrou para sua carreira antes de solicitar o PGD?",
+    "expected_answer": "Solicitar a aposentadoria, permanecer no departamento com o atrativo do PGD ou participar de um edital de remoção da UFC.",
+    "accepted_answers": [
+      "Aposentadoria, PGD ou edital de remoção",
+      "aposentadoria, continuar com PGD, edital de remoção"
+    ],
+    "category": "staff"
+  },
+  {
+    "id": 16,
+    "collection": "google_drive_rag",
+    "question": "Qual o valor da bolsa mensal aprovada para o Prof. Paulo Rego como coordenador do projeto \"Wise Control\" em abril de 2025?",
+    "expected_answer": "R$ 5.500,00",
+    "accepted_answers": [
+      "5500,00",
+      "5.500,00"
+    ],
+    "category": "projects"
+  },
+  {
+    "id": 17,
+    "collection": "google_drive_rag",
+    "question": "Quais são os cinco módulos que compõem o curso de extensão \"Capacitação em Qualidade e Processos de Software\"?",
+    "expected_answer": "Requisitos, Processos, Qualidade, Teste de Software e Qualidade de Dados",
+    "accepted_answers": [
+      "Módulos de Requisitos, Processos, Qualidade, Teste de Software e Qualidade de Dados."
+    ],
+    "category": "extension"
+  },
+  {
+    "id": 18,
+    "collection": "google_drive_rag",
+    "question": "Por que o Prof. João Paulo Pordeus solicitou licença para tratar de interesses particulares por três anos em novembro de 2023?",
+    "expected_answer": "Ele foi convidado para trabalhar na área de análise de dados em uma empresa privada (Solar - distribuidora da Coca-Cola).",
+    "accepted_answers": [
+      "Foi convidado para trabalhar na área de análise de dados na empresa Solar",
+      "Para trabalhar na empresa Solar"
+    ],
+    "category": "leave"
+  },
+  {
+    "id": 19,
+    "collection": "google_drive_rag",
+    "question": "Quem foi o coordenador do projeto \"Plataforma multibiométrica para identificação não invasiva de animais\" aprovado em janeiro de 2025?",
+    "expected_answer": "Prof. Paulo Rego",
+    "accepted_answers": [
+      "Paulo Rego"
+    ],
+    "category": "projects"
+  },
+  {
+    "id": 20,
+    "collection": "google_drive_rag",
+    "question": "Qual foi a carga horária mínima e máxima semanal exigida para candidatos a professor substituto que fossem alunos de pós-graduação, conforme o edital de 2025?",
+    "expected_answer": "Mínima de 13 e máxima de 18 horas semanais para o regime de 40 horas.",
+    "accepted_answers": [
+      "Mínima de 13 e máxima de 18 horas semanais"
+    ],
+    "category": "hiring"
   }
 ]

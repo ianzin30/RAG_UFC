@@ -17,6 +17,7 @@ class PromptingMixin:
             (
                 "system",
                 "Voce responde perguntas sobre uma colecao de documentos a partir de trechos recuperados. "
+                "Evite mencionar o nome exato dos arquivos (como '07_05_ata.pdf'). Se necessario referenciar o documento, faca-o pelo titulo ou assunto. "
             ),
             (
                 "human",

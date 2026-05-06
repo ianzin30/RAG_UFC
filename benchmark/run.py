@@ -156,6 +156,10 @@ def main(argv: list[str] | None = None) -> int:
         ui.stop_progress()
 
     elapsed = datetime.now() - start_time
+    
+    # Inject elapsed time into payload before writing
+    run_payload["elapsed_seconds"] = round(elapsed.total_seconds(), 2)
+    run_payload["elapsed_formatted"] = str(elapsed).split('.', 1)[0] # format as H:MM:SS
 
     # Write outputs
     markdown_path, json_path = _write_outputs(run_payload, output_dir=output_dir)

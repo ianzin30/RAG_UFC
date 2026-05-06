@@ -17,7 +17,7 @@ class UFCOllamaClient:
         api_key: str,
         model_name: str,
         api_url: str = DEFAULT_UFC_API_URL,
-        timeout_seconds: int = 210,
+        timeout_seconds: int = 420,
         generation_options: dict | None = None,
     ) -> None:
         self.api_key = api_key
@@ -57,23 +57,26 @@ class UFCOllamaClient:
                 timeout=self.timeout_seconds,
             )
         except requests.exceptions.Timeout as exc:
-            raise RuntimeError("Timeout while waiting for the UFC LLM response.") from exc
+            raise TimeoutError("Timeout while waiting for the UFC LLM response.") from exc
         except requests.exceptions.ConnectionError as exc:
-            raise RuntimeError("Could not connect to the UFC LLM endpoint.") from exc
+            raise TimeoutError("Could not connect to the UFC LLM endpoint.") from exc
         except requests.exceptions.RequestException as exc:
-            raise RuntimeError(f"Unexpected request error while calling the UFC LLM: {exc}") from exc
+            raise TimeoutError(f"Unexpected request error while calling the UFC LLM: {exc}") from exc
 
         if response.status_code != 200:
             detail = response.text.strip() or response.reason
-            raise RuntimeError(f"UFC LLM request failed with HTTP {response.status_code}: {detail}")
+            raise TimeoutError(f"UFC LLM request failed with HTTP {response.status_code}: {detail}")
 
         try:
             result = response.json()
         except ValueError as exc:
-            raise RuntimeError("UFC LLM response was not valid JSON.") from exc
+            raise TimeoutError("UFC LLM response was not valid JSON.") from exc
+
+        # Add this print statement to see what the server is actually returning
+        print("RAW SERVER RESPONSE:", result)
 
         answer = result.get("response")
         if not answer:
-            raise RuntimeError("UFC LLM response did not contain a 'response' field.")
+            raise TimeoutError("UFC LLM response did not contain a 'response' field.")
 
         return answer
