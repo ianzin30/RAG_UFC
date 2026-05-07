@@ -218,7 +218,6 @@ button[data-testid="baseButton-secondary"] {
     font-weight: 400 !important;
     cursor: pointer !important;
     box-shadow: none !important;
-    white-space: nowrap !important;
     overflow: hidden !important;
     width: 100% !important;
     height: 38px !important;
@@ -228,6 +227,16 @@ button[data-testid="baseButton-secondary"] {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+}
+/* Target the <p> Streamlit renders inside the button — this is where wrapping happens */
+button[data-testid="baseButton-secondary"] p,
+button[data-testid="baseButton-secondary"] span,
+button[data-testid="baseButton-secondary"] div {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    margin: 0 !important;
+    line-height: 38px !important;
 }
 button[data-testid="baseButton-secondary"]:hover {
     color: #93c5fd !important;
