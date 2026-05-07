@@ -196,22 +196,50 @@ div:has(> [data-testid="InputInstructions"]) {
     pointer-events: none !important;
 }
 
-/* Full-viewport centering wrapper */
-[data-testid="stMain"] > div:first-child {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 92vh;
+/* True full-viewport centering — make every Streamlit layer a flex column
+   so the block-container stretches to fill remaining height, then center
+   the auth card within it. Works on any screen size with no magic numbers. */
+.stApp, [data-testid="stApp"] {
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
-/* Card */
-div[data-testid="stVerticalBlock"]:has(> div > [data-testid="stForm"]) {
+[data-testid="stMain"] {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+[data-testid="stMainBlockContainer"] {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+[data-testid="stMainBlockContainer"] > .block-container {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 2rem 1rem !important;
+}
+
+/* Auth card wrapper — constrain width, let parent flex do the centering */
+.st-key-auth_card {
+    width: 100% !important;
+    max-width: 440px !important;
+}
+
+/* Card — visual styles only; width/centering handled by .st-key-auth_card above */
+.st-key-auth_card div[data-testid="stVerticalBlock"]:has(> div > [data-testid="stForm"]) {
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.10);
     border-radius: 14px;
     padding: 2.4rem 2.4rem 2rem;
-    width: 100%;
-    max-width: 420px;
     box-shadow: 0 4px 32px rgba(0,0,0,0.35);
 }
 
@@ -290,10 +318,7 @@ def _render_login_page() -> None:
 
     st.markdown(_CSS, unsafe_allow_html=True)
 
-    # Use columns to horizontally center the card
-    _, col, _ = st.columns([1, 2, 1])
-
-    with col:
+    with st.container(key="auth_card"):
         mode = _get_mode()
 
         # ── Title ──────────────────────────────────────────────────────────
