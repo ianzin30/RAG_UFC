@@ -40,6 +40,7 @@ class RAGServiceBootstrapMixin:
 
         self.api_key = ufc_api_key
         self.default_model_name = self.runtime_config.ufc_model_name
+        logger.info("Default UFC LLM model loaded from config: %s", self.default_model_name)
         embedding_model_name = self.runtime_config.embedding.model_name
         self.api_url = os.getenv("UFC_API_URL", DEFAULT_UFC_API_URL)
         self.embedding_model_name = embedding_model_name
@@ -83,6 +84,7 @@ class RAGServiceBootstrapMixin:
         self.generation_config = self.runtime_config.generation
 
         self.crewai_available = False
+        self.crewai_router_agent = None
         self.crewai_casual_agent = None
         self.crewai_retrieval_agent = None
         self.crewai_scope_agent = None
@@ -448,6 +450,7 @@ class RAGServiceBootstrapMixin:
             return
 
         self.model_name = normalized_model_name
+        logger.info("Activating UFC LLM model for RAG service: %s", self.model_name)
         self.llm_client = UFCOllamaClient(
             api_key=self.api_key,
             model_name=self.model_name,
@@ -461,13 +464,16 @@ class RAGServiceBootstrapMixin:
 
     # Esta etapa ativa os agentes opcionais sem quebrar o fluxo se o CrewAI nao estiver disponivel.
     def _initialize_crewai_agents(self) -> None:
+        active_model_name = self.model_name or self.default_model_name
+        logger.info("Initializing CrewAI agents with model: %s", active_model_name)
         self.crewai_llm = build_crewai_llm(
             api_key=self.api_key,
-            model_name=self.default_model_name,
+            model_name=active_model_name,
             api_url=self.api_url,
         )
         bundle = build_crewai_agent_bundle(self.agent_mode, llm=self.crewai_llm)
         self.crewai_available = bundle.available
+        self.crewai_router_agent = bundle.router_agent
         self.crewai_casual_agent = bundle.casual_agent
         self.crewai_retrieval_agent = bundle.retrieval_agent
         self.crewai_scope_agent = bundle.scope_agent

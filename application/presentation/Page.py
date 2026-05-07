@@ -7,6 +7,7 @@ the sidebar and main chat area. It serves as the entry point for the presentatio
 """
 
 import streamlit as st
+import logging
 
 from presentation import chat_sessions
 from presentation.chat import Chat as chat
@@ -22,6 +23,9 @@ from .shared.Styles import apply_global_styles
 from .shared.Theme import get_active_theme_name
 
 
+logger = logging.getLogger(__name__)
+
+
 def render_application() -> None:
     initialize_app_session_state()
     st.set_page_config(
@@ -35,6 +39,9 @@ def render_application() -> None:
     available_collections = list_available_collections(available_documents)
     default_collection = [available_collections[0]] if available_collections else None
     default_model = get_runtime_config().ufc_model_name
+    if not st.session_state.get("_default_model_logged"):
+        logger.info("Default UI LLM model loaded from config: %s", default_model)
+        st.session_state._default_model_logged = True
     chat_sessions.initialize_chat_sessions(default_collection=default_collection, default_model=default_model)
 
     selected_collections = sanitize_collection_selection(st.session_state.get("collection"), available_collections)

@@ -155,7 +155,7 @@ class InvalidAgentGradingService(FakeService):
         }
 
 
-def test_runner_resets_focus_and_starts_each_question_in_retrieval_mode() -> None:
+def test_runner_resets_focus_and_lets_questions_auto_route() -> None:
     FakeService.instances = []
     runner = BenchmarkRunner(
         service_cls=FakeService,
@@ -187,7 +187,7 @@ def test_runner_resets_focus_and_starts_each_question_in_retrieval_mode() -> Non
     assert len(FakeService.instances) == 1
     service = FakeService.instances[0]
     assert service.loaded_collections == ["google_drive_rag"]
-    assert [call[1] for call in service.calls if call[0] == "ask_question_with_trace"] == ["BUSCAR", "BUSCAR"]
+    assert [call[1] for call in service.calls if call[0] == "ask_question_with_trace"] == []
 
     diagnostic_calls = [
         call[1]

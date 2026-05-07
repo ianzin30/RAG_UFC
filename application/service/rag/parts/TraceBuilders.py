@@ -29,6 +29,10 @@ class RAGServiceTraceBuilderMixin:
         trace["focus_release_reason"] = str(focus_release_reason or "").strip() or None
         trace["recovery_search_performed"] = bool(recovery_search_performed)
         trace["recovery_matched_documents"] = list(recovery_matched_documents or [])
+        route_decision = getattr(self, "_active_route_decision", None)
+        if isinstance(route_decision, dict):
+            trace.setdefault("routing_reason", str(route_decision.get("reason") or "").strip() or None)
+            trace.setdefault("routing_source", str(route_decision.get("source") or "").strip() or None)
 
         # P0 Fix: Extract clean answer for evaluation (without mode wrapper)
         # Store both formatted answer (for display) and clean answer (for evaluation)

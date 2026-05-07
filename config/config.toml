@@ -2,9 +2,8 @@
 # All values here apply uniformly to every collection under data/collections/;
 # nothing in this file is collection-specific.
 #   "phi4:latest"
-#   "granite3-dense:8b"
 #   "deepseek-r1:14b"
-#   "glm-4.7-flash:latest"
+
 
 
 [model]
@@ -14,6 +13,16 @@
 #   "phi4:latest"
 
 ufc_model_name = "phi4:latest"
+
+[llm_models]
+# Runtime model selector options shown in the UI.
+# label is what the user sees; model_name is the Ollama model tag sent to the API.
+options = [
+    { label = "phi4:latest", model_name = "phi4:latest" },
+    { label = "llama:3.1:8b", model_name = "llama3.1:8b" },
+    { label = "qwen3:14b", model_name = "qwen3:14b" },
+    { label = "deepseek-r1:14b", model_name = "deepseek-r1:14b" },
+]
 
 [generation]
 # Ollama sampling options. temperature=0.0 is the highest-leverage knob for

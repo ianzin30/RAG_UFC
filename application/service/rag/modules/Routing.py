@@ -2,19 +2,17 @@
 
 Decides whether to answer from documents or use a general chat model, extracts
 focus terms for persistent retrieval context, and formats responses with
-mode-specific headers and footers.
+mode-specific headers.
 """
 import re
 
 from ..Constants import (
-    CASUAL_RESPONSE_FOOTER,
     CASUAL_RESPONSE_TITLE,
     MODE_CASUAL,
     MODE_RETRIEVAL,
     MODE_SWITCH_TO_CASUAL_COMMAND,
     MODE_SWITCH_TO_RETRIEVAL_COMMAND,
     MONTH_NAME_TO_NUMBER,
-    RETRIEVAL_RESPONSE_FOOTER,
     RETRIEVAL_RESPONSE_TITLE,
     REWRITE_REFERENCE_MARKERS,
 )
@@ -203,6 +201,229 @@ class RoutingMixin:
                 return route
         return MODE_CASUAL
 
+    def _normalize_route_decision(
+        self,
+        payload: dict[str, object] | None,
+        *,
+        source: str,
+    ) -> dict[str, object] | None:
+        mode = str((payload or {}).get("mode") or "").strip().lower()
+        if mode not in {MODE_CASUAL, MODE_RETRIEVAL}:
+            return None
+
+        reason = str((payload or {}).get("reason") or "").strip()
+        if not reason:
+            reason = "Mensagem classificada para roteamento automatico."
+        return {
+            "mode": mode,
+            "reason": reason,
+            "source": source,
+        }
+
+    def _has_pending_route_selection(self, chat_history) -> bool:
+        pending_document_getter = getattr(self, "_get_pending_document_refinement", None)
+        if callable(pending_document_getter) and pending_document_getter(chat_history):
+            return True
+
+        pending_clarification_getter = getattr(self, "_get_pending_retrieval_clarification", None)
+        if callable(pending_clarification_getter) and pending_clarification_getter():
+            return True
+        return False
+
+    def _is_casual_route_message(self, normalized_question: str) -> bool:
+        if not normalized_question:
+            return True
+
+        exact_casual_messages = {
+            "oi",
+            "ola",
+            "olá",
+            "bom dia",
+            "boa tarde",
+            "boa noite",
+            "tudo bem",
+            "beleza",
+            "obrigado",
+            "obrigada",
+            "valeu",
+            "tchau",
+            "ate mais",
+            "ate logo",
+            "quem e voce",
+            "quem eh voce",
+            "como voce esta",
+            "como voce funciona",
+            "o que voce faz",
+        }
+        if normalized_question in exact_casual_messages:
+            return True
+        if re.fullmatch(r"(muito\s+)?obrigad[oa].*", normalized_question):
+            return True
+        if re.fullmatch(r"(oi|ola|bom dia|boa tarde|boa noite)[\s,]*(tudo bem)?", normalized_question):
+            return True
+        return False
+
+    def _has_document_route_signal(self, question: str) -> bool:
+        normalized = self._normalize_identifier(question)
+        if not normalized:
+            return False
+
+        match_document_names = getattr(self, "_match_document_names", None)
+        if callable(match_document_names) and match_document_names(question):
+            return True
+
+        document_markers = (
+            "arquivo",
+            "arquivos",
+            "documento",
+            "documentos",
+            "pdf",
+            "pdfs",
+            "planilha",
+            "planilhas",
+            "csv",
+            "xlsx",
+            "excel",
+            "base carregada",
+            "base de documentos",
+            "colecao",
+            "colecao carregada",
+            "contexto",
+            "fonte",
+            "fontes",
+            "google drive",
+            "drive",
+            "ata",
+            "atas",
+            "reuniao",
+            "reunioes",
+        )
+        if any(marker in normalized for marker in document_markers):
+            return True
+
+        project_fact_markers = (
+            "projeto",
+            "empresa",
+            "parceira",
+            "instituicao",
+            "coordenador",
+            "coordenadora",
+            "pesquisador",
+            "pesquisadores",
+            "equipe",
+            "participante",
+            "participantes",
+            "bolsista",
+            "bolsistas",
+            "orcamento",
+            "valor",
+            "prazo",
+            "cronograma",
+        )
+        question_markers = (
+            "quem",
+            "qual",
+            "quais",
+            "quando",
+            "onde",
+            "quanto",
+            "quantos",
+            "quantas",
+            "liste",
+            "listar",
+            "mostre",
+            "resuma",
+            "resumo",
+        )
+        return any(marker in normalized for marker in project_fact_markers) and any(
+            marker in normalized for marker in question_markers
+        )
+
+    def _resolve_auto_route_fallback(self, question: str, chat_history) -> dict[str, object]:
+        normalized_question = self._normalize_identifier(question)
+
+        if self._has_pending_route_selection(chat_history):
+            return {
+                "mode": MODE_RETRIEVAL,
+                "reason": "Existe uma selecao ou clarificacao pendente do fluxo de retrieval.",
+                "source": "forced_pending_selection",
+            }
+
+        retrieval_command = self._normalize_identifier(MODE_SWITCH_TO_RETRIEVAL_COMMAND)
+        casual_command = self._normalize_identifier(MODE_SWITCH_TO_CASUAL_COMMAND)
+        if normalized_question == retrieval_command:
+            return {
+                "mode": MODE_RETRIEVAL,
+                "reason": "Comando legado de retrieval recebido; mantendo compatibilidade.",
+                "source": "legacy_command",
+            }
+        if normalized_question == casual_command:
+            return {
+                "mode": MODE_CASUAL,
+                "reason": "Comando legado de conversa casual recebido; mantendo compatibilidade.",
+                "source": "legacy_command",
+            }
+
+        if self._is_casual_route_message(normalized_question):
+            return {
+                "mode": MODE_CASUAL,
+                "reason": "A mensagem e uma conversa social ou geral sem necessidade de documentos.",
+                "source": "heuristic",
+            }
+
+        if getattr(self, "last_retrieval_focus", None) and (
+            self._is_follow_up_ambiguous(question) or self._should_rewrite_question(question, chat_history)
+        ):
+            return {
+                "mode": MODE_RETRIEVAL,
+                "reason": "A mensagem parece continuar uma pergunta documental anterior.",
+                "source": "heuristic",
+            }
+
+        collection_scope_checker = getattr(self, "_question_requests_collection_scope", None)
+        requests_collection_scope = bool(
+            collection_scope_checker(question) if callable(collection_scope_checker) else False
+        )
+        if requests_collection_scope or self._has_document_route_signal(question):
+            return {
+                "mode": MODE_RETRIEVAL,
+                "reason": "A pergunta solicita informacao da base, documentos ou conhecimento do projeto.",
+                "source": "heuristic",
+            }
+
+        return {
+            "mode": MODE_CASUAL,
+            "reason": "Nao ha sinal claro de que a resposta precise de contexto documental.",
+            "source": "heuristic",
+        }
+
+    def _resolve_auto_route(self, question: str, chat_history) -> dict[str, object]:
+        forced_or_legacy = self._resolve_auto_route_fallback(question, chat_history)
+        if forced_or_legacy["source"] in {"forced_pending_selection", "legacy_command"}:
+            return forced_or_legacy
+
+        invoker = getattr(self, "_invoke_json_crewai_agent", None)
+        if callable(invoker):
+            payload = invoker(
+                getattr(self, "crewai_router_agent", None),
+                description=(
+                    "Classifique a mensagem do usuario para decidir o fluxo antes de responder.\n\n"
+                    f"Historico recente: {self._format_chat_history(chat_history)}\n"
+                    f"Mensagem do usuario: {question}\n\n"
+                    "Use modo retrieval quando a mensagem exigir informacao de documentos, arquivos carregados, "
+                    "base do projeto, Google Drive, atas, planilhas, PDFs, fontes ou contexto recuperado.\n"
+                    "Use modo casual para cumprimentos, agradecimentos, conversa social, explicacoes gerais "
+                    "ou perguntas que podem ser respondidas sem consultar documentos.\n"
+                    "Retorne somente JSON valido com as chaves mode e reason."
+                ),
+                expected_output='JSON valido, por exemplo {"mode":"retrieval","reason":"A pergunta pede informacao dos documentos carregados."}',
+            )
+            decision = self._normalize_route_decision(payload, source="crewai_router")
+            if decision is not None:
+                return decision
+
+        return forced_or_legacy
+
     def _resolve_requested_mode(self, question: str, chat_history) -> tuple[str, str | None]:
         active_mode = self._get_active_mode(chat_history)
         normalized_question = self._normalize_identifier(question)
@@ -226,17 +447,15 @@ class RoutingMixin:
 
         if mode == MODE_RETRIEVAL:
             title = RETRIEVAL_RESPONSE_TITLE
-            footer = RETRIEVAL_RESPONSE_FOOTER
             fallback_body = "Modo retrieval ativo."
         else:
             title = CASUAL_RESPONSE_TITLE
-            footer = CASUAL_RESPONSE_FOOTER
             fallback_body = "Modo casual ativo."
 
         if not body:
             body = fallback_body
 
-        return f"**{title}**\n\n{body}\n\n{footer}"
+        return f"**{title}**\n\n{body}"
 
     def _build_mode_transition_answer(self, mode: str, transition: str) -> str:
         transitions = {
@@ -244,6 +463,8 @@ class RoutingMixin:
             (MODE_CASUAL, "already_casual"): "Voce ja esta no modo casual.",
             (MODE_RETRIEVAL, "switched_to_retrieval"): "Modo retrieval ativado. Agora vou responder com base nos documentos recuperados.",
             (MODE_RETRIEVAL, "already_retrieval"): "Voce ja esta no modo retrieval.",
+            (MODE_CASUAL, "legacy_auto_routing"): "Roteamento automatico ativo. Pode enviar sua mensagem normalmente.",
+            (MODE_RETRIEVAL, "legacy_auto_routing"): "Roteamento automatico ativo. Pode enviar sua pergunta normalmente.",
         }
         body = transitions.get((mode, transition), "Modo atualizado.")
         return self._format_mode_response(mode, body)

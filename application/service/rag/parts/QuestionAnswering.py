@@ -76,10 +76,12 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
 
         history_text = self._format_chat_history(chat_history)
         collection_name = self.collection_name or "colecao nao identificada"
-        route, mode_transition = self._resolve_requested_mode(question, chat_history)
+        route_decision = self._resolve_auto_route(question, chat_history)
+        self._active_route_decision = route_decision
+        route = str(route_decision.get("mode") or MODE_RETRIEVAL).strip().lower()
 
-        if mode_transition:
-            return self._build_mode_transition_trace(question, route, mode_transition)
+        if route_decision.get("source") == "legacy_command":
+            return self._build_mode_transition_trace(question, route, "legacy_auto_routing")
         if route == MODE_CASUAL:
             return self._build_casual_trace(question, collection_name, history_text)
 

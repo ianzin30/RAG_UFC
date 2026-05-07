@@ -10,6 +10,7 @@ This module handles:
 """
 
 from html import escape
+import logging
 import time
 
 import streamlit as st
@@ -17,34 +18,46 @@ import streamlit as st
 from presentation import chat_sessions
 from presentation.shared.CollectionSelection import clone_collection_selection, normalize_collection_selection
 from presentation.integrations import GoogleDrive as google_drive
+from service.ModelOptions import coerce_llm_model_name, get_llm_model_labels, get_llm_model_names
 from service.rag.RAGService import RAGService
 
-# Available LLM models with display names
-CHAT_MODELS = {
-    "llama3.1:8b": "Llama 3.1 8B",
-    "qwen2.5:14b": "Qwen 2.5 14B",
-    "phi4:latest": "Phi-4",
-}
+
+logger = logging.getLogger(__name__)
+MODEL_SELECTOR_KEY = "chat_model_selector"
+MODEL_SELECTOR_CHAT_KEY = "chat_model_selector_active_chat_id"
 
 
 def render_model_toolbar() -> str:
-    current_model = st.session_state.get("model_name") or next(iter(CHAT_MODELS))
-    if current_model not in CHAT_MODELS:
-        current_model = next(iter(CHAT_MODELS))
+    model_options = list(get_llm_model_names())
+    model_labels = get_llm_model_labels()
+    current_model = coerce_llm_model_name(st.session_state.get("model_name"))
+    if st.session_state.get("model_name") != current_model:
+        chat_sessions.update_active_chat_model(current_model)
+
+    active_chat_id = str(st.session_state.get("active_chat_id") or "default")
+    if st.session_state.get(MODEL_SELECTOR_CHAT_KEY) != active_chat_id:
+        st.session_state[MODEL_SELECTOR_KEY] = current_model
+        st.session_state[MODEL_SELECTOR_CHAT_KEY] = active_chat_id
+    elif MODEL_SELECTOR_KEY not in st.session_state:
+        st.session_state[MODEL_SELECTOR_KEY] = current_model
+    else:
+        st.session_state[MODEL_SELECTOR_KEY] = coerce_llm_model_name(
+            st.session_state.get(MODEL_SELECTOR_KEY)
+        )
 
     toolbar_col, _ = st.columns([0.24, 0.76], vertical_alignment="center")
     with toolbar_col:
         st.markdown('<div class="model-toolbar">', unsafe_allow_html=True)
         selected_model = st.selectbox(
             "Modelo",
-            options=list(CHAT_MODELS),
-            index=list(CHAT_MODELS).index(current_model),
-            format_func=lambda model: CHAT_MODELS[model],
-            key=f"chat_model_selector_{st.session_state.get('active_chat_id', 'default')}",
+            options=model_options,
+            index=model_options.index(current_model),
+            format_func=lambda model: model_labels.get(model, model),
+            key=MODEL_SELECTOR_KEY,
             label_visibility="collapsed",
         )
         st.markdown("</div>", unsafe_allow_html=True)
-    return selected_model
+    return coerce_llm_model_name(selected_model)
 
 
 def render_notice(message: str) -> None:
@@ -161,8 +174,11 @@ def show(selected_model: str) -> None:
         input_shell = st.container(key="main_chat_input_shell")
 
         # Update model if it changed in the toolbar
-        current_model = st.session_state.get("model_name") or next(iter(CHAT_MODELS))
+        current_model = coerce_llm_model_name(st.session_state.get("model_name"))
+        if st.session_state.get("model_name") != current_model:
+            chat_sessions.update_active_chat_model(current_model)
         if selected_model != current_model:
+            logger.info("User selected LLM model: %s", selected_model)
             chat_sessions.update_active_chat_model(selected_model)
             current_model = selected_model
             if st.session_state.get("rag_service") is not None:

@@ -183,7 +183,8 @@
       "5500,00",
       "5.500,00"
     ],
-    "category": "projects"
+    "category": "projects",
+    "source_document": "29_04-2025_Ata_de_Reuniao.md"
   },
   {
     "id": 17,
@@ -219,11 +220,12 @@
   {
     "id": 20,
     "collection": "google_drive_rag",
-    "question": "Qual foi a carga horária mínima e máxima semanal exigida para candidatos a professor substituto que fossem alunos de pós-graduação, conforme o edital de 2025?",
+    "question": "Qual foi a carga horária mínima e máxima semanal exigida para candidatos a professor substituto no regime de 40 horas que fossem alunos de pós-graduação, conforme o edital de 2025?",
     "expected_answer": "Mínima de 13 e máxima de 18 horas semanais para o regime de 40 horas.",
     "accepted_answers": [
       "Mínima de 13 e máxima de 18 horas semanais"
     ],
-    "category": "hiring"
+    "category": "hiring",
+    "source_document": "24_09-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md"
   }
 ]

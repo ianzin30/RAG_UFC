@@ -213,11 +213,7 @@ class BenchmarkRunner:
         return assistant_message
 
     def _build_retrieval_history(self, service) -> list[dict[str, object]]:
-        transition_trace = service.ask_question_with_trace(self.retrieval_mode_command, [])
-        return [
-            {"role": "user", "content": self.retrieval_mode_command},
-            self._build_assistant_history_entry(transition_trace),
-        ]
+        return []
 
     def _analyze_question(
         self,
@@ -416,8 +412,7 @@ class BenchmarkRunner:
                 question_total=question_total,
             )
             service.last_retrieval_focus = None
-            history = self._build_retrieval_history(service)
-            trace = service.ask_question_with_diagnostics(question.question, history)
+            trace = service.ask_question_with_diagnostics(question.question, [])
             corpus_entries = self._get_collection_corpus(question.collection, service)
             deterministic_result = self._analyze_question(question, trace, corpus_entries, service)
             results.append(self._apply_agent_grading(question, deterministic_result, service))

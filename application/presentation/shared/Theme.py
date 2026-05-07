@@ -173,17 +173,13 @@ APP_THEMES = {
 
 # Este helper devolve o tema ativo ja validado contra a paleta conhecida.
 def get_active_theme_name() -> str:
-    theme_name = str(st.session_state.get("app_theme") or DEFAULT_APP_THEME).strip().lower()
-    if theme_name not in APP_THEMES:
-        theme_name = DEFAULT_APP_THEME
-        st.session_state.app_theme = theme_name
-    return theme_name
+    st.session_state.app_theme = DEFAULT_APP_THEME
+    return DEFAULT_APP_THEME
 
 
-# Este toggle alterna entre dark e light mantendo a escolha na sessao atual.
+# Mantido por compatibilidade enquanto o app fica travado no tema escuro.
 def toggle_app_theme() -> None:
-    current_theme = get_active_theme_name()
-    st.session_state.app_theme = "light" if current_theme == "dark" else "dark"
+    st.session_state.app_theme = DEFAULT_APP_THEME
 
 
 # Este bloco injeta as variaveis CSS que o stylesheet principal reutiliza.

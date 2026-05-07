@@ -1,14 +1,12 @@
 """
 Navigation rail for the sidebar.
 
-Provides vertical navigation to switch between Chat and Files panels,
-plus a theme toggle button.
+Provides vertical navigation to switch between Chat and Files panels.
 """
 
 import streamlit as st
 
 from presentation.shared.Config import LOGO_DATA_URI
-from presentation.shared.Theme import get_active_theme_name, toggle_app_theme
 
 # Sidebar panel constants
 SIDEBAR_CHAT_PANEL = "chat"
@@ -69,10 +67,9 @@ def _render_rail_button(
         st.rerun()
 
 
-# Esta rail concentra o icone do app, o seletor de paineis e o toggle de tema.
+# Esta rail concentra o icone do app e o seletor de paineis.
 def render_navigation_rail() -> None:
     active_panel = get_active_sidebar_panel()
-    active_theme = get_active_theme_name()
 
     with st.container(key="sidebar_nav_rail"):
         with st.container(key="sidebar_nav_rail_header"):
@@ -94,11 +91,3 @@ def render_navigation_rail() -> None:
                     is_active=active_panel == item["panel"],
                     on_click=lambda panel_name=item["panel"]: set_active_sidebar_panel(panel_name),
                 )
-
-        with st.container(key="sidebar_nav_rail_footer"):
-            _render_rail_button(
-                key="sidebar_nav_theme_button",
-                help_text="Alternar entre tema claro e escuro",
-                icon=":material/dark_mode:" if active_theme == "dark" else ":material/light_mode:",
-                on_click=toggle_app_theme,
-            )

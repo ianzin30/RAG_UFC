@@ -94,3 +94,11 @@ def test_load_questions_rejects_invalid_entries(
     with pytest.raises(ValueError, match=expected_message):
         load_questions(questions_path)
 
+
+def test_benchmark_fixture_has_source_documents_for_source_scoped_edge_cases() -> None:
+    questions = {question.normalized_id: question for question in load_questions(Path("benchmark/questions.json"))}
+
+    assert questions["16"].source_document == "29_04-2025_Ata_de_Reuniao.md"
+    assert questions["20"].source_document == "24_09-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md"
+    assert "regime de 40 horas" in questions["20"].question
+

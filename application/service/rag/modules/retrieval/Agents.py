@@ -54,16 +54,48 @@ class RetrievalAgentMixin:
                 f"Base carregada: {collection_name}\n"
                 f"Historico: {history_text}\n"
                 f"Mensagem do usuario: {question}\n"
-                "Regras: nao invente fatos sobre arquivos, apenas mantenha conversa social."
+                "Regras: nao invente fatos sobre arquivos, apenas mantenha conversa social. "
+                "Nao encerre com frases genericas como 'estou a disposicao', "
+                "'nao hesite em perguntar', 'se precisar de algo' ou similares. "
+                "Nao use emojis a menos que o usuario use emojis primeiro."
             ),
-            expected_output="Resposta breve em portugues para conversa casual.",
+            expected_output="Resposta breve em portugues para conversa casual, sem rodape de disponibilidade.",
         )
         if crewai_answer:
-            return crewai_answer
+            return self._clean_casual_response(crewai_answer)
 
-        return self.small_talk_chain.invoke(
+        casual_answer = self.small_talk_chain.invoke(
             {"collection_name": collection_name, "chat_history": history_text, "question": question}
         )
+        return self._clean_casual_response(casual_answer)
+
+    # Esta limpeza remove encerramentos genericos que modelos tendem a anexar em conversa casual.
+    def _clean_casual_response(self, raw_response: str) -> str:
+        if not raw_response or not isinstance(raw_response, str):
+            return raw_response
+
+        response = raw_response.strip()
+        trailing_patterns = (
+            r"(?:^|[\n.!?]\s*)se\s+houver\s+algo\b.*?(?:n[aã]o\s+hesite\s+em\s+perguntar|estou\s+(?:a|à)\s+disposi[cç][aã]o|possa\s+ser\s+[uú]til).*?$",
+            r"(?:^|[\n.!?]\s*)se\s+precisar\s+de\s+(?:algo|mais\s+alguma\s+coisa|ajuda)\b.*?$",
+            r"(?:^|[\n.!?]\s*)caso\s+precise\s+de\s+(?:algo|ajuda)\b.*?$",
+            r"(?:^|[\n.!?]\s*)nao\s+hesite\s+em\s+(?:perguntar|me\s+chamar|pedir)\b.*?$",
+            r"(?:^|[\n.!?]\s*)não\s+hesite\s+em\s+(?:perguntar|me\s+chamar|pedir)\b.*?$",
+            r"(?:^|[\n.!?]\s*)estou\s+(?:a|à)\s+disposicao\b.*?$",
+            r"(?:^|[\n.!?]\s*)estou\s+(?:a|à)\s+disposição\b.*?$",
+            r"(?:^|[\n.!?]\s*)i(?:'| a)m\s+here\s+to\s+help\b.*?$",
+            r"(?:^|[\n.!?]\s*)feel\s+free\s+to\s+ask\b.*?$",
+            r"(?:^|[\n.!?]\s*)let\s+me\s+know\s+if\s+you\s+need\b.*?$",
+        )
+        previous = None
+        while previous != response:
+            previous = response
+            for pattern in trailing_patterns:
+                response = re.sub(pattern, "", response, flags=re.IGNORECASE | re.DOTALL).strip()
+            response = re.sub(r"[\s\U0001F300-\U0001FAFF\u2600-\u27BF]+$", "", response).strip()
+
+        response = re.sub(r"\n{3,}", "\n\n", response).strip()
+        return response or raw_response.strip()
 
     # Esta funcao limpa a resposta bruta do LLM removendo artefatos de conversa.
     def _clean_retrieval_response(self, raw_response: str) -> str:

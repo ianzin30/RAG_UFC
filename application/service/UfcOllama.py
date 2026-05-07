@@ -3,10 +3,13 @@
 Provides a wrapper around the Ollama generate endpoint at UFC's internal server,
 handling authentication, request/response formatting, and generation options.
 """
+import logging
+
 import requests
 
 
 DEFAULT_UFC_API_URL = "http://ollama.atlab.ufc.br:8080/ollama/api/generate"
+logger = logging.getLogger(__name__)
 
 
 class UFCOllamaClient:
@@ -35,6 +38,7 @@ class UFCOllamaClient:
 
     def invoke(self, prompt_value) -> str:
         prompt = self._coerce_prompt(prompt_value)
+        logger.info("Invoking UFC LLM request with model=%s", self.model_name)
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Accept": "application/json",
@@ -72,8 +76,7 @@ class UFCOllamaClient:
         except ValueError as exc:
             raise TimeoutError("UFC LLM response was not valid JSON.") from exc
 
-        # Add this print statement to see what the server is actually returning
-        print("RAW SERVER RESPONSE:", result)
+        logger.debug("Raw UFC LLM response for model=%s: %s", self.model_name, result)
 
         answer = result.get("response")
         if not answer:

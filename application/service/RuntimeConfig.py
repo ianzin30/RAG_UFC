@@ -71,6 +71,12 @@ class GenerationRuntimeConfig:
 
 
 @dataclass(frozen=True)
+class LLMModelRuntimeOption:
+    label: str
+    model_name: str
+
+
+@dataclass(frozen=True)
 class AppRuntimeConfig:
     ufc_model_name: str
     embedding: EmbeddingRuntimeConfig
@@ -78,6 +84,7 @@ class AppRuntimeConfig:
     retrieval: RetrievalRuntimeConfig
     rag: RagRuntimeConfig
     generation: GenerationRuntimeConfig
+    llm_model_options: tuple[LLMModelRuntimeOption, ...] = ()
 
 
 def load_project_environment() -> None:
@@ -211,18 +218,44 @@ def _normalize_embedding_quantization(quantization: str) -> str:
     )
 
 
+def _get_llm_model_options(table: dict[str, Any], default_model_name: str) -> tuple[LLMModelRuntimeOption, ...]:
+    raw_options = table.get("options")
+    options: list[LLMModelRuntimeOption] = []
+    seen_models: set[str] = set()
+
+    if isinstance(raw_options, list):
+        for raw_option in raw_options:
+            if not isinstance(raw_option, dict):
+                continue
+            model_name = str(raw_option.get("model_name") or "").strip()
+            if not model_name or model_name in seen_models:
+                continue
+            label = str(raw_option.get("label") or "").strip() or model_name
+            seen_models.add(model_name)
+            options.append(LLMModelRuntimeOption(label=label, model_name=model_name))
+
+    if default_model_name and default_model_name not in seen_models:
+        options.insert(0, LLMModelRuntimeOption(label=default_model_name, model_name=default_model_name))
+
+    return tuple(options)
+
+
 @lru_cache(maxsize=1)
 def get_runtime_config() -> AppRuntimeConfig:
     payload = _read_config_document()
     model_table = _require_table(payload, "model")
+    llm_models_table = _get_optional_table(payload, "llm_models")
     embeddings_table = _require_table(payload, "embeddings")
     splitter_table = _get_optional_table(payload, "splitter")
     retrieval_table = _get_optional_table(payload, "retrieval")
     rag_table = _require_table(payload, "rag")
     generation_table = _get_optional_table(payload, "generation")
 
+    default_model_name = _require_str(model_table, "ufc_model_name", "model.ufc_model_name")
+
     return AppRuntimeConfig(
-        ufc_model_name=_require_str(model_table, "ufc_model_name", "model.ufc_model_name"),
+        ufc_model_name=default_model_name,
+        llm_model_options=_get_llm_model_options(llm_models_table, default_model_name),
         embedding=EmbeddingRuntimeConfig(
             model_name=_require_str(embeddings_table, "model_name", "embeddings.model_name"),
             device=_normalize_embedding_device(
@@ -287,6 +320,7 @@ __all__ = [
     "ENV_FILE",
     "EmbeddingRuntimeConfig",
     "GenerationRuntimeConfig",
+    "LLMModelRuntimeOption",
     "PROJECT_ROOT",
     "RagRuntimeConfig",
     "RetrievalRuntimeConfig",

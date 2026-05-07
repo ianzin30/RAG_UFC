@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import re
+from decimal import Decimal, InvalidOperation
 from typing import Callable
 
 from .questions import BenchmarkQuestion
@@ -30,6 +32,151 @@ class BenchmarkAnalyzer:
             variants.append(compact)
         return variants
 
+    def _canonical_decimal(self, raw_value: str) -> Decimal | None:
+        value = str(raw_value or "").strip()
+        if not value:
+            return None
+
+        value = value.replace("\u00a0", " ")
+        value = re.sub(r"[^\d,.\-]", "", value)
+        if not value or value in {"-", ".", ",", "-.", "-,"}:
+            return None
+
+        sign = "-" if value.startswith("-") else ""
+        value = value.lstrip("-")
+        if "," in value and "." in value:
+            if value.rfind(",") > value.rfind("."):
+                value = value.replace(".", "").replace(",", ".")
+            else:
+                value = value.replace(",", "")
+        elif "," in value:
+            head, tail = value.rsplit(",", 1)
+            if len(tail) == 3 and len(head.replace(",", "")) <= 3:
+                value = value.replace(",", "")
+            else:
+                value = value.replace(",", ".")
+        elif "." in value:
+            parts = value.split(".")
+            if len(parts) > 2 and all(len(part) == 3 for part in parts[1:]):
+                value = "".join(parts)
+            elif len(parts) == 2 and len(parts[1]) == 3 and len(parts[0]) <= 3:
+                value = "".join(parts)
+
+        try:
+            return Decimal(f"{sign}{value}")
+        except InvalidOperation:
+            return None
+
+    def _decimal_key(self, value: Decimal) -> str:
+        normalized = value.normalize()
+        if normalized == normalized.to_integral():
+            return str(normalized.quantize(Decimal("1")))
+        return format(normalized, "f").rstrip("0").rstrip(".")
+
+    def _extract_numbers(self, text: str) -> set[str]:
+        values: set[str] = set()
+        for raw_value in re.findall(r"(?<![\w])\-?\d+(?:[.,]\d+)*(?![\w])", str(text or "")):
+            parsed = self._canonical_decimal(raw_value)
+            if parsed is not None:
+                values.add(self._decimal_key(parsed))
+        return values
+
+    def _extract_percentages(self, text: str) -> set[str]:
+        values: set[str] = set()
+        for raw_value in re.findall(r"\-?\d+(?:[.,]\d+)*\s*%", str(text or "")):
+            parsed = self._canonical_decimal(raw_value)
+            if parsed is not None:
+                values.add(self._decimal_key(parsed))
+        return values
+
+    def _extract_currencies(self, text: str) -> set[str]:
+        values: set[str] = set()
+        currency_pattern = r"(?:R\$\s*|RS\s*)\-?\d+(?:[.,]\d+)*"
+        for raw_value in re.findall(currency_pattern, str(text or ""), flags=re.IGNORECASE):
+            parsed = self._canonical_decimal(raw_value)
+            if parsed is not None:
+                values.add(self._decimal_key(parsed))
+        return values
+
+    def _extract_dates(self, text: str) -> set[str]:
+        dates: set[str] = set()
+        for day, month, year in re.findall(r"\b(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})\b", str(text or "")):
+            normalized_year = int(year)
+            if normalized_year < 100:
+                normalized_year += 2000
+            dates.add(f"{normalized_year:04d}-{int(month):02d}-{int(day):02d}")
+        for year, month, day in re.findall(r"\b(\d{4})-(\d{1,2})-(\d{1,2})\b", str(text or "")):
+            dates.add(f"{int(year):04d}-{int(month):02d}-{int(day):02d}")
+        return dates
+
+    def _significant_tokens_for_structured_match(self, text: str) -> list[str]:
+        stopwords = {
+            "a",
+            "ao",
+            "aos",
+            "as",
+            "com",
+            "da",
+            "das",
+            "de",
+            "do",
+            "dos",
+            "e",
+            "em",
+            "maxima",
+            "maximo",
+            "minima",
+            "minimo",
+            "no",
+            "nos",
+            "o",
+            "os",
+            "para",
+            "por",
+            "r",
+            "rs",
+        }
+        tokens = []
+        for token in self.tokenize_text(text):
+            if token in stopwords or token.isdigit():
+                continue
+            tokens.append(token)
+        return tokens
+
+    def _has_structured_values(self, text: str) -> bool:
+        return bool(
+            self._extract_numbers(text)
+            or self._extract_percentages(text)
+            or self._extract_currencies(text)
+            or self._extract_dates(text)
+        )
+
+    def _structured_values_match(self, variant: str, text: str) -> bool:
+        variant_numbers = self._extract_numbers(variant)
+        text_numbers = self._extract_numbers(text)
+        variant_percentages = self._extract_percentages(variant)
+        text_percentages = self._extract_percentages(text)
+        variant_currencies = self._extract_currencies(variant)
+        text_currencies = self._extract_currencies(text)
+        variant_dates = self._extract_dates(variant)
+        text_dates = self._extract_dates(text)
+
+        if variant_currencies and not variant_currencies <= (text_currencies | text_numbers):
+            return False
+        if variant_percentages and not variant_percentages <= (text_percentages | text_numbers):
+            return False
+        if variant_dates and not variant_dates <= text_dates:
+            return False
+        if variant_numbers and not variant_numbers <= text_numbers:
+            return False
+
+        significant_tokens = self._significant_tokens_for_structured_match(variant)
+        if significant_tokens:
+            normalized_text = self.normalize_text(text)
+            if not all(token in normalized_text for token in significant_tokens):
+                return False
+        return bool(variant_numbers or variant_percentages or variant_currencies or variant_dates)
+
     def _candidate_support_level(self, candidate: dict[str, object], variants: list[str]) -> str:
         combined_parts = [
             str(candidate.get("text") or ""),
@@ -49,10 +196,25 @@ class BenchmarkAnalyzer:
                 return "explicit"
 
         for variant in variants:
+            if self._has_structured_values(variant):
+                if self._structured_values_match(variant, combined_text):
+                    return "implicit"
+                continue
             variant_tokens = self.tokenize_text(variant)
             if variant_tokens and all(token in normalized_text for token in variant_tokens):
                 return "implicit"
         return "not_found"
+
+    def _candidate_evidence_key(self, candidate: dict[str, object]) -> tuple[str, str, str, str]:
+        text = str(candidate.get("text") or candidate.get("excerpt") or "").strip()
+        return (
+            self.normalize_text(
+                str(candidate.get("document_name") or candidate.get("source_name") or candidate.get("source") or "")
+            ),
+            self.normalize_text(str(candidate.get("chunk_kind") or "")),
+            str(candidate.get("chunk_order") or ""),
+            self.normalize_text(text)[:500],
+        )
 
     def _text_support_level(self, text: str, variants: list[str]) -> str:
         pseudo_candidate = {
@@ -134,6 +296,28 @@ class BenchmarkAnalyzer:
             "relevant_hits": relevant_hits,
             "relevant_documents": relevant_documents,
         }
+
+    def _merge_relevant_hits(
+        self,
+        *hit_groups: list[dict[str, object]],
+    ) -> list[dict[str, object]]:
+        merged: list[dict[str, object]] = []
+        seen: set[tuple[str, tuple[str, str, str, str]]] = set()
+        for hits in hit_groups:
+            for hit in hits:
+                candidate_id = str(hit.get("candidate_id") or "")
+                key = (
+                    str(hit.get("document_name") or ""),
+                    str(hit.get("chunk_kind") or ""),
+                    "",
+                    self.normalize_text(str(hit.get("excerpt") or ""))[:500],
+                )
+                marker = (candidate_id, key)
+                if marker in seen:
+                    continue
+                seen.add(marker)
+                merged.append(dict(hit))
+        return merged
 
     def _build_stage_positions(
         self,
@@ -254,6 +438,9 @@ class BenchmarkAnalyzer:
         candidate_pool_ids: list[str],
         selected_context_ids: list[str],
         pool_candidate_ids: set[str],
+        relevant_evidence_keys: set[tuple[str, str, str, str]],
+        pool_evidence_keys: set[tuple[str, str, str, str]],
+        selected_evidence_keys: set[tuple[str, str, str, str]],
         retrieved_documents: set[str],
         answer_presence_in_evidence: str,
         generated_answer_has_expected: bool,
@@ -285,7 +472,10 @@ class BenchmarkAnalyzer:
             "clarification_selection",
         } or resolver_status in {"multiple_matches", "selection_resolved"}
 
-        if not relevant_hits and not source_document_provided:
+        if not relevant_hits:
+            if source_document_provided:
+                notes.append("Expected answer variants were not found in the source document scope.")
+                return "benchmark_data_mismatch", notes
             notes.append("Expected answer variants were not found anywhere in the indexed corpus.")
             return "benchmark_data_mismatch", notes
 
@@ -308,11 +498,18 @@ class BenchmarkAnalyzer:
                 notes.append(f"Resolver status: {resolver_status}")
                 return "document_resolution_failure", notes
 
-        if relevant_hit_ids and relevant_hit_ids.isdisjoint(pool_candidate_ids):
+        evidence_in_pool = bool(relevant_hit_ids & pool_candidate_ids) or bool(
+            relevant_evidence_keys & pool_evidence_keys
+        )
+        evidence_in_context = bool(relevant_hit_ids & set(selected_context_ids)) or bool(
+            relevant_evidence_keys & selected_evidence_keys
+        )
+
+        if relevant_hit_ids and not evidence_in_pool:
             notes.append("Expected-answer evidence did not enter the dense/lexical candidate pool.")
             return "retrieval_failure", notes
 
-        if relevant_hit_ids and relevant_hit_ids.isdisjoint(set(selected_context_ids)):
+        if relevant_hit_ids and not evidence_in_context:
             best_relevant_rank = min(
                 (
                     stage_positions.get("candidate_pool", {}).get(candidate_id)
@@ -330,9 +527,9 @@ class BenchmarkAnalyzer:
                 notes.append("Expected-answer evidence was not selected for final context.")
             return "selection_failure", notes
 
-        if answer_presence_in_evidence == "explicit" and not generated_answer_has_expected:
+        if answer_presence_in_evidence in {"explicit", "implicit"} and not generated_answer_has_expected:
             notes.append(
-                "The selected context explicitly contained the expected answer, but the generated answer did not use it."
+                "The selected context contained the expected answer, but the generated answer did not use it."
             )
             return "generation_failure", notes
 
@@ -350,7 +547,7 @@ class BenchmarkAnalyzer:
     ) -> dict[str, object]:
         expected_variants = self._collect_expected_variants(question)
         candidate_catalog = {
-            str(candidate_id): dict(payload)
+            str(candidate_id): {**dict(payload), "candidate_id": str(candidate_id)}
             for candidate_id, payload in dict(trace.get("candidate_catalog") or {}).items()
         }
         corpus_lookup = {
@@ -387,8 +584,25 @@ class BenchmarkAnalyzer:
         retrieved_documents.discard("")
 
         corpus_scan = self._scan_corpus(question, expected_variants, corpus_entries)
-        relevant_hits = list(corpus_scan["relevant_hits"])
-        relevant_documents = list(corpus_scan["relevant_documents"])
+        catalog_scan = self._scan_corpus(
+            question,
+            expected_variants,
+            list(candidate_catalog.values()),
+        )
+        relevant_hits = self._merge_relevant_hits(
+            list(corpus_scan["relevant_hits"]),
+            list(catalog_scan["relevant_hits"]),
+        )
+        relevant_documents = sorted(
+            {
+                str(document_name).strip()
+                for document_name in [
+                    *list(corpus_scan["relevant_documents"]),
+                    *list(catalog_scan["relevant_documents"]),
+                ]
+                if str(document_name).strip()
+            }
+        )
         relevant_hit_ids = {
             str(hit.get("candidate_id") or "")
             for hit in relevant_hits
@@ -445,6 +659,39 @@ class BenchmarkAnalyzer:
             candidate_pool_ids=candidate_pool_ids,
             selected_context_ids=selected_context_ids,
             pool_candidate_ids=pool_candidate_ids,
+            relevant_evidence_keys={
+                self._candidate_evidence_key(candidate)
+                for hit in relevant_hits
+                if (
+                    candidate := self._lookup_candidate(
+                        str(hit.get("candidate_id") or ""),
+                        candidate_catalog,
+                        corpus_lookup,
+                    )
+                )
+            },
+            pool_evidence_keys={
+                self._candidate_evidence_key(candidate)
+                for candidate_id in candidate_pool_ids
+                if (
+                    candidate := self._lookup_candidate(
+                        candidate_id,
+                        candidate_catalog,
+                        corpus_lookup,
+                    )
+                )
+            },
+            selected_evidence_keys={
+                self._candidate_evidence_key(candidate)
+                for candidate_id in selected_context_ids
+                if (
+                    candidate := self._lookup_candidate(
+                        candidate_id,
+                        candidate_catalog,
+                        corpus_lookup,
+                    )
+                )
+            },
             retrieved_documents=retrieved_documents,
             answer_presence_in_evidence=answer_presence_in_evidence,
             generated_answer_has_expected=generated_answer_has_expected,
@@ -483,8 +730,45 @@ class BenchmarkAnalyzer:
             corpus_lookup,
             limit=5,
         )
-        expected_answer_in_pool = bool(relevant_hit_ids & pool_candidate_ids)
-        expected_answer_in_context = bool(relevant_hit_ids & set(selected_context_ids))
+        relevant_evidence_keys = {
+            self._candidate_evidence_key(candidate)
+            for hit in relevant_hits
+            if (
+                candidate := self._lookup_candidate(
+                    str(hit.get("candidate_id") or ""),
+                    candidate_catalog,
+                    corpus_lookup,
+                )
+            )
+        }
+        pool_evidence_keys = {
+            self._candidate_evidence_key(candidate)
+            for candidate_id in candidate_pool_ids
+            if (
+                candidate := self._lookup_candidate(
+                    candidate_id,
+                    candidate_catalog,
+                    corpus_lookup,
+                )
+            )
+        }
+        selected_evidence_keys = {
+            self._candidate_evidence_key(candidate)
+            for candidate_id in selected_context_ids
+            if (
+                candidate := self._lookup_candidate(
+                    candidate_id,
+                    candidate_catalog,
+                    corpus_lookup,
+                )
+            )
+        }
+        expected_answer_in_pool = bool(relevant_hit_ids & pool_candidate_ids) or bool(
+            relevant_evidence_keys & pool_evidence_keys
+        )
+        expected_answer_in_context = bool(relevant_hit_ids & set(selected_context_ids)) or bool(
+            relevant_evidence_keys & selected_evidence_keys
+        )
         source_document_rank = self._find_source_document_rank(
             question.source_document,
             candidate_pool_ids,
@@ -492,8 +776,15 @@ class BenchmarkAnalyzer:
             corpus_lookup,
         )
         context_hit_rate = (
-            round(len(relevant_hit_ids & set(selected_context_ids)) / len(relevant_hit_ids), 4)
-            if relevant_hit_ids
+            round(
+                (
+                    len(relevant_hit_ids & set(selected_context_ids))
+                    + len(relevant_evidence_keys & selected_evidence_keys)
+                )
+                / max(len(relevant_hit_ids) + len(relevant_evidence_keys), 1),
+                4,
+            )
+            if relevant_hit_ids or relevant_evidence_keys
             else 0.0
         )
 

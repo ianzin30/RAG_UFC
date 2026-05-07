@@ -12,6 +12,7 @@ from .CrewAiTelemetry import disable_crewai_telemetry_by_default
 @dataclass
 class CrewAIAgentBundle:
     available: bool = False
+    router_agent: object | None = None
     casual_agent: object | None = None
     retrieval_agent: object | None = None
     scope_agent: object | None = None
@@ -33,11 +34,23 @@ def build_crewai_agent_bundle(agent_mode: str, llm: object | None = None) -> Cre
         return bundle
 
     try:
+        # Este agente escolhe se a mensagem deve ir para conversa casual ou retrieval.
+        bundle.router_agent = Agent(
+            role="RouterAgent",
+            goal="Classificar cada mensagem do usuario como conversa casual ou pergunta que exige retrieval documental.",
+            backstory="Especialista em roteamento de chats com documentos, separando conversa geral de perguntas sobre bases carregadas.",
+            allow_delegation=False,
+            verbose=False,
+            llm=llm,
+        )
         # Este agente cuida da conversa casual sem inventar fatos sobre arquivos.
         bundle.casual_agent = Agent(
             role="CasualAgent",
-            goal="Responder cumprimentos e mensagens sociais de forma breve e natural, sem inventar fatos sobre documentos.",
-            backstory="Especialista em conversas de abertura e mensagens sociais.",
+            goal=(
+                "Responder cumprimentos e mensagens sociais de forma breve e natural, "
+                "sem inventar fatos sobre documentos e sem encerramentos genericos de atendimento."
+            ),
+            backstory="Especialista em conversas de abertura diretas, sem frases de rodape ou ofertas repetitivas de ajuda.",
             allow_delegation=False,
             verbose=False,
             llm=llm,
