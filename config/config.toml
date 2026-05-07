@@ -4,13 +4,11 @@
 # ------------------------------------------------------------
 [firebase]
 enabled = true
-# Path to the Firebase service account JSON (never commit this file).
-credentials_path = "config/firebase-service-account.json"
-# Firebase project web config (publishable — safe to commit).
-# Get these from Firebase Console → Project Settings → Your apps.
-web_api_key = ""        # e.g. "AIzaSy..."
-auth_domain = ""        # e.g. "your-project.firebaseapp.com"
-project_id = ""         # e.g. "your-project-id"
+# All Firebase credentials and web config are loaded from .env:
+#   FIREBASE_CREDENTIALS_PATH  path to service account JSON (default: config/firebase-service-account.json)
+#   FIREBASE_WEB_API_KEY       Firebase web API key
+#   FIREBASE_AUTH_DOMAIN       e.g. your-project.firebaseapp.com
+#   FIREBASE_PROJECT_ID        e.g. your-project-id
 
 # ------------------------------------------------------------
 # Local MongoDB

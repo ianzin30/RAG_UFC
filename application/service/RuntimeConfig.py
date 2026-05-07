@@ -8,6 +8,8 @@ This module centralizes two config sources:
 
 from __future__ import annotations
 
+import os
+
 try:
     import tomllib
 except ImportError:
@@ -336,12 +338,13 @@ def get_runtime_config() -> AppRuntimeConfig:
         ),
         firebase=FirebaseRuntimeConfig(
             enabled=_coerce_bool(firebase_table.get("enabled"), default=False),
-            credentials_path=_get_optional_str(
-                firebase_table, "credentials_path", "config/firebase-service-account.json"
+            credentials_path=(
+                os.getenv("FIREBASE_CREDENTIALS_PATH", "").strip()
+                or "config/firebase-service-account.json"
             ),
-            web_api_key=_get_optional_str(firebase_table, "web_api_key", ""),
-            auth_domain=_get_optional_str(firebase_table, "auth_domain", ""),
-            project_id=_get_optional_str(firebase_table, "project_id", ""),
+            web_api_key=os.getenv("FIREBASE_WEB_API_KEY", "").strip(),
+            auth_domain=os.getenv("FIREBASE_AUTH_DOMAIN", "").strip(),
+            project_id=os.getenv("FIREBASE_PROJECT_ID", "").strip(),
         ),
         mongodb=MongoRuntimeConfig(
             enabled=_coerce_bool(mongodb_table.get("enabled"), default=False),
@@ -365,11 +368,8 @@ __all__ = [
     "EmbeddingRuntimeConfig",
     "FirebaseRuntimeConfig",
     "GenerationRuntimeConfig",
-<<<<<<< HEAD
     "LLMModelRuntimeOption",
-=======
     "MongoRuntimeConfig",
->>>>>>> claude/stoic-babbage-c03c20
     "PROJECT_ROOT",
     "RagRuntimeConfig",
     "RetrievalRuntimeConfig",
