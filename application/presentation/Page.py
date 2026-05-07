@@ -16,12 +16,9 @@ from presentation.shared.CollectionSelection import normalize_collection_selecti
 from service.RuntimeConfig import get_runtime_config
 
 from .sidebar.Collections import list_available_collections, list_collection_documents
-from .shared.Config import LOGO_PATH
 from .sidebar.Selection import set_selected_collections
 from .shared.SessionState import initialize_app_session_state
 from .sidebar.Sidebar import render_sidebar
-from .shared.Styles import apply_global_styles
-from .shared.Theme import get_active_theme_name
 
 
 logger = logging.getLogger(__name__)
@@ -29,12 +26,6 @@ logger = logging.getLogger(__name__)
 
 def render_application() -> None:
     initialize_app_session_state()
-    st.set_page_config(
-        page_title="RAG Treino",
-        page_icon=str(LOGO_PATH),
-        layout="wide",
-    )
-    apply_global_styles(get_active_theme_name())
 
     user = get_current_user()
     user_id = user.user_id if user else None

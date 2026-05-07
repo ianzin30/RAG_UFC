@@ -22,6 +22,18 @@ body,
     display: none;
 }
 
+[data-testid="InputInstructions"],
+[data-testid="stWidgetInstructions"],
+[data-testid="stFormSubmitInstructions"],
+div:has(> [data-testid="InputInstructions"]) {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
 [data-testid="stSidebar"] {
     background: var(--app-sidebar-bg) !important;
     border-right: 1px solid var(--app-border) !important;

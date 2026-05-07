@@ -15,6 +15,7 @@ import logging
 
 import requests
 import streamlit as st
+import streamlit.components.v1 as components
 
 from service.auth.FirebaseAuthService import is_firebase_enabled, verify_id_token
 from service.auth.UserContext import UserContext
@@ -178,6 +179,23 @@ _GOOGLE_HTML = """\
 
 _CSS = """
 <style>
+/* Hide Streamlit's "Press Enter to submit form" / character-count overlay
+   that appears below focused inputs. Belt-and-suspenders: also handled in
+   global app.css, but duplicated here so the login page is guaranteed-clean
+   even if the global stylesheet path resolution ever fails. */
+[data-testid="InputInstructions"],
+[data-testid="stWidgetInstructions"],
+[data-testid="stFormSubmitInstructions"],
+[data-testid="textInputRootElement"] + div:has([data-testid="InputInstructions"]),
+div:has(> [data-testid="InputInstructions"]) {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
 /* Full-viewport centering wrapper */
 [data-testid="stMain"] > div:first-child {
     display: flex;
@@ -272,19 +290,6 @@ def _render_login_page() -> None:
 
     st.markdown(_CSS, unsafe_allow_html=True)
 
-    # Strip the browser "Press Enter to submit form" tooltip Streamlit adds to form inputs
-    st.components.v1.html("""<script>
-(function () {
-  function strip() {
-    window.parent.document.querySelectorAll('input[title]')
-      .forEach(function (el) { el.removeAttribute('title'); });
-  }
-  strip();
-  new MutationObserver(strip).observe(window.parent.document.body,
-    {subtree: true, childList: true, attributes: true, attributeFilter: ['title']});
-})();
-</script>""", height=0)
-
     # Use columns to horizontally center the card
     _, col, _ = st.columns([1, 2, 1])
 
@@ -359,7 +364,7 @@ def _render_login_page() -> None:
                 auth_domain=cfg.auth_domain,
                 project_id=cfg.project_id,
             )
-            st.components.v1.html(google_html, height=96)
+            components.html(google_html, height=96)
 
         # ══════════════════════════════════════════════════════════════════
         # SIGNUP mode
