@@ -22,16 +22,10 @@ body,
     display: none;
 }
 
-[data-testid="InputInstructions"],
-[data-testid="stWidgetInstructions"],
-[data-testid="stFormSubmitInstructions"],
-div:has(> [data-testid="InputInstructions"]) {
+/* Hide Streamlit's "Press Enter to submit form" overlay only — narrow selector
+   so we don't accidentally strip pointer-events from input wrappers. */
+[data-testid="InputInstructions"] {
     display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    width: 0 !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
 }
 
 [data-testid="stSidebar"] {
@@ -174,7 +168,7 @@ div:has(> [data-testid="InputInstructions"]) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .st-key-sidebar_nav_rail > [data-testid="stVerticalBlock"] {
@@ -220,7 +214,110 @@ div:has(> [data-testid="InputInstructions"]) {
 }
 
 .st-key-sidebar_nav_rail_header {
+    position: relative;
     margin-bottom: 1.35rem;
+}
+
+.st-key-sidebar_nav_rail_header .st-key-sidebar_account_menu_button {
+    position: absolute;
+    inset: 0 auto auto 50%;
+    width: var(--sidebar-rail-brand-size);
+    height: var(--sidebar-rail-brand-size);
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_menu_button [data-testid="stButton"],
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_menu_button .stButton {
+    width: 100%;
+    height: 100%;
+    background: transparent !important;
+}
+
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_menu_button [data-testid="stButton"] > button,
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_menu_button .stButton > button {
+    width: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    border-radius: 999px;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_menu_button [data-testid="stButton"] > button:hover,
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_menu_button .stButton > button:hover {
+    border-color: var(--app-rail-active-border) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.nav-rail-account-menu {
+    position: absolute;
+    top: calc(var(--sidebar-rail-brand-size) + 0.55rem);
+    left: calc(50% + 0.35rem);
+    z-index: 20;
+    width: 230px;
+    padding: 0.72rem 0.72rem 3.45rem;
+    border-radius: 14px;
+    border: 1px solid var(--app-border-soft);
+    background: var(--app-elevated-bg);
+    box-shadow: var(--app-menu-shadow);
+}
+
+.nav-rail-account-email {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 0.12rem 0.62rem;
+    border-bottom: 1px solid var(--app-border-soft);
+    color: var(--app-muted);
+    font-size: 0.78rem;
+    line-height: 1.25;
+}
+
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button {
+    position: absolute;
+    top: calc(var(--sidebar-rail-brand-size) + 3.25rem);
+    left: calc(50% + 0.35rem);
+    z-index: 21;
+    width: 230px;
+    padding: 0 0.72rem 0.72rem;
+}
+
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button [data-testid="stButton"],
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button .stButton {
+    width: 100%;
+    background: transparent !important;
+}
+
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button [data-testid="stButton"] > button,
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button .stButton > button {
+    width: 100%;
+    min-width: 100%;
+    min-height: 2.15rem;
+    border-radius: 10px;
+    border: 1px solid var(--app-button-border) !important;
+    background: var(--app-button-bg) !important;
+    color: var(--app-text) !important;
+    font-size: 0.86rem !important;
+    line-height: 1.2 !important;
+    box-shadow: none !important;
+}
+
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button [data-testid="stButton"] > button:hover,
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button .stButton > button:hover {
+    background: var(--app-button-bg-hover) !important;
+    border-color: var(--app-border-strong) !important;
+}
+
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button [data-testid="stButton"] > button [data-testid="stMarkdownContainer"],
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button .stButton > button [data-testid="stMarkdownContainer"],
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button [data-testid="stButton"] > button p,
+[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button .stButton > button p {
+    display: block !important;
+    color: var(--app-text) !important;
+    font-size: 0.86rem !important;
+    line-height: 1.2 !important;
 }
 
 .st-key-sidebar_nav_rail_items > [data-testid="stVerticalBlock"] {

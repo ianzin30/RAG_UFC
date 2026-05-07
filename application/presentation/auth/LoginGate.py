@@ -15,7 +15,6 @@ import logging
 
 import requests
 import streamlit as st
-import streamlit.components.v1 as components
 
 from service.auth.FirebaseAuthService import is_firebase_enabled, verify_id_token
 from service.auth.UserContext import UserContext
@@ -112,65 +111,15 @@ def _handle_token(id_token: str) -> None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Google sign-in HTML component
+# Google sign-in — temporarily disabled, shows a "coming soon" popup
 # ─────────────────────────────────────────────────────────────────────────────
 
-_GOOGLE_HTML = """\
-<!DOCTYPE html><html><head><meta charset="UTF-8"/>
-<style>
-  *{{box-sizing:border-box;margin:0;padding:0}}
-  body{{background:transparent;display:flex;align-items:center;
-        justify-content:center;height:60px;padding:6px 0;
-        font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}}
-  button{{width:100%;max-width:340px;display:flex;align-items:center;
-          justify-content:center;gap:10px;padding:10px 16px;
-          background:#fff;color:#3c4043;border:1px solid #dadce0;
-          border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;
-          transition:background .15s,box-shadow .15s;letter-spacing:.01em}}
-  button:hover{{background:#f8f9fa;box-shadow:0 1px 3px rgba(0,0,0,.2)}}
-  button:disabled{{opacity:.55;cursor:not-allowed}}
-  #err{{font-size:12px;color:#f87171;margin-top:6px;text-align:center;min-height:18px}}
-</style></head><body>
-<div style="display:flex;flex-direction:column;align-items:center;width:100%">
-  <button id="btn">
-    <svg width="18" height="18" viewBox="0 0 48 48">
-      <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.6 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 2.9l5.7-5.7C34.5 6.5 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z"/>
-      <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 12 24 12c3.1 0 5.8 1.1 8 2.9l5.7-5.7C34.5 6.5 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
-      <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.3 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8H6.3C9.7 35.7 16.4 44 24 44z"/>
-      <path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.2 5.2C41.8 35.1 44 29.9 44 24c0-1.3-.1-2.6-.4-3.9z"/>
-    </svg>
-    Continuar com Google
-  </button>
-  <div id="err"></div>
-</div>
-<script type="module">
-  import {{initializeApp}} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import {{getAuth,signInWithPopup,GoogleAuthProvider}}
-    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  const cfg={{apiKey:"{api_key}",authDomain:"{auth_domain}",projectId:"{project_id}"}};
-  let app;
-  try{{app=initializeApp(cfg)}}
-  catch{{const {{getApp}}=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");app=getApp()}}
-  const auth=getAuth(app);
-  const prov=new GoogleAuthProvider();
-  document.getElementById("btn").addEventListener("click",async()=>{{
-    const btn=document.getElementById("btn");
-    const err=document.getElementById("err");
-    btn.disabled=true; btn.lastChild.textContent=" Abrindo..."; err.textContent="";
-    try{{
-      const r=await signInWithPopup(auth,prov);
-      const tok=await r.user.getIdToken();
-      const url=new URL(window.parent.location.href);
-      url.searchParams.set("firebase_token",tok);
-      window.parent.location.href=url.toString();
-    }}catch(e){{
-      btn.disabled=false; btn.lastChild.textContent=" Continuar com Google";
-      if(e.code!=="auth/popup-closed-by-user") err.textContent=e.message||"Erro ao entrar com Google.";
-    }}
-  }});
-</script>
-</body></html>
-"""
+@st.dialog("Login com Google")
+def _render_google_unavailable_dialog() -> None:
+    st.write("O login com Google estará disponível em breve.")
+    st.caption("Esta opção de login ainda está em desenvolvimento.")
+    if st.button("OK", key="google_dialog_ok", use_container_width=True, type="primary"):
+        st.rerun()
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -179,21 +128,11 @@ _GOOGLE_HTML = """\
 
 _CSS = """
 <style>
-/* Hide Streamlit's "Press Enter to submit form" / character-count overlay
-   that appears below focused inputs. Belt-and-suspenders: also handled in
-   global app.css, but duplicated here so the login page is guaranteed-clean
-   even if the global stylesheet path resolution ever fails. */
-[data-testid="InputInstructions"],
-[data-testid="stWidgetInstructions"],
-[data-testid="stFormSubmitInstructions"],
-[data-testid="textInputRootElement"] + div:has([data-testid="InputInstructions"]),
-div:has(> [data-testid="InputInstructions"]) {
+/* Hide Streamlit's "Press Enter to submit form" overlay only — narrow
+   selector so we don't accidentally strip pointer-events from the input
+   wrapper (which would make the field unclickable). */
+[data-testid="InputInstructions"] {
     display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    width: 0 !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
 }
 
 /* True full-viewport centering — make every Streamlit layer a flex column
@@ -241,6 +180,60 @@ div:has(> [data-testid="InputInstructions"]) {
     border-radius: 14px;
     padding: 2.4rem 2.4rem 2rem;
     box-shadow: 0 4px 32px rgba(0,0,0,0.35);
+}
+
+/* Standardize all text inputs in the auth card so email / password /
+   confirm-password are visually identical regardless of mode. */
+.st-key-auth_card [data-testid="stTextInput"] {
+    margin-bottom: 0.85rem !important;
+}
+.st-key-auth_card [data-testid="stTextInput"] [data-baseweb="input"],
+.st-key-auth_card [data-testid="stTextInput"] [data-baseweb="input"] > div {
+    height: 44px !important;
+    min-height: 44px !important;
+    border-radius: 10px !important;
+}
+.st-key-auth_card [data-testid="stTextInput"] input {
+    height: 44px !important;
+    padding: 0 14px !important;
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+}
+.st-key-auth_card [data-testid="stTextInput"] label {
+    font-size: 13px !important;
+    margin-bottom: 0.3rem !important;
+}
+
+/* Greyed-out look for the "Continuar com Google" button (clickable but
+   visually inactive — opens a "coming soon" dialog instead of signing in).
+   Selectors include the baseweb attribute to win specificity vs. the
+   generic secondary-button rules below. */
+.st-key-google_login_disabled button[data-testid="baseButton-secondary"],
+.st-key-google_login_disabled button {
+    background: rgba(255,255,255,0.04) !important;
+    border: 1px solid rgba(255,255,255,0.10) !important;
+    color: rgba(255,255,255,0.55) !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    padding: 0 14px !important;
+}
+.st-key-google_login_disabled button[data-testid="baseButton-secondary"]:hover,
+.st-key-google_login_disabled button:hover {
+    background: rgba(255,255,255,0.07) !important;
+    border-color: rgba(255,255,255,0.18) !important;
+    color: rgba(255,255,255,0.75) !important;
+}
+.st-key-google_login_disabled button p,
+.st-key-google_login_disabled button span,
+.st-key-google_login_disabled button svg {
+    color: inherit !important;
+    fill: currentColor !important;
+    line-height: 44px !important;
 }
 
 /* Divider text */
@@ -379,17 +372,18 @@ def _render_login_page() -> None:
                 if st.button("Criar conta", key="to_signup", use_container_width=True):
                     _set_mode("signup")
 
-            # Google divider + button with enough breathing room
+            # Google divider + temporarily-disabled button (opens "coming soon" dialog)
             st.markdown(
                 '<div class="auth-divider">ou continue com</div>',
                 unsafe_allow_html=True,
             )
-            google_html = _GOOGLE_HTML.format(
-                api_key=api_key,
-                auth_domain=cfg.auth_domain,
-                project_id=cfg.project_id,
-            )
-            components.html(google_html, height=96)
+            if st.button(
+                "Continuar com Google",
+                key="google_login_disabled",
+                use_container_width=True,
+                icon=":material/account_circle:",
+            ):
+                _render_google_unavailable_dialog()
 
         # ══════════════════════════════════════════════════════════════════
         # SIGNUP mode
@@ -469,7 +463,9 @@ def require_authenticated_user() -> UserContext | None:
         logger.debug("Active user: uid=%s", existing.user_id)
         return existing
 
-    # Token delivered via query param after Google sign-in popup
+    # Token delivered via query param after Google sign-in popup.
+    # Currently unreachable (Google login UI is parked behind a "coming soon"
+    # dialog); kept wired so re-enabling Google login is a UI-only change.
     firebase_token = st.query_params.get("firebase_token", "")
     if firebase_token:
         try:
