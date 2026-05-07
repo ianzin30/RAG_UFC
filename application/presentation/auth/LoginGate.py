@@ -208,7 +208,7 @@ div[data-testid="stVerticalBlock"]:has(> div > [data-testid="stForm"]) {
     background: rgba(255,255,255,0.12);
 }
 
-/* Link-style secondary buttons — uniform size and centering */
+/* Link-style secondary buttons */
 button[data-testid="baseButton-secondary"] {
     background: transparent !important;
     border: none !important;
@@ -218,9 +218,12 @@ button[data-testid="baseButton-secondary"] {
     text-decoration: underline !important;
     cursor: pointer !important;
     box-shadow: none !important;
-    width: 100% !important;
-    min-height: 32px !important;
+    /* Fixed size so both buttons are identical regardless of text length */
+    width: 152px !important;
+    min-width: 152px !important;
+    max-width: 152px !important;
     height: 32px !important;
+    min-height: 32px !important;
     padding: 0 !important;
     display: flex !important;
     align-items: center !important;
@@ -229,6 +232,20 @@ button[data-testid="baseButton-secondary"] {
 button[data-testid="baseButton-secondary"]:hover {
     color: #93c5fd !important;
     background: transparent !important;
+}
+
+/* Center the two-button row and remove column stretch */
+div[data-testid="stVerticalBlock"]:has(> div > [data-testid="stForm"])
+  div[data-testid="stHorizontalBlock"] {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 12px !important;
+}
+div[data-testid="stVerticalBlock"]:has(> div > [data-testid="stForm"])
+  div[data-testid="stHorizontalBlock"] div[data-testid="column"] {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
 }
 </style>
 """
