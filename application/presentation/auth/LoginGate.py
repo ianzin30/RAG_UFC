@@ -119,7 +119,7 @@ _GOOGLE_HTML = """\
 <style>
   *{{box-sizing:border-box;margin:0;padding:0}}
   body{{background:transparent;display:flex;align-items:center;
-        justify-content:center;height:48px;
+        justify-content:center;height:60px;padding:6px 0;
         font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}}
   button{{width:100%;max-width:340px;display:flex;align-items:center;
           justify-content:center;gap:10px;padding:10px 16px;
@@ -201,25 +201,30 @@ div[data-testid="stVerticalBlock"]:has(> div > [data-testid="stForm"]) {
 .auth-divider {
     display: flex; align-items: center; gap: 12px;
     color: rgba(255,255,255,0.35); font-size: 13px;
-    margin: 4px 0;
+    margin: 12px 0 8px;
 }
 .auth-divider::before,.auth-divider::after {
     content:""; flex:1; height:1px;
     background: rgba(255,255,255,0.12);
 }
 
-/* Link-style secondary buttons */
+/* Link-style secondary buttons — uniform size and centering */
 button[data-testid="baseButton-secondary"] {
     background: transparent !important;
     border: none !important;
-    padding: 0 !important;
     color: #60a5fa !important;
     font-size: 13px !important;
+    font-weight: 400 !important;
     text-decoration: underline !important;
     cursor: pointer !important;
     box-shadow: none !important;
-    min-height: unset !important;
-    height: auto !important;
+    width: 100% !important;
+    min-height: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 button[data-testid="baseButton-secondary"]:hover {
     color: #93c5fd !important;
@@ -254,6 +259,19 @@ def _render_login_page() -> None:
 
     st.markdown(_CSS, unsafe_allow_html=True)
 
+    # Strip the browser "Press Enter to submit form" tooltip Streamlit adds to form inputs
+    st.components.v1.html("""<script>
+(function () {
+  function strip() {
+    window.parent.document.querySelectorAll('input[title]')
+      .forEach(function (el) { el.removeAttribute('title'); });
+  }
+  strip();
+  new MutationObserver(strip).observe(window.parent.document.body,
+    {subtree: true, childList: true, attributes: true, attributeFilter: ['title']});
+})();
+</script>""", height=0)
+
     # Use columns to horizontally center the card
     _, col, _ = st.columns([1, 2, 1])
 
@@ -263,12 +281,12 @@ def _render_login_page() -> None:
         # ── Title ──────────────────────────────────────────────────────────
         st.markdown(
             "<h2 style='text-align:center;margin-bottom:4px;font-weight:700;"
-            "letter-spacing:-0.5px'>RAG Treino</h2>",
+            "letter-spacing:-0.5px'>RAG UFC</h2>",
             unsafe_allow_html=True,
         )
 
         subtitles = {
-            "login": "Faça login para acessar seus documentos e conversas.",
+            "login": "Faça login para testar o protótipo inicial da ferramenta",
             "signup": "Crie sua conta para começar.",
             "forgot": "Informe seu e-mail para receber o link de redefinição.",
         }
@@ -309,16 +327,16 @@ def _render_login_page() -> None:
                     except Exception as exc:
                         feedback.error(str(exc))
 
-            # Forgot password + sign-up links
-            fc, sc = st.columns(2)
+            # Forgot password + sign-up links — equal-width, centered columns
+            fc, sc = st.columns([1, 1])
             with fc:
-                if st.button("Esqueceu a senha?", key="to_forgot"):
+                if st.button("Esqueceu a senha?", key="to_forgot", use_container_width=True):
                     _set_mode("forgot")
             with sc:
-                if st.button("Criar conta", key="to_signup"):
+                if st.button("Criar conta", key="to_signup", use_container_width=True):
                     _set_mode("signup")
 
-            # Google divider
+            # Google divider + button with enough breathing room
             st.markdown(
                 '<div class="auth-divider">ou continue com</div>',
                 unsafe_allow_html=True,
@@ -328,7 +346,7 @@ def _render_login_page() -> None:
                 auth_domain=cfg.auth_domain,
                 project_id=cfg.project_id,
             )
-            st.components.v1.html(google_html, height=72)
+            st.components.v1.html(google_html, height=96)
 
         # ══════════════════════════════════════════════════════════════════
         # SIGNUP mode
