@@ -19,12 +19,54 @@ from presentation import chat_sessions
 from presentation.shared.CollectionSelection import clone_collection_selection, normalize_collection_selection
 from presentation.integrations import GoogleDrive as google_drive
 from service.ModelOptions import coerce_llm_model_name, get_llm_model_labels, get_llm_model_names
-from service.rag.RAGService import RAGService
+from service.rag.RagService import RAGService
 
 
 logger = logging.getLogger(__name__)
 MODEL_SELECTOR_KEY = "chat_model_selector"
 MODEL_SELECTOR_CHAT_KEY = "chat_model_selector_active_chat_id"
+DEFAULT_RESPONSE_STATUS_MESSAGE = "Analisando sua pergunta..."
+
+
+def normalize_response_status_payload(payload=None, *, state: str = "loading") -> dict[str, str | None]:
+    if isinstance(payload, dict):
+        message = str(payload.get("message") or "").strip()
+        stage = str(payload.get("stage") or "").strip()
+        mode = str(payload.get("mode") or "").strip() or None
+        agent = str(payload.get("agent") or "").strip() or None
+    else:
+        message = str(payload or "").strip()
+        stage = ""
+        mode = None
+        agent = None
+
+    return {
+        "stage": stage or "processing",
+        "message": message or DEFAULT_RESPONSE_STATUS_MESSAGE,
+        "mode": mode,
+        "agent": agent,
+        "state": str(state or "loading").strip() or "loading",
+    }
+
+
+def render_response_status_indicator(payload=None, *, state: str = "loading") -> None:
+    status = normalize_response_status_payload(payload, state=state)
+    state_name = status["state"] or "loading"
+    message = escape(status["message"] or DEFAULT_RESPONSE_STATUS_MESSAGE)
+    marker_html = (
+        '<div class="chat-response-status-error-mark">!</div>'
+        if state_name == "error"
+        else '<div class="loading-spinner"></div>'
+    )
+    st.markdown(
+        f"""
+        <div class="chat-response-status chat-response-status-{escape(state_name)}">
+            {marker_html}
+            <div class="chat-response-status-message">{message}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def render_model_toolbar() -> str:
@@ -253,41 +295,57 @@ def show(selected_model: str) -> None:
 
             with messages_shell:
                 with st.chat_message("assistant"):
-                    with st.spinner("Pensando..."):
-                        try:
-                            answer_trace = st.session_state.rag_service.ask_question_with_trace(prompt, recent_history)
-                            answer_text = str(answer_trace.get("answer_text", "")).strip()
-                            route = str(answer_trace.get("route", "")).strip() or "retrieval"
-                            resolved_question = str(answer_trace.get("resolved_question", prompt)).strip() or prompt
-                            matched_documents = [
-                                str(item).strip()
-                                for item in list(answer_trace.get("matched_documents") or [])
-                                if str(item).strip()
-                            ]
-                            needs_document_refinement = bool(answer_trace.get("needs_document_refinement"))
-                            sources = answer_trace.get("sources") or []
+                    status_slot = st.empty()
 
-                            st.write(answer_text)
-                            if route == "retrieval":
-                                render_sources(sources)
+                    def update_response_status(status_payload) -> None:
+                        with status_slot.container():
+                            render_response_status_indicator(status_payload)
 
-                            assistant_message = {
-                                "role": "assistant",
-                                "content": answer_text,
-                                "route": route,
-                                "resolved_question": resolved_question,
-                            }
-                            if matched_documents:
-                                assistant_message["matched_documents"] = matched_documents
-                            if needs_document_refinement:
-                                assistant_message["needs_document_refinement"] = True
-                            if sources:
-                                assistant_message["sources"] = sources
+                    update_response_status({"message": DEFAULT_RESPONSE_STATUS_MESSAGE})
+                    rag_service = st.session_state.rag_service
+                    if hasattr(rag_service, "set_response_status_callback"):
+                        rag_service.set_response_status_callback(update_response_status)
 
-                            st.session_state.messages.append(assistant_message)
-                            chat_sessions.update_active_chat_messages(st.session_state.messages)
-                        except Exception as exc:
-                            error_msg = f"Erro ao obter resposta: {exc}"
-                            st.error(error_msg)
-                            st.session_state.messages.append({"role": "assistant", "content": error_msg})
-                            chat_sessions.update_active_chat_messages(st.session_state.messages)
+                    try:
+                        answer_trace = rag_service.ask_question_with_trace(prompt, recent_history)
+                        status_slot.empty()
+                        answer_text = str(answer_trace.get("answer_text", "")).strip()
+                        route = str(answer_trace.get("route", "")).strip() or "retrieval"
+                        resolved_question = str(answer_trace.get("resolved_question", prompt)).strip() or prompt
+                        matched_documents = [
+                            str(item).strip()
+                            for item in list(answer_trace.get("matched_documents") or [])
+                            if str(item).strip()
+                        ]
+                        needs_document_refinement = bool(answer_trace.get("needs_document_refinement"))
+                        sources = answer_trace.get("sources") or []
+
+                        st.write(answer_text)
+                        if route == "retrieval":
+                            render_sources(sources)
+
+                        assistant_message = {
+                            "role": "assistant",
+                            "content": answer_text,
+                            "route": route,
+                            "resolved_question": resolved_question,
+                        }
+                        if matched_documents:
+                            assistant_message["matched_documents"] = matched_documents
+                        if needs_document_refinement:
+                            assistant_message["needs_document_refinement"] = True
+                        if sources:
+                            assistant_message["sources"] = sources
+
+                        st.session_state.messages.append(assistant_message)
+                        chat_sessions.update_active_chat_messages(st.session_state.messages)
+                    except Exception:
+                        logger.exception("Failed to generate chat response.")
+                        error_msg = "Nao consegui gerar a resposta agora. Tente novamente em instantes."
+                        with status_slot.container():
+                            render_response_status_indicator({"message": error_msg}, state="error")
+                        st.session_state.messages.append({"role": "assistant", "content": error_msg})
+                        chat_sessions.update_active_chat_messages(st.session_state.messages)
+                    finally:
+                        if hasattr(rag_service, "set_response_status_callback"):
+                            rag_service.set_response_status_callback(None)

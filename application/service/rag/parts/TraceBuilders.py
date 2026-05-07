@@ -65,6 +65,12 @@ class RAGServiceTraceBuilderMixin:
     # Este trace encapsula a resposta casual com o mesmo formato usado no retrieval.
     def _build_casual_trace(self, question: str, collection_name: str, history_text: str) -> dict[str, object]:
         self.last_retrieval_focus = None
+        self._emit_response_status(
+            "answer_generation",
+            "Gerando resposta...",
+            mode=MODE_CASUAL,
+            agent="Answer Agent",
+        )
         casual_answer = self._invoke_casual_agent(collection_name, history_text, question)
         return self._attach_debug_trace_fields(
             {

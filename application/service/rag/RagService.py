@@ -23,6 +23,7 @@ from .parts.Diagnostics import RAGServiceDiagnosticsMixin
 from .parts.FocusState import RAGServiceFocusStateMixin
 from .parts.Planning import RAGServicePlanningMixin
 from .parts.QuestionAnswering import RAGServiceQuestionAnsweringMixin
+from .parts.ResponseStatus import RAGServiceResponseStatusMixin
 from .parts.Selection import RAGServiceSelectionMixin
 from .parts.TraceBuilders import RAGServiceTraceBuilderMixin
 
@@ -41,6 +42,7 @@ class RAGService(
     RAGServiceFocusStateMixin,
     RAGServiceSelectionMixin,
     RAGServicePlanningMixin,
+    RAGServiceResponseStatusMixin,
     RAGServiceTraceBuilderMixin,
     RAGServiceDiagnosticsMixin,
     RAGServiceCollectionLoadingMixin,

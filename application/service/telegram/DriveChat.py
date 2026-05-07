@@ -4,7 +4,7 @@ Manages the flow of logging in with Google Drive, selecting extraction method,
 importing documents, and answering questions about them via chat.
 """
 from ..GoogleDrive import GoogleDriveService
-from ..rag.RAGService import RAGService
+from ..rag.RagService import RAGService
 from .ExtractionSelection import format_extraction_method
 
 # nome da pasta no Google Drive onde os arquivos devem estar para serem importados

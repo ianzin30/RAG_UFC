@@ -15,6 +15,12 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
         document_shortlist: list[str],
         clarification_resolution: dict[str, object] | None,
     ) -> dict[str, object]:
+        self._emit_response_status(
+            "retrieval_search",
+            "Buscando na base de conhecimento...",
+            mode=MODE_RETRIEVAL,
+            agent="Retriever Agent",
+        )
         docs = self._retrieve_docs(
             resolved_question,
             target_document_name,
@@ -40,6 +46,12 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
                 "sources": [],
             }
 
+        self._emit_response_status(
+            "context_selection",
+            "Selecionando contexto relevante...",
+            mode=MODE_RETRIEVAL,
+            agent="Retrieval Agent",
+        )
         selected_docs = self._select_docs_for_context(
             docs,
             target_document_name,
@@ -74,8 +86,10 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
         if not self.retriever or not self.answer_chain or not self.small_talk_chain:
             raise Exception("No collection loaded. Please load a collection before asking questions.")
 
+        self._emit_response_status("analyzing", "Analisando sua pergunta...")
         history_text = self._format_chat_history(chat_history)
         collection_name = self.collection_name or "colecao nao identificada"
+        self._emit_response_status("routing", "Agente Router analisando...", agent="Router Agent")
         route_decision = self._resolve_auto_route(question, chat_history)
         self._active_route_decision = route_decision
         route = str(route_decision.get("mode") or MODE_RETRIEVAL).strip().lower()
@@ -83,8 +97,12 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
         if route_decision.get("source") == "legacy_command":
             return self._build_mode_transition_trace(question, route, "legacy_auto_routing")
         if route == MODE_CASUAL:
+            self._emit_response_status("casual_mode", "Usando modo casual...", mode=MODE_CASUAL)
+            self._emit_response_status("casual_prepare", "Preparando resposta direta...", mode=MODE_CASUAL)
             return self._build_casual_trace(question, collection_name, history_text)
 
+        self._emit_response_status("retrieval_mode", "Usando modo retrieval...", mode=MODE_RETRIEVAL)
+        self._emit_response_status("retrieval_planning", "Planejando busca...", mode=MODE_RETRIEVAL)
         pending_refinement = self._get_pending_document_refinement(chat_history)
         refinement_resolution = self._resolve_pending_document_refinement(question, pending_refinement)
         pending_clarification = self._get_pending_retrieval_clarification()
@@ -196,6 +214,12 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
         extraction_diagnostics = self._build_trace_extraction_diagnostics(document_shortlist)
 
         if retrieval_intent is None:
+            self._emit_response_status(
+                "retrieval_planning",
+                "Planejando busca...",
+                mode=MODE_RETRIEVAL,
+                agent="Reasoning Agent",
+            )
             retrieval_intent = self._plan_evidence_retrieval(
                 user_question,
                 resolved_question,
@@ -310,6 +334,12 @@ class RAGServiceQuestionAnsweringMixin(RAGServiceFollowUpMixin):
                 recovery_matched_documents=recovery_matched_documents,
             )
 
+        self._emit_response_status(
+            "answer_generation",
+            "Agente Answer escrevendo a resposta...",
+            mode=MODE_RETRIEVAL,
+            agent="Answer Agent",
+        )
         retrieval_answer = self._invoke_retrieval_agent(
             collection_name=collection_name,
             history_text=retrieval_history_text,

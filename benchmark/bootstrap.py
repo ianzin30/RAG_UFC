@@ -27,7 +27,7 @@ def get_runtime_config():
 
 def get_rag_service_class():
     bootstrap_python_path()
-    from service.rag.RAGService import RAGService
+    from service.rag.RagService import RAGService
 
     return RAGService
 
@@ -37,4 +37,3 @@ def get_retrieval_mode_command() -> str:
     from service.rag.Constants import MODE_SWITCH_TO_RETRIEVAL_COMMAND
 
     return MODE_SWITCH_TO_RETRIEVAL_COMMAND
-

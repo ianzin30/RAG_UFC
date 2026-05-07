@@ -89,6 +89,7 @@ class RAGServiceBootstrapMixin:
         self.last_retrieval_focus = None
         self._retrieval_diagnostics_enabled = False
         self._retrieval_diagnostics_state = None
+        self._response_status_callback = None
         self.agent_mode = self.runtime_config.rag.agent_mode
         self.strict_grounding = self.runtime_config.rag.strict_grounding
         self.min_evidence_score = self.runtime_config.rag.min_evidence_score
