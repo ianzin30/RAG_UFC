@@ -218,108 +218,6 @@ body,
     margin-bottom: 1.35rem;
 }
 
-.st-key-sidebar_nav_rail_header .st-key-sidebar_account_menu_button {
-    position: absolute;
-    inset: 0 auto auto 50%;
-    width: var(--sidebar-rail-brand-size);
-    height: var(--sidebar-rail-brand-size);
-    transform: translateX(-50%);
-    z-index: 3;
-}
-
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_menu_button [data-testid="stButton"],
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_menu_button .stButton {
-    width: 100%;
-    height: 100%;
-    background: transparent !important;
-}
-
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_menu_button [data-testid="stButton"] > button,
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_menu_button .stButton > button {
-    width: 100%;
-    min-width: 100%;
-    min-height: 100%;
-    border-radius: 999px;
-    border: 1px solid transparent !important;
-    background: transparent !important;
-    box-shadow: none !important;
-}
-
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_menu_button [data-testid="stButton"] > button:hover,
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_menu_button .stButton > button:hover {
-    border-color: var(--app-rail-active-border) !important;
-    background: rgba(255, 255, 255, 0.06) !important;
-}
-
-.nav-rail-account-menu {
-    position: absolute;
-    top: calc(var(--sidebar-rail-brand-size) + 0.55rem);
-    left: calc(50% + 0.35rem);
-    z-index: 20;
-    width: 230px;
-    padding: 0.72rem 0.72rem 3.45rem;
-    border-radius: 14px;
-    border: 1px solid var(--app-border-soft);
-    background: var(--app-elevated-bg);
-    box-shadow: var(--app-menu-shadow);
-}
-
-.nav-rail-account-email {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding: 0 0.12rem 0.62rem;
-    border-bottom: 1px solid var(--app-border-soft);
-    color: var(--app-muted);
-    font-size: 0.78rem;
-    line-height: 1.25;
-}
-
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button {
-    position: absolute;
-    top: calc(var(--sidebar-rail-brand-size) + 3.25rem);
-    left: calc(50% + 0.35rem);
-    z-index: 21;
-    width: 230px;
-    padding: 0 0.72rem 0.72rem;
-}
-
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button [data-testid="stButton"],
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button .stButton {
-    width: 100%;
-    background: transparent !important;
-}
-
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button [data-testid="stButton"] > button,
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button .stButton > button {
-    width: 100%;
-    min-width: 100%;
-    min-height: 2.15rem;
-    border-radius: 10px;
-    border: 1px solid var(--app-button-border) !important;
-    background: var(--app-button-bg) !important;
-    color: var(--app-text) !important;
-    font-size: 0.86rem !important;
-    line-height: 1.2 !important;
-    box-shadow: none !important;
-}
-
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button [data-testid="stButton"] > button:hover,
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button .stButton > button:hover {
-    background: var(--app-button-bg-hover) !important;
-    border-color: var(--app-border-strong) !important;
-}
-
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button [data-testid="stButton"] > button [data-testid="stMarkdownContainer"],
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button .stButton > button [data-testid="stMarkdownContainer"],
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button [data-testid="stButton"] > button p,
-[data-testid="stSidebar"] .st-key-sidebar_nav_rail_header .st-key-sidebar_account_logout_button .stButton > button p {
-    display: block !important;
-    color: var(--app-text) !important;
-    font-size: 0.86rem !important;
-    line-height: 1.2 !important;
-}
-
 .st-key-sidebar_nav_rail_items > [data-testid="stVerticalBlock"] {
     width: 100%;
     display: flex;
@@ -1174,32 +1072,20 @@ body,
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
     min-height: 100%;
+    width: 100%;
 }
 
 .st-key-main_chat_locked_state_shell > [data-testid="stVerticalBlock"] {
     gap: 1rem;
     padding: 1rem 0 1.6rem;
+    width: 100%;
 }
 
-.chat-empty-state-copy-locked {
-    width: min(100%, 760px);
-    margin: 0 auto;
-}
-
-.chat-empty-state-copy-locked .chat-empty-message:last-child {
-    margin-bottom: 0;
-}
-
-.chat-empty-message {
-    background: var(--app-surface);
-    border: 1px solid var(--app-border-soft);
-    border-radius: 18px;
-    padding: 0.9rem 1rem;
-    margin-bottom: 0.8rem;
-    color: var(--app-text);
-    box-shadow: var(--app-shadow-sm);
+.st-key-main_chat_shell:has(.st-key-main_chat_locked_state_shell) .st-key-main_chat_input_shell {
+    display: none !important;
 }
 
 .chat-empty-input {

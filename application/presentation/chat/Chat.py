@@ -170,16 +170,6 @@ def _show_locked_chat_state() -> None:
     with st.container(key="main_chat_locked_state_shell"):
         st.markdown(
             """
-            <div class="chat-empty-state-copy chat-empty-state-copy-locked">
-                <div class="chat-empty-message"><strong>Assistente</strong><br/>Conecte ou envie documentos para comecarmos.</div>
-                <div class="chat-empty-message"><strong>Voce</strong><br/>Quais sao os principais pontos dos arquivos carregados?</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        st.markdown(
-            """
             <div class="chat-empty-cta">
                 <strong>Nenhum documento carregado.</strong><br/>
                 Arraste arquivos na lateral ou conecte o Google Drive para liberar o chat.
@@ -231,8 +221,6 @@ def show(selected_model: str) -> None:
         if not selected_collections:
             with messages_shell:
                 _show_locked_chat_state()
-            with input_shell:
-                render_locked_chat_input_placeholder()
             return
 
         # Display feedback from integrations (e.g., Google Drive connection)
@@ -276,6 +264,8 @@ def show(selected_model: str) -> None:
             # Render each message with sources if it's a retrieval-based answer
             for message in st.session_state.messages:
                 with st.chat_message(message["role"]):
+                    if message.get("role") == "assistant":
+                        st.empty()
                     st.write(message["content"])
                     if message.get("role") == "assistant" and message.get("route") == "retrieval":
                         render_sources(message.get("sources"))

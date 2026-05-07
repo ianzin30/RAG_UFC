@@ -140,37 +140,36 @@ _CSS = """
    the auth card within it. Works on any screen size with no magic numbers. */
 .stApp, [data-testid="stApp"] {
     min-height: 100vh !important;
-    display: flex !important;
-    flex-direction: column !important;
 }
 
 [data-testid="stMain"] {
-    flex: 1 !important;
-    display: flex !important;
-    flex-direction: column !important;
+    min-height: 100vh !important;
 }
 
 [data-testid="stMainBlockContainer"] {
-    flex: 1 !important;
-    display: flex !important;
-    flex-direction: column !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+    min-height: 100vh !important;
 }
 
 [data-testid="stMainBlockContainer"] > .block-container {
-    flex: 1 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
     padding: 2rem 1rem !important;
+    min-height: 100vh !important;
 }
 
 /* Auth card wrapper — constrain width, let parent flex do the centering */
 .st-key-auth_card {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translate(-50%, -50%) !important;
     width: 100% !important;
-    max-width: 440px !important;
+    max-width: min(440px, calc(100vw - 2rem)) !important;
+    max-height: calc(100vh - 2rem) !important;
+    overflow-y: auto !important;
+    z-index: 10 !important;
 }
 
 /* Card — visual styles only; width/centering handled by .st-key-auth_card above */
@@ -187,11 +186,33 @@ _CSS = """
 .st-key-auth_card [data-testid="stTextInput"] {
     margin-bottom: 0.85rem !important;
 }
-.st-key-auth_card [data-testid="stTextInput"] [data-baseweb="input"],
-.st-key-auth_card [data-testid="stTextInput"] [data-baseweb="input"] > div {
+
+.st-key-auth_card [data-testid="stTextInput"] [data-baseweb="input"] {
+    width: 100% !important;
     height: 44px !important;
     min-height: 44px !important;
+    background: var(--app-input-bg) !important;
+    border: 1px solid var(--app-input-border) !important;
     border-radius: 10px !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+}
+.st-key-auth_card [data-testid="stTextInput"] [data-baseweb="input"] > div {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+.st-key-auth_card [data-testid="stTextInput"] [data-baseweb="input"]:focus-within {
+    border-color: var(--app-input-border-focus) !important;
+    box-shadow: var(--app-input-shadow) !important;
+}
+.st-key-auth_card [data-testid="stTextInput"] [data-baseweb="input"] > div:focus-within {
+    border-color: transparent !important;
+    box-shadow: none !important;
 }
 .st-key-auth_card [data-testid="stTextInput"] input {
     height: 44px !important;

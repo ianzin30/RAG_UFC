@@ -2,10 +2,9 @@
 Sidebar layout and composition - renders the left navigation panel.
 
 The sidebar contains:
-- Vertical navigation rail (narrow left column) for theme, etc.
+- Vertical navigation rail (narrow left column) for account menu and panel switching
 - Main content panel (wider right area) for chat or files view
 - Feedback messages for uploads and chat operations
-- Sign-out button when the user is authenticated
 """
 
 import streamlit as st
@@ -24,22 +23,6 @@ def render_sidebar(
 ) -> None:
     """Render the main sidebar with navigation rail and content panels."""
     with st.sidebar:
-        # Sign-out button when authenticated
-        if user is not None:
-            from service.RuntimeConfig import get_runtime_config
-            try:
-                firebase_enabled = get_runtime_config().firebase.enabled
-            except Exception:
-                firebase_enabled = False
-
-            if firebase_enabled:
-                with st.container(key="sidebar_user_shell"):
-                    display = user.display_name or user.email or "Usuário"
-                    st.caption(f"👤 {display}")
-                    if st.button("Sair", key="sidebar_logout_btn", use_container_width=True):
-                        from presentation.auth.LoginGate import logout
-                        logout()
-
         # Retrieve any pending feedback messages
         upload_feedback = st.session_state.pop("upload_feedback", None)
         chat_feedback = st.session_state.pop("chat_feedback", None)
@@ -51,7 +34,7 @@ def render_sidebar(
 
             with rail_col:
                 # Navigation rail (narrow vertical menu)
-                render_navigation_rail()
+                render_navigation_rail(user=user)
 
             with panel_col:
                 with st.container(key="sidebar_panel_shell"):

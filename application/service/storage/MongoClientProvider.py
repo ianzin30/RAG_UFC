@@ -49,7 +49,7 @@ def ensure_indexes(db: Database) -> None:
     db["user_files"].create_index(
         [("user_id", ASCENDING), ("collection_name", ASCENDING), ("filename", ASCENDING)],
         unique=True,
-        partialFilterExpression={"status": {"$ne": "deleted"}},
+        partialFilterExpression={"status": {"$in": ["uploaded", "indexed", "processing", "failed"]}},
         background=True,
     )
     logger.info("MongoDB indexes ensured")

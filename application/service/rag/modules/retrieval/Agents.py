@@ -86,6 +86,8 @@ class RetrievalAgentMixin:
             r"(?:^|[\n.!?]\s*)i(?:'| a)m\s+here\s+to\s+help\b.*?$",
             r"(?:^|[\n.!?]\s*)feel\s+free\s+to\s+ask\b.*?$",
             r"(?:^|[\n.!?]\s*)let\s+me\s+know\s+if\s+you\s+need\b.*?$",
+            r"(?:^|\n)\s*(?:-)*\s*\n*\s*\(Note:.*?\)\s*$",
+            r"(?:^|\n)\s*(?:-)*\s*\n*\s*Nota:.*?\s*$",
         )
         previous = None
         while previous != response:

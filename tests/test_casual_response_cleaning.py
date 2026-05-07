@@ -53,6 +53,16 @@ def test_clean_casual_response_preserves_normal_content() -> None:
     assert cleaned == "Posso explicar isso em poucas palavras."
 
 
+def test_clean_casual_response_removes_unwanted_note() -> None:
+    harness = CasualCleaningHarness()
+
+    cleaned = harness._clean_casual_response(
+        "Olá! Essa é uma resposta legal.\n\n---\n(Note: The response maintains a brief and friendly tone without inventing information or adding generic closing phrases.)"
+    )
+
+    assert cleaned == "Olá! Essa é uma resposta legal."
+
+
 def test_invoke_casual_agent_cleans_small_talk_chain_output() -> None:
     harness = CasualCleaningHarness(
         "Oi! Eu sou o assistente do chat. Se precisar de algo, estou à disposição para ajudar."
