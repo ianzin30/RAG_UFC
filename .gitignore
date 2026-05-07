@@ -23,4 +23,8 @@ data/local_chat_sessions.json
 data/cache/
 data/collections/google_drive_rag/
 data/collections/uploaded_files/
+data/users/
 benchmark/results/
+
+# Firebase credentials (never commit)
+config/firebase-service-account.json

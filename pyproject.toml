@@ -28,6 +28,8 @@ dependencies = [
     "tomli-w>=1.1.0",
     "torch",
     "torchvision",
+    "firebase-admin>=6.0.0",
+    "pymongo>=4.0.0",
 ]
 
 [dependency-groups]

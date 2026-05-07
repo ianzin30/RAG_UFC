@@ -13,10 +13,22 @@ from service.RuntimeConfig import load_project_environment
 load_project_environment()
 
 from presentation.Page import render_application
+from presentation.auth.LoginGate import require_authenticated_user
 
 
 def main() -> None:
+    user = require_authenticated_user()
+    if user is None and _firebase_enabled():
+        return  # login gate already called st.stop()
     render_application()
+
+
+def _firebase_enabled() -> bool:
+    try:
+        from service.RuntimeConfig import get_runtime_config
+        return get_runtime_config().firebase.enabled
+    except Exception:
+        return False
 
 
 if __name__ == "__main__":

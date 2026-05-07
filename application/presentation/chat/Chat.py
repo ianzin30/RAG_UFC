@@ -209,7 +209,8 @@ def show(selected_model: str) -> None:
         )
         # Reload RAG service if collections changed or service not initialized
         if "rag_service" not in st.session_state or st.session_state.rag_service is None or collection_changed:
-            st.session_state.rag_service = RAGService(model_name=current_model)
+            from presentation.auth.SessionUser import get_current_user
+            st.session_state.rag_service = RAGService(model_name=current_model, user_context=get_current_user())
             loader = messages_shell.empty()
             with loader.container():
                 render_loading_state()

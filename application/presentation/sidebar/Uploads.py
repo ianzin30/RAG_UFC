@@ -19,7 +19,9 @@ def build_upload_signature(uploaded_files) -> str:
 
 
 def ingest_sidebar_uploads(uploaded_files) -> None:
-    upload_service = LocalUploadService()
+    from presentation.auth.SessionUser import get_current_user
+    user = get_current_user()
+    upload_service = LocalUploadService(user_context=user)
     result = upload_service.ingest_uploaded_files(
         uploaded_files,
         collection_name=UPLOAD_COLLECTION_NAME,

@@ -10,6 +10,7 @@ import streamlit as st
 import logging
 
 from presentation import chat_sessions
+from presentation.auth.SessionUser import get_current_user
 from presentation.chat import Chat as chat
 from presentation.shared.CollectionSelection import normalize_collection_selection, sanitize_collection_selection
 from service.RuntimeConfig import get_runtime_config
@@ -35,14 +36,19 @@ def render_application() -> None:
     )
     apply_global_styles(get_active_theme_name())
 
-    available_documents = list_collection_documents()
+    user = get_current_user()
+    user_id = user.user_id if user else None
+
+    available_documents = list_collection_documents(user_id=user_id)
     available_collections = list_available_collections(available_documents)
     default_collection = [available_collections[0]] if available_collections else None
     default_model = get_runtime_config().ufc_model_name
     if not st.session_state.get("_default_model_logged"):
         logger.info("Default UI LLM model loaded from config: %s", default_model)
         st.session_state._default_model_logged = True
-    chat_sessions.initialize_chat_sessions(default_collection=default_collection, default_model=default_model)
+    chat_sessions.initialize_chat_sessions(
+        user_id=user_id, default_collection=default_collection, default_model=default_model
+    )
 
     selected_collections = sanitize_collection_selection(st.session_state.get("collection"), available_collections)
     if normalize_collection_selection(st.session_state.get("collection")) != selected_collections:
@@ -50,7 +56,7 @@ def render_application() -> None:
     elif not selected_collections and default_collection:
         set_selected_collections(default_collection)
 
-    render_sidebar(available_documents, default_collection, default_model)
+    render_sidebar(available_documents, default_collection, default_model, user=user)
     with st.container(key="main_view_shell"):
         with st.container(key="main_view_toolbar_shell"):
             selected_model = chat.render_model_toolbar()
