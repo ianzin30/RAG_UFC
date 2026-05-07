@@ -24,6 +24,8 @@ def initialize_app_session_state() -> None:
         "last_upload_signature": None,  # Signature of last uploaded files (to detect new uploads)
         "sidebar_panel": "chat",  # Active sidebar panel (chat or files)
         "app_theme": "dark",  # Current theme (dark or light)
+        "user": None,  # Authenticated UserContext (set by LoginGate)
+        "firebase_id_token": None,  # Raw Firebase ID token (for re-verification if needed)
     }
     for key, value in defaults.items():
         if key not in st.session_state:

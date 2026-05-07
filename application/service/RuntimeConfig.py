@@ -71,6 +71,27 @@ class GenerationRuntimeConfig:
 
 
 @dataclass(frozen=True)
+class FirebaseRuntimeConfig:
+    enabled: bool
+    credentials_path: str
+    web_api_key: str
+    auth_domain: str
+    project_id: str
+
+
+@dataclass(frozen=True)
+class MongoRuntimeConfig:
+    enabled: bool
+    uri: str
+    database: str
+
+
+@dataclass(frozen=True)
+class UserStorageRuntimeConfig:
+    base_dir: str
+
+
+@dataclass(frozen=True)
 class AppRuntimeConfig:
     ufc_model_name: str
     embedding: EmbeddingRuntimeConfig
@@ -78,6 +99,9 @@ class AppRuntimeConfig:
     retrieval: RetrievalRuntimeConfig
     rag: RagRuntimeConfig
     generation: GenerationRuntimeConfig
+    firebase: FirebaseRuntimeConfig
+    mongodb: MongoRuntimeConfig
+    user_storage: UserStorageRuntimeConfig
 
 
 def load_project_environment() -> None:
@@ -220,6 +244,9 @@ def get_runtime_config() -> AppRuntimeConfig:
     retrieval_table = _get_optional_table(payload, "retrieval")
     rag_table = _require_table(payload, "rag")
     generation_table = _get_optional_table(payload, "generation")
+    firebase_table = _get_optional_table(payload, "firebase")
+    mongodb_table = _get_optional_table(payload, "mongodb")
+    user_storage_table = _get_optional_table(payload, "user_storage")
 
     return AppRuntimeConfig(
         ufc_model_name=_require_str(model_table, "ufc_model_name", "model.ufc_model_name"),
@@ -274,6 +301,23 @@ def get_runtime_config() -> AppRuntimeConfig:
             seed=_get_optional_int(generation_table, "seed"),
             num_ctx=_get_optional_int(generation_table, "num_ctx"),
         ),
+        firebase=FirebaseRuntimeConfig(
+            enabled=_coerce_bool(firebase_table.get("enabled"), default=False),
+            credentials_path=_get_optional_str(
+                firebase_table, "credentials_path", "config/firebase-service-account.json"
+            ),
+            web_api_key=_get_optional_str(firebase_table, "web_api_key", ""),
+            auth_domain=_get_optional_str(firebase_table, "auth_domain", ""),
+            project_id=_get_optional_str(firebase_table, "project_id", ""),
+        ),
+        mongodb=MongoRuntimeConfig(
+            enabled=_coerce_bool(mongodb_table.get("enabled"), default=False),
+            uri=_get_optional_str(mongodb_table, "uri", "mongodb://localhost:27017"),
+            database=_get_optional_str(mongodb_table, "database", "rag_ufc"),
+        ),
+        user_storage=UserStorageRuntimeConfig(
+            base_dir=_get_optional_str(user_storage_table, "base_dir", "data/users"),
+        ),
     )
 
 
@@ -286,11 +330,14 @@ __all__ = [
     "CONFIG_FILE",
     "ENV_FILE",
     "EmbeddingRuntimeConfig",
+    "FirebaseRuntimeConfig",
     "GenerationRuntimeConfig",
+    "MongoRuntimeConfig",
     "PROJECT_ROOT",
     "RagRuntimeConfig",
     "RetrievalRuntimeConfig",
     "SplitterRuntimeConfig",
+    "UserStorageRuntimeConfig",
     "get_runtime_config",
     "load_project_environment",
     "reset_runtime_config_cache",

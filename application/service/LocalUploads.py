@@ -1,9 +1,10 @@
-"""Local file upload ingestion.
+"""Local file upload ingestion — per-user scoped.
 
 Handles extraction and ingest of files uploaded directly through the UI,
 supporting PDFs (pypdf or docling), Office documents, spreadsheets, plain text,
-and images. All extracts are saved to the 'uploaded_files' collection as Markdown.
+and images. All extracts are saved to the user's collection directory as Markdown.
 """
+import logging
 from pathlib import Path
 
 from .GoogleDrive import (
@@ -13,6 +14,8 @@ from .GoogleDrive import (
     SPREADSHEET_SUFFIXES,
 )
 from .SpreadsheetMarkdown import extract_spreadsheet_markdown
+
+logger = logging.getLogger("ragufc.storage")
 
 PLAIN_TEXT_SUFFIXES = {".md", ".txt"}
 SUPPORTED_UPLOAD_SUFFIXES = {
@@ -36,14 +39,22 @@ SUPPORTED_UPLOAD_SUFFIXES = {
 class LocalUploadService:
     """Extract and ingest uploaded files into the collection system.
 
-    Supports multiple file types (PDFs, Office, spreadsheets, images, text)
-    and extraction methods (docling, pypdf). Saves extracted text as Markdown
-    to the collections root.
+    Accepts an optional *user_context*. When provided, files are stored under
+    data/users/{uid}/collections/{collection_name}/ and metadata is recorded in
+    MongoDB. When user_context is None (dev mode / auth disabled), falls back to
+    the legacy global collections root.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, user_context=None) -> None:
         self.drive_service = GoogleDriveService()
-        self.collections_root = self.drive_service.collections_root
+        self._user_context = user_context
+        self.collections_root = self._resolve_collections_root()
+
+    def _resolve_collections_root(self) -> Path:
+        if self._user_context is not None:
+            from .storage.UserStoragePaths import collections_root_for
+            return collections_root_for(self._user_context.user_id)
+        return self.drive_service.collections_root
 
     def _decode_text_bytes(self, file_bytes: bytes) -> str:
         for encoding in ("utf-8-sig", "utf-8", "latin-1"):
@@ -70,6 +81,35 @@ class LocalUploadService:
 
         return self.drive_service._extract_file_text_with_docling(file_bytes, suffix).strip()
 
+    def _record_file_in_mongo(self, *, filename: str, storage_path: str, collection_name: str) -> None:
+        if self._user_context is None:
+            return
+        try:
+            from .storage.MongoClientProvider import get_db
+            from .storage.UserFileRepository import record_file
+            db = get_db()
+            record_file(
+                db,
+                user_id=self._user_context.user_id,
+                filename=filename,
+                original_filename=filename,
+                storage_path=storage_path,
+                collection_name=collection_name,
+                status="indexed",
+            )
+        except Exception as exc:
+            logger.warning("Failed to record file in MongoDB: %s", exc)
+
+    def _mark_collection_deleted_in_mongo(self, collection_name: str) -> None:
+        if self._user_context is None:
+            return
+        try:
+            from .storage.MongoClientProvider import get_db
+            from .storage.UserFileRepository import mark_collection_deleted
+            mark_collection_deleted(get_db(), self._user_context.user_id, collection_name)
+        except Exception as exc:
+            logger.warning("Failed to mark collection deleted in MongoDB: %s", exc)
+
     def ingest_uploaded_files(
         self,
         uploaded_files,
@@ -78,11 +118,16 @@ class LocalUploadService:
     ) -> dict:
         collection_path = self.collections_root / collection_name
         collection_path.mkdir(parents=True, exist_ok=True)
+
+        # Mark all existing files in this collection as deleted before overwriting
+        self._mark_collection_deleted_in_mongo(collection_name)
         for old_file in collection_path.glob("*.md"):
             old_file.unlink()
 
         saved_files = []
         skipped_files = []
+
+        uid_label = self._user_context.user_id if self._user_context else "anon"
 
         for index, uploaded_file in enumerate(uploaded_files, start=1):
             file_name = Path(uploaded_file.name).name
@@ -107,12 +152,23 @@ class LocalUploadService:
                 f"# {file_name}\n\nExtraction method: {extraction_method}\n\n{text}\n",
                 encoding="utf-8",
             )
+            self._record_file_in_mongo(
+                filename=f"{index:02d}_{safe_name}.md",
+                storage_path=str(output_path),
+                collection_name=collection_name,
+            )
             saved_files.append(
                 {
                     "name": file_name,
                     "output_path": str(output_path),
                     "extraction_method": extraction_method,
                 }
+            )
+            logger.info(
+                "File uploaded — uid=%s filename=%s collection=%s",
+                uid_label,
+                file_name,
+                collection_name,
             )
 
         if not saved_files:

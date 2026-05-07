@@ -28,9 +28,16 @@ _EMBEDDING_INSTANCE_CACHE: dict[tuple[Any, ...], HuggingFaceEmbeddings] = {}
 # Este mixin prepara modelo, embeddings, agentes e estado inicial do servico.
 class RAGServiceBootstrapMixin:
     # Esta etapa monta todo o estado base antes de qualquer pergunta ou carga de colecao.
-    def __init__(self, collection_name=None, model_name: str | None = None):
+    def __init__(self, collection_name=None, model_name: str | None = None, user_context=None):
         self.project_root = Path(__file__).resolve().parents[4]
-        self.collections_root = self.project_root / "data" / "collections"
+        self._user_context = user_context
+        if user_context is not None:
+            from ...storage.UserStoragePaths import collections_root_for, vector_cache_root_for
+            self.collections_root = collections_root_for(user_context.user_id)
+            self._user_rag_cache_root = vector_cache_root_for(user_context.user_id)
+        else:
+            self.collections_root = self.project_root / "data" / "collections"
+            self._user_rag_cache_root = None
         self.runtime_config = get_runtime_config()
         ufc_api_key = os.getenv("UFC_API_KEY")
         if not ufc_api_key:
@@ -68,7 +75,11 @@ class RAGServiceBootstrapMixin:
         self.answer_chain = None
         self.small_talk_chain = None
         self.query_rewrite_chain = None
-        self.rag_index_cache_root = self.project_root / "data" / "cache" / "rag_index"
+        self.rag_index_cache_root = (
+            self._user_rag_cache_root
+            if self._user_rag_cache_root is not None
+            else self.project_root / "data" / "cache" / "rag_index"
+        )
         self.collection_name = None
         self.collection_names = []
         self.document_catalog = []

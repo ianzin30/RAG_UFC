@@ -1,12 +1,21 @@
-"""Collection discovery helpers for the Streamlit shell."""
+"""Collection discovery helpers for the Streamlit shell — user-scoped."""
 
 import re
+from pathlib import Path
 
 from presentation.shared.Config import PROJECT_ROOT, ROOT_COLLECTION_KEY
 
 
-def list_collection_documents() -> list[dict[str, str]]:
-    collections_dir = PROJECT_ROOT / "data" / "collections"
+def _get_collections_root(user_id: str | None) -> Path:
+    """Return the collections root for the given user, or the legacy global root."""
+    if user_id:
+        from service.storage.UserStoragePaths import collections_root_for
+        return collections_root_for(user_id)
+    return PROJECT_ROOT / "data" / "collections"
+
+
+def list_collection_documents(user_id: str | None = None) -> list[dict[str, str]]:
+    collections_dir = _get_collections_root(user_id)
     if not collections_dir.exists():
         return []
 
