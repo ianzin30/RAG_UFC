@@ -8,6 +8,7 @@ from pathlib import Path
 from .UserContext import UserContext
 
 logger = logging.getLogger("ragufc.auth")
+FIREBASE_TOKEN_CLOCK_SKEW_SECONDS = 30
 
 
 @lru_cache(maxsize=1)
@@ -51,7 +52,10 @@ def verify_id_token(id_token: str) -> UserContext:
     from firebase_admin import auth
 
     _init_firebase_app()
-    decoded = auth.verify_id_token(id_token)
+    decoded = auth.verify_id_token(
+        id_token,
+        clock_skew_seconds=FIREBASE_TOKEN_CLOCK_SKEW_SECONDS,
+    )
     user_id: str = decoded["uid"]
     email: str = decoded.get("email", "")
     display_name: str | None = decoded.get("name") or decoded.get("display_name")

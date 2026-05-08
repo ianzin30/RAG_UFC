@@ -50,6 +50,16 @@ def _friendly(raw: str) -> str:
     return "Erro de autenticação. Tente novamente."
 
 
+def _friendly_login_error(exc: Exception) -> str:
+    raw = str(exc)
+    if "Token used too early" in raw or "clock is set correctly" in raw:
+        return (
+            "Nao foi possivel validar o login por diferenca de horario. "
+            "Sincronize o relogio do computador e tente novamente."
+        )
+    return raw
+
+
 def _rest(endpoint: str, api_key: str, body: dict) -> dict:
     try:
         resp = requests.post(
@@ -382,7 +392,7 @@ def _render_login_page() -> None:
                         token = _email_signin(email.strip(), password, api_key)
                         _handle_token(token)
                     except Exception as exc:
-                        feedback.error(str(exc))
+                        feedback.error(_friendly_login_error(exc))
 
             # Forgot password + sign-up links — equal-width, centered columns
             fc, sc = st.columns([1, 1])
@@ -434,7 +444,7 @@ def _render_login_page() -> None:
                         token = _email_signup(email.strip(), password, api_key)
                         _handle_token(token)
                     except Exception as exc:
-                        feedback.error(str(exc))
+                        feedback.error(_friendly_login_error(exc))
 
             st.markdown("<div style='height:8px'/>", unsafe_allow_html=True)
             if st.button("Já tem uma conta? Entrar", key="to_login"):
