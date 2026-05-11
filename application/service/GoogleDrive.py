@@ -2,9 +2,14 @@
 # Simple: Download and process files from Google Drive
 
 from .google_drive.Auth import (
+    build_auth_flow,
+    build_authorization_url,
     build_drive_service,
     credentials_from_json,
+    credentials_to_json,
+    exchange_code_for_credentials,
     login_with_google_drive,
+    refresh_if_needed,
 )
 from .google_drive.Configuration import build_google_drive_paths
 from .google_drive.Constants import (
@@ -43,8 +48,52 @@ class GoogleDriveService:
         paths = build_google_drive_paths()
         self.credentials_file = paths.credentials_file
         self.collections_root = paths.collections_root
+        self.token_file = paths.token_file
+        self.redirect_uri = paths.redirect_uri
         self._docling_converter = None
 
+    # --- Web OAuth flow (used by the Streamlit app) -----------------------
+    def start_login(self, redirect_uri: str | None = None) -> tuple[str, str]:
+        """Build the Google authorize URL. Returns ``(auth_url, state)``."""
+        flow = build_auth_flow(self.credentials_file, redirect_uri or self.redirect_uri)
+        return build_authorization_url(flow)
+
+    def complete_login(self, state: str, code: str, redirect_uri: str | None = None):
+        """Exchange the auth code for credentials and persist them."""
+        flow = build_auth_flow(
+            self.credentials_file,
+            redirect_uri or self.redirect_uri,
+            state=state,
+        )
+        credentials = exchange_code_for_credentials(flow, code)
+        self._save_token(credentials)
+        return credentials
+
+    def load_persisted_credentials(self):
+        """Return cached credentials, refreshing if needed; ``None`` if absent/invalid."""
+        if not self.token_file.exists():
+            return None
+        try:
+            credentials = credentials_from_json(self.token_file.read_text(encoding="utf-8"))
+            credentials = refresh_if_needed(credentials)
+        except Exception:
+            return None
+        if not credentials.valid:
+            return None
+        self._save_token(credentials)
+        return credentials
+
+    def forget_persisted_credentials(self) -> None:
+        try:
+            self.token_file.unlink()
+        except FileNotFoundError:
+            pass
+
+    def _save_token(self, credentials) -> None:
+        self.token_file.parent.mkdir(parents=True, exist_ok=True)
+        self.token_file.write_text(credentials_to_json(credentials), encoding="utf-8")
+
+    # --- Desktop OAuth flow (used by the Telegram bot) --------------------
     def login(self):
         return login_with_google_drive(self.credentials_file)
 

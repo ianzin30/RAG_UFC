@@ -11,6 +11,8 @@ from pathlib import Path
 class GoogleDrivePaths:
     credentials_file: Path
     collections_root: Path
+    token_file: Path
+    redirect_uri: str
 
 
 @dataclass(frozen=True)
