@@ -28,3 +28,6 @@ benchmark/results/
 
 # Firebase credentials (never commit)
 config/firebase-service-account.json
+
+# Cached Google Drive OAuth token (per-machine, never commit)
+config/google-drive-token.json

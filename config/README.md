@@ -15,7 +15,13 @@ This folder groups runtime configuration and setup templates.
 - `.env.example`
   - template for secrets and machine-specific values
 - `google-oauth-credentials.json`
-  - Google OAuth desktop client credentials
+  - Google OAuth client credentials.
+  - For the Streamlit UI, use an OAuth **Web application** client (key `web` in the JSON) and add the Streamlit origin (default `http://localhost:8501/`) as an authorized redirect URI in Google Cloud Console.
+  - The Telegram bot still uses the legacy desktop flow, so a `installed` block is accepted as a fallback but logs a warning.
+- `google-drive-token.json` (generated at runtime, gitignored)
+  - Persistent cache of the user's Drive OAuth token. Override the location with `GOOGLE_OAUTH_TOKEN_FILE`. Delete it (or click **Desconectar** in the sidebar) to force re-authentication.
+- `GOOGLE_OAUTH_REDIRECT_URI` (env var, optional)
+  - Overrides the redirect URI used in the OAuth flow. Defaults to the first `redirect_uris` entry in the credentials JSON, falling back to `http://localhost:8501/`. Must exactly match a redirect URI registered for the OAuth web client.
 
 ## Files that must stay in the project root
 

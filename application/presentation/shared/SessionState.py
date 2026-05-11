@@ -26,6 +26,13 @@ def initialize_app_session_state() -> None:
         "app_theme": "dark",  # Current theme (dark or light)
         "user": None,  # Authenticated UserContext (set by LoginGate)
         "firebase_id_token": None,  # Raw Firebase ID token (for re-verification if needed)
+        # Google Drive OAuth state machine
+        "gdrive_status": "idle",  # idle | awaiting_authorize | exchanging | importing | connected | error
+        "gdrive_oauth_state": None,  # opaque state token sent to Google
+        "gdrive_auth_url": None,  # authorize URL pending user click
+        "gdrive_credentials_json": None,  # serialized credentials cached in session
+        "gdrive_error": None,  # last Drive error message
+        "gdrive_import_result": None,  # latest import summary (file count + collection name)
     }
     for key, value in defaults.items():
         if key not in st.session_state:
