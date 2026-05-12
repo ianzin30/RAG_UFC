@@ -2,6 +2,8 @@
 .env
 google-oauth-credentials.json
 config/google-oauth-credentials.json
+config/google-oauth-web-credentials.json
+config/client_secret_*.json
 firecrawl/
 
 # Python environments and caches

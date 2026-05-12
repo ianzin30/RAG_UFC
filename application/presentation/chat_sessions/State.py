@@ -40,12 +40,6 @@ def get_active_chat() -> dict[str, object] | None:
     return get_chat_sessions()[0] if get_chat_sessions() else None
 
 
-def _active_user_id() -> str | None:
-    from presentation.auth.SessionUser import get_current_user
-    user = get_current_user()
-    return user.user_id if user else None
-
-
 def save_active_chat(messages=None, collection=None, title: str | None = None, model_name: str | None = None) -> None:
     active_chat = get_active_chat()
     if active_chat is None:
@@ -59,7 +53,7 @@ def save_active_chat(messages=None, collection=None, title: str | None = None, m
     if title is not None:
         active_chat["title"] = title
     active_chat["updated_at"] = build_timestamp_now()
-    persist_chat_state(get_chat_sessions, user_id=_active_user_id())
+    persist_chat_state(get_chat_sessions)
 
 
 def sync_active_chat_to_state() -> None:
@@ -86,11 +80,10 @@ def initialize_chat_sessions(
     default_collection=None,
     default_model: str | None = None,
 ) -> None:
+    _ = user_id
     if "chat_sessions" not in st.session_state:
-        persisted_state = load_persisted_chat_state(user_id=user_id)
+        persisted_state = load_persisted_chat_state()
         st.session_state.chat_sessions = persisted_state.get("chat_sessions", [])
-        if persisted_state.get("active_chat_id"):
-            st.session_state.active_chat_id = persisted_state["active_chat_id"]
         st.session_state.next_chat_session_id = persisted_state.get("next_chat_session_id", 1)
     elif "next_chat_session_id" not in st.session_state:
         st.session_state.next_chat_session_id = 1
@@ -110,4 +103,4 @@ def initialize_chat_sessions(
         active_chat["model_name"] = default_model
 
     sync_active_chat_to_state()
-    persist_chat_state(get_chat_sessions, user_id=user_id)
+    persist_chat_state(get_chat_sessions)

@@ -26,6 +26,7 @@ def create_new_chat(default_collection=None, default_model: str | None = None) -
     sessions.insert(0, new_chat)
     st.session_state.active_chat_id = new_chat["id"]
     sync_active_chat_to_state()
+    persist_chat_state(get_chat_sessions)
     return True, None
 
 

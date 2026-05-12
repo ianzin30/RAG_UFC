@@ -1,9 +1,12 @@
 """Public facade for Google Drive ingestion."""
 # Simple: Download and process files from Google Drive
 
+from pathlib import Path
+from typing import Callable
+
 from .google_drive.Auth import (
     build_auth_flow,
-    build_authorization_url,
+    build_authorization_request,
     build_drive_service,
     credentials_from_json,
     credentials_to_json,
@@ -47,23 +50,32 @@ class GoogleDriveService:
     def __init__(self):
         paths = build_google_drive_paths()
         self.credentials_file = paths.credentials_file
+        self.web_credentials_file = paths.web_credentials_file
         self.collections_root = paths.collections_root
         self.token_file = paths.token_file
         self.redirect_uri = paths.redirect_uri
         self._docling_converter = None
 
     # --- Web OAuth flow (used by the Streamlit app) -----------------------
-    def start_login(self, redirect_uri: str | None = None) -> tuple[str, str]:
-        """Build the Google authorize URL. Returns ``(auth_url, state)``."""
-        flow = build_auth_flow(self.credentials_file, redirect_uri or self.redirect_uri)
-        return build_authorization_url(flow)
+    def start_login(self, redirect_uri: str | None = None) -> tuple[str, str, str]:
+        """Build the Google authorize URL. Returns ``(auth_url, state, code_verifier)``."""
+        flow = build_auth_flow(self.web_credentials_file, redirect_uri or self.redirect_uri)
+        request = build_authorization_request(flow)
+        return request.authorization_url, request.state, request.code_verifier
 
-    def complete_login(self, state: str, code: str, redirect_uri: str | None = None):
+    def complete_login(
+        self,
+        code: str,
+        code_verifier: str,
+        state: str | None = None,
+        redirect_uri: str | None = None,
+    ):
         """Exchange the auth code for credentials and persist them."""
         flow = build_auth_flow(
-            self.credentials_file,
+            self.web_credentials_file,
             redirect_uri or self.redirect_uri,
             state=state,
+            code_verifier=code_verifier,
         )
         credentials = exchange_code_for_credentials(flow, code)
         self._save_token(credentials)
@@ -158,14 +170,17 @@ class GoogleDriveService:
         collection_name="google_drive_rag",
         credentials=None,
         extraction_method=EXTRACTION_METHOD_DOCLING,
+        progress_callback: Callable[[dict[str, object]], None] | None = None,
+        collections_root: str | Path | None = None,
     ):
         service = self._get_drive_service(credentials or self.login())
         result = ingest_folder_to_collection(
             owner=self,
             service=service,
-            collections_root=self.collections_root,
+            collections_root=Path(collections_root) if collections_root is not None else self.collections_root,
             folder_name=folder_name,
             collection_name=collection_name,
             extraction_method=extraction_method,
+            progress_callback=progress_callback,
         )
         return result.to_dict()

@@ -9,6 +9,7 @@ This folder groups runtime configuration and setup templates.
   - this is the file to edit for model defaults, embedding device, quantization, batch size, and max length
   - retrieval tuning includes the dense/lexical candidate pool size and LLM evidence selector limits
   - the checked-in defaults are CPU-safe and use a local CPU `int8` embedding export on first run
+  - Streamlit benchmark mode opens without Firebase/Mongo app login and uses shared local state under `data/`
 
 ## Secret template / credentials
 
@@ -19,7 +20,7 @@ This folder groups runtime configuration and setup templates.
   - For the Streamlit UI, use an OAuth **Web application** client (key `web` in the JSON) and add the Streamlit origin (default `http://localhost:8501/`) as an authorized redirect URI in Google Cloud Console.
   - The Telegram bot still uses the legacy desktop flow, so a `installed` block is accepted as a fallback but logs a warning.
 - `google-drive-token.json` (generated at runtime, gitignored)
-  - Persistent cache of the user's Drive OAuth token. Override the location with `GOOGLE_OAUTH_TOKEN_FILE`. Delete it (or click **Desconectar** in the sidebar) to force re-authentication.
+  - Persistent shared VM-level cache of the Drive OAuth token. Override the location with `GOOGLE_OAUTH_TOKEN_FILE`. Delete it (or click **Desconectar** in the sidebar) to force re-authentication.
 - `GOOGLE_OAUTH_REDIRECT_URI` (env var, optional)
   - Overrides the redirect URI used in the OAuth flow. Defaults to the first `redirect_uris` entry in the credentials JSON, falling back to `http://localhost:8501/`. Must exactly match a redirect URI registered for the OAuth web client.
 

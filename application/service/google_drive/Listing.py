@@ -39,7 +39,11 @@ def find_folder(service, folder_name: str):
 # Esta listagem recupera os arquivos filhos da pasta escolhida.
 def list_folder_files(service, folder_id: str):
     query = f"'{folder_id}' in parents and trashed = false"
-    result = service.files().list(q=query, fields="files(id, name, mimeType)", pageSize=200).execute()
+    result = service.files().list(
+        q=query,
+        fields="files(id, name, mimeType, modifiedTime, md5Checksum, size)",
+        pageSize=200,
+    ).execute()
     return result.get("files", [])
 
 

@@ -78,23 +78,8 @@ def _render_brand() -> None:
     )
 
 
-def _render_logout_button(user) -> None:
-    if user is None:
-        return
-    if st.button(
-        ICON_ONLY_BUTTON_LABEL,
-        key="sidebar_nav_logout_button",
-        help="Sair",
-        icon=":material/logout:",
-        use_container_width=True,
-    ):
-        from presentation.auth.LoginGate import logout
-
-        logout()
-
-
 # Esta rail concentra o icone do app e o seletor de paineis.
-def render_navigation_rail(user=None) -> None:
+def render_navigation_rail() -> None:
     active_panel = get_active_sidebar_panel()
 
     with st.container(key="sidebar_nav_rail"):
@@ -110,6 +95,3 @@ def render_navigation_rail(user=None) -> None:
                     is_active=active_panel == item["panel"],
                     on_click=lambda panel_name=item["panel"]: set_active_sidebar_panel(panel_name),
                 )
-
-        with st.container(key="sidebar_nav_rail_footer"):
-            _render_logout_button(user)

@@ -1,60 +1,85 @@
-"""Persistence helpers for chat sessions — MongoDB-backed, per-user isolated."""
+"""Shared local persistence helpers for chat sessions."""
 
+from __future__ import annotations
+
+import json
 import logging
+import threading
+from pathlib import Path
 
 import streamlit as st
 
+from .Constants import CHAT_STORAGE_PATH
+
 logger = logging.getLogger("ragufc.storage")
 
+_CHAT_STORAGE_LOCK = threading.Lock()
 
-def _get_mongo_db():
-    from service.storage.MongoClientProvider import get_db
-    return get_db()
+
+def _empty_state() -> dict[str, object]:
+    return {
+        "chat_sessions": [],
+        "next_chat_session_id": 1,
+    }
+
+
+def _coerce_state(payload: object) -> dict[str, object]:
+    if not isinstance(payload, dict):
+        return _empty_state()
+
+    sessions = payload.get("chat_sessions")
+    if not isinstance(sessions, list):
+        sessions = []
+
+    try:
+        next_id = int(payload.get("next_chat_session_id") or 1)
+    except (TypeError, ValueError):
+        next_id = 1
+
+    return {
+        "chat_sessions": sessions,
+        "next_chat_session_id": max(1, next_id),
+    }
 
 
 def load_persisted_chat_state(user_id: str | None = None) -> dict[str, object]:
-    """Load chat sessions for *user_id* from MongoDB.
+    """Load the shared chat sessions from data/local_chat_sessions.json.
 
-    Falls back to empty state on any error (MongoDB unavailable, first run, etc.).
-    When user_id is None (Firebase disabled / dev mode), returns empty state.
+    The *user_id* parameter is accepted for old call sites but ignored. Active
+    chat selection stays browser-session-local and is intentionally not loaded.
     """
-    if not user_id:
-        return {}
+    _ = user_id
+    path = Path(CHAT_STORAGE_PATH)
+    if not path.exists():
+        return _empty_state()
 
     try:
-        from service.storage.UserChatRepository import load_chat_state
-        state = load_chat_state(_get_mongo_db(), user_id)
-        logger.info(
-            "Chat state loaded — uid=%s sessions=%d",
-            user_id,
-            len(state.get("chat_sessions", [])),
-        )
-        return state
+        with _CHAT_STORAGE_LOCK:
+            payload = json.loads(path.read_text(encoding="utf-8"))
     except Exception as exc:
-        logger.warning("Failed to load chat state from MongoDB (uid=%s): %s", user_id, exc)
-        return {}
+        logger.warning("Failed to load shared chat state from %s: %s", path, exc)
+        return _empty_state()
+
+    state = _coerce_state(payload)
+    logger.info("Shared chat state loaded - sessions=%d", len(state["chat_sessions"]))
+    return state
 
 
 def persist_chat_state(get_chat_sessions, user_id: str | None = None) -> None:
-    """Save the current sessions list for *user_id* to MongoDB.
-
-    When user_id is None (Firebase disabled / dev mode), does nothing.
-    """
-    if not user_id:
-        return
-
-    sessions = get_chat_sessions()
-    active_chat_id = st.session_state.get("active_chat_id")
-    next_id = st.session_state.get("next_chat_session_id", 1)
+    """Persist shared chat sessions to data/local_chat_sessions.json atomically."""
+    _ = user_id
+    path = Path(CHAT_STORAGE_PATH)
+    payload = {
+        "chat_sessions": get_chat_sessions(),
+        "next_chat_session_id": int(st.session_state.get("next_chat_session_id", 1) or 1),
+    }
 
     try:
-        from service.storage.UserChatRepository import save_chat_state
-        save_chat_state(
-            _get_mongo_db(),
-            user_id,
-            sessions,
-            active_chat_id,
-            next_id,
-        )
+        path.parent.mkdir(parents=True, exist_ok=True)
+        tmp_path = path.with_name(f"{path.name}.tmp")
+        serialized = json.dumps(payload, ensure_ascii=False, indent=2)
+        with _CHAT_STORAGE_LOCK:
+            tmp_path.write_text(serialized, encoding="utf-8")
+            tmp_path.replace(path)
     except Exception as exc:
-        logger.warning("Failed to persist chat state to MongoDB (uid=%s): %s", user_id, exc)
+        logger.warning("Failed to persist shared chat state to %s: %s", path, exc)

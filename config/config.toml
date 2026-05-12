@@ -1,30 +1,4 @@
 # Runtime configuration for the RAG system.
-# ------------------------------------------------------------
-# Firebase Authentication
-# ------------------------------------------------------------
-[firebase]
-enabled = true
-# All Firebase credentials and web config are loaded from .env:
-#   FIREBASE_CREDENTIALS_PATH  path to service account JSON (default: config/firebase-service-account.json)
-#   FIREBASE_WEB_API_KEY       Firebase web API key
-#   FIREBASE_AUTH_DOMAIN       e.g. your-project.firebaseapp.com
-#   FIREBASE_PROJECT_ID        e.g. your-project-id
-
-# ------------------------------------------------------------
-# Local MongoDB
-# ------------------------------------------------------------
-[mongodb]
-enabled = true
-uri = "mongodb://localhost:27017"
-database = "rag_ufc"
-
-# ------------------------------------------------------------
-# Per-user storage root
-# ------------------------------------------------------------
-[user_storage]
-base_dir = "data/users"
-
-
 # All values here apply uniformly to every collection under data/collections/;
 # nothing in this file is collection-specific.
 #   "phi4:latest"

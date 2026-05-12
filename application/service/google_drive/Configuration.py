@@ -19,6 +19,15 @@ logger = logging.getLogger(__name__)
 DEFAULT_REDIRECT_URI = "http://localhost:8501/"
 
 
+def _resolve_project_path(value: str | None, default: Path) -> Path:
+    if not value:
+        return default
+    path = Path(value).expanduser()
+    if path.is_absolute():
+        return path
+    return PROJECT_ROOT / path
+
+
 def _resolve_redirect_uri(credentials_file: Path) -> str:
     env_value = os.getenv("GOOGLE_OAUTH_REDIRECT_URI")
     if env_value:
@@ -47,22 +56,23 @@ def _resolve_redirect_uri(credentials_file: Path) -> str:
 
 
 def build_google_drive_paths() -> GoogleDrivePaths:
-    credentials_override = os.getenv("GOOGLE_OAUTH_CREDENTIALS_FILE")
-    credentials_file = (
-        Path(credentials_override).expanduser()
-        if credentials_override
-        else PROJECT_ROOT / "config" / "google-oauth-credentials.json"
+    credentials_file = _resolve_project_path(
+        os.getenv("GOOGLE_OAUTH_CREDENTIALS_FILE"),
+        PROJECT_ROOT / "config" / "google-oauth-credentials.json",
     )
-    token_override = os.getenv("GOOGLE_OAUTH_TOKEN_FILE")
-    token_file = (
-        Path(token_override).expanduser()
-        if token_override
-        else PROJECT_ROOT / "config" / "google-drive-token.json"
+    web_credentials_file = _resolve_project_path(
+        os.getenv("GOOGLE_OAUTH_WEB_CREDENTIALS_FILE"),
+        credentials_file,
+    )
+    token_file = _resolve_project_path(
+        os.getenv("GOOGLE_OAUTH_TOKEN_FILE"),
+        PROJECT_ROOT / "config" / "google-drive-token.json",
     )
     collections_root = PROJECT_ROOT / "data" / "collections"
-    redirect_uri = _resolve_redirect_uri(credentials_file)
+    redirect_uri = _resolve_redirect_uri(web_credentials_file)
     return GoogleDrivePaths(
         credentials_file=credentials_file,
+        web_credentials_file=web_credentials_file,
         collections_root=collections_root,
         token_file=token_file,
         redirect_uri=redirect_uri,

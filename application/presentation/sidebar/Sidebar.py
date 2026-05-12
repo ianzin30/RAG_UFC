@@ -19,7 +19,6 @@ def render_sidebar(
     available_documents: list[dict[str, str]],
     default_collection,
     default_model: str | None,
-    user=None,
 ) -> None:
     """Render the main sidebar with navigation rail and content panels."""
     with st.sidebar:
@@ -34,7 +33,7 @@ def render_sidebar(
 
             with rail_col:
                 # Navigation rail (narrow vertical menu)
-                render_navigation_rail(user=user)
+                render_navigation_rail()
 
             with panel_col:
                 with st.container(key="sidebar_panel_shell"):

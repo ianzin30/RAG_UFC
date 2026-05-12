@@ -1,4 +1,4 @@
-"""Collection discovery helpers for the Streamlit shell — user-scoped."""
+"""Collection discovery helpers for the shared Streamlit shell."""
 
 import re
 from pathlib import Path
@@ -7,10 +7,8 @@ from presentation.shared.Config import PROJECT_ROOT, ROOT_COLLECTION_KEY
 
 
 def _get_collections_root(user_id: str | None) -> Path:
-    """Return the collections root for the given user, or the legacy global root."""
-    if user_id:
-        from service.storage.UserStoragePaths import collections_root_for
-        return collections_root_for(user_id)
+    """Return the shared local collections root."""
+    _ = user_id
     return PROJECT_ROOT / "data" / "collections"
 
 

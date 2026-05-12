@@ -24,15 +24,16 @@ def initialize_app_session_state() -> None:
         "last_upload_signature": None,  # Signature of last uploaded files (to detect new uploads)
         "sidebar_panel": "chat",  # Active sidebar panel (chat or files)
         "app_theme": "dark",  # Current theme (dark or light)
-        "user": None,  # Authenticated UserContext (set by LoginGate)
-        "firebase_id_token": None,  # Raw Firebase ID token (for re-verification if needed)
         # Google Drive OAuth state machine
-        "gdrive_status": "idle",  # idle | awaiting_authorize | exchanging | importing | connected | error
+        "gdrive_status": "idle",  # idle | importing | connected | error
         "gdrive_oauth_state": None,  # opaque state token sent to Google
+        "gdrive_code_verifier": None,  # PKCE verifier used when Google redirects back
         "gdrive_auth_url": None,  # authorize URL pending user click
         "gdrive_credentials_json": None,  # serialized credentials cached in session
         "gdrive_error": None,  # last Drive error message
         "gdrive_import_result": None,  # latest import summary (file count + collection name)
+        "gdrive_import_progress": None,  # live import counter shown while Drive files process
+        "gdrive_import_job_id": None,  # active background Drive import job id
     }
     for key, value in defaults.items():
         if key not in st.session_state:

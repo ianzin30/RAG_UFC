@@ -10,8 +10,8 @@ import streamlit as st
 import logging
 
 from presentation import chat_sessions
-from presentation.auth.SessionUser import get_current_user
 from presentation.chat import Chat as chat
+from presentation.integrations.GoogleDrive import run_pending_google_drive_import
 from presentation.shared.CollectionSelection import normalize_collection_selection, sanitize_collection_selection
 from service.RuntimeConfig import get_runtime_config
 
@@ -27,10 +27,7 @@ logger = logging.getLogger(__name__)
 def render_application() -> None:
     initialize_app_session_state()
 
-    user = get_current_user()
-    user_id = user.user_id if user else None
-
-    available_documents = list_collection_documents(user_id=user_id)
+    available_documents = list_collection_documents()
     available_collections = list_available_collections(available_documents)
     default_collection = [available_collections[0]] if available_collections else None
     default_model = get_runtime_config().ufc_model_name
@@ -38,7 +35,7 @@ def render_application() -> None:
         logger.info("Default UI LLM model loaded from config: %s", default_model)
         st.session_state._default_model_logged = True
     chat_sessions.initialize_chat_sessions(
-        user_id=user_id, default_collection=default_collection, default_model=default_model
+        default_collection=default_collection, default_model=default_model
     )
 
     selected_collections = sanitize_collection_selection(st.session_state.get("collection"), available_collections)
@@ -47,9 +44,11 @@ def render_application() -> None:
     elif not selected_collections and default_collection:
         set_selected_collections(default_collection)
 
-    render_sidebar(available_documents, default_collection, default_model, user=user)
+    render_sidebar(available_documents, default_collection, default_model)
     with st.container(key="main_view_shell"):
         with st.container(key="main_view_toolbar_shell"):
             selected_model = chat.render_model_toolbar()
         with st.container(key="main_view_body_shell"):
+            if run_pending_google_drive_import():
+                return
             chat.show(selected_model)

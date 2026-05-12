@@ -45,8 +45,12 @@ def _build_document_action_key(prefix: str, document: dict[str, str]) -> str:
     return re.sub(r"[^a-zA-Z0-9_:-]+", "_", raw_key)
 
 
-def _resolve_document_path(document: dict[str, str]) -> Path:
-    collections_root = (PROJECT_ROOT / "data" / "collections").resolve()
+def _active_collections_root() -> Path:
+    return PROJECT_ROOT / "data" / "collections"
+
+
+def _resolve_document_path(document: dict[str, str], collections_root: Path | None = None) -> Path:
+    collections_root = (collections_root or _active_collections_root()).resolve()
     collection_name = str(document.get("collection") or "").strip()
     file_name = Path(str(document.get("file_name") or "")).name
     if not collection_name or not file_name:
@@ -65,8 +69,8 @@ def _resolve_document_path(document: dict[str, str]) -> Path:
     return resolved_path
 
 
-def _collection_has_markdown_files(collection_name: str) -> bool:
-    collections_root = PROJECT_ROOT / "data" / "collections"
+def _collection_has_markdown_files(collection_name: str, collections_root: Path | None = None) -> bool:
+    collections_root = collections_root or _active_collections_root()
     if collection_name == ROOT_COLLECTION_KEY:
         return any(collections_root.glob("*.md"))
     collection_path = collections_root / collection_name
@@ -83,7 +87,8 @@ def _remove_collection_from_active_selection(collection_name: str) -> None:
 
 
 def _delete_document(document: dict[str, str]) -> None:
-    document_path = _resolve_document_path(document)
+    collections_root = _active_collections_root()
+    document_path = _resolve_document_path(document, collections_root)
     if not document_path.exists():
         raise RuntimeError("Arquivo nao encontrado. Talvez ele ja tenha sido removido.")
 
@@ -100,7 +105,7 @@ def _delete_document(document: dict[str, str]) -> None:
 
     st.session_state.current_collection = None
     st.session_state.rag_service = None
-    if not _collection_has_markdown_files(collection_name):
+    if not _collection_has_markdown_files(collection_name, collections_root):
         _remove_collection_from_active_selection(collection_name)
 
 
