@@ -11,7 +11,7 @@ import streamlit as st
 
 from .ChatPanel import render_chat_panel
 from .FilesPanel import render_files_panel
-from presentation.nav_rail.Navigation import SIDEBAR_CHAT_PANEL, get_active_sidebar_panel, render_navigation_rail
+from presentation.nav_rail.Navigation import render_navigation_rail
 from .Uploads import render_notice
 
 
@@ -28,6 +28,13 @@ def render_sidebar(
         upload_feedback_kind = st.session_state.pop("upload_feedback_kind", "neutral")
 
         with st.container(key="sidebar_layout_shell"):
+            st.markdown(
+                """
+                <span id="sidebar-chat-panel" class="sidebar-panel-target"></span>
+                <span id="sidebar-files-panel" class="sidebar-panel-target"></span>
+                """,
+                unsafe_allow_html=True,
+            )
             # Two-column layout: narrow rail + wide content panel
             rail_col, panel_col = st.columns([18, 82], gap=None)
 
@@ -42,8 +49,7 @@ def render_sidebar(
                     if chat_feedback:
                         render_notice(chat_feedback)
 
-                    active_panel = get_active_sidebar_panel()
-                    if active_panel == SIDEBAR_CHAT_PANEL:
+                    with st.container(key="sidebar_chat_panel_view"):
                         render_chat_panel(default_collection, default_model)
-                    else:
+                    with st.container(key="sidebar_files_panel_view"):
                         render_files_panel(available_documents)

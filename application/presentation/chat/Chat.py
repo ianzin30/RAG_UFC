@@ -11,13 +11,12 @@ This module handles:
 
 from html import escape
 import logging
-import time
 
 import streamlit as st
 
 from presentation import chat_sessions
 from presentation.shared.CollectionSelection import clone_collection_selection, normalize_collection_selection
-from presentation.integrations import GoogleDrive as google_drive
+from presentation.shared.MarkdownPreview import render_markdown_preview_link
 from service.ModelOptions import coerce_llm_model_name, get_llm_model_labels, get_llm_model_names
 from service.rag.RagService import RAGService
 
@@ -26,6 +25,78 @@ logger = logging.getLogger(__name__)
 MODEL_SELECTOR_KEY = "chat_model_selector"
 MODEL_SELECTOR_CHAT_KEY = "chat_model_selector_active_chat_id"
 DEFAULT_RESPONSE_STATUS_MESSAGE = "Analisando sua pergunta..."
+
+COLLECTION_PROGRESS_LABELS = {
+    "collection_load_started": "Preparando coleção...",
+    "collection_fingerprint_ready": "Verificando cache do índice...",
+    "collection_cache_restore_started": "Restaurando índice do cache (rápido)...",
+    "collection_cache_restored": "Índice pronto!",
+    "collection_index_build_started": "Construindo índice do zero (pode demorar)...",
+    "collection_documents_loaded": "Documentos lidos. Gerando embeddings...",
+    "collection_cache_write_started": "Salvando índice em cache...",
+    "collection_cache_written": "Pronto!",
+}
+
+COLLECTION_PROGRESS_LABELS.update(
+    {
+        "collection_load_started": "Preparando a base de arquivos...",
+        "collection_fingerprint_ready": "Conferindo se os arquivos mudaram desde o ultimo indice...",
+        "collection_cache_restore_started": "Cache encontrado. Restaurando o indice salvo...",
+        "collection_cache_restored": "Indice restaurado do cache.",
+        "collection_index_build_started": "Arquivos mudaram. Construindo um novo indice de busca...",
+        "collection_documents_loaded": "Markdown carregado. Organizando documentos para busca...",
+        "index_chunking_started": "Separando documentos em trechos pesquisaveis...",
+        "index_chunking_progress": "Separando documentos em trechos pesquisaveis...",
+        "index_embedding_started": "Gerando embeddings dos trechos...",
+        "index_embedding_progress": "Gerando embeddings dos trechos...",
+        "index_faiss_build_started": "Montando indice vetorial para consultas rapidas...",
+        "index_faiss_build_completed": "Indice vetorial montado.",
+        "collection_cache_write_started": "Salvando indice local para acelerar as proximas perguntas...",
+        "collection_cache_written": "Pronto!",
+    }
+)
+
+
+def _progress_int(value: object, default: int = 0) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def format_collection_progress_label(payload) -> str:
+    if not isinstance(payload, dict):
+        return "Atualizando a base de arquivos..."
+
+    event = str(payload.get("event") or "").strip()
+    base_label = COLLECTION_PROGRESS_LABELS.get(event, "Atualizando a base de arquivos...")
+    completed = _progress_int(payload.get("completed"))
+    total = _progress_int(payload.get("total"))
+    file_count = _progress_int(payload.get("file_count"))
+    document_count = _progress_int(payload.get("document_count"))
+    chunk_count = _progress_int(payload.get("chunk_count"))
+    document_name = str(payload.get("document_name") or "").strip()
+
+    if event == "collection_fingerprint_ready" and file_count:
+        return f"{base_label} {file_count} arquivo(s) verificado(s)."
+    if event == "collection_index_build_started" and file_count:
+        return f"{base_label} {file_count} arquivo(s) serao indexados."
+    if event == "collection_documents_loaded" and document_count:
+        return f"{base_label} {document_count} documento(s) lido(s)."
+    if event == "index_chunking_started" and total:
+        return f"{base_label} 0/{total} documento(s) preparados."
+    if event == "index_chunking_progress":
+        detail = f" Agora: {document_name}." if document_name else ""
+        if total:
+            return f"{base_label} {completed}/{total} documento(s), {chunk_count} trecho(s).{detail}"
+        return f"{base_label} {chunk_count} trecho(s).{detail}"
+    if event == "index_embedding_started" and total:
+        return f"{base_label} 0/{total} trecho(s) vetorizado(s)."
+    if event == "index_embedding_progress" and total:
+        return f"{base_label} {completed}/{total} trecho(s) vetorizado(s)."
+    if event == "index_faiss_build_started" and chunk_count:
+        return f"{base_label} {chunk_count} trecho(s) entrando no indice."
+    return base_label
 
 
 def normalize_response_status_payload(payload=None, *, state: str = "loading") -> dict[str, str | None]:
@@ -114,17 +185,31 @@ def render_sources(sources) -> None:
     if not valid_sources:
         return
 
-    lines = ["**Fontes:**"]
+    st.markdown('<div class="source-preview-title">Fontes:</div>', unsafe_allow_html=True)
     for index, source in enumerate(valid_sources[:4], start=1):
         document_name = str(source.get("document_name", "documento")).strip() or "documento"
         chunk_kind = str(source.get("chunk_kind", "text")).strip() or "text"
         excerpt = str(source.get("excerpt", "")).strip()
-        if excerpt:
-            lines.append(f"{index}. `{document_name}` ({chunk_kind}) - {excerpt}")
-        else:
-            lines.append(f"{index}. `{document_name}` ({chunk_kind})")
-
-    st.markdown("\n".join(lines))
+        source_link = render_markdown_preview_link(
+            label=document_name,
+            document=source,
+            prefix=f"source-{index}-{id(source)}-{document_name}",
+            class_name="markdown-preview-link source-preview-link",
+        )
+        excerpt_html = (
+            f'<span class="source-preview-excerpt"> - {escape(excerpt)}</span>'
+            if excerpt
+            else ""
+        )
+        source_row = (
+            '<div class="source-preview-row">'
+            f'<span class="source-preview-index">{index}.</span>'
+            f"{source_link}"
+            f'<span class="source-preview-kind">({escape(chunk_kind)})</span>'
+            f"{excerpt_html}"
+            "</div>"
+        )
+        st.markdown(source_row, unsafe_allow_html=True)
 
 
 def render_loading_state() -> None:
@@ -172,19 +257,11 @@ def _show_locked_chat_state() -> None:
             """
             <div class="chat-empty-cta">
                 <strong>Nenhum documento carregado.</strong><br/>
-                Arraste arquivos na lateral ou conecte o Google Drive para liberar o chat.
+                Arraste arquivos na lateral para liberar o chat.
             </div>
             """,
             unsafe_allow_html=True,
         )
-
-        _, center_col, _ = st.columns([1, 1, 1])
-        with center_col:
-            with st.container(key="main_drive_connect_shell"):
-                google_drive.render_connect_button(
-                    button_label="Conectar ao Google Drive",
-                    key="google_drive_connect_main",
-                )
 
 
 def render_locked_chat_input_placeholder() -> None:
@@ -239,21 +316,30 @@ def show(selected_model: str) -> None:
         )
         # Reload RAG service if collections changed or service not initialized
         if "rag_service" not in st.session_state or st.session_state.rag_service is None or collection_changed:
-            st.session_state.rag_service = RAGService(model_name=current_model)
-            loader = messages_shell.empty()
-            with loader.container():
-                render_loading_state()
-            time.sleep(0.05)
-            st.session_state.rag_service.load_collection(selected_collections)
-            st.session_state.current_collection = clone_collection_selection(selected_collections)
-            loader.empty()
+            with messages_shell:
+                with st.status("Preparando assistente...", expanded=True) as status:
+                    def on_collection_progress(payload):
+                        label = format_collection_progress_label(payload)
+                        status.update(label=label, state="running")
+
+                    rag_service = RAGService(model_name=current_model)
+                    rag_service.set_collection_progress_callback(on_collection_progress)
+                    try:
+                        rag_service.load_collection(selected_collections)
+                        status.update(label="Pronto!", state="complete", expanded=False)
+                    except Exception:
+                        status.update(label="Erro ao carregar a coleção.", state="error")
+                        raise
+                    finally:
+                        rag_service.set_collection_progress_callback(None)
+
+                    st.session_state.rag_service = rag_service
+                    st.session_state.current_collection = clone_collection_selection(selected_collections)
         elif model_changed:
-            loader = messages_shell.empty()
-            with loader.container():
-                render_loading_state()
-            time.sleep(0.05)
-            st.session_state.rag_service.set_model(current_model)
-            loader.empty()
+            with messages_shell:
+                with st.status("Trocando modelo...", expanded=False) as status:
+                    st.session_state.rag_service.set_model(current_model)
+                    status.update(label="Modelo atualizado.", state="complete")
 
         # Display chat history
         with messages_shell:
@@ -284,31 +370,53 @@ def show(selected_model: str) -> None:
 
             with messages_shell:
                 with st.chat_message("assistant"):
-                    status_slot = st.empty()
-
-                    def update_response_status(status_payload) -> None:
-                        with status_slot.container():
-                            render_response_status_indicator(status_payload)
-
-                    update_response_status({"message": DEFAULT_RESPONSE_STATUS_MESSAGE})
                     rag_service = st.session_state.rag_service
-                    if hasattr(rag_service, "set_response_status_callback"):
-                        rag_service.set_response_status_callback(update_response_status)
+                    answer_text = None
+                    route = "retrieval"
+                    sources = []
+                    matched_documents = []
+                    needs_document_refinement = False
+                    resolved_question = prompt
+                    response_succeeded = False
 
-                    try:
-                        answer_trace = rag_service.ask_question_with_trace(prompt, recent_history)
-                        status_slot.empty()
-                        answer_text = str(answer_trace.get("answer_text", "")).strip()
-                        route = str(answer_trace.get("route", "")).strip() or "retrieval"
-                        resolved_question = str(answer_trace.get("resolved_question", prompt)).strip() or prompt
-                        matched_documents = [
-                            str(item).strip()
-                            for item in list(answer_trace.get("matched_documents") or [])
-                            if str(item).strip()
-                        ]
-                        needs_document_refinement = bool(answer_trace.get("needs_document_refinement"))
-                        sources = answer_trace.get("sources") or []
+                    with st.status(DEFAULT_RESPONSE_STATUS_MESSAGE, expanded=True) as status:
+                        def update_response_status(status_payload) -> None:
+                            message = ""
+                            if isinstance(status_payload, dict):
+                                message = str(status_payload.get("message") or "").strip()
+                            else:
+                                message = str(status_payload or "").strip()
+                            status.update(
+                                label=message or DEFAULT_RESPONSE_STATUS_MESSAGE,
+                                state="running",
+                            )
 
+                        if hasattr(rag_service, "set_response_status_callback"):
+                            rag_service.set_response_status_callback(update_response_status)
+
+                        try:
+                            answer_trace = rag_service.ask_question_with_trace(prompt, recent_history)
+                            answer_text = str(answer_trace.get("answer_text", "")).strip()
+                            route = str(answer_trace.get("route", "")).strip() or "retrieval"
+                            resolved_question = str(answer_trace.get("resolved_question", prompt)).strip() or prompt
+                            matched_documents = [
+                                str(item).strip()
+                                for item in list(answer_trace.get("matched_documents") or [])
+                                if str(item).strip()
+                            ]
+                            needs_document_refinement = bool(answer_trace.get("needs_document_refinement"))
+                            sources = answer_trace.get("sources") or []
+                            status.update(label="Resposta pronta.", state="complete", expanded=False)
+                            response_succeeded = True
+                        except Exception:
+                            logger.exception("Failed to generate chat response.")
+                            answer_text = "Nao consegui gerar a resposta agora. Tente novamente em instantes."
+                            status.update(label=answer_text, state="error")
+                        finally:
+                            if hasattr(rag_service, "set_response_status_callback"):
+                                rag_service.set_response_status_callback(None)
+
+                    if response_succeeded:
                         st.write(answer_text)
                         if route == "retrieval":
                             render_sources(sources)
@@ -328,13 +436,6 @@ def show(selected_model: str) -> None:
 
                         st.session_state.messages.append(assistant_message)
                         chat_sessions.update_active_chat_messages(st.session_state.messages)
-                    except Exception:
-                        logger.exception("Failed to generate chat response.")
-                        error_msg = "Nao consegui gerar a resposta agora. Tente novamente em instantes."
-                        with status_slot.container():
-                            render_response_status_indicator({"message": error_msg}, state="error")
-                        st.session_state.messages.append({"role": "assistant", "content": error_msg})
+                    elif answer_text:
+                        st.session_state.messages.append({"role": "assistant", "content": answer_text})
                         chat_sessions.update_active_chat_messages(st.session_state.messages)
-                    finally:
-                        if hasattr(rag_service, "set_response_status_callback"):
-                            rag_service.set_response_status_callback(None)

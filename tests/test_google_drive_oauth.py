@@ -536,7 +536,7 @@ def test_pending_import_completion_updates_session_and_reruns(monkeypatch, drive
         drive_integration.run_pending_google_drive_import(FakeDriveService())
 
     assert fake_st.session_state.gdrive_status == "connected"
-    assert fake_st.session_state.collection == ["google_drive_rag"]
+    assert fake_st.session_state.collection == ["uploaded_files"]
     assert fake_st.session_state.messages == []
     assert "1 arquivo(s) novo(s)/alterado(s)" in fake_st.session_state.drive_feedback
     assert fake_st.session_state.gdrive_import_job_id is None
@@ -583,8 +583,9 @@ def test_files_panel_lists_partially_imported_shared_drive_files(monkeypatch, tm
 
     assert documents == [
         {
-            "collection": "google_drive_rag",
+            "collection": "uploaded_files",
             "file_name": "57_Ata.md",
+            "relative_path": "google_drive_rag/57_Ata.md",
             "label": "Ata",
         }
     ]

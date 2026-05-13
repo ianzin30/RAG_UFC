@@ -1,6 +1,8 @@
 """Collection loading and cache restore helpers."""
 # Simple: Load document collections and manage search cache
 
+from __future__ import annotations
+
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -11,6 +13,7 @@ from presentation.shared.CollectionSelection import (
     format_collection_selection_label,
     normalize_collection_selection,
 )
+from presentation.shared.Config import UPLOAD_COLLECTION_NAME
 from ..Cache import (
     build_file_hash_record,
     build_rag_index_fingerprint,
@@ -24,15 +27,23 @@ from ..Constants import RAG_INDEX_CACHE_VERSION, ROOT_COLLECTION_KEY
 
 # Este mixin cuida da carga da colecao e do cache persistente do indice vetorial.
 class RAGServiceCollectionLoadingMixin:
+    def set_collection_progress_callback(self, callback) -> None:
+        self._collection_progress_callback = callback if callable(callback) else None
+
     def _emit_collection_progress(self, event: str, **payload) -> None:
-        callback = getattr(self, "_benchmark_progress_callback", None)
+        callback = getattr(self, "_collection_progress_callback", None) or getattr(
+            self, "_benchmark_progress_callback", None
+        )
         if not callable(callback):
             return
-        callback({"event": event, **payload})
+        try:
+            callback({"event": event, **payload})
+        except Exception:
+            pass
 
     # Esta funcao traduz o nome selecionado para a pasta real da colecao.
     def _resolve_collection_path(self, selected_collection: str) -> Path:
-        if selected_collection == ROOT_COLLECTION_KEY:
+        if selected_collection in {ROOT_COLLECTION_KEY, UPLOAD_COLLECTION_NAME}:
             return self.collections_root
         return self.collections_root / selected_collection
 

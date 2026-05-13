@@ -5,6 +5,8 @@ stopwords for text normalization, intent modes (specific_fact, list_facts, etc.)
 and other configuration constants used throughout the retrieval pipeline.
 """
 
+from __future__ import annotations
+
 PERSON_QUERY_TERMS = {
     "nome",
     "nomes",

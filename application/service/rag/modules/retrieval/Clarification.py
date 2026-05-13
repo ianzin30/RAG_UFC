@@ -1,6 +1,7 @@
 """Clarification and source formatting helpers."""
 # Simple: Ask user to clarify when results are ambiguous
 
+from pathlib import Path
 import re
 
 
@@ -114,6 +115,15 @@ class RetrievalClarificationMixin:
         )[:6]:
             document_name = (doc.metadata.get("document_name") or "documento").strip()
             chunk_kind = (doc.metadata.get("chunk_kind") or "text").strip()
+            source = str(doc.metadata.get("source") or "").strip()
+            source_name = Path(source).name if source else ""
+            relative_path = ""
+            if source:
+                try:
+                    source_path = Path(source).resolve()
+                    relative_path = source_path.relative_to(Path(self.collections_root).resolve()).as_posix()
+                except (OSError, ValueError):
+                    relative_path = ""
             excerpt = re.sub(r"\s+", " ", doc.page_content or "").strip()
             if len(excerpt) > 180:
                 excerpt = f"{excerpt[:177].rstrip()}..."
@@ -127,6 +137,9 @@ class RetrievalClarificationMixin:
                     "document_name": document_name,
                     "chunk_kind": chunk_kind,
                     "excerpt": excerpt,
+                    "source": source,
+                    "source_name": source_name,
+                    "relative_path": relative_path,
                 }
             )
         return sources

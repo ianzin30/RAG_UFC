@@ -66,7 +66,6 @@ def build_chat_history_sections(
     return sections
 
 
-# Este botao cria novas conversas sem repetir o visual pesado dos cards antigos.
 def render_new_chat_button(default_collection, default_model: str | None) -> None:
     with st.container(key="chat_history_new_button"):
         if st.button(
@@ -79,11 +78,12 @@ def render_new_chat_button(default_collection, default_model: str | None) -> Non
                 default_collection=default_collection,
                 default_model=st.session_state.get("model_name") or default_model,
             )
-            st.session_state.chat_feedback = "Novo chat criado." if created else message
-            st.rerun()
+            if created:
+                st.toast("Novo chat criado.", icon=":material/check_circle:")
+            else:
+                st.session_state.chat_feedback = message
 
 
-# Este cabecalho reduz o topo do painel para um titulo simples e facil de escanear.
 def render_chat_history_header() -> None:
     st.markdown(
         """
@@ -96,13 +96,12 @@ def render_chat_history_header() -> None:
     )
 
 
-# Esta linha renderiza uma sessao individual com clique principal e menu secundario.
 def render_chat_history_item(item: dict[str, object], default_collection, default_model: str | None) -> None:
     is_active_chat = item["id"] == st.session_state.get("active_chat_id")
     row_key_prefix = "chat_history_row_active" if is_active_chat else "chat_history_row"
 
     with st.container(key=f"{row_key_prefix}_{item['id']}"):
-        row_col, actions_col = st.columns([0.88, 0.12], vertical_alignment="center")
+        row_col, delete_col = st.columns([0.84, 0.16], vertical_alignment="center")
 
         with row_col:
             if st.button(
@@ -115,29 +114,26 @@ def render_chat_history_item(item: dict[str, object], default_collection, defaul
                 chat_sessions.activate_chat(str(item["id"]))
                 st.rerun()
 
-        with actions_col:
-            with st.popover("...", use_container_width=True):
-                rename_key = f"rename_chat_input_{item['id']}"
-                new_title = st.text_input(
-                    "Renomear chat",
-                    value=str(item["title"]),
-                    key=rename_key,
+        with delete_col:
+            if st.button(
+                "\u200b",
+                key=f"delete_chat_{item['id']}",
+                help=f"Excluir {item['title']}",
+                icon=":material/delete:",
+                use_container_width=True,
+            ):
+                deleted, message = chat_sessions.delete_chat(
+                    str(item["id"]),
+                    default_collection=default_collection,
+                    default_model=st.session_state.get("model_name") or default_model,
                 )
-                if st.button("Salvar nome", key=f"rename_chat_save_{item['id']}", use_container_width=True):
-                    renamed, message = chat_sessions.rename_chat(str(item["id"]), new_title)
-                    st.session_state.chat_feedback = "Chat renomeado." if renamed else message
-                    st.rerun()
-                if st.button("Excluir chat", key=f"delete_chat_{item['id']}", use_container_width=True):
-                    deleted, message = chat_sessions.delete_chat(
-                        str(item["id"]),
-                        default_collection=default_collection,
-                        default_model=st.session_state.get("model_name") or default_model,
-                    )
-                    st.session_state.chat_feedback = "Chat excluido." if deleted else message
-                    st.rerun()
+                if deleted:
+                    st.toast("Chat excluido.", icon=":material/delete:")
+                else:
+                    st.session_state.chat_feedback = message
+                st.rerun()
 
 
-# Esta secao desenha o grupo temporal e todas as linhas compactas abaixo dele.
 def render_chat_history_section(
     section: dict[str, object],
     *,
@@ -157,7 +153,6 @@ def render_chat_history_section(
         render_chat_history_item(item, default_collection, default_model)
 
 
-# Esta composicao monta o painel inteiro com cabecalho leve, botao e grupos.
 def render_chat_history(default_collection, default_model: str | None) -> None:
     render_chat_history_header()
     render_new_chat_button(default_collection, default_model)

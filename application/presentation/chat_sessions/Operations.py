@@ -1,5 +1,7 @@
 """Operations for chat creation, activation, and updates."""
 
+from __future__ import annotations
+
 import re
 
 import streamlit as st
@@ -66,11 +68,17 @@ def delete_chat(chat_id: str, default_collection=None, default_model: str | None
 
 
 def activate_chat(chat_id: str) -> None:
-    if st.session_state.get("active_chat_id") == chat_id:
+    sessions = get_chat_sessions()
+    target_index = next((index for index, chat in enumerate(sessions) if chat["id"] == chat_id), None)
+    if target_index is None:
         return
 
-    save_active_chat()
+    if st.session_state.get("active_chat_id") != chat_id:
+        save_active_chat(touch_recency=False)
+
     st.session_state.active_chat_id = chat_id
+    sessions[target_index]["updated_at"] = build_timestamp_now()
+    sessions.insert(0, sessions.pop(target_index))
     sync_active_chat_to_state()
     persist_chat_state(get_chat_sessions)
 

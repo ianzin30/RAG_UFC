@@ -1,5 +1,7 @@
 """Normalization helpers for persisted chat sessions."""
 
+from __future__ import annotations
+
 import re
 from copy import deepcopy
 from datetime import datetime, timezone
@@ -48,15 +50,23 @@ def coerce_messages(messages) -> list[dict[str, object]]:
                 document_name = str(source.get("document_name", "")).strip()
                 chunk_kind = str(source.get("chunk_kind", "")).strip()
                 excerpt = str(source.get("excerpt", "")).strip()
+                source_path = str(source.get("source", "")).strip()
+                source_name = str(source.get("source_name", "")).strip()
+                relative_path = str(source.get("relative_path", "")).strip()
                 if not document_name and not excerpt:
                     continue
-                normalized_sources.append(
-                    {
-                        "document_name": document_name or "documento",
-                        "chunk_kind": chunk_kind or "text",
-                        "excerpt": excerpt,
-                    }
-                )
+                normalized_source = {
+                    "document_name": document_name or "documento",
+                    "chunk_kind": chunk_kind or "text",
+                    "excerpt": excerpt,
+                }
+                if source_path:
+                    normalized_source["source"] = source_path
+                if source_name:
+                    normalized_source["source_name"] = source_name
+                if relative_path:
+                    normalized_source["relative_path"] = relative_path
+                normalized_sources.append(normalized_source)
             if normalized_sources:
                 normalized_message["sources"] = normalized_sources
 

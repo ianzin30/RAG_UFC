@@ -1,9 +1,11 @@
 """Collection discovery helpers for the shared Streamlit shell."""
 
+from __future__ import annotations
+
 import re
 from pathlib import Path
 
-from presentation.shared.Config import PROJECT_ROOT, ROOT_COLLECTION_KEY
+from presentation.shared.Config import PROJECT_ROOT, ROOT_COLLECTION_KEY, UPLOAD_COLLECTION_NAME
 
 
 def _get_collections_root(user_id: str | None) -> Path:
@@ -18,35 +20,26 @@ def list_collection_documents(user_id: str | None = None) -> list[dict[str, str]
         return []
 
     documents: list[dict[str, str]] = []
-    for file_path in sorted(collections_dir.glob("*.md"), key=lambda item: item.name.lower()):
+    markdown_files = sorted(
+        (path for path in collections_dir.rglob("*.md") if path.is_file()),
+        key=lambda item: item.relative_to(collections_dir).as_posix().lower(),
+    )
+    for file_path in markdown_files:
+        relative_path = file_path.relative_to(collections_dir).as_posix()
         label = re.sub(r"^\d+[_\- ]*", "", file_path.stem).strip() or file_path.stem
         documents.append(
             {
-                "collection": ROOT_COLLECTION_KEY,
+                "collection": UPLOAD_COLLECTION_NAME,
                 "file_name": file_path.name,
+                "relative_path": relative_path,
                 "label": label,
             }
         )
-
-    for folder in sorted(collections_dir.iterdir(), key=lambda item: item.name.lower()):
-        if not folder.is_dir():
-            continue
-
-        markdown_files = sorted(folder.glob("*.md"), key=lambda item: item.name.lower())
-        for file_path in markdown_files:
-            label = re.sub(r"^\d+[_\- ]*", "", file_path.stem).strip() or file_path.stem
-            documents.append(
-                {
-                    "collection": folder.name,
-                    "file_name": file_path.name,
-                    "label": label,
-                }
-            )
     return documents
 
 
 def list_available_collections(documents: list[dict[str, str]]) -> list[str]:
-    return sorted({document["collection"] for document in documents if document["collection"]})
+    return [UPLOAD_COLLECTION_NAME] if documents else []
 
 
 def group_documents_by_collection(documents: list[dict[str, str]]) -> list[tuple[str, list[dict[str, str]]]]:
@@ -59,4 +52,6 @@ def group_documents_by_collection(documents: list[dict[str, str]]) -> list[tuple
 def format_collection_label(collection_name: str) -> str:
     if not collection_name or collection_name == ROOT_COLLECTION_KEY:
         return ""
+    if collection_name == UPLOAD_COLLECTION_NAME:
+        return "Uploaded files"
     return collection_name.replace("_", " ").strip()

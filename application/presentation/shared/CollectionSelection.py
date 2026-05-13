@@ -1,4 +1,8 @@
+from __future__ import annotations
+
 from copy import deepcopy
+
+from presentation.shared.Config import UPLOAD_COLLECTION_NAME
 
 
 ROOT_COLLECTION_KEY = "__root__"
@@ -71,5 +75,7 @@ def format_collection_selection_label(collections) -> str:
     if not selected:
         return "colecao nao identificada"
     if len(selected) == 1:
+        if selected[0] == UPLOAD_COLLECTION_NAME:
+            return "Uploaded files"
         return selected[0]
     return ", ".join(selected)

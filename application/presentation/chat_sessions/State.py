@@ -1,5 +1,7 @@
 """Session-state helpers for active chat management."""
 
+from __future__ import annotations
+
 import streamlit as st
 
 from presentation.shared.CollectionSelection import clone_collection_selection
@@ -40,7 +42,14 @@ def get_active_chat() -> dict[str, object] | None:
     return get_chat_sessions()[0] if get_chat_sessions() else None
 
 
-def save_active_chat(messages=None, collection=None, title: str | None = None, model_name: str | None = None) -> None:
+def save_active_chat(
+    messages=None,
+    collection=None,
+    title: str | None = None,
+    model_name: str | None = None,
+    *,
+    touch_recency: bool = True,
+) -> None:
     active_chat = get_active_chat()
     if active_chat is None:
         return
@@ -52,7 +61,8 @@ def save_active_chat(messages=None, collection=None, title: str | None = None, m
     active_chat["model_name"] = st.session_state.get("model_name") if model_name is None else model_name
     if title is not None:
         active_chat["title"] = title
-    active_chat["updated_at"] = build_timestamp_now()
+    if touch_recency:
+        active_chat["updated_at"] = build_timestamp_now()
     persist_chat_state(get_chat_sessions)
 
 

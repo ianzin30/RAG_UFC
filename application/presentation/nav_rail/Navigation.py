@@ -18,16 +18,16 @@ NAVIGATION_ITEMS = (
     {
         "panel": SIDEBAR_CHAT_PANEL,
         "label": "Chat",
-        "key": "sidebar_nav_chat_button",
+        "href": "#sidebar-chat-panel",
         "help": "Abrir seus chats",
-        "icon": ":material/chat_bubble_outline:",
+        "icon": "chat",
     },
     {
         "panel": SIDEBAR_FILES_PANEL,
         "label": "Arquivos",
-        "key": "sidebar_nav_files_button",
+        "href": "#sidebar-files-panel",
         "help": "Abrir arquivos e uploads",
-        "icon": ":material/folder_open:",
+        "icon": "folder",
     },
 )
 
@@ -46,27 +46,6 @@ def set_active_sidebar_panel(panel_name: str) -> None:
     st.session_state.sidebar_panel = panel_name
 
 
-def _render_rail_button(
-    *,
-    key: str,
-    help_text: str,
-    icon: str,
-    is_active: bool = False,
-    on_click=None,
-) -> None:
-    if st.button(
-        ICON_ONLY_BUTTON_LABEL,
-        key=key,
-        help=help_text,
-        type="primary" if is_active else "secondary",
-        icon=icon,
-        use_container_width=True,
-    ):
-        if on_click is not None:
-            on_click()
-        st.rerun()
-
-
 def _render_brand() -> None:
     st.markdown(
         f"""
@@ -78,20 +57,38 @@ def _render_brand() -> None:
     )
 
 
+def _render_nav_icon(icon_name: str) -> str:
+    if icon_name == "folder":
+        return (
+            '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+            '<path d="M3.5 6.5h6.2l2 2h8.8v9.8a2.2 2.2 0 0 1-2.2 2.2H5.7a2.2 2.2 0 0 1-2.2-2.2V6.5Z" />'
+            '<path d="M3.5 8.5h17" />'
+            "</svg>"
+        )
+    return (
+        '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+        '<path d="M5.5 5.5h13a2 2 0 0 1 2 2v8.3a2 2 0 0 1-2 2H9.2l-4.7 3v-3.1a2 2 0 0 1-1-1.7V7.5a2 2 0 0 1 2-2Z" />'
+        "</svg>"
+    )
+
+
 # Esta rail concentra o icone do app e o seletor de paineis.
 def render_navigation_rail() -> None:
-    active_panel = get_active_sidebar_panel()
-
     with st.container(key="sidebar_nav_rail"):
         with st.container(key="sidebar_nav_rail_header"):
             _render_brand()
 
         with st.container(key="sidebar_nav_rail_items"):
-            for item in NAVIGATION_ITEMS:
-                _render_rail_button(
-                    key=item["key"],
-                    help_text=item["help"],
-                    icon=item["icon"],
-                    is_active=active_panel == item["panel"],
-                    on_click=lambda panel_name=item["panel"]: set_active_sidebar_panel(panel_name),
+            nav_links = "".join(
+                (
+                    f'<a class="sidebar-nav-link sidebar-nav-link-{item["panel"]}" '
+                    f'href="{item["href"]}" '
+                    f'title="{item["help"]}" '
+                    f'aria-label="{item["label"]}">'
+                    f'<span class="sidebar-nav-icon">{_render_nav_icon(item["icon"])}</span>'
+                    f'<span class="sidebar-nav-label">{item["label"]}</span>'
+                    "</a>"
                 )
+                for item in NAVIGATION_ITEMS
+            )
+            st.markdown(f'<nav class="sidebar-nav-links">{nav_links}</nav>', unsafe_allow_html=True)

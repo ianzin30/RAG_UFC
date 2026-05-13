@@ -24,8 +24,7 @@ from uuid import uuid4
 
 import streamlit as st
 
-from presentation.shared.CollectionSelection import add_collection_selection
-from presentation.shared.Config import PROJECT_ROOT
+from presentation.shared.Config import PROJECT_ROOT, UPLOAD_COLLECTION_NAME
 from service.GoogleDrive import GoogleDriveService
 
 
@@ -350,10 +349,7 @@ def _ingest_drive_folder(
 
 
 def _apply_import_result_to_session(result: dict) -> None:
-    st.session_state.collection = add_collection_selection(
-        st.session_state.get("collection"),
-        result["collection_name"],
-    )
+    st.session_state.collection = [UPLOAD_COLLECTION_NAME]
     st.session_state.current_collection = None
     st.session_state.messages = []
     st.session_state.rag_service = None

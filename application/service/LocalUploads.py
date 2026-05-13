@@ -5,8 +5,11 @@ supporting PDFs (pypdf or docling), Office documents, spreadsheets, plain text,
 and images. All extracts are saved under data/collections as Markdown.
 """
 
+from __future__ import annotations
+
 import logging
 from pathlib import Path
+from typing import Callable
 
 from .GoogleDrive import (
     EXTRACTION_METHOD_DOCLING,
@@ -35,6 +38,43 @@ SUPPORTED_UPLOAD_SUFFIXES = {
     ".tiff",
     ".bmp",
 }
+
+UploadProgressCallback = Callable[[dict[str, object]], None]
+
+
+def _next_output_path(collection_path: Path, safe_name: str, start_index: int) -> Path:
+    index = max(1, start_index)
+    while True:
+        output_path = collection_path / f"{index:02d}_{safe_name}.md"
+        if not output_path.exists():
+            return output_path
+        index += 1
+
+
+def _emit_upload_progress(
+    progress_callback: UploadProgressCallback | None,
+    *,
+    status: str,
+    processed: int,
+    total: int,
+    file_name: str | None = None,
+    saved: int = 0,
+    skipped: int = 0,
+    reason: str | None = None,
+) -> None:
+    if not callable(progress_callback):
+        return
+    progress_callback(
+        {
+            "status": status,
+            "processed": processed,
+            "total": total,
+            "file_name": file_name,
+            "saved": saved,
+            "skipped": skipped,
+            "reason": reason,
+        }
+    )
 
 
 class LocalUploadService:
@@ -78,35 +118,86 @@ class LocalUploadService:
         uploaded_files,
         collection_name: str = "uploaded_files",
         extraction_method: str = EXTRACTION_METHOD_DOCLING,
+        progress_callback: UploadProgressCallback | None = None,
     ) -> dict:
         collection_path = self.collections_root / collection_name
         collection_path.mkdir(parents=True, exist_ok=True)
 
-        for old_file in collection_path.glob("*.md"):
-            old_file.unlink()
-
         saved_files = []
         skipped_files = []
+        uploaded_files = list(uploaded_files or [])
+        total_files = len(uploaded_files)
+        next_index = len(list(collection_path.glob("*.md"))) + 1
+
+        _emit_upload_progress(
+            progress_callback,
+            status="queued",
+            processed=0,
+            total=total_files,
+        )
 
         for index, uploaded_file in enumerate(uploaded_files, start=1):
             file_name = Path(uploaded_file.name).name
             file_bytes = uploaded_file.getvalue()
             if not file_bytes:
-                skipped_files.append({"name": file_name, "reason": "empty file"})
+                reason = "empty file"
+                skipped_files.append({"name": file_name, "reason": reason})
+                _emit_upload_progress(
+                    progress_callback,
+                    status="skipped",
+                    processed=index,
+                    total=total_files,
+                    file_name=file_name,
+                    saved=len(saved_files),
+                    skipped=len(skipped_files),
+                    reason=reason,
+                )
                 continue
 
+            _emit_upload_progress(
+                progress_callback,
+                status="extracting",
+                processed=index - 1,
+                total=total_files,
+                file_name=file_name,
+                saved=len(saved_files),
+                skipped=len(skipped_files),
+            )
             try:
                 text = self._extract_uploaded_file_text(file_name, file_bytes, extraction_method)
             except Exception as exc:
-                skipped_files.append({"name": file_name, "reason": str(exc)})
+                reason = str(exc)
+                skipped_files.append({"name": file_name, "reason": reason})
+                _emit_upload_progress(
+                    progress_callback,
+                    status="skipped",
+                    processed=index,
+                    total=total_files,
+                    file_name=file_name,
+                    saved=len(saved_files),
+                    skipped=len(skipped_files),
+                    reason=reason,
+                )
                 continue
 
             if not text:
-                skipped_files.append({"name": file_name, "reason": "no text extracted"})
+                reason = "no text extracted"
+                skipped_files.append({"name": file_name, "reason": reason})
+                _emit_upload_progress(
+                    progress_callback,
+                    status="skipped",
+                    processed=index,
+                    total=total_files,
+                    file_name=file_name,
+                    saved=len(saved_files),
+                    skipped=len(skipped_files),
+                    reason=reason,
+                )
                 continue
 
             safe_name = self.drive_service._safe_filename(Path(file_name).stem)
-            output_path = collection_path / f"{index:02d}_{safe_name}.md"
+            output_path = _next_output_path(collection_path, safe_name, next_index)
+            next_index = int(output_path.name.split("_", 1)[0]) + 1
             output_path.write_text(
                 f"# {file_name}\n\nExtraction method: {extraction_method}\n\n{text}\n",
                 encoding="utf-8",
@@ -119,10 +210,37 @@ class LocalUploadService:
                 }
             )
             logger.info("File uploaded - filename=%s collection=%s", file_name, collection_name)
+            _emit_upload_progress(
+                progress_callback,
+                status="saved",
+                processed=index,
+                total=total_files,
+                file_name=file_name,
+                saved=len(saved_files),
+                skipped=len(skipped_files),
+            )
 
         if not saved_files:
             details = ", ".join(f"{item['name']}: {item['reason']}" for item in skipped_files) or "no supported files"
+            _emit_upload_progress(
+                progress_callback,
+                status="error",
+                processed=total_files,
+                total=total_files,
+                saved=len(saved_files),
+                skipped=len(skipped_files),
+                reason=details,
+            )
             raise RuntimeError(f"No uploaded files could be processed ({details}).")
+
+        _emit_upload_progress(
+            progress_callback,
+            status="completed",
+            processed=total_files,
+            total=total_files,
+            saved=len(saved_files),
+            skipped=len(skipped_files),
+        )
 
         return {
             "collection_name": collection_name,
