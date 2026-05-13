@@ -79,8 +79,10 @@ def render_new_chat_button(default_collection, default_model: str | None) -> Non
                 default_collection=default_collection,
                 default_model=st.session_state.get("model_name") or default_model,
             )
-            st.session_state.chat_feedback = "Novo chat criado." if created else message
-            st.rerun()
+            if created:
+                st.toast("Novo chat criado.", icon=":material/check_circle:")
+            else:
+                st.session_state.chat_feedback = message
 
 
 # Este cabecalho reduz o topo do painel para um titulo simples e facil de escanear.
@@ -113,7 +115,6 @@ def render_chat_history_item(item: dict[str, object], default_collection, defaul
                 help=str(item["title"]),
             ):
                 chat_sessions.activate_chat(str(item["id"]))
-                st.rerun()
 
         with actions_col:
             with st.popover("...", use_container_width=True):
@@ -125,7 +126,10 @@ def render_chat_history_item(item: dict[str, object], default_collection, defaul
                 )
                 if st.button("Salvar nome", key=f"rename_chat_save_{item['id']}", use_container_width=True):
                     renamed, message = chat_sessions.rename_chat(str(item["id"]), new_title)
-                    st.session_state.chat_feedback = "Chat renomeado." if renamed else message
+                    if renamed:
+                        st.toast("Chat renomeado.", icon=":material/check_circle:")
+                    else:
+                        st.session_state.chat_feedback = message
                     st.rerun()
                 if st.button("Excluir chat", key=f"delete_chat_{item['id']}", use_container_width=True):
                     deleted, message = chat_sessions.delete_chat(
@@ -133,7 +137,10 @@ def render_chat_history_item(item: dict[str, object], default_collection, defaul
                         default_collection=default_collection,
                         default_model=st.session_state.get("model_name") or default_model,
                     )
-                    st.session_state.chat_feedback = "Chat excluido." if deleted else message
+                    if deleted:
+                        st.toast("Chat excluído.", icon=":material/delete:")
+                    else:
+                        st.session_state.chat_feedback = message
                     st.rerun()
 
 

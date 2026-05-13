@@ -30,8 +30,7 @@ def ingest_sidebar_uploads(uploaded_files) -> None:
     if skipped_count:
         feedback += f" {skipped_count} arquivo(s) ignorado(s)."
 
-    st.session_state.upload_feedback = feedback
-    st.session_state.upload_feedback_kind = "success"
+    st.toast(feedback, icon=":material/check_circle:")
     add_collection(result["collection_name"])
 
 
@@ -64,26 +63,21 @@ def render_upload_dropzone() -> None:
         return
 
     st.session_state.last_upload_signature = signature
+    file_count = len(uploaded_files)
     with upload_slot.container():
-        st.markdown(
-            """
-            <div class="upload-processing-shell">
-                <div class="upload-processing-spinner"></div>
-                <div class="upload-processing-copy">
-                    <div class="upload-processing-title">Loading files</div>
-                    <div class="upload-processing-subtitle">Please wait while we prepare the data.</div>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    try:
-        ingest_sidebar_uploads(uploaded_files)
-    except Exception as exc:
-        st.session_state.upload_feedback = str(exc)
-        st.session_state.upload_feedback_kind = "error"
-    finally:
-        st.session_state.last_upload_signature = None
-        st.session_state.upload_widget_version += 1
-        st.rerun()
+        with st.status(
+            f"Processando {file_count} arquivo(s)...",
+            expanded=True,
+        ) as status:
+            try:
+                status.update(label=f"Salvando {file_count} arquivo(s)...", state="running")
+                ingest_sidebar_uploads(uploaded_files)
+                status.update(label="Arquivos prontos!", state="complete", expanded=False)
+            except Exception as exc:
+                st.session_state.upload_feedback = str(exc)
+                st.session_state.upload_feedback_kind = "error"
+                status.update(label="Erro no upload.", state="error")
+            finally:
+                st.session_state.last_upload_signature = None
+                st.session_state.upload_widget_version += 1
+                st.rerun()

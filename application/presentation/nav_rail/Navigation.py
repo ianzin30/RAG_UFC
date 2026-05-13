@@ -64,7 +64,6 @@ def _render_rail_button(
     ):
         if on_click is not None:
             on_click()
-        st.rerun()
 
 
 def _render_brand() -> None:

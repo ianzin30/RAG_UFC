@@ -11,7 +11,6 @@ This module handles:
 
 from html import escape
 import logging
-import time
 
 import streamlit as st
 
@@ -26,6 +25,17 @@ logger = logging.getLogger(__name__)
 MODEL_SELECTOR_KEY = "chat_model_selector"
 MODEL_SELECTOR_CHAT_KEY = "chat_model_selector_active_chat_id"
 DEFAULT_RESPONSE_STATUS_MESSAGE = "Analisando sua pergunta..."
+
+COLLECTION_PROGRESS_LABELS = {
+    "collection_load_started": "Preparando coleção...",
+    "collection_fingerprint_ready": "Verificando cache do índice...",
+    "collection_cache_restore_started": "Restaurando índice do cache (rápido)...",
+    "collection_cache_restored": "Índice pronto!",
+    "collection_index_build_started": "Construindo índice do zero (pode demorar)...",
+    "collection_documents_loaded": "Documentos lidos. Gerando embeddings...",
+    "collection_cache_write_started": "Salvando índice em cache...",
+    "collection_cache_written": "Pronto!",
+}
 
 
 def normalize_response_status_payload(payload=None, *, state: str = "loading") -> dict[str, str | None]:
@@ -239,21 +249,31 @@ def show(selected_model: str) -> None:
         )
         # Reload RAG service if collections changed or service not initialized
         if "rag_service" not in st.session_state or st.session_state.rag_service is None or collection_changed:
-            st.session_state.rag_service = RAGService(model_name=current_model)
-            loader = messages_shell.empty()
-            with loader.container():
-                render_loading_state()
-            time.sleep(0.05)
-            st.session_state.rag_service.load_collection(selected_collections)
-            st.session_state.current_collection = clone_collection_selection(selected_collections)
-            loader.empty()
+            with messages_shell:
+                with st.status("Preparando assistente...", expanded=True) as status:
+                    def on_collection_progress(payload):
+                        event = (payload or {}).get("event", "")
+                        label = COLLECTION_PROGRESS_LABELS.get(event, "Trabalhando...")
+                        status.update(label=label, state="running")
+
+                    rag_service = RAGService(model_name=current_model)
+                    rag_service.set_collection_progress_callback(on_collection_progress)
+                    try:
+                        rag_service.load_collection(selected_collections)
+                        status.update(label="Pronto!", state="complete", expanded=False)
+                    except Exception:
+                        status.update(label="Erro ao carregar a coleção.", state="error")
+                        raise
+                    finally:
+                        rag_service.set_collection_progress_callback(None)
+
+                    st.session_state.rag_service = rag_service
+                    st.session_state.current_collection = clone_collection_selection(selected_collections)
         elif model_changed:
-            loader = messages_shell.empty()
-            with loader.container():
-                render_loading_state()
-            time.sleep(0.05)
-            st.session_state.rag_service.set_model(current_model)
-            loader.empty()
+            with messages_shell:
+                with st.status("Trocando modelo...", expanded=False) as status:
+                    st.session_state.rag_service.set_model(current_model)
+                    status.update(label="Modelo atualizado.", state="complete")
 
         # Display chat history
         with messages_shell:
@@ -284,31 +304,53 @@ def show(selected_model: str) -> None:
 
             with messages_shell:
                 with st.chat_message("assistant"):
-                    status_slot = st.empty()
-
-                    def update_response_status(status_payload) -> None:
-                        with status_slot.container():
-                            render_response_status_indicator(status_payload)
-
-                    update_response_status({"message": DEFAULT_RESPONSE_STATUS_MESSAGE})
                     rag_service = st.session_state.rag_service
-                    if hasattr(rag_service, "set_response_status_callback"):
-                        rag_service.set_response_status_callback(update_response_status)
+                    answer_text = None
+                    route = "retrieval"
+                    sources = []
+                    matched_documents = []
+                    needs_document_refinement = False
+                    resolved_question = prompt
+                    response_succeeded = False
 
-                    try:
-                        answer_trace = rag_service.ask_question_with_trace(prompt, recent_history)
-                        status_slot.empty()
-                        answer_text = str(answer_trace.get("answer_text", "")).strip()
-                        route = str(answer_trace.get("route", "")).strip() or "retrieval"
-                        resolved_question = str(answer_trace.get("resolved_question", prompt)).strip() or prompt
-                        matched_documents = [
-                            str(item).strip()
-                            for item in list(answer_trace.get("matched_documents") or [])
-                            if str(item).strip()
-                        ]
-                        needs_document_refinement = bool(answer_trace.get("needs_document_refinement"))
-                        sources = answer_trace.get("sources") or []
+                    with st.status(DEFAULT_RESPONSE_STATUS_MESSAGE, expanded=True) as status:
+                        def update_response_status(status_payload) -> None:
+                            message = ""
+                            if isinstance(status_payload, dict):
+                                message = str(status_payload.get("message") or "").strip()
+                            else:
+                                message = str(status_payload or "").strip()
+                            status.update(
+                                label=message or DEFAULT_RESPONSE_STATUS_MESSAGE,
+                                state="running",
+                            )
 
+                        if hasattr(rag_service, "set_response_status_callback"):
+                            rag_service.set_response_status_callback(update_response_status)
+
+                        try:
+                            answer_trace = rag_service.ask_question_with_trace(prompt, recent_history)
+                            answer_text = str(answer_trace.get("answer_text", "")).strip()
+                            route = str(answer_trace.get("route", "")).strip() or "retrieval"
+                            resolved_question = str(answer_trace.get("resolved_question", prompt)).strip() or prompt
+                            matched_documents = [
+                                str(item).strip()
+                                for item in list(answer_trace.get("matched_documents") or [])
+                                if str(item).strip()
+                            ]
+                            needs_document_refinement = bool(answer_trace.get("needs_document_refinement"))
+                            sources = answer_trace.get("sources") or []
+                            status.update(label="Resposta pronta.", state="complete", expanded=False)
+                            response_succeeded = True
+                        except Exception:
+                            logger.exception("Failed to generate chat response.")
+                            answer_text = "Nao consegui gerar a resposta agora. Tente novamente em instantes."
+                            status.update(label=answer_text, state="error")
+                        finally:
+                            if hasattr(rag_service, "set_response_status_callback"):
+                                rag_service.set_response_status_callback(None)
+
+                    if response_succeeded:
                         st.write(answer_text)
                         if route == "retrieval":
                             render_sources(sources)
@@ -328,13 +370,6 @@ def show(selected_model: str) -> None:
 
                         st.session_state.messages.append(assistant_message)
                         chat_sessions.update_active_chat_messages(st.session_state.messages)
-                    except Exception:
-                        logger.exception("Failed to generate chat response.")
-                        error_msg = "Nao consegui gerar a resposta agora. Tente novamente em instantes."
-                        with status_slot.container():
-                            render_response_status_indicator({"message": error_msg}, state="error")
-                        st.session_state.messages.append({"role": "assistant", "content": error_msg})
+                    elif answer_text:
+                        st.session_state.messages.append({"role": "assistant", "content": answer_text})
                         chat_sessions.update_active_chat_messages(st.session_state.messages)
-                    finally:
-                        if hasattr(rag_service, "set_response_status_callback"):
-                            rag_service.set_response_status_callback(None)

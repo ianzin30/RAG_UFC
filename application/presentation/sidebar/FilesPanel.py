@@ -137,8 +137,7 @@ def _render_delete_document_dialog(document: dict[str, str]) -> None:
                 st.session_state.upload_feedback = f"Nao foi possivel excluir o arquivo: {exc}"
                 st.session_state.upload_feedback_kind = "error"
             else:
-                st.session_state.upload_feedback = f"Arquivo '{label}' excluido."
-                st.session_state.upload_feedback_kind = "success"
+                st.toast(f"Arquivo '{label}' excluído.", icon=":material/delete:")
             st.rerun()
 
 
@@ -183,7 +182,6 @@ def _render_file_library(available_documents: list[dict[str, str]]) -> None:
                         type="primary" if is_active else "secondary",
                     ):
                         toggle_collection(document["collection"])
-                        st.rerun()
                 with delete_col:
                     if st.button(
                         ICON_ONLY_BUTTON_LABEL,
