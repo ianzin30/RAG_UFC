@@ -214,7 +214,12 @@ async def handle_chat(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
     # So chegamos aqui quando a sessao ja tem um RAG pronto para responder perguntas.
     try:
         await context.bot.send_chat_action(chat_id=update.effective_chat.id, action=ChatAction.TYPING)
-        answer = await asyncio.to_thread(session["rag_service"].ask_question, question, recent_history)
+        trace = await asyncio.to_thread(session["rag_service"].ask_question_with_trace, question, recent_history)
+        from ..rag.v2.Sources import displayed_sources
+        answer = str(trace.get("answer_text", ""))
+        citations = displayed_sources(trace)
+        if citations:
+            answer += "\n\nFontes:\n" + "\n".join(f"[{item.get('evidence_id', index)}] {item.get('document_name', '')}: {item.get('excerpt', '')}" for index, item in enumerate(citations, 1))
     except Exception as exc:
         answer = f"Erro ao obter resposta: {exc}"
 

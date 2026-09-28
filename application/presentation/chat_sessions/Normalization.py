@@ -70,6 +70,8 @@ def coerce_messages(messages) -> list[dict[str, object]]:
             if normalized_sources:
                 normalized_message["sources"] = normalized_sources
 
+        from service.rag.v2.Sources import preserve_v2_fields
+        preserve_v2_fields(message, normalized_message)
         normalized_messages.append(normalized_message)
     return normalized_messages
 

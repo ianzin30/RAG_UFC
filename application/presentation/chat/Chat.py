@@ -10,7 +10,9 @@ This module handles:
 """
 
 from html import escape
+from hashlib import sha256
 import logging
+import re
 
 import streamlit as st
 
@@ -180,36 +182,121 @@ def render_notice(message: str) -> None:
     )
 
 
+def _valid_focus_spans(source: dict, excerpt: str) -> list[dict]:
+    spans = []
+    for span in list(source.get("focus_spans") or []):
+        if not isinstance(span, dict):
+            continue
+        try:
+            start, end = int(span.get("start")), int(span.get("end"))
+        except (TypeError, ValueError):
+            continue
+        if 0 <= start < end <= len(excerpt):
+            spans.append({**span, "start": start, "end": end})
+    return sorted(spans, key=lambda item: (item["start"], item["end"]))
+
+
+def _sentence_context(text: str, start: int, end: int) -> tuple[str, int, int]:
+    before = text[:start]
+    after = text[end:]
+    previous = max(before.rfind("."), before.rfind("!"), before.rfind("?"))
+    next_match = re.search(r"[.!?](?:\s|$)", after)
+    context_start = previous + 1 if previous >= 0 else 0
+    context_end = end + next_match.end() if next_match else len(text)
+    context_end = min(len(text), context_end)
+    raw_context = text[context_start:context_end]
+    left_trim = len(raw_context) - len(raw_context.lstrip())
+    right_trim = len(raw_context) - len(raw_context.rstrip())
+    return (
+        raw_context.strip(),
+        context_start + left_trim,
+        context_end - right_trim,
+    )
+
+
+def _highlight(text: str, start: int, end: int) -> str:
+    return (
+        escape(text[:start])
+        + '<mark class="source-focus-highlight">'
+        + escape(text[start:end])
+        + "</mark>"
+        + escape(text[end:])
+    )
+
+
 def render_sources(sources) -> None:
     valid_sources = [source for source in list(sources or []) if isinstance(source, dict)]
     if not valid_sources:
         return
 
     st.markdown('<div class="source-preview-title">Fontes:</div>', unsafe_allow_html=True)
-    for index, source in enumerate(valid_sources[:4], start=1):
+    for index, source in enumerate(valid_sources, start=1):
         document_name = str(source.get("document_name", "documento")).strip() or "documento"
         chunk_kind = str(source.get("chunk_kind", "text")).strip() or "text"
         excerpt = str(source.get("excerpt", "")).strip()
+        section = str(source.get("section_title") or "").strip()
+        if section:
+            chunk_kind = f"{chunk_kind} · {section}"
+        pages = sorted({str(item.get("page_no")) for item in source.get("provenance", []) if item.get("page_no") is not None})
+        if pages:
+            chunk_kind += " · p. " + ", ".join(pages)
         source_link = render_markdown_preview_link(
             label=document_name,
             document=source,
             prefix=f"source-{index}-{id(source)}-{document_name}",
             class_name="markdown-preview-link source-preview-link",
         )
-        excerpt_html = (
-            f'<span class="source-preview-excerpt"> - {escape(excerpt)}</span>'
-            if excerpt
-            else ""
-        )
+        evidence_id = str(source.get("evidence_id") or index)
+        spans = _valid_focus_spans(source, excerpt)
+        if spans:
+            focused = spans[0]
+            preview_html = _highlight(excerpt, focused["start"], focused["end"])
+            if len(spans) > 1:
+                preview_html += f' <span class="source-focus-more">+{len(spans) - 1}</span>'
+        else:
+            preview_html = escape(excerpt)
+        source_key = sha256(
+            f"{evidence_id}|{source.get('chunk_id')}|{source.get('relative_path')}|{id(source)}".encode()
+        ).hexdigest()[:12]
         source_row = (
-            '<div class="source-preview-row">'
-            f'<span class="source-preview-index">{index}.</span>'
+            '<div class="source-preview-row source-preview-header">'
+            f'<span class="source-preview-index">{escape(evidence_id)}.</span>'
             f"{source_link}"
-            f'<span class="source-preview-kind">({escape(chunk_kind)})</span>'
-            f"{excerpt_html}"
+            '<span class="source-preview-kind">Fonte citada</span>'
             "</div>"
         )
         st.markdown(source_row, unsafe_allow_html=True)
+        if excerpt:
+            st.markdown(
+                f'<div class="source-preview-compact">{preview_html}</div>',
+                unsafe_allow_html=True,
+            )
+        with st.expander("Expandir fonte", expanded=False):
+            st.markdown(
+                f'<div class="source-preview-metadata">{escape(chunk_kind)}</div>',
+                unsafe_allow_html=True,
+            )
+            if spans:
+                for span in spans:
+                    context, context_start, _ = _sentence_context(
+                        excerpt, span["start"], span["end"]
+                    )
+                    start = span["start"] - context_start
+                    end = span["end"] - context_start
+                    claim_ids = ", ".join(str(value) for value in span.get("claim_ids", []))
+                    if claim_ids:
+                        st.caption(f"Sustenta: {claim_ids}")
+                    st.markdown(
+                        f'<div class="source-focus-context">{_highlight(context, start, end)}</div>',
+                        unsafe_allow_html=True,
+                    )
+            elif excerpt:
+                st.markdown(
+                    f'<div class="source-focus-context">{escape(excerpt[:900])}</div>',
+                    unsafe_allow_html=True,
+                )
+            if excerpt and st.checkbox("Ver excerto completo", key=f"source-full-{source_key}"):
+                st.text(excerpt)
 
 
 def render_loading_state() -> None:
@@ -353,7 +440,8 @@ def show(selected_model: str) -> None:
                         st.empty()
                     st.write(message["content"])
                     if message.get("role") == "assistant" and message.get("route") == "retrieval":
-                        render_sources(message.get("sources"))
+                        from service.rag.v2.Sources import displayed_sources
+                        render_sources(displayed_sources(message))
 
         # Input area for user questions
         with input_shell:
@@ -405,7 +493,8 @@ def show(selected_model: str) -> None:
                                 if str(item).strip()
                             ]
                             needs_document_refinement = bool(answer_trace.get("needs_document_refinement"))
-                            sources = answer_trace.get("sources") or []
+                            from service.rag.v2.Sources import displayed_sources
+                            sources = displayed_sources(answer_trace)
                             status.update(label="Resposta pronta.", state="complete", expanded=False)
                             response_succeeded = True
                         except Exception:
@@ -432,7 +521,9 @@ def show(selected_model: str) -> None:
                         if needs_document_refinement:
                             assistant_message["needs_document_refinement"] = True
                         if sources:
-                            assistant_message["sources"] = sources
+                            assistant_message["sources"] = answer_trace.get("sources", sources)
+                        from service.rag.v2.Sources import preserve_v2_fields
+                        preserve_v2_fields(answer_trace, assistant_message)
 
                         st.session_state.messages.append(assistant_message)
                         chat_sessions.update_active_chat_messages(st.session_state.messages)
