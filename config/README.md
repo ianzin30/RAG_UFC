@@ -1,37 +1,31 @@
-# Config Notes
+# Configuração V2
 
-This folder groups runtime configuration and setup templates.
+`config/config.toml` é a configuração compartilhada sem segredos. `.env` na raiz é carregado por `RuntimeConfig` para valores locais.
 
-## Primary runtime config
+## LLMs
 
-- `config.toml`
-  - non-secret runtime tuning lives here
-  - this is the file to edit for model defaults, embedding device, quantization, batch size, and max length
-  - retrieval tuning includes the dense/lexical candidate pool size and LLM evidence selector limits
-  - the checked-in defaults are CPU-safe and use a local CPU `int8` embedding export on first run
-  - Streamlit benchmark mode opens without Firebase/Mongo app login and uses shared local state under `data/`
+`[llm]` define provider/modelo, temperatura, timeout, orçamento de saída e limites por papel. `[llm.roles.<papel>]` pode selecionar outro provider/modelo. `[llm.providers.<provider>]` configura o transporte.
 
-## Secret template / credentials
+Providers disponíveis: `ollama`, `ufc`, `vllm`. Não há fallback automático entre famílias de modelos.
 
-- `.env.example`
-  - template for secrets and machine-specific values
-- `google-oauth-credentials.json`
-  - Google OAuth client credentials.
-  - For the Streamlit UI, use an OAuth **Web application** client (key `web` in the JSON) and add the Streamlit origin (default `http://localhost:8501/`) as an authorized redirect URI in Google Cloud Console.
-  - The Telegram bot still uses the legacy desktop flow, so a `installed` block is accepted as a fallback but logs a warning.
-- `google-drive-token.json` (generated at runtime, gitignored)
-  - Persistent shared VM-level cache of the Drive OAuth token. Override the location with `GOOGLE_OAUTH_TOKEN_FILE`. Delete it (or click **Desconectar** in the sidebar) to force re-authentication.
-- `GOOGLE_OAUTH_REDIRECT_URI` (env var, optional)
-  - Overrides the redirect URI used in the OAuth flow. Defaults to the first `redirect_uris` entry in the credentials JSON, falling back to `http://localhost:8501/`. Must exactly match a redirect URI registered for the OAuth web client.
+- Ollama local: UI expõe somente `phi4:latest` e `qwen3.5`. A tag física Qwen fica em `llm.providers.ollama.models`.
+- UFC: requer `UFC_API_KEY`; endpoint pode ser configurado no provider ou em `UFC_API_URL`.
+- vLLM: usa o modelo anunciado por `/v1/models`; `VLLM_BASE_URL` sobrescreve a URL configurada e `VLLM_API_KEY` é opcional.
 
-## Files that must stay in the project root
+`[llm_models].options` controla opções de modelos servidos pelo provider ativo. Alterar apenas a seleção/modelo não reindexa documentos. Para trocar de provider, ajuste `[llm]` e as opções aplicáveis.
 
-- `.python-version`: `uv` and Python version managers expect it at the project root.
-- `pyproject.toml`: `uv` resolves the project from the root `pyproject.toml`.
-- `uv.lock`: `uv` expects the lockfile beside `pyproject.toml`.
-- `.env`: runtime secrets stay at the root, but non-secret tuning now belongs in `config/config.toml`.
+`num_ctx` é enviado ao Ollama. O contexto máximo do vLLM é configurado ao iniciar seu servidor.
 
-## Git ignore rules
+## Retrieval
 
-To keep the root minimal, the local ignore rules now live in `.git/info/exclude`.
-That works on this machine, but it is not shared through GitHub the way a root `.gitignore` would be.
+`[rag_v2]` concentra modelos BGE, device, batch, limites parent/child, dense/sparse, RRF, reranker, memória de subconjuntos, hops e contexto. CPU é o default desta instalação.
+
+Não existem tabelas ativas de splitter V1, seletor LLM ou grounding heurístico. `rag_v2.enabled=false` gera erro explícito: somente V2 é suportada.
+
+## Integrações e segredos
+
+Use `config/.env.example` como template. Google Drive requer credenciais OAuth próprias; UI usa cliente Web e URI de retorno compatível com o endereço publicado. Telegram também aceita o fluxo desktop já existente.
+
+Arquivos de credenciais e tokens são ignorados. `GOOGLE_OAUTH_CREDENTIALS_FILE`, `GOOGLE_OAUTH_TOKEN_FILE` e `GOOGLE_OAUTH_REDIRECT_URI` permitem configurar caminhos/retorno. O token é estado local da implantação.
+
+O tema compartilhado está em `.streamlit/config.toml`; outros arquivos locais dessa pasta são ignorados.
