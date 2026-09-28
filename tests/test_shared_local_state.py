@@ -397,19 +397,8 @@ def test_sidebar_tabs_are_hash_links_without_streamlit_nav_buttons():
 
 def test_uploaded_files_rag_collection_enumerates_all_markdown(monkeypatch, tmp_path):
     monkeypatch.syspath_prepend(str(APPLICATION_DIR))
-    loaders_module = types.ModuleType("langchain_community.document_loaders")
-    loaders_module.DirectoryLoader = object
-    loaders_module.TextLoader = object
-    vectorstores_module = types.ModuleType("langchain_community.vectorstores")
-    vectorstores_module.FAISS = object
-    monkeypatch.setitem(sys.modules, "langchain_community", types.ModuleType("langchain_community"))
-    monkeypatch.setitem(sys.modules, "langchain_community.document_loaders", loaders_module)
-    monkeypatch.setitem(sys.modules, "langchain_community.vectorstores", vectorstores_module)
-    loading = importlib.import_module("service.rag.parts.CollectionLoading")
-    cache = importlib.import_module("service.rag.Cache")
-
-    class Harness(loading.RAGServiceCollectionLoadingMixin):
-        pass
+    from service.rag.v2.Collections import CollectionStore
+    from service.rag.v2.Cache import fingerprint
 
     collections_root = tmp_path / "data" / "collections"
     upload_path = collections_root / "uploaded_files"
@@ -420,17 +409,16 @@ def test_uploaded_files_rag_collection_enumerates_all_markdown(monkeypatch, tmp_
     legacy_file = legacy_path / "02_legacy.md"
     legacy_file.write_text("# Legacy\n\ntexto", encoding="utf-8")
 
-    harness = Harness()
-    harness.collections_root = collections_root
+    store = CollectionStore(collections_root)
 
-    before = harness._enumerate_collection_markdown_files(["uploaded_files"])
-    before_fingerprint = cache.build_rag_index_fingerprint(
-        {"files": before, "selected_collections": ["uploaded_files"]}
+    before = store.enumerate(["uploaded_files"])
+    before_fingerprint = fingerprint(
+        before, {"selected_collections": ["uploaded_files"]}
     )
     legacy_file.unlink()
-    after = harness._enumerate_collection_markdown_files(["uploaded_files"])
-    after_fingerprint = cache.build_rag_index_fingerprint(
-        {"files": after, "selected_collections": ["uploaded_files"]}
+    after = store.enumerate(["uploaded_files"])
+    after_fingerprint = fingerprint(
+        after, {"selected_collections": ["uploaded_files"]}
     )
 
     assert [item["relative_path"] for item in before] == [

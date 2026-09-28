@@ -1,88 +1,43 @@
 # Runtime configuration for the RAG system.
 # All values here apply uniformly to every collection under data/collections/;
 # nothing in this file is collection-specific.
-#   "phi4:latest"
-#   "deepseek-r1:14b"
+
+[llm]
+provider = "vllm"
+model = "Qwen/Qwen2.5-7B-Instruct-AWQ"
+# Bounded structured outputs by agent role; avoids local-model truncation.
+role_max_output_tokens = { planner = 512, research = 384, reasoning = 768, answer = 768, verification = 512, source_focus = 384 }
+temperature = 0.0
+num_ctx = 8192
+timeout_seconds = 420
+
+[llm.providers.ollama]
+base_url = "http://localhost:11434"
+# Optional physical mapping, e.g. [llm.providers.ollama.models]
+# "qwen3.5" = "qwen3.5:9b"
+
+[llm.providers.vllm]
+# Override with VLLM_BASE_URL when using another tunnel or a direct VPN route.
+base_url = "http://127.0.0.1:8000/v1"
+
+[rag_v2]
+device = "cpu"
+child_tokens = 384
+parent_tokens = 1536
+batch_size = 8
+search_k = 30
+rrf_k = 60
+rerank_k = 30
+max_hops = 3
+queries_per_hop = 3
+context_tokens = 3000
+subset_cache_mb = 128
 
 
-
-[model]
-# Default Ollama model for answer/small-talk/rewrite chains.
-# Tested alternatives that improve Portuguese factuality on the benchmark
-# (pick based on available VRAM):
-#   "phi4:latest"
-
-ufc_model_name = "phi4:latest"
 
 [llm_models]
 # Runtime model selector options shown in the UI.
-# label is what the user sees; model_name is the Ollama model tag sent to the API.
+# The active provider must serve every model listed here.
 options = [
-    { label = "phi4:latest", model_name = "phi4:latest" },
-    { label = "llama:3.1:8b", model_name = "llama3.1:8b" },
-    { label = "qwen3:14b", model_name = "qwen3:14b" },
-    { label = "deepseek-r1:14b", model_name = "deepseek-r1:14b" },
+    { label = "Qwen 2.5 7B (ATLab)", model_name = "Qwen/Qwen2.5-7B-Instruct-AWQ" },
 ]
-
-[generation]
-# Ollama sampling options. temperature=0.0 is the highest-leverage knob for
-# copy-fidelity on factual questions: it stops the model from paraphrasing
-# proper nouns, dates, and numeric values that appear verbatim in the context.
-temperature = 0.2
-top_p = 0.9
-repeat_penalty = 1.05
-# Optional. Uncomment to make answers reproducible across runs:
-# seed = 42
-# Optional. Uncomment to override the model's default context length:
-# num_ctx = 8192
-
-[embeddings]
-model_name = "BAAI/bge-m3"
-device = "cuda"          # cuda | mps | cpu (auto-downgrades if unavailable)
-quantization = "none"     # 4bit (CUDA only) | int8 (CPU ONNX) | none
-batch_size = 32
-max_length = 1024
-
-[splitter]
-# Window-based paragraph splitting via RecursiveCharacterTextSplitter.
-# 500/100 keeps each window large enough to fit a full named-entity
-# announcement plus surrounding evidence; smaller windows fragment answers.
-chunk_size = 500
-chunk_overlap = 100
-separators = [
-    "\n\n",
-    "\n",
-    ". ",
-    "? ",
-    "! ",
-    "; ",
-    ": ",
-    "  ",
-    " ",
-    "",
-]
-
-[retrieval]
-base_search_k = 12
-base_fetch_k = 30
-base_lambda_mult = 0.8
-lexical_limit = 12
-candidate_pool_limit = 30
-# Top-N chunks passed to the answer LLM. Raising this from 8 to 12 covers
-# more of the candidate pool when the answer chunk lands at rank 9-11.
-llm_selection_limit = 16
-# When false, the final selection takes the top `llm_selection_limit` items
-# from the merged dense+lexical pool directly. The LLM-based selector adds
-# latency and (with an 8B model) frequently drops the chunk that holds the
-# answer; disabled by default. Set true to experiment.
-llm_selector_enabled = true
-
-[rag]
-agent_mode = "crewai"
-# When true, the service abstains ("Nao encontrei...") if the heuristic
-# evidence score is below `min_evidence_score`. Set false to always attempt
-# an answer from whatever was retrieved.
-strict_grounding = true
-# Lowered from 0.5: the heuristic score is conservative and 0.5 caused
-# legitimate questions to abstain even when the right chunk was selected.
-min_evidence_score = 0.10

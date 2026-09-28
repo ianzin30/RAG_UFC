@@ -13,20 +13,13 @@ class LLMModelOption:
     model_name: str
 
 
-FALLBACK_LLM_MODEL_OPTIONS: tuple[LLMModelOption, ...] = (
-    LLMModelOption(label="llama", model_name="llama3.1:8b"),
-    LLMModelOption(label="qwen3:14b", model_name="qwen3:14b"),
-    LLMModelOption(label="deepseek-r1:14b", model_name="deepseek-r1:14b"),
-)
-
-
 def get_default_llm_model_name() -> str:
-    return str(get_runtime_config().ufc_model_name).strip()
+    return str(get_runtime_config().llm_model).strip()
 
 
 def build_llm_model_options(default_model_name: str | None = None) -> tuple[LLMModelOption, ...]:
     runtime_config = get_runtime_config()
-    default_model = str(default_model_name or runtime_config.ufc_model_name).strip()
+    default_model = str(default_model_name or runtime_config.llm_model).strip()
     if not default_model:
         raise RuntimeError("Missing default LLM model name.")
 
@@ -38,7 +31,7 @@ def build_llm_model_options(default_model_name: str | None = None) -> tuple[LLMM
         for option in list(getattr(runtime_config, "llm_model_options", ()) or ())
     ]
     if not configured_options:
-        configured_options = [LLMModelOption(label="phi4", model_name=default_model), *FALLBACK_LLM_MODEL_OPTIONS]
+        configured_options = [LLMModelOption(label=default_model, model_name=default_model)]
 
     options: list[LLMModelOption] = []
     seen_models: set[str] = set()

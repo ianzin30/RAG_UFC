@@ -30,7 +30,7 @@ def render_application() -> None:
     available_documents = list_collection_documents()
     available_collections = list_available_collections(available_documents)
     default_collection = [available_collections[0]] if available_collections else None
-    default_model = get_runtime_config().ufc_model_name
+    default_model = get_runtime_config().llm_model
     if not st.session_state.get("_default_model_logged"):
         logger.info("Default UI LLM model loaded from config: %s", default_model)
         st.session_state._default_model_logged = True
