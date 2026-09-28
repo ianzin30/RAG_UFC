@@ -13,7 +13,6 @@ def suppress_noisy_warnings() -> None:
 
     Suppressed warnings:
     - torch_dtype deprecation (expected, will upgrade when available)
-    - bitsandbytes FutureWarnings (safe, non-critical)
     - triton warnings (informational only)
     - transformers/huggingface warnings (non-critical)
 
@@ -24,7 +23,6 @@ def suppress_noisy_warnings() -> None:
     """
 
     # Suppress specific warning categories by module
-    warnings.filterwarnings("ignore", category=FutureWarning, module="bitsandbytes.*")
     warnings.filterwarnings("ignore", category=DeprecationWarning, module=".*torch.*dtype.*")
     warnings.filterwarnings("ignore", message=".*triton not found.*")
     warnings.filterwarnings("ignore", category=UserWarning, module=".*transformers.*")
@@ -33,7 +31,6 @@ def suppress_noisy_warnings() -> None:
     # Suppress INFO and WARNING level logs from specific modules
     logging.getLogger("torch").setLevel(logging.ERROR)
     logging.getLogger("transformers").setLevel(logging.ERROR)
-    logging.getLogger("bitsandbytes").setLevel(logging.ERROR)
     logging.getLogger("sentence_transformers").setLevel(logging.WARNING)
 
     # Suppress torch/CUDA initialization warnings

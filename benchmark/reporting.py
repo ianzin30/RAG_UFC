@@ -189,12 +189,10 @@ def render_markdown_report(run_payload: dict[str, object]) -> str:
     # Config
     config_snapshot = dict(run_payload.get("config_snapshot") or {})
     if config_snapshot:
-        rag_config = dict(config_snapshot.get("rag") or {})
-        model = config_snapshot.get("ufc_model_name", "—")
-        strict = rag_config.get("strict_grounding")
-        min_score = rag_config.get("min_evidence_score")
+        model = config_snapshot.get("llm_model", config_snapshot.get("ufc_model_name", "—"))
+        provider = config_snapshot.get("llm_provider", "—")
         lines.extend([
-            f"**Modelo:** `{model}` | **Modo estrito:** {'Sim' if strict else 'Não'} | **Min score:** `{min_score}`",
+            f"**Provider:** `{provider}` | **Modelo:** `{model}`",
             "",
         ])
 

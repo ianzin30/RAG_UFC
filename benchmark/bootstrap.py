@@ -30,10 +30,3 @@ def get_rag_service_class():
     from service.rag.RagService import RAGService
 
     return RAGService
-
-
-def get_retrieval_mode_command() -> str:
-    bootstrap_python_path()
-    from service.rag.Constants import MODE_SWITCH_TO_RETRIEVAL_COMMAND
-
-    return MODE_SWITCH_TO_RETRIEVAL_COMMAND

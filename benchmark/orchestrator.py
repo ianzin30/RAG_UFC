@@ -38,13 +38,11 @@ class BenchmarkRunner:
         *,
         service_cls,
         runtime_config_loader,
-        retrieval_mode_command: str,
         progress_callback: BenchmarkProgressCallback | None = None,
         progress_context: dict[str, object] | None = None,
     ) -> None:
         self.service_cls = service_cls
         self.runtime_config_loader = runtime_config_loader
-        self.retrieval_mode_command = retrieval_mode_command
         self.progress_callback = progress_callback
         self.progress_context = dict(progress_context or {})
         self._services: dict[str, object] = {}
@@ -210,6 +208,9 @@ class BenchmarkRunner:
         sources = list(trace.get("sources") or [])
         if sources:
             assistant_message["sources"] = sources
+        for key in ("trace_version", "cited_sources", "document_scope", "claims"):
+            if key in trace:
+                assistant_message[key] = trace[key]
         return assistant_message
 
     def _build_retrieval_history(self, service) -> list[dict[str, object]]:
@@ -372,21 +373,7 @@ class BenchmarkRunner:
 
         agent_grading = self._normalize_agent_grading_result(raw_grading)
         enriched_result["agent_grading"] = agent_grading
-        if agent_grading.get("status") != "graded":
-            return enriched_result
-
-        failure = dict(enriched_result.get("failure") or {})
-        rationale = str(agent_grading.get("rationale") or "").strip()
-        failure["classification"] = str(agent_grading["failure_classification"])
-        failure["notes"] = [rationale] if rationale else ["Agent benchmark grading supplied the official verdict."]
-        enriched_result["failure"] = failure
-
-        grounding = dict(enriched_result.get("grounding") or {})
-        grounding["grounding_status"] = str(agent_grading["grounding_status"])
-        grounding["agent_confidence"] = float(agent_grading["confidence"])
-        grounding["agent_evidence_support"] = str(agent_grading["evidence_support"])
-        enriched_result["grounding"] = grounding
-        enriched_result["auto_correctness"] = str(agent_grading["correctness"])
+        # The grader is supplementary; never overwrite deterministic results.
         return enriched_result
 
     def run(
@@ -412,9 +399,13 @@ class BenchmarkRunner:
                 question_total=question_total,
             )
             service.last_retrieval_focus = None
-            trace = service.ask_question_with_diagnostics(question.question, [])
+            history = list(question.metadata.get("history") or [])
+            trace = service.ask_question_with_diagnostics(question.question, history)
             corpus_entries = self._get_collection_corpus(question.collection, service)
             deterministic_result = self._analyze_question(question, trace, corpus_entries, service)
+            deterministic_result["provider_calls"] = trace.get("provider_calls", [])
+            deterministic_result["cited_sources"] = trace.get("cited_sources", [])
+            deterministic_result["trace_version"] = trace.get("trace_version", 1)
             results.append(self._apply_agent_grading(question, deterministic_result, service))
             self._emit_question_progress(
                 event="question_completed",
@@ -434,6 +425,15 @@ class BenchmarkRunner:
         abstained_count = sum(
             1 for result in results if bool((result.get("grounding") or {}).get("abstained"))
         )
+        pipeline_configs = {}
+        for collection, service in self._services.items():
+            engine = getattr(service, "_v2", None)
+            if engine is not None:
+                pipeline_configs[collection] = {
+                    "llm": engine.providers.config.model_dump(),
+                    "rag_v2": engine.config.model_dump(),
+                    "index": engine.load_diagnostics,
+                }
 
         return {
             "run_id": run_id,
@@ -441,6 +441,7 @@ class BenchmarkRunner:
             "questions_file": str(questions_path),
             "collections": collections,
             "config_snapshot": config_snapshot,
+            "pipeline_configs": pipeline_configs,
             "failure_counts": dict(failure_counts),
             "grounding_counts": dict(grounding_counts),
             "abstained_count": abstained_count,

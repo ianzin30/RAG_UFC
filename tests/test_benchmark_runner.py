@@ -163,7 +163,6 @@ def test_runner_resets_focus_and_lets_questions_auto_route() -> None:
             "ufc_model_name": "fake-model",
             "rag": {"strict_grounding": True, "min_evidence_score": 0.5},
         },
-        retrieval_mode_command="BUSCAR",
     )
     questions = [
         BenchmarkQuestion(
@@ -207,7 +206,6 @@ def test_runner_emits_question_progress_events_with_context() -> None:
             "ufc_model_name": "fake-model",
             "rag": {"strict_grounding": True, "min_evidence_score": 0.5},
         },
-        retrieval_mode_command="BUSCAR",
         progress_callback=progress_events.append,
         progress_context={
             "run_label": "bge-m3-800chunk-150overlap",
@@ -257,7 +255,7 @@ def test_runner_emits_question_progress_events_with_context() -> None:
     }
 
 
-def test_agent_grading_becomes_official_benchmark_verdict() -> None:
+def test_agent_grading_remains_supplementary() -> None:
     FakeService.instances = []
     runner = BenchmarkRunner(
         service_cls=AgentGradingService,
@@ -265,7 +263,6 @@ def test_agent_grading_becomes_official_benchmark_verdict() -> None:
             "ufc_model_name": "fake-model",
             "rag": {"strict_grounding": True, "min_evidence_score": 0.5},
         },
-        retrieval_mode_command="BUSCAR",
     )
     questions = [
         BenchmarkQuestion(
@@ -280,11 +277,9 @@ def test_agent_grading_becomes_official_benchmark_verdict() -> None:
     payload = runner.run(questions, questions_path=Path("benchmark/questions.json"))
     result = payload["results"][0]
 
-    assert payload["failure_counts"] == {"generation_failure": 1}
-    assert payload["grounding_counts"] == {"unsupported": 1}
-    assert result["failure"]["classification"] == "generation_failure"
-    assert result["grounding"]["grounding_status"] == "unsupported"
-    assert result["auto_correctness"] == "incorrect"
+    assert payload["failure_counts"] == {"no_failure": 1}
+    assert result["failure"]["classification"] == "no_failure"
+    assert result["agent_grading"]["correctness"] == "incorrect"
     assert result["agent_grading"]["status"] == "graded"
     assert result["deterministic_evaluation"]["failure"]["classification"] == "no_failure"
     assert result["deterministic_evaluation"]["retrieval_metrics"]["expected_answer_in_context"] is True
@@ -298,7 +293,6 @@ def test_invalid_agent_grading_falls_back_to_deterministic_verdict() -> None:
             "ufc_model_name": "fake-model",
             "rag": {"strict_grounding": True, "min_evidence_score": 0.5},
         },
-        retrieval_mode_command="BUSCAR",
     )
     questions = [
         BenchmarkQuestion(

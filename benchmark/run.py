@@ -12,7 +12,6 @@ from .bootstrap import (
     PROJECT_ROOT,
     bootstrap_python_path,
     get_rag_service_class,
-    get_retrieval_mode_command,
     get_runtime_config,
 )
 from .orchestrator import BenchmarkRunner
@@ -130,19 +129,10 @@ def main(argv: list[str] | None = None) -> int:
         ui.step_error("Service initialization", str(exc))
         return 1
 
-    ui.step_setup("Setting up retrieval mode")
-    try:
-        retrieval_mode = get_retrieval_mode_command()
-        ui.step_complete("Retrieval mode ready")
-    except Exception as exc:
-        ui.step_error("Retrieval mode setup", str(exc))
-        return 1
-
     # Create runner with progress callback
     runner = BenchmarkRunner(
         service_cls=service_cls,
         runtime_config_loader=get_runtime_config,
-        retrieval_mode_command=retrieval_mode,
         progress_callback=lambda event: _progress_handler(event, ui),
     )
 
