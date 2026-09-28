@@ -231,6 +231,7 @@ def _delete_stale_files(
         if output_file:
             with suppress(OSError):
                 (collection_path / Path(output_file).name).unlink()
+                (collection_path / Path(output_file).name).with_suffix(".structure.json").unlink(missing_ok=True)
         manifest_files.pop(file_id, None)
         deleted += 1
     return deleted
@@ -394,6 +395,8 @@ def ingest_folder_to_collection(
                 f"# {drive_file['name']}\n\nExtraction method: {normalized_method}\n\n{text}\n",
                 encoding="utf-8",
             )
+            from ..StructuredExtraction import write_structure_sidecar
+            write_structure_sidecar(output_path, text)
             file_id = str(drive_file.get("id") or "")
             manifest_files[file_id] = _manifest_entry(
                 drive_file,

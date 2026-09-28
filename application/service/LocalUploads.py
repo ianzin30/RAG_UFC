@@ -202,6 +202,8 @@ class LocalUploadService:
                 f"# {file_name}\n\nExtraction method: {extraction_method}\n\n{text}\n",
                 encoding="utf-8",
             )
+            from .StructuredExtraction import write_structure_sidecar
+            write_structure_sidecar(output_path, text)
             saved_files.append(
                 {
                     "name": file_name,

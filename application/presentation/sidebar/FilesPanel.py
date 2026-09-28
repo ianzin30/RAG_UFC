@@ -67,6 +67,7 @@ def _delete_document(document: dict[str, str]) -> None:
         raise RuntimeError("Arquivo nao encontrado. Talvez ele ja tenha sido removido.")
 
     document_path.unlink()
+    document_path.with_suffix(".structure.json").unlink(missing_ok=True)
 
     try:
         if (

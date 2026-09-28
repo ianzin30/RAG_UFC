@@ -44,7 +44,8 @@ def extract_pdf_text_with_pypdf(pdf_bytes: bytes) -> str:
     buffer = BytesIO(pdf_bytes)
     reader = PdfReader(buffer)
     pages = [page.extract_text() or "" for page in reader.pages]
-    return "\n\n".join(page.strip() for page in pages if page.strip())
+    from ..StructuredExtraction import ExtractedText
+    return ExtractedText("\n\n".join(page.strip() for page in pages if page.strip()), [{"title": "", "text": text, "provenance": [{"page_no": index}]} for index, text in enumerate(pages, 1) if text.strip()])
 
 
 # Este cache evita recriar o conversor do Docling a cada arquivo.
@@ -70,7 +71,8 @@ def extract_file_text_with_docling(owner, file_bytes: bytes, suffix: str) -> str
 
     try:
         result = converter.convert(str(temp_path))
-        return result.document.export_to_markdown().strip()
+        from ..StructuredExtraction import docling_text
+        return docling_text(result.document)
     finally:
         temp_path.unlink(missing_ok=True)
 
