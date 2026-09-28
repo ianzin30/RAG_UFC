@@ -1,5 +1,11 @@
 # Secrets and local configuration
 .env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa*
+id_ed25519*
 google-oauth-credentials.json
 config/google-oauth-credentials.json
 config/google-oauth-web-credentials.json
@@ -9,8 +15,24 @@ firecrawl/
 # Python environments and caches
 .venv/
 .pytest_cache/
+.ruff_cache/
 __pycache__/
 *.py[cod]
+
+# Machine/tool artifacts
+.DS_Store
+Thumbs.db
+.claude/
+.claire/
+.codex/
+.idea/
+.vscode/
+/null
+/*.zip
+
+# Only the shared Streamlit theme belongs in Git
+.streamlit/*
+!.streamlit/config.toml
 
 # Editor temp and backup files
 *.bak
@@ -21,11 +43,11 @@ logs/
 streamlit-*.log
 
 # Local app state and generated data
-data/local_chat_sessions.json
-data/cache/
-data/collections/google_drive_rag/
-data/collections/uploaded_files/
-data/users/
+data/*
+!data/.gitkeep
+!data/collections/
+data/collections/*
+!data/collections/.gitkeep
 benchmark/results/
 
 # Firebase credentials (never commit)
