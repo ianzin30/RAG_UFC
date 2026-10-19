@@ -13,3 +13,10 @@ def disable_crewai_telemetry_by_default() -> None:
     os.environ.setdefault("CREWAI_DISABLE_TRACKING", "true")
     os.environ.setdefault("CREWAI_TRACING_ENABLED", "false")
 
+
+
+def silence_crewai_console():
+    """CrewAI's global formatter prints payload/error details even for verbose=False agents."""
+    from crewai.events.event_listener import event_listener
+    event_listener.formatter.verbose = False
+    event_listener.logger.verbose = False

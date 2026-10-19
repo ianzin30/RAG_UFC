@@ -75,6 +75,7 @@ class Team:
                         "claim_id": "C1",
                         "text": "Aurora financia Atlas.",
                         "evidence_ids": ["E999"] if self.invalid else ["E1", "E2"],
+                        "requirement_ids": ["R1"],
                     }
                 ]
             }
@@ -85,10 +86,28 @@ class Team:
                         "claim_id": item["claim_id"],
                         "status": "SUPPORTED",
                         "reason": "ambos os trechos",
+                        "support_quotes": [
+                            {
+                                "evidence_id": eid,
+                                "quote": next(
+                                    e["text"]
+                                    for e in payload["evidence"]
+                                    if e["evidence_id"] == eid
+                                ),
+                            }
+                            for eid in item["evidence_ids"]
+                        ],
                     }
                     for item in payload["claims"]
                 ],
                 "central_question_supported": True,
+                "coverage": [
+                    {
+                        "requirement_id": "R1",
+                        "claim_ids": [item["claim_id"] for item in payload["claims"]],
+                        "covered": bool(payload["claims"]),
+                    }
+                ],
             }
         return schema.model_validate(data)
 
@@ -134,7 +153,7 @@ def test_repeated_query_stops_without_infinite_loop():
     assert len({query for query, _ in flow.retriever.queries}) == 2
 
 
-def test_explicit_multi_document_plan_searches_both_partitions():
+def test_inferred_multi_document_plan_does_not_exclude_collection():
     class MultiTeam(Team):
         def run(self, role, instruction, payload, schema):
             value = super().run(role, instruction, payload, schema)
@@ -146,7 +165,7 @@ def test_explicit_multi_document_plan_searches_both_partitions():
     flow = build(MultiTeam())
     state = flow.kickoff()
     assert state.status != "clarification_required"
-    assert {tuple(scope) for _, scope in flow.retriever.queries} == {("a",), ("b",)}
+    assert all(scope is None for _, scope in flow.retriever.queries)
 
 
 def test_real_ambiguity_stops_before_retrieval():
