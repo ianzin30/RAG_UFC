@@ -1,0 +1,31 @@
+{
+  "report": [
+    {
+      "width": 1280,
+      "scroll": 1280,
+      "figures": 6,
+      "brokenImages": 0,
+      "theme": "light"
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "figures": 6,
+      "brokenImages": 0,
+      "theme": "light"
+    },
+    {
+      "width": 1280,
+      "scroll": 1280,
+      "figures": 6,
+      "brokenImages": 0,
+      "theme": "dark"
+    }
+  ],
+  "expanded_details_no_overflow": true,
+  "application_mobile_width": 390,
+  "application_mobile_scroll_width": 390,
+  "real_source_preview_opened": true,
+  "reload_exceptions": 0,
+  "scope": "Real application plus isolated synthetic page. No physical phone or interrupted remote transport test."
+}

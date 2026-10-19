@@ -1,0 +1,107 @@
+# Runtime configuration for the RAG system.
+# All values here apply uniformly to every collection under data/collections/;
+# nothing in this file is collection-specific.
+
+[llm]
+provider = "vllm"
+model = "Qwen/Qwen2.5-7B-Instruct-AWQ"
+# Bounded structured outputs by agent role; avoids local-model truncation.
+role_max_output_tokens = { planner = 512, research = 384, reasoning = 768, answer = 768, verification = 512, source_focus = 384 }
+temperature = 0.0
+num_ctx = 8192
+timeout_seconds = 420
+
+[llm.providers.ollama]
+base_url = "http://localhost:11434"
+# Optional physical mapping, e.g. [llm.providers.ollama.models]
+# "qwen3.5" = "qwen3.5:9b"
+
+[llm.providers.vllm]
+# Override with VLLM_BASE_URL when using another tunnel or a direct VPN route.
+base_url = "http://127.0.0.1:8000/v1"
+
+[llm.providers.ufc]
+protocol = "openwebui_ollama"
+# Authenticated Open WebUI chat endpoint; UFC_API_URL overrides this URL.
+api_url = "https://cumbuco.ollama.atlab.ufc.br/api/chat/completions"
+api_format = "chat"
+
+# Benchmark communication settings only; this does not launch an experiment.
+# [llm] above controls the application; [benchmark.llm] controls benchmark calls.
+# Frozen generation base: qwen36_spark_greedy_no_thinking_v1 (2026-10-13).
+# This freezes the LLM settings; retrieval-agent experiments need their own plan.
+# Changes to this profile require a new version and a separate output directory.
+[benchmark.llm]
+provider = "vllm"
+model = "nvidia/Qwen3.6-35B-A3B-NVFP4"
+tokenizer = "nvidia/Qwen3.6-35B-A3B-NVFP4"
+temperature = 0.0
+# vLLM: client budget for input + output + 512-token safety margin.
+# This is NOT sent as a server context setting. The server reports max_model_len.
+num_ctx = 16384
+# Generated tokens include both private reasoning and final response content.
+max_output_tokens = 4096
+timeout_seconds = 420
+
+# Inactive while provider="vllm". Historical Qwen3 4B results retain their
+# original Ollama parameters in the saved run signatures and snapshots.
+[benchmark.llm.providers.ollama]
+base_url = "http://localhost:11434"
+expected_digest = "359d7dd4bcdab3d86b87d73ac27966f4dbb9f5efdfcc75d34a8764a09474fae7"
+think = true
+options = { top_p = 0.95, top_k = 20, min_p = 0.0, seed = 42, repeat_penalty = 1.0 }
+
+# Benchmark vLLM route; uses the existing tunnel, with no authentication needed.
+# VLLM_BASE_URL overrides this URL (and the application's vLLM URL).
+# Optional VLLM_API_KEY supplies authentication; do not put secrets in TOML.
+[benchmark.llm.providers.vllm]
+base_url = "http://localhost:8000/v1"
+# Frozen base uses no reasoning. Testing another mode requires another profile.
+# Omit the key to leave the mode to the server's template default.
+enable_thinking = false
+
+# Optional parameters: omitted keys are not transmitted. All are validated.
+# These options apply to benchmark vLLM calls, not to Ollama or Cumbuco.
+[benchmark.llm.providers.vllm.options]
+top_p = 0.9
+top_k = 20
+seed = 42
+# Explicit neutral values prevent silently inheriting server sampling defaults.
+min_p = 0.0
+presence_penalty = 0.0
+frequency_penalty = 0.0
+repetition_penalty = 1.0
+# Temperature 0 selects greedy decoding: top_p/top_k/min_p do not sample tokens.
+# stop = ["<custom-stop>"] # String or nonempty list of nonempty strings.
+
+[benchmark.planner]
+input_format = "compact_v1"
+
+[rag_v2]
+embedding_provider = "ollama"
+embedding_ollama_model = "embeddinggemma:latest"
+embedding_ollama_base_url = "http://localhost:11434"
+embedding_timeout_seconds = 120
+chunking_strategy = "legacy"
+device = "cpu"
+child_tokens = 384
+parent_tokens = 1536
+batch_size = 8
+search_k = 30
+rrf_k = 60
+# Both search channels return at most 30: rerank their full deduplicated union.
+rerank_k = 60
+max_hops = 3
+queries_per_hop = 3
+# Whole-document evidence budget in BGE tokens, independent of the LLM window.
+context_tokens = 3000
+subset_cache_mb = 128
+
+
+
+[llm_models]
+# Runtime model selector options shown in the UI.
+# The active provider must serve every model listed here.
+options = [
+    { label = "Qwen 2.5 7B (ATLab)", model_name = "Qwen/Qwen2.5-7B-Instruct-AWQ" },
+]

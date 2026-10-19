@@ -1,0 +1,206 @@
+{
+  "profile": {
+    "llm": {
+      "provider": "spark",
+      "model": "nvidia/Qwen3.6-35B-A3B-NVFP4",
+      "roles": {},
+      "providers": {
+        "spark": {
+          "base_url": "https://spark.ollama.atlab.ufc.br/api",
+          "api_key_env": "LLM_API_KEY",
+          "tokenizer": "nvidia/Qwen3.6-35B-A3B-NVFP4",
+          "enable_thinking": false,
+          "input_margin": 512,
+          "options": {
+            "seed": 42
+          }
+        },
+        "ollama": {
+          "base_url": "http://localhost:11434"
+        },
+        "vllm": {
+          "base_url": "http://127.0.0.1:8000/v1"
+        },
+        "ufc": {
+          "protocol": "openwebui_ollama",
+          "api_url": "https://cumbuco.ollama.atlab.ufc.br/api/chat/completions",
+          "api_format": "chat"
+        }
+      },
+      "temperature": 0.0,
+      "num_ctx": 16384,
+      "timeout_seconds": 420,
+      "max_output_tokens": 2048,
+      "role_max_output_tokens": {
+        "planner": 512,
+        "research": 384,
+        "reasoning": 768,
+        "answer": 768,
+        "verification": 512,
+        "source_focus": 384
+      }
+    },
+    "retrieval": {
+      "chunking_strategy": "legacy",
+      "child_tokens": 384,
+      "parent_tokens": 1536,
+      "search_k": 30,
+      "rrf_k": 60,
+      "rerank_k": 60,
+      "batch_size": 8,
+      "device": "cpu",
+      "subset_cache_mb": 128,
+      "max_hops": 3,
+      "queries_per_hop": 3,
+      "context_tokens": 6000,
+      "max_map_batches": 16,
+      "embedding_model": "BAAI/bge-m3",
+      "embedding_provider": "ollama",
+      "embedding_ollama_model": "embeddinggemma:latest",
+      "embedding_ollama_base_url": "http://localhost:11434",
+      "embedding_timeout_seconds": 120,
+      "reranker_model": "BAAI/bge-reranker-v2-m3"
+    },
+    "implementation_fingerprint": "adfb7bd08111c718a3c2237f017694d01c22ee809cf151057e11abc9121a32fc",
+    "fingerprint": "c406423cda12ca5c71ca6df25074b33d2af8cb4aded3db763813ff0a7563893d"
+  },
+  "questions": [
+    "Quem coordena o projeto RACK?",
+    "E qual é a instituição executora desse projeto?",
+    "Qual é a cor preferida do coordenador do projeto RACK?"
+  ],
+  "policy": "Sequential submissions through actual Streamlit page; no server response_format; JSON instructions and bounded local validation; no automatic whole-flow rerun.",
+  "final_code_profile": {
+    "llm": {
+      "provider": "spark",
+      "model": "nvidia/Qwen3.6-35B-A3B-NVFP4",
+      "roles": {},
+      "providers": {
+        "spark": {
+          "base_url": "https://spark.ollama.atlab.ufc.br/api",
+          "api_key_env": "LLM_API_KEY",
+          "tokenizer": "nvidia/Qwen3.6-35B-A3B-NVFP4",
+          "enable_thinking": false,
+          "input_margin": 512,
+          "options": {
+            "seed": 42
+          }
+        },
+        "ollama": {
+          "base_url": "http://localhost:11434"
+        },
+        "vllm": {
+          "base_url": "http://127.0.0.1:8000/v1"
+        },
+        "ufc": {
+          "protocol": "openwebui_ollama",
+          "api_url": "https://cumbuco.ollama.atlab.ufc.br/api/chat/completions",
+          "api_format": "chat"
+        }
+      },
+      "temperature": 0.0,
+      "num_ctx": 16384,
+      "timeout_seconds": 420,
+      "max_output_tokens": 2048,
+      "role_max_output_tokens": {
+        "planner": 512,
+        "research": 384,
+        "reasoning": 768,
+        "answer": 768,
+        "verification": 512,
+        "source_focus": 384
+      }
+    },
+    "retrieval": {
+      "chunking_strategy": "legacy",
+      "child_tokens": 384,
+      "parent_tokens": 1536,
+      "search_k": 30,
+      "rrf_k": 60,
+      "rerank_k": 60,
+      "batch_size": 8,
+      "device": "cpu",
+      "subset_cache_mb": 128,
+      "max_hops": 3,
+      "queries_per_hop": 3,
+      "context_tokens": 6000,
+      "max_map_batches": 16,
+      "embedding_model": "BAAI/bge-m3",
+      "embedding_provider": "ollama",
+      "embedding_ollama_model": "embeddinggemma:latest",
+      "embedding_ollama_base_url": "http://localhost:11434",
+      "embedding_timeout_seconds": 120,
+      "reranker_model": "BAAI/bge-reranker-v2-m3"
+    },
+    "implementation_fingerprint": "40a4d3837ed6ef1bf561d3f9838b170cf0363e9ffd0acde0bffb46fa714414f1",
+    "fingerprint": "02e25b5f8c359614e18e961195cc55790bc11db5d386326c1cf33e7928fecda5"
+  },
+  "note": "First two final-protocol cases preceded an exception-sanitization scope fix. Each turn preserves its own implementation fingerprint; these are integration diagnostics, not a controlled retrieval-quality comparison.",
+  "initial_signature": "c6e7fa2a11887ab0aa021af0105e621d6650b0c1b4fc33ecf853683fc11f0f88",
+  "terminal_code_profile": {
+    "llm": {
+      "provider": "spark",
+      "model": "nvidia/Qwen3.6-35B-A3B-NVFP4",
+      "roles": {},
+      "providers": {
+        "spark": {
+          "base_url": "https://spark.ollama.atlab.ufc.br/api",
+          "api_key_env": "LLM_API_KEY",
+          "tokenizer": "nvidia/Qwen3.6-35B-A3B-NVFP4",
+          "enable_thinking": false,
+          "input_margin": 512,
+          "options": {
+            "seed": 42
+          }
+        },
+        "ollama": {
+          "base_url": "http://localhost:11434"
+        },
+        "vllm": {
+          "base_url": "http://127.0.0.1:8000/v1"
+        },
+        "ufc": {
+          "protocol": "openwebui_ollama",
+          "api_url": "https://cumbuco.ollama.atlab.ufc.br/api/chat/completions",
+          "api_format": "chat"
+        }
+      },
+      "temperature": 0.0,
+      "num_ctx": 16384,
+      "timeout_seconds": 420,
+      "max_output_tokens": 2048,
+      "role_max_output_tokens": {
+        "planner": 512,
+        "research": 384,
+        "reasoning": 768,
+        "answer": 768,
+        "verification": 512,
+        "source_focus": 384
+      }
+    },
+    "retrieval": {
+      "chunking_strategy": "legacy",
+      "child_tokens": 384,
+      "parent_tokens": 1536,
+      "search_k": 30,
+      "rrf_k": 60,
+      "rerank_k": 60,
+      "batch_size": 8,
+      "device": "cpu",
+      "subset_cache_mb": 128,
+      "max_hops": 3,
+      "queries_per_hop": 3,
+      "context_tokens": 6000,
+      "max_map_batches": 16,
+      "embedding_model": "BAAI/bge-m3",
+      "embedding_provider": "ollama",
+      "embedding_ollama_model": "embeddinggemma:latest",
+      "embedding_ollama_base_url": "http://localhost:11434",
+      "embedding_timeout_seconds": 120,
+      "reranker_model": "BAAI/bge-reranker-v2-m3"
+    },
+    "implementation_fingerprint": "61028a4e57724ec786154edb13ec510507ff1c881ab01db3a10785ff9ec51d75",
+    "fingerprint": "6ad38e78feea5c4607f7f123f8719c8483828bca25124b555de5e280542785b4"
+  },
+  "signature": "aa968693d2a1ac6998d5c0da4e53d5e745f7b0d43bc7247c2a9c7ac27907821f"
+}

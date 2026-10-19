@@ -1,0 +1,14 @@
+{
+  "protected_files": 1396,
+  "changed_protected_files": [],
+  "normal_history": {
+    "backup": "data/local_chat_sessions.json.v1.bak",
+    "schema_version": 2,
+    "messages_preserved": true
+  },
+  "config_change": "Application now explicitly uses 16384 Qwen tokens and 6000 BGE document tokens, requested by user; frozen benchmark settings unchanged.",
+  "benchmark_section_unchanged": true,
+  "rechecked_after_tests": true,
+  "test_servers_stopped": true,
+  "temporary_browsers_terminated": true
+}
