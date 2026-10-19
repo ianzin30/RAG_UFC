@@ -1,0 +1,23 @@
+{
+  "description": "Artificial conflicting excerpts for oracle experiments only. Never index, attribute to a real document, or use as real gold answers.",
+  "conflicts": {
+    "REAL-F01": "O coordenador na instituição do AFO II é Carlos de Teste, e não Fernando Antonio Mota Trinta.",
+    "REAL-F03": "O provisionamento da infraestrutura do ciclo anterior do RACK utilizou exclusivamente Ansible; Terraform não foi utilizado.",
+    "REAL-E03": "Na reunião de 19/08/2022, Carlos de Teste declarou ser o novo tutor do PET e pediu ajuda nas maratonas.",
+    "REAL-E05": "A presidência da banca do Edital 09/2025 aprovada em 30/01/2026 foi atribuída a Bruno de Teste, e não a Avelino Francisco Zorzo.",
+    "REAL-C01": "AFO II: coordenador Paulo Antonio Leal Rego. RACK II: coordenador Fernando Antonio Mota Trinta.",
+    "REAL-C09": "As reuniões extraordinárias de 13/07/2022 e 21/06/2024 ocorreram ambas exclusivamente por videoconferência.",
+    "REAL-H03": "O projeto SAAR II, cujo ETL abrange Unity, PowerScale e PowerFlex, tem Carlos de Teste como coordenador na instituição.",
+    "REAL-H07": "O projeto SEFAZ-MA prorrogado até 03/07/2023 tinha valor global de R$ 2.000.000,00 aprovado em 19/08/2022.",
+    "REAL-L07": "Os quadros-resumo registram 28 pessoas no AFO e 21 no SAAR, totalizando 49 alocações.",
+    "REAL-L08": "As bolsas do Automated Parts Management – Fase IV aprovadas em 29/01/2024 foram Paulo Rego R$ 5.000,00 e Fernando Trinta R$ 7.000,00, ambas por seis meses.",
+    "REAL-S01": "O SAAR não prevê ampliar a integração ETL nem desenvolver logs, métricas ou dashboard de observabilidade.",
+    "REAL-S06": "Em 24/11/2023 foi aprovada a mudança de João Paulo Pordeus para 20 horas, sem licença para interesses particulares.",
+    "REAL-T04": "O quadro-resumo do RACK imprime as parcelas 10.800, 8.400 e 2.000 horas, com total 21.200, sem diferença aritmética.",
+    "REAL-T05": "No cronograma do RACK, RH Direto está previsto em R$ 80.000,00 para março de 2026 e R$ 90.000,00 para abril de 2026.",
+    "REAL-U03": "No mesmo período de produção do SAAR II, o registro A informa 7 TB recuperados; o registro B informa 12 TB recuperados. Não há critério para escolher entre os registros.",
+    "REAL-U10": "O projeto não identificado é coordenado por Fernando Trinta segundo o registro A, e por Paulo Rego segundo o registro B. Nenhum registro identifica qual projeto está sendo perguntado.",
+    "REAL-Q01": "O AFO citado no histórico tem Carlos de Teste como coordenador na instituição, e não Fernando Antonio Mota Trinta.",
+    "REAL-Q07": "A prova escrita do Edital 13/2025 estava prevista para 25/02/2025, das 09h às 13h; divulgação das notas às 18h."
+  }
+}

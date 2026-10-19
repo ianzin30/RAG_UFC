@@ -1,0 +1,42 @@
+{
+  "cases": [
+    {
+      "category": "multi-hop",
+      "question": "Who volunteered to teach Programming Computational for Engineering until the new substitute professor starts?",
+      "expected_answer": "Rudini Menezes and Ana Karolinna Maia",
+      "field": "teaching_assignment",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "02_01-2022_Ata_de_Reuniao_Extraordina_ria.md",
+          "quote": "Rudini Menezes (teoria) and Ana Karolinna Maia (prática) se voluntariaram para ministrar a disciplina de Programação Computacional para Engenharia, temporariamente, até o ingresso do novo Professor Substituto."
+        }
+      ]
+    },
+    {
+      "category": "single-document factual",
+      "question": "What courses are currently without a professor according to the meeting?",
+      "expected_answer": "Programação Computacional para Engenharia, Informática Aplicada ao Ensino de Ciências, and Computação Aplicada ao Ensino de Química",
+      "field": "course_status",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "02_01-2022_Ata_de_Reuniao_Extraordina_ria.md",
+          "quote": "A vaga do Prof. Heron será cedida à FEAAC para contratação de um professor substituto. Considerando que há algumas disciplinas sem professor, a saber: Programação Computacional para Engenharia, Informática Aplicada ao Ensino de Ciências e Computação Aplicada ao Ensino de Química."
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4686,
+    "total_tokens": 5067,
+    "completion_tokens": 381,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": null
+  },
+  "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+  "latency_seconds": 15.867251083021984,
+  "source_sha256": {
+    "02_01-2022_Ata_de_Reuniao_Extraordina_ria.md": "72a49417b5965f52e2ce5565653077d9cacbfc74e9f3dbcfb304019822456da0"
+  }
+}

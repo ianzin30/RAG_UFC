@@ -1,0 +1,310 @@
+[
+  {
+    "category": "multi-hop",
+    "question": "Na reunião de janeiro de 2021, qual foi o repasse previsto para a UFC no projeto cujo quinto aditivo estendeu o termo até abril de 2022?",
+    "expected_answer": "R$ 1.136.073,99",
+    "field": "university_transfer",
+    "evidence": [
+      {
+        "document": "01_01-2021_Ata_de_Reuniao.md",
+        "quote": "O quarto ponto de pauta da reunião foi referente à aprovação do 5º aditivo ao termo de cooperação técnico-científica entre a UFC e a empresa LG electronics, coordenado pela Profa. Rossana Andrade."
+      },
+      {
+        "document": "01_01-2021_Ata_de_Reuniao.md",
+        "quote": "Com  a  mudança  orçamentária  proposta  neste quinto aditivo e confirmados os repasses no valor total previsto, o valor referente à UFC passa a ser de R$ 1.136.073,99 (hum milhão, cento e trinta e seis mil e setenta e três reais e noventa e nove centavos)."
+      }
+    ],
+    "bridge": "Identificar o termo LG pelo quinto aditivo e ligar ao repasse da UFC descrito posteriormente."
+  },
+  {
+    "category": "multi-hop",
+    "question": "Na reunião extraordinária de janeiro de 2022, qual intervalo de contratação impedia os últimos substitutos de concorrer à seleção antecipada por causa do afastamento previsto para abril?",
+    "expected_answer": "Dois anos entre contratações.",
+    "field": "hiring_restriction",
+    "evidence": [
+      {
+        "document": "02_01-2022_Ata_de_Reuniao_Extraordina_ria.md",
+        "quote": "devido ao afastamento do Prof. Heron, o Departamento terá direito a um Professor Substituto, mas como o afastamento se dará apenas a partir de abril, os alunos serão prejudicados; pois leva em torno de dois meses todo o processo de contratação do substituto. Dessa forma, decidiu conversar com a diretora sobre o assunto, ao passo que a diretora conseguiu uma vaga da FEAAC para providenciar a seleção para professor substituto de imediato."
+      },
+      {
+        "document": "02_01-2022_Ata_de_Reuniao_Extraordina_ria.md",
+        "quote": "os últimos substitutos não poderão participar da seleção, visto que há  um  intervalo  de  dois  anos  entre  uma  contratação  e  outra,  de  acordo  com  a  legislação  pertinente."
+      }
+    ],
+    "bridge": "Relacionar a vaga antecipada ao impedimento aplicado aos substitutos anteriores."
+  },
+  {
+    "category": "multi-hop",
+    "question": "Na reunião de 14 de janeiro de 2022, qual bolsa do AI-CID foi prevista para o suplente da unidade de Lógica, Inteligência Artificial e Probabilidade?",
+    "expected_answer": "R$ 7.000,00 por dez meses para João Paulo Pordeus.",
+    "field": "scholarship_value",
+    "evidence": [
+      {
+        "document": "03_01-2022_Ata_de_Reuniao.md",
+        "quote": "5.Lógica, Inteligência Artificial e Probabilidade: Titular: Francicleber Martins Ferreira e Suplente: João Paulo Pordeus Gomes;"
+      },
+      {
+        "document": "03_01-2022_Ata_de_Reuniao.md",
+        "quote": "“AI-CID: Identificação de Dano Induzido pelo Cliente via Inteligência Artificial\", sob a coordenação do Prof. João Paulo Pordeus. O orçamento total do projeto é no valor de R$ 1.576.265,88 (um milhão, quinhentos e setenta e seis mil, duzentos e sessenta e cinco reais e oitenta e oito centavos), durante o período de mar/2022 a dez/2022. Continuou informando que esse projeto prevê a participação e três bolsas de pesquisa para professores do Departamento de Computação, a saber: 1. Prof. João Paulo Pordeus no valor de R$ 7.000,00 (sete mil reais) por dez meses; 2. Prof. Javam Machado no valor"
+      }
+    ],
+    "bridge": "O suplente identifica João Paulo Pordeus; buscar a bolsa dessa pessoa no outro item da pauta."
+  },
+  {
+    "category": "multi-hop",
+    "question": "Na reunião de fevereiro de 2021, qual valor da bolsa prorrogada por um mês foi apresentado pela suplente da banca de progressão de Emanuel Bezerra?",
+    "expected_answer": "R$ 2.500,00.",
+    "field": "scholarship_value",
+    "evidence": [
+      {
+        "document": "08_02-2021_Ata_de_Reuniao.md",
+        "quote": "progressão funcional do Prof. Emanuel Bezerra Rodrigues de adjunto II para adjunto III. Assim, o chefe solicitou por voluntários para compor a referida banca. Dessa forma,  a  banca  final  foi  definida  como  Prof.  José  Neuman,  presidente  da  banca,  professores  Miguel Franklin e Fernando Trinta. Como suplente foi escolhida a Profa. Rossana."
+      },
+      {
+        "document": "08_02-2021_Ata_de_Reuniao.md",
+        "quote": "O último ponto de pauta previsto foi a aprovação de bolsa para o aluno Paulo Artur  de  Sousa  Duarte,  vinculada  ao  projeto  DELL  Interlocks Audit  Tool. A  Profa.  Rossana  iniciou  a pauta informando que a votação se refere a aprovação da extensão do tempo da bolsa por mais 01 mês. O valor  da  bolsa  é  de  R$  2.500,00  (dois  mil  e  quinhentos  reais)."
+      }
+    ],
+    "bridge": "Identificar Rossana como suplente e ligar sua apresentação ao valor da bolsa de Paulo Artur."
+  },
+  {
+    "category": "multi-hop",
+    "question": "Na reunião de fevereiro de 2022, qual orçamento do projeto Portal Engenharia da Aplicação foi relatado pelo docente cujo estágio probatório foi aprovado nessa mesma reunião?",
+    "expected_answer": "R$ 269.900,00.",
+    "field": "project_budget",
+    "evidence": [
+      {
+        "document": "09_02-2022_Ata_de_Reuniao.md",
+        "quote": "o  Parecer  da Comissão de Avaliação Final do Estágio Probatório do Prof. João Paulo do Vale Madeiro, considerando-o apto ao cargo de Professor do Magistério Superior da UFC. Após discussão, o Parecer foi aprovado por unanimidade pelo Colegiado."
+      },
+      {
+        "document": "09_02-2022_Ata_de_Reuniao.md",
+        "quote": "o  Prof.  João  Paulo  Madeiro  relatou  o  Projeto  de  Pesquisa    intitulado: 'PENAP:  Portal  Engenharia  da  Aplicação',  sob  a  coordenação  do  Prof.  José  Maria  Monteiro,  com orçamento  total  no  valor  de  R$  269.900,00  (duzentos  e  sessenta  e  nove  mil  e  novecentos  reais),  com duração de 6 meses (março/2022 a agosto/2022)."
+      }
+    ],
+    "bridge": "Identificar João Paulo do Vale Madeiro pelo estágio e ligar à relatoria do PENAP."
+  },
+  {
+    "category": "multi-hop",
+    "question": "Na reunião de fevereiro de 2025, qual foi o novo orçamento do projeto Lenovo cujo aditivo foi relatado pelo professor convidado a ensinar Interface Homem-máquina na Universidade Católica do Porto?",
+    "expected_answer": "R$ 7.742.468,70.",
+    "field": "project_budget",
+    "evidence": [
+      {
+        "document": "10_02-2025_Ata_de_Reuniao.md",
+        "quote": "9ª Matéria: Participação do Prof. José Maria Monteiro no Curso de Especialização em Ciência de Dados em Biomedicina ofertado pela Universidade Católica do Porto. Na ocasião, o Prof. José Maria Monteiro informou aos senhores membros do colegiado que foi convidado para ministrar uma disciplina (Interface Homem-máquina) nesse curso. O conteúdo dessa disciplina consiste em ensinar os estudantes a prototipar um sistema, uma aplicação desktop que faça uso de um modelo de machine learning. As aulas acontecerão às sextas (noite) e sábado, na modalidade EAD, totalizando 12 h/a."
+      },
+      {
+        "document": "10_02-2025_Ata_de_Reuniao.md",
+        "quote": "10ª Matéria: Aprovação de Aditivo ao Projeto CIDDE: Customer-Induced Damage Detection Evolution . O Prof. José Maria Monteiro relatou o 1° Termo Aditivo ao Termo de Cooperação LENOVO/UFC 001/2024 (SEI n° 23067.005994/2025-48), sob a coordenação do Prof. Joaquim Bento, por meio do qual se pretende: 1. alteração da vigência (acréscimo) por um período de 24 meses, ficando o novo período de 01/04/25 a 31/03/27; 2. alteração de valores por acréscimo; passando para um orçamento de R$ 7.742.468,70 (sete milhões, setecentos e quarenta e dois mil, quatrocentos e sessenta e oito reais e setenta centavos) para os dois anos."
+      }
+    ],
+    "bridge": "Identificar José Maria Monteiro pelo convite e ligar ao aditivo CIDDE relatado em outro item."
+  },
+  {
+    "category": "single-document factual",
+    "question": "Na reunião de janeiro de 2021, qual valor mensal foi aprovado para a bolsa de David Viana no Lenovo LDE?",
+    "expected_answer": "R$ 5.000,00.",
+    "field": "scholarship_value",
+    "evidence": [
+      {
+        "document": "01_01-2021_Ata_de_Reuniao.md",
+        "quote": "a aprovação de bolsa para aluno de doutorado David  Viana,  relatada  pelo  Prof.  Paulo  Rego,  em  projeto  intitulado  'Lenovo  LDE',  no  valor  de  R$ 5.000,00 (cinco mil reais) por um período de 12 meses, com início em janeiro de 2021."
+      }
+    ],
+    "bridge": ""
+  },
+  {
+    "category": "single-document factual",
+    "question": "Na reunião extraordinária de janeiro de 2022, quem assumiria temporariamente teoria e prática de Programação Computacional para Engenharia?",
+    "expected_answer": "Rudini Menezes (teoria) e Ana Karolinna Maia (prática).",
+    "field": "teaching_assignment",
+    "evidence": [
+      {
+        "document": "02_01-2022_Ata_de_Reuniao_Extraordina_ria.md",
+        "quote": "os  professores  Rudini Menezes  (teoria)  e  Ana  Karolinna  Maia  (prática)  se  voluntariaram  para  ministrar  a  disciplina  de Programação  Computacional  para  Engenharia,  temporariamente,  até  o  ingresso  do  novo  Professor Substituto,"
+      }
+    ],
+    "bridge": ""
+  },
+  {
+    "category": "single-document factual",
+    "question": "Qual orçamento total do Scope Management Tool Phase II foi informado na reunião de 14 de janeiro de 2022?",
+    "expected_answer": "R$ 2.000.089,10.",
+    "field": "project_budget",
+    "evidence": [
+      {
+        "document": "03_01-2022_Ata_de_Reuniao.md",
+        "quote": "o Prof. Miguel Franklin relatou o Projeto de Pesquisa intitulado \"Scope Management Tool Phase II\", sob a coordenação da Profa. Rossana Andrade, convênio entre a UFC e a Dell. O orçamento total do projeto é no valor de R$ R$ 2.000.089,10 (dois milhões, oitenta e nove reais e dez centavos), durante o período de 01/03/2022 a 28/02/2023."
+      }
+    ],
+    "bridge": ""
+  },
+  {
+    "category": "single-document factual",
+    "question": "Na ata de fevereiro de 2021, qual disciplina foi o último plano de ensino que faltava aprovar?",
+    "expected_answer": "Qualidade de Software (CK0231 T01).",
+    "field": "teaching_plan",
+    "evidence": [
+      {
+        "document": "08_02-2021_Ata_de_Reuniao.md",
+        "quote": "O  ponto  seguinte  foi  a  aprovação  do  plano  de  ensino  de  Qualidade  de Software (CK0231 T01). Com a palavra, o Prof. Pablo anunciou que este era o último plano de ensino que faltava aprovar e disponibilizou o arquivo para apreciação. Assim, o chefe abriu a votação e o plano foi aprovado por unanimidade."
+      }
+    ],
+    "bridge": ""
+  },
+  {
+    "category": "single-document factual",
+    "question": "Na reunião de fevereiro de 2022, qual valor da bolsa renovada para Vânia Maria Ponte Vidal no projeto da SEFAZ do Maranhão?",
+    "expected_answer": "R$ 10.500,00.",
+    "field": "scholarship_value",
+    "evidence": [
+      {
+        "document": "09_02-2022_Ata_de_Reuniao.md",
+        "quote": "o Prof. Joaquim Bento relatou a renovação da bolsa de pesquisa da Profa. Vânia Maria Ponte Vidal no Projeto intitulado: 'Uso das Tecnologias da Web Semântica e Big Data  para  Integrar,  Enriquecer  e  Explorar  Dados  da  SEFAZ',  convênio  entre  a  UFC  e  a  SEFAZ  do Maranhão,  no  valor  de  R$  10.500,00  (dez  mil  e  quinhentos  reais),  durante  o  período  de  04/02/2022  a 30/08/2022."
+      }
+    ],
+    "bridge": ""
+  },
+  {
+    "category": "single-document factual",
+    "question": "Na programação de alocação de 2025.2 apresentada em fevereiro de 2025, quando seria apresentada a demanda recebida?",
+    "expected_answer": "27/06/2025.",
+    "field": "allocation_calendar",
+    "evidence": [
+      {
+        "document": "10_02-2025_Ata_de_Reuniao.md",
+        "quote": "1. 27/06/2025: Apresentação, pela Chefia, da demanda recebida;"
+      }
+    ],
+    "bridge": ""
+  },
+  {
+    "category": "single-document factual",
+    "question": "Na ata extraordinária de abril de 2020, quantos votos houve a favor, contra e em abstenção na publicação da carta aberta?",
+    "expected_answer": "9 SIM, 8 NÃO e 3 ABSTENÇÃO.",
+    "field": "vote_counts",
+    "evidence": [
+      {
+        "document": "20_04-2020_Ata_de_Reuniao_Extraordinaria.md",
+        "quote": "Após votação o resultado foi o que segue: 9 (nove) votos para SIM; 8 (oito) votos para NÃO e 03 (três) votos para ABSTENÇÃO."
+      }
+    ],
+    "bridge": ""
+  },
+  {
+    "category": "single-document factual",
+    "question": "Na ata ordinária de abril de 2020, para qual valor passou a parcela do Departamento no aditivo LG Sample Test?",
+    "expected_answer": "R$ 11.216,60.",
+    "field": "department_transfer",
+    "evidence": [
+      {
+        "document": "21_04-2020_Ata_de_Reuniao.md",
+        "quote": "O valor anterior do montante para o DC era de R$ R$ 8.616,87 (oito mil seiscentos e dezesseis reais e oitenta e sete centavos) e passará a ser de R$ 11.216,60 (onze mil duzentos e dezesseis  reais  e  sessenta  centavos)  com  este  aditivo."
+      }
+    ],
+    "bridge": ""
+  },
+  {
+    "category": "cross-document",
+    "question": "Na ata de março de 2020, qual total do Avantte após o aditivo e, na de março de 2021, qual valor da bolsa de Pedro Almir nesse projeto?",
+    "expected_answer": "R$ 13.685.961,53 e R$ 3.300,00.",
+    "field": "cross_document_comparison",
+    "evidence": [
+      {
+        "document": "12_03-2020_Ata_de_Reuniao.md",
+        "quote": "o  valor  total  do projeto passará a ser de R$ 13.685.961,53 (treze milhões seiscentos e oitenta e cinco mil novecentos e sessenta e um reais e cinquenta e três centavos), bem como a prorrogação do prazo de vigência do projeto para 30/04/2021."
+      },
+      {
+        "document": "13_03-2021_Ata_de_Reuniao.md",
+        "quote": "1. 4º Aditivo LG Avantte (Processo SEI nº 23067.041245/202070)  -  uma  bolsa  para  o  aluno  Pedro  Almir  Martins  de  Oliveira,  no  valor  de  R$  3.300,00  (três  mil  e trezentos  reais),  no  período  de  janeiro  a  março/2021;"
+      }
+    ],
+    "bridge": ""
+  },
+  {
+    "category": "cross-document",
+    "question": "Comparando março de 2021 e março de 2022, quais valores das bolsas de Pedro Almir no LG Avantte e de Rossana no FURUKAWA Quest?",
+    "expected_answer": "R$ 3.300,00 e R$ 4.000,00.",
+    "field": "cross_document_comparison",
+    "evidence": [
+      {
+        "document": "13_03-2021_Ata_de_Reuniao.md",
+        "quote": "1. 4º Aditivo LG Avantte (Processo SEI nº 23067.041245/202070)  -  uma  bolsa  para  o  aluno  Pedro  Almir  Martins  de  Oliveira,  no  valor  de  R$  3.300,00  (três  mil  e trezentos  reais),  no  período  de  janeiro  a  março/2021;"
+      },
+      {
+        "document": "14_03-2022_Ata_de_Reuniao.md",
+        "quote": "O  Prof.  Joaquim  Bento  relatou  a  bolsa,  vinculada  ao  Projeto FURUKAWA - Quest , destinada à Profa. Rossana Andrade, no valor de R$ 4.000,00 (quatro mil reais), por 10 meses."
+      }
+    ],
+    "bridge": ""
+  },
+  {
+    "category": "cross-document",
+    "question": "Qual bolsa da professora no FURUKAWA Quest aparece em março de 2022, e qual novo orçamento do Guided Troubleshooting Tool aparece em março de 2023?",
+    "expected_answer": "R$ 4.000,00 por 10 meses; R$ 1.592.778,98.",
+    "field": "cross_document_comparison",
+    "evidence": [
+      {
+        "document": "14_03-2022_Ata_de_Reuniao.md",
+        "quote": "O  Prof.  Joaquim  Bento  relatou  a  bolsa,  vinculada  ao  Projeto FURUKAWA - Quest , destinada à Profa. Rossana Andrade, no valor de R$ 4.000,00 (quatro mil reais), por 10 meses."
+      },
+      {
+        "document": "16_03-2023_Ata_de_Reuniao.md",
+        "quote": "\"Guided  Troubleshooting  Tool  -  Fase  II\",  em  parceria  com  a  Dell,  sob  sua coordenação. Houve uma alteração no valor do projeto de R$ 1.611.647,67 para R$ 1.592.778,98, devido à redução de um (01) bolsista de RH Indireto."
+      }
+    ],
+    "bridge": ""
+  },
+  {
+    "category": "cross-document",
+    "question": "Que valor do Guided Troubleshooting Tool após redução de bolsista aparece em março de 2023, e qual bolsa de Paulo Dias da Rocha Neto aparece em março de 2024?",
+    "expected_answer": "R$ 1.592.778,98 e R$ 1.390,00.",
+    "field": "cross_document_comparison",
+    "evidence": [
+      {
+        "document": "16_03-2023_Ata_de_Reuniao.md",
+        "quote": "\"Guided  Troubleshooting  Tool  -  Fase  II\",  em  parceria  com  a  Dell,  sob  sua coordenação. Houve uma alteração no valor do projeto de R$ 1.611.647,67 para R$ 1.592.778,98, devido à redução de um (01) bolsista de RH Indireto."
+      },
+      {
+        "document": "17_03-2024_Ata_de_Reuniao.md",
+        "quote": "de uma bolsa de pesquisa do aluno Paulo Dias da Rocha Neto (Graduação da UECE), vinculada ao Projeto 'Guided Troubleshooting Tool', coordenado pelo Prof. Paulo Rego, no valor de R$ 1.390,00 (mil, trezentos e noventa reais), no período de 01/02/2024 a  30/11/2024."
+      }
+    ],
+    "bridge": ""
+  },
+  {
+    "category": "cross-document",
+    "question": "Qual bolsa do estudante da UECE aparece em março de 2024 e quantos substitutos tinham disciplinas previstas na oferta apresentada em março de 2025?",
+    "expected_answer": "Paulo Dias, R$ 1.390,00; um substituto.",
+    "field": "cross_document_comparison",
+    "evidence": [
+      {
+        "document": "17_03-2024_Ata_de_Reuniao.md",
+        "quote": "de uma bolsa de pesquisa do aluno Paulo Dias da Rocha Neto (Graduação da UECE), vinculada ao Projeto 'Guided Troubleshooting Tool', coordenado pelo Prof. Paulo Rego, no valor de R$ 1.390,00 (mil, trezentos e noventa reais), no período de 01/02/2024 a  30/11/2024."
+      },
+      {
+        "document": "18_03-2025_Ata_de_Reuniao.md",
+        "quote": "Ao ser indagado se estavam previstas disciplinas para um substituto ou dois, respondeu que somente para um substituto e que estava em processo de seleção."
+      }
+    ],
+    "bridge": ""
+  },
+  {
+    "category": "cross-document",
+    "question": "Qual total do Avantte aparece em março de 2020 e quantos substitutos estavam previstos na oferta apresentada em março de 2025?",
+    "expected_answer": "R$ 13.685.961,53; um substituto.",
+    "field": "cross_document_comparison",
+    "evidence": [
+      {
+        "document": "18_03-2025_Ata_de_Reuniao.md",
+        "quote": "Ao ser indagado se estavam previstas disciplinas para um substituto ou dois, respondeu que somente para um substituto e que estava em processo de seleção."
+      },
+      {
+        "document": "12_03-2020_Ata_de_Reuniao.md",
+        "quote": "o  valor  total  do projeto passará a ser de R$ 13.685.961,53 (treze milhões seiscentos e oitenta e cinco mil novecentos e sessenta e um reais e cinquenta e três centavos), bem como a prorrogação do prazo de vigência do projeto para 30/04/2021."
+      }
+    ],
+    "bridge": ""
+  }
+]

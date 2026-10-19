@@ -1,0 +1,632 @@
+[
+  {
+    "id": "GEN-TEST-001",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de novembro de 2022, qual foi o novo valor da bolsa no projeto sobre desconexões do chatbot para o docente que relatou o terceiro aditivo do LDE?",
+    "expected_answer": "R$ 6.750,00, para João Paulo Pordeus.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-7e1bcbf1bbf4d13f",
+        "GF-06eed12d0e1eea35"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF55"
+      ],
+      "field": "scholarship_adjustment",
+      "outside_old_fields": true,
+      "bridge": "O relato do LDE identifica Pordeus; a lista de bolsas do outro projeto associa a ele o reajuste.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-002",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Em novembro de 2023, que serviços podia oferecer a empresa júnior de Ciência da Computação vinculada ao mesmo professor responsável pela OCI renovada naquela reunião?",
+    "expected_answer": "Serviços de consultoria e soluções tecnológicas para diversas empresas.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-467b1d1a67576423",
+        "GF-026bd9b8ac45f843"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF56"
+      ],
+      "field": "offered_services",
+      "outside_old_fields": true,
+      "bridge": "A OCI identifica Fernando Trinta; outro projeto vincula a empresa júnior ao mesmo docente e descreve seus serviços.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-003",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na reunião ordinária de novembro de 2024, qual o valor mensal da bolsa ReArte do professor que sugeriu retomar a discussão dos planos de ensino na reunião seguinte?",
+    "expected_answer": "R$ 11.500,00, para Angelo Brayner.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-7d974ed6fc2d2bed",
+        "GF-085d4a266b83d689"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF57"
+      ],
+      "field": "scholarship_value",
+      "outside_old_fields": true,
+      "bridge": "A sugestão sobre planos identifica Angelo; outro item registra sua bolsa ReArte.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-004",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata ordinária de novembro de 2025, qual o valor da bolsa no projeto de integração biométrica destinada ao docente por cuja iniciativa a UFC Virtual filmou a celebração da Computação?",
+    "expected_answer": "R$ 3.000,00, para Fernando Trinta.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-423c5f51a223da93",
+        "GF-dcf6e3c220a89615"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF58"
+      ],
+      "field": "scholarship_value",
+      "outside_old_fields": true,
+      "bridge": "A iniciativa da filmagem identifica Fernando; outro item associa a ele a bolsa do sistema biométrico.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-005",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na extraordinária de 24/11/2025, qual posição inicial sobre a vaga aposentada havia defendido o professor agradecido publicamente por José Maria por viabilizar o consenso?",
+    "expected_answer": "A volta da vaga para Algoritmos, defendida por Victor Campos.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-34b32d133525d7da",
+        "GF-aa3f64b8b2136341"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF59"
+      ],
+      "field": "initial_position",
+      "outside_old_fields": true,
+      "bridge": "O agradecimento identifica Victor; um relato anterior registra sua posição inicial.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-006",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na extraordinária de 18/11/2025, qual setor de estudos foi sugerido pelo docente que argumentou que as vagas dos líderes antigos deveriam voltar aos seus grupos de origem?",
+    "expected_answer": "Teoria da Computação, sugerida por Rudini.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-540773a1b78c7154",
+        "GF-f0f97770224aa365"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF60"
+      ],
+      "field": "study_sector",
+      "outside_old_fields": true,
+      "bridge": "A defesa das vagas identifica Rudini; outra intervenção dele registra o setor sugerido.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-007",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na extraordinária de 11/11/2025, em qual grupo de pesquisa, segundo Javam, poderia atuar o candidato cuja formação foi realizada em telecomunicações e camadas de rede de baixa abstração?",
+    "expected_answer": "LSBD, para Alexandre Fernandes.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-17e769e86c46b2ab",
+        "GF-69e1ff2c51a38936"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF61"
+      ],
+      "field": "research_group",
+      "outside_old_fields": true,
+      "bridge": "A formação identifica Alexandre no relato de Pordeus; a intervenção de Javam associa o candidato ao LSBD.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-008",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Em dezembro de 2020, qual pontuação foi reportada no parecer parcial apresentado pelo professor que também presidia a banca final de estágio probatório de César Lincoln?",
+    "expected_answer": "1205,4 pontos, no parecer sobre João Paulo Madeiro.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-318ab84b003d2f3d",
+        "GF-7956af14a016fec1"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF62"
+      ],
+      "field": "assessment_score",
+      "outside_old_fields": true,
+      "bridge": "A banca identifica João Fernando; o parecer por ele apresentado registra a pontuação de Madeiro.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-009",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de dezembro de 2021, qual era o público principal da especialização relatada pelo presidente da banca de progressão de Valéria Lelli?",
+    "expected_answer": "Professores do estado.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-c38d96e3660b416e",
+        "GF-218ff22e45855677"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF63"
+      ],
+      "field": "course_audience",
+      "outside_old_fields": true,
+      "bridge": "A banca identifica José Maria; outro item apresenta o curso por ele relatado e seu público.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-010",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de dezembro de 2022, em qual centro de pesquisa ocorreria a licença de capacitação do professor associado à coordenação do LDAR?",
+    "expected_answer": "AT&T Labs-Research, em New York, USA.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-8f04d0e74dfb685a",
+        "GF-ed8ccd5f86195082"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF64"
+      ],
+      "field": "training_destination",
+      "outside_old_fields": true,
+      "bridge": "O LDAR identifica Javam; outra passagem registra sua licença e o centro de pesquisa.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-011",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Qual carga horária total foi registrada para a Residência em Segurança Cibernética 2023/2025 na ata de novembro de 2022?",
+    "expected_answer": "576 horas, correspondentes a 36 créditos.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-fc043323ad7e96f3"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF55"
+      ],
+      "field": "course_workload",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-012",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na ata de novembro de 2023, qual foi a contribuição mínima definida para as cestas natalinas dos terceirizados?",
+    "expected_answer": "R$ 50,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-0d83a0d707e56531"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF56"
+      ],
+      "field": "contribution_value",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-013",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na reunião ordinária de novembro de 2024, qual alternativa atendeu à demanda de Vlademiro e levou à retirada do pedido de remoção da pauta?",
+    "expected_answer": "Participação no PGD em teletrabalho com execução parcial.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-57368fec7ee354ca"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF57"
+      ],
+      "field": "administrative_alternative",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-014",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na ata ordinária de novembro de 2025, qual valor e duração foram aprovados para a bolsa de Eduardo Duarte no CIDDE?",
+    "expected_answer": "R$ 5.000,00 por 17 meses, a partir de novembro de 2025.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-44a6ea259966cd22"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF58"
+      ],
+      "field": "scholarship_value_duration",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-015",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Qual vaga motivava o concurso discutido na reunião extraordinária de 24/11/2025?",
+    "expected_answer": "A vaga da professora Cláudia Linhares, aposentada recentemente.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-b10302ba690c1a9d"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF59"
+      ],
+      "field": "vacancy_origin",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-016",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na extraordinária de 18/11/2025, qual dia-limite Pablo corrigiu para o encaminhamento do concurso, em lugar de quarta-feira?",
+    "expected_answer": "Terça-feira da próxima semana.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-d7653b13c0eb0f74"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF60"
+      ],
+      "field": "submission_deadline",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-017",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na extraordinária de 11/11/2025, quais motivos o interessado na remoção alegou à chefia?",
+    "expected_answer": "Motivos familiares.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-f1fa6ee79c28c596"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF61"
+      ],
+      "field": "transfer_motivation",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-018",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na ata de dezembro de 2020, qual bolsa de graduação do LG-SMT estava prevista para Maurício de Moura dos Santos?",
+    "expected_answer": "R$ 900,00 por 12 meses.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-20f5f879fd9db16a"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF62"
+      ],
+      "field": "student_scholarship",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-019",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Em dezembro de 2021, onde e quando seria realizada a confraternização lembrada por Fernando Trinta?",
+    "expected_answer": "Na Casa José de Alencar, a partir das 12h em 10/12/2021.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-a88ab9bac837e9ef"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF63"
+      ],
+      "field": "event_venue_time",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-020",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na extraordinária de junho de 2022, quantos votos recebeu a proposta vencedora sobre CK0211 e o que ela determinava?",
+    "expected_answer": "12 votos; negar a anuência, justificar e sugerir uma nova disciplina com código CB.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-30f099004c3cce22"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF67"
+      ],
+      "field": "vote_outcome",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-021",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Compare os reajustes de João Paulo Pordeus no projeto sobre desconexões do chatbot em novembro de 2022 e no AI-CID em novembro de 2023: quais novos valores foram registrados?",
+    "expected_answer": "R$ 6.750,00 no primeiro e R$ 7.500,00 no segundo.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-06eed12d0e1eea35",
+        "GF-af3f03ea4aa85b48"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF55",
+        "GF56"
+      ],
+      "field": "scholarship_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-022",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Compare a programação do WTSG aprovada em novembro de 2022 e em novembro de 2023: para quando estava previsto o evento em cada ocasião?",
+    "expected_answer": "09/12/2022; janeiro ou fevereiro de 2024.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-8d9511aff10061d4",
+        "GF-6a6feac8fc75c5e0"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF55",
+        "GF56"
+      ],
+      "field": "event_schedule_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-023",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Que valores mensais foram informados para Fabiane Gubert no ReArte em novembro de 2024 e para Kelvin Rodrigues no ABIN Connect em novembro de 2025?",
+    "expected_answer": "R$ 7.500,00 e R$ 1.000,00, respectivamente.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-ec987c07d58f05ab",
+        "GF-f29c262ec4f25ece"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF57",
+        "GF58"
+      ],
+      "field": "scholarship_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-024",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Qual orçamento para 2025 constava no aditivo CH-IA aprovado em novembro de 2024 e qual orçamento constava no projeto biométrico com a Akiyama em novembro de 2025?",
+    "expected_answer": "R$ 9.272.185,85 e R$ 635.520,00, respectivamente.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-6161f60886f1a9ea",
+        "GF-1b6bf45467a2e2cf"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF57",
+        "GF58"
+      ],
+      "field": "budget_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-025",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Sobre o concurso da vaga de Cláudia Linhares, qual votação adiou a escolha do setor em 18/11/2025 e qual setor foi aprovado em 24/11/2025?",
+    "expected_answer": "O adiamento venceu por 11 a 9 votos; depois foi aprovado Algoritmos e Banco de Dados.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-d1843171b426e05a",
+        "GF-dfd23574895a6085"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF59",
+        "GF60"
+      ],
+      "field": "recruitment_decision_sequence",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-026",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Quantos votos apoiaram aproveitar imediatamente a vaga na reunião de 18/11/2025 e quem José Maria agradeceu por construir o consenso na reunião de 24/11/2025?",
+    "expected_answer": "12 votos; Victor Campos.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-304cf5bb38d3a5c2",
+        "GF-34b32d133525d7da"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF59",
+        "GF60"
+      ],
+      "field": "recruitment_vote_and_mediation",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-027",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Que período de avaliações discentes foi consultado para a remoção discutida em 11/11/2025 e qual pontuação mínima de estágio probatório foi mencionada em dezembro de 2020?",
+    "expected_answer": "Os últimos cinco anos; 900 pontos.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-83e305ee5e8bf73d",
+        "GF-62a9cd151ad8a3a9"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF61",
+        "GF62"
+      ],
+      "field": "assessment_requirements",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-028",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Quais disciplinas recentes do candidato à remoção foram citadas na extraordinária de 11/11/2025 e qual nova disciplina foi aprovada em dezembro de 2020 por iniciativa de Javam?",
+    "expected_answer": "Processamento Digital de Sinais e Sistemas Lineares; Privacidade de Dados.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-20d4466af90ba2bb",
+        "GF-353b6494c3ef161c"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF61",
+        "GF62"
+      ],
+      "field": "teaching_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-029",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Compare os destinos de pesquisa aprovados para Heron em dezembro de 2021 e para Javam em dezembro de 2022: quais instituições os receberiam?",
+    "expected_answer": "Khoury College of Computer Sciences of Northeastern University; AT&T Labs-Research.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-18f94e9de9200bfe",
+        "GF-ed8ccd5f86195082"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF63",
+        "GF64"
+      ],
+      "field": "research_destinations",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-030",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Quais valores de bolsa para Javam foram registrados no CIDDE em dezembro de 2023 e no DHUNA em dezembro de 2025?",
+    "expected_answer": "R$ 8.000,00 e R$ 2.000,00, respectivamente.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-f56e7042414df249",
+        "GF-6afc026419eae2f1"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF65",
+        "GF66"
+      ],
+      "field": "scholarship_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  }
+]

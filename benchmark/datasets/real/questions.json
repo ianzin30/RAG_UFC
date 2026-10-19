@@ -1,0 +1,482 @@
+[
+  {
+    "id": "REAL-F01", "collection": "uploaded_files", "category": "single-document factual",
+    "question": "Quem é o coordenador na instituição do projeto AFO?",
+    "expected_answer": "Fernando Antonio Mota Trinta.",
+    "metadata": {"difficulty": "normal", "family": "project_coordinators", "legacy_case": "real_generation:factual", "evidence_ids": ["AFO_NAME"], "required_facts": ["Associar Fernando Antonio Mota Trinta à coordenação institucional do AFO."], "critical_errors": ["Confundir o nome do coordenador com as atribuições genéricas do cargo."]}
+  },
+  {
+    "id": "REAL-F02", "collection": "uploaded_files", "category": "single-document factual",
+    "question": "Quais são as datas de início e término estimado do AFO II, na seção de duração do plano de trabalho?",
+    "expected_answer": "Início em 01/03/2026 e término estimado em 28/02/2027.",
+    "metadata": {"difficulty": "normal", "family": "project_schedule", "evidence_ids": ["AFO_DATES"], "required_facts": ["01/03/2026 é o início.", "28/02/2027 é o término estimado."], "critical_errors": ["Tratar outubro de 2025, data da capa, como início do projeto.", "Apresentar término estimado como conclusão efetiva."]}
+  },
+  {
+    "id": "REAL-F03", "collection": "uploaded_files", "category": "single-document factual",
+    "question": "Qual ferramenta de Infrastructure as Code é citada no RACK como utilizada no provisionamento da infraestrutura do ciclo anterior?",
+    "expected_answer": "Terraform.",
+    "metadata": {"difficulty": "normal", "family": "rack_capabilities", "evidence_ids": ["RACK_TOOLS"], "required_facts": ["Terraform."], "critical_errors": ["Responder N8N, que aparece como exemplo de plataforma de workflows para a evolução do projeto."]}
+  },
+  {
+    "id": "REAL-F04", "collection": "uploaded_files", "category": "single-document factual",
+    "question": "Quais três novas dimensões devem ser incorporadas às análises de uso e predição de capacidade do SAAR?",
+    "expected_answer": "Aplicações, classes de usuários e casos de uso.",
+    "metadata": {"difficulty": "normal", "family": "saar_capabilities", "evidence_ids": ["SAAR_DIMENSIONS"], "required_facts": ["Aplicações.", "Classes de usuários.", "Casos de uso."]}
+  },
+  {
+    "id": "REAL-F05", "collection": "uploaded_files", "category": "single-document factual",
+    "question": "Na extraordinária de 13/07/2022, em que condições o Departamento aprovou a oferta de Fundamentos de Programação (CK0211) para a Licenciatura em Matemática noturna?",
+    "expected_answer": "A oferta foi aprovada para o primeiro semestre de cada ano, no primeiro horário noturno, das 18h30 às 20h30. A condição de disponibilidade de professor foi rejeitada.",
+    "metadata": {"difficulty": "critical", "family": "ck0211_decision", "evidence_ids": ["JULY22_DECISION", "JULY22_VOTES"], "required_facts": ["Primeiro semestre de cada ano.", "18h30 a 20h30.", "Disponibilidade de professor não permaneceu como condição."], "critical_errors": ["Confundir uma proposta submetida à votação com a condição finalmente aprovada."]}
+  },
+  {
+    "id": "REAL-F06", "collection": "uploaded_files", "category": "single-document factual",
+    "question": "Na ata de 10/01/2025, qual data a DICON informou como correta para o fim do contrato de Matheus Santos, e quais eram a data solicitada e a data lançada por engano?",
+    "expected_answer": "A data correta informada foi 31/01/2025; o Departamento havia solicitado 14/03/2025; a data lançada por engano era 08/08/2025.",
+    "metadata": {"difficulty": "critical", "family": "substitute_contract", "evidence_ids": ["JAN25_CONTRACT"], "required_facts": ["Correta: 31/01/2025.", "Solicitada: 14/03/2025.", "Errada: 08/08/2025."], "critical_errors": ["Escolher a primeira data encontrada sem distinguir seu papel."]}
+  },
+  {
+    "id": "REAL-F07", "collection": "uploaded_files", "category": "single-document factual",
+    "question": "De qual campus viria Wladimir Araújo Tavares e qual foi a decisão sobre sua remoção na reunião de 21/06/2024?",
+    "expected_answer": "Do Campus da UFC em Quixadá. O Colegiado aprovou por unanimidade sua remoção para o Departamento de Computação.",
+    "metadata": {"difficulty": "normal", "family": "wladimir_transfer", "evidence_ids": ["JUNE24_TRANSFER", "JUNE24_APPROVAL"], "required_facts": ["Origem: Quixadá.", "Destino: Departamento de Computação.", "Aprovação unânime."]}
+  },
+  {
+    "id": "REAL-F08", "collection": "uploaded_files", "category": "single-document factual",
+    "question": "Na reunião de 29/01/2024, de quanto para quanto foi revisto o orçamento do CIDDE?",
+    "expected_answer": "De R$ 4.195.352,34 para R$ 3.516.108,71.",
+    "metadata": {"difficulty": "critical", "family": "cidde_budget", "evidence_ids": ["JAN24_CIDDE"], "required_facts": ["Valor anterior: R$ 4.195.352,34.", "Valor revisado: R$ 3.516.108,71."], "critical_errors": ["Inverter o sentido da revisão.", "Usar o orçamento de outro projeto discutido na mesma ata."]}
+  },
+  {
+    "id": "REAL-F09", "collection": "uploaded_files", "category": "single-document factual",
+    "question": "Em que data, horário e modalidade ocorreu a reunião registrada na ata 01-2026?",
+    "expected_answer": "Em 30/01/2026, às 10h10, de forma inteiramente remota.",
+    "metadata": {"difficulty": "critical", "family": "january2026_meeting", "evidence_ids": ["JAN26_OPENING"], "required_facts": ["30/01/2026.", "10h10.", "Inteiramente remota."], "critical_errors": ["Responder a data de assinatura eletrônica em março em vez da data da reunião."]}
+  },
+  {
+    "id": "REAL-F10", "collection": "uploaded_files", "category": "single-document factual",
+    "question": "Qual é a vigência prevista para o LDAR relatado na ata de 29/01/2024?",
+    "expected_answer": "Dois anos, de 01/04/2024 a 31/03/2026.",
+    "metadata": {"difficulty": "normal", "family": "ldar_project", "evidence_ids": ["JAN24_LDAR"], "required_facts": ["01/04/2024 a 31/03/2026.", "Dois anos."]}
+  },
+  {
+    "id": "REAL-E01", "collection": "uploaded_files", "category": "entity lookup",
+    "question": "Quem consta como coordenador na instituição do Storage Analytics and Auto-Reclamation II?",
+    "expected_answer": "Lincoln Souza Rocha.",
+    "metadata": {"difficulty": "normal", "family": "project_coordinators", "evidence_ids": ["SAAR_NAME"], "required_facts": ["Lincoln Souza Rocha coordena o SAAR II."]}
+  },
+  {
+    "id": "REAL-E02", "collection": "uploaded_files", "category": "entity lookup",
+    "question": "Quem é o coordenador na instituição do projeto Rack Build Deployment Validation and Provisioning II?",
+    "expected_answer": "Paulo Antonio Leal Rego.",
+    "metadata": {"difficulty": "normal", "family": "project_coordinators", "legacy_case": "real_corpus:rack_coordinator", "evidence_ids": ["RACK_NAME"], "required_facts": ["Paulo Antonio Leal Rego coordena o RACK."]}
+  },
+  {
+    "id": "REAL-E03", "collection": "uploaded_files", "category": "entity lookup",
+    "question": "Quem informou ser o novo tutor do PET na ata de 19/08/2022, e para qual atividade pediu ajuda?",
+    "expected_answer": "Fernando Trinta, que pediu ajuda dos professores nas maratonas de programação realizadas pelo PET.",
+    "metadata": {"difficulty": "normal", "family": "fernando_pet", "evidence_ids": ["PET"], "required_facts": ["Fernando Trinta.", "Maratonas de programação do PET."], "critical_errors": ["Afirmar que ele é o tutor atual sem limitar a afirmação ao registro de 2022."]}
+  },
+  {
+    "id": "REAL-E04", "collection": "uploaded_files", "category": "entity lookup",
+    "question": "Quem presidiu a comissão julgadora do Edital 13/2025, aprovada em 21/02/2025, e quem era seu secretário?",
+    "expected_answer": "A presidente era Emanuele Marques Rodrigues Santos e o secretário era Pablo Mayckon Silva Farias.",
+    "metadata": {"difficulty": "normal", "family": "selection_13_2025", "evidence_ids": ["FEB25_COMMISSION"], "required_facts": ["Presidente: Emanuele Marques Rodrigues Santos.", "Secretário: Pablo Mayckon Silva Farias."]}
+  },
+  {
+    "id": "REAL-E05", "collection": "uploaded_files", "category": "entity lookup",
+    "question": "Quem foi indicado como presidente da banca de Algoritmos e Banco de Dados, Edital 09/2025, na reunião de 30/01/2026?",
+    "expected_answer": "Avelino Francisco Zorzo, da PUCRS.",
+    "metadata": {"difficulty": "critical", "family": "january2026_board", "evidence_ids": ["JAN26_BOARD"], "required_facts": ["Avelino Francisco Zorzo.", "PUCRS."], "critical_errors": ["Responder Lincoln Rocha, que presidia a reunião, como presidente da banca."]}
+  },
+  {
+    "id": "REAL-E06", "collection": "uploaded_files", "category": "entity lookup",
+    "question": "Quem coordenava o LDAR e qual empresa era parceira, conforme a ata de 29/01/2024?",
+    "expected_answer": "Javam Machado, em parceria com a Lenovo Brasil.",
+    "metadata": {"difficulty": "normal", "family": "ldar_project", "evidence_ids": ["JAN24_LDAR"], "required_facts": ["Javam Machado.", "Lenovo Brasil."], "critical_errors": ["Confundir o relator do projeto na reunião com o coordenador."]}
+  },
+  {
+    "id": "REAL-E07", "collection": "uploaded_files", "category": "entity lookup",
+    "question": "Qual é o nome completo da coordenadora do projeto de Web Semântica e Big Data da SEFAZ-MA na extraordinária de 14/03/2023?",
+    "expected_answer": "Vânia Maria Ponte Vidal.",
+    "metadata": {"difficulty": "normal", "family": "sefaz_amendments", "evidence_ids": ["SEFAZ_2023"], "required_facts": ["Vânia Maria Ponte Vidal."], "critical_errors": ["Responder Ângelo Brayner, que relatou o aditivo."]}
+  },
+  {
+    "id": "REAL-E08", "collection": "uploaded_files", "category": "entity lookup",
+    "question": "No plano do SAAR, a que se refere Storage Pillar e quais famílias são citadas?",
+    "expected_answer": "São subdivisões do Dell Storage Team focadas em famílias de produtos de armazenamento: blocks, files e objects.",
+    "metadata": {"difficulty": "normal", "family": "saar_capabilities", "evidence_ids": ["SAAR_PILLARS"], "required_facts": ["Subdivisões do Dell Storage Team.", "Blocks, files e objects."], "critical_errors": ["Trocar famílias de armazenamento por nomes de produtos, como Unity e PowerFlex."]}
+  },
+  {
+    "id": "REAL-C01", "collection": "uploaded_files", "category": "cross-document",
+    "question": "Compare os coordenadores dos projetos AFO e RACK.",
+    "expected_answer": "O AFO é coordenado por Fernando Antonio Mota Trinta; o RACK, por Paulo Antonio Leal Rego.",
+    "metadata": {"difficulty": "normal", "family": "project_coordinators", "legacy_case": "real_generation:cross_document", "evidence_ids": ["AFO_NAME", "RACK_NAME"], "required_facts": ["AFO → Fernando Antonio Mota Trinta.", "RACK → Paulo Antonio Leal Rego."], "critical_errors": ["Apresentar apenas atribuições comuns dos coordenadores.", "Trocar os nomes entre os projetos."]}
+  },
+  {
+    "id": "REAL-C02", "collection": "uploaded_files", "category": "cross-document",
+    "question": "Qual é a diferença de objeto entre AFO II, RACK II e SAAR II nos respectivos planos de trabalho?",
+    "expected_answer": "AFO II automatiza o onboarding de aplicações no ambiente federado; RACK II valida e provisiona infraestrutura de data centers; SAAR II analisa, prevê e automatiza a utilização de armazenamento corporativo.",
+    "metadata": {"difficulty": "critical", "family": "project_objectives", "evidence_ids": ["AFO_OBJECTIVE", "RACK_OBJECTIVE", "SAAR_OBJECTIVE"], "required_facts": ["Objeto específico do AFO.", "Objeto específico do RACK.", "Objeto específico do SAAR."], "critical_errors": ["Atribuir OAuth ao SAAR ou auto-reclamação ao AFO."]}
+  },
+  {
+    "id": "REAL-C03", "collection": "uploaded_files", "category": "cross-document",
+    "question": "Comparando somente os quadros de indicadores esperados do AFO e do SAAR, ambos assinalam publicação científica? O que cada um assinala para software e publicação?",
+    "expected_answer": "Não. Ambos assinalam a geração de um software; o SAAR também assinala uma publicação científica, enquanto o item de publicações está desmarcado no AFO.",
+    "metadata": {"difficulty": "critical", "family": "project_indicators", "evidence_ids": ["AFO_INDICATORS", "SAAR_INDICATORS"], "required_facts": ["Um software em cada projeto.", "SAAR: uma publicação marcada.", "AFO: publicações desmarcadas."], "critical_errors": ["Converter a marcação de resultado esperado em produção já realizada.", "Dizer que uma publicação é impossível no AFO apenas porque o item está desmarcado."]}
+  },
+  {
+    "id": "REAL-C04", "collection": "uploaded_files", "category": "cross-document",
+    "question": "Como diferem as alterações do projeto SEFAZ-MA descritas nas atas de 19/08/2022 e 14/03/2023?",
+    "expected_answer": "Em 19/08/2022, ampliou-se o valor para R$ 1.867.500,00 para incluir a Etapa II, fases 5, 6 e 7. Em 14/03/2023, prorrogou-se a vigência de 04/04/2023 a 03/07/2023 sem alterar o valor global.",
+    "metadata": {"difficulty": "critical", "family": "sefaz_amendments", "evidence_ids": ["SEFAZ_2022", "SEFAZ_2023"], "required_facts": ["2022: valor e inclusão da Etapa II.", "2023: prorrogação e ausência de alteração do valor."], "critical_errors": ["Fundir os dois aditivos como se tivessem sido aprovados na mesma reunião."]}
+  },
+  {
+    "id": "REAL-C05", "collection": "uploaded_files", "category": "cross-document",
+    "question": "O que mudou na Residência em Segurança da Informação UFC/Samsung/SiDi nas atas de 19/08/2022 e 14/03/2023?",
+    "expected_answer": "Em agosto de 2022, o valor passou de R$ 2.039.726,92 para R$ 2.101.943,01 para aquisição de softwares com preços atualizados. Em março de 2023, o término passou de 13/08/2023 para 31/08/2023.",
+    "metadata": {"difficulty": "critical", "family": "residency_amendments", "evidence_ids": ["RESIDENCY_2022", "RESIDENCY_2023"], "required_facts": ["Revisão financeira de 2022, com os dois valores e motivo.", "Mudança da data final em 2023, com as duas datas."], "critical_errors": ["Confundir com a Residência em Segurança Cibernética de outra ata."]}
+  },
+  {
+    "id": "REAL-C06", "collection": "uploaded_files", "category": "cross-document",
+    "question": "Compare a situação de Rafael da Silva Albuquerque nas seleções relatadas em 12/03/2025 e 05/09/2025. São resultados contraditórios da mesma seleção?",
+    "expected_answer": "Em março, no Edital 13/2025, ele foi eliminado por reprovação na prova escrita. Em setembro, no Edital 106/2025, foi aprovado em segundo lugar. São seleções diferentes, portanto os registros não são contraditórios.",
+    "metadata": {"difficulty": "critical", "family": "rafael_selections", "evidence_ids": ["MAR25_EDITAL", "MAR25_ELIMINATION", "SEP25_EDITAL", "SEP25_RESULT"], "required_facts": ["Março: eliminado na prova escrita.", "Setembro: aprovado em segundo lugar.", "Editais distintos: 13/2025 e 106/2025."], "critical_errors": ["Declarar que a ata posterior corrigiu a anterior sem evidência."]}
+  },
+  {
+    "id": "REAL-C07", "collection": "uploaded_files", "category": "cross-document",
+    "question": "Como João Paulo do Vale Madeiro é identificado na chefia nas aberturas das atas de 13/07/2022 e 29/01/2024?",
+    "expected_answer": "Como subchefe em 13/07/2022 e como chefe em 29/01/2024.",
+    "metadata": {"difficulty": "critical", "family": "department_roles", "evidence_ids": ["JULY22_CHAIR", "JAN24_CHAIR"], "required_facts": ["2022: subchefe.", "2024: chefe."], "critical_errors": ["Inferir uma data exata de posse que essas duas passagens não fornecem.", "Confundir João Paulo do Vale Madeiro com João Paulo Pordeus."]}
+  },
+  {
+    "id": "REAL-C08", "collection": "uploaded_files", "category": "cross-document",
+    "question": "Qual função de chefia aparece associada a Fernando Trinta nas aberturas das atas de 04/09/2020 e 21/06/2024?",
+    "expected_answer": "Chefe em 04/09/2020 e subchefe em 21/06/2024.",
+    "metadata": {"difficulty": "critical", "family": "department_roles", "evidence_ids": ["SEP20_CHAIR", "JUNE24_CHAIR"], "required_facts": ["2020: chefe.", "2024: subchefe."], "critical_errors": ["Usar o cargo de uma ata como cargo permanente em todo o corpus."]}
+  },
+  {
+    "id": "REAL-C09", "collection": "uploaded_files", "category": "cross-document",
+    "question": "As extraordinárias de 13/07/2022 e 21/06/2024 ocorreram na mesma modalidade?",
+    "expected_answer": "Não. A de 13/07/2022 ocorreu por videoconferência; a de 21/06/2024 foi híbrida.",
+    "metadata": {"difficulty": "normal", "family": "meeting_modalities", "evidence_ids": ["JULY22_CHAIR", "JUNE24_CHAIR"], "required_facts": ["Julho de 2022: videoconferência.", "Junho de 2024: híbrida."]}
+  },
+  {
+    "id": "REAL-C10", "collection": "uploaded_files", "category": "cross-document",
+    "question": "Segundo os quadros-resumo, qual projeto prevê mais horas totais, AFO ou SAAR, e qual é a diferença?",
+    "expected_answer": "O AFO prevê 30.864 horas e o SAAR 21.600 horas. O AFO prevê 9.264 horas a mais.",
+    "metadata": {"difficulty": "critical", "family": "project_resources", "evidence_ids": ["AFO_HOURS", "SAAR_HOURS"], "required_facts": ["AFO: 30.864 horas.", "SAAR: 21.600 horas.", "Diferença: 9.264 horas."], "calculation": {"operator": "subtract", "operands": [30864, 21600], "result": 9264, "unit": "hour"}}
+  },
+  {
+    "id": "REAL-H01", "collection": "uploaded_files", "category": "multi-hop",
+    "question": "Qual é o nome do coordenador do projeto que prevê geração de token OAuth?",
+    "expected_answer": "O projeto é o AFO II, cujo coordenador na instituição é Fernando Antonio Mota Trinta.",
+    "metadata": {"difficulty": "critical", "family": "project_identity_bridges", "legacy_case": "real_generation:multi_hop", "evidence_ids": ["AFO_OAUTH", "AFO_NAME"], "required_facts": ["Identificar AFO II pela geração de token OAuth.", "Associar AFO II a Fernando Antonio Mota Trinta."], "reasoning_steps": [{"fact": "Geração de token OAuth identifica o AFO II.", "evidence_ids": ["AFO_OAUTH"]}, {"fact": "AFO II tem Fernando Antonio Mota Trinta como coordenador.", "evidence_ids": ["AFO_NAME"]}], "critical_errors": ["Citar somente o nome, sem sustentar a ligação OAuth → AFO."]}
+  },
+  {
+    "id": "REAL-H02", "collection": "uploaded_files", "category": "multi-hop",
+    "question": "Quem coordena o projeto cujo ciclo anterior automatizou a configuração de firmware via Redfish?",
+    "expected_answer": "Paulo Antonio Leal Rego, coordenador do RACK II.",
+    "metadata": {"difficulty": "critical", "family": "project_identity_bridges", "evidence_ids": ["RACK_TOOLS", "RACK_NAME"], "required_facts": ["Redfish está associado ao RACK.", "Paulo Antonio Leal Rego coordena o RACK."], "reasoning_steps": [{"fact": "A automação de firmware via Redfish identifica RACK.", "evidence_ids": ["RACK_TOOLS"]}, {"fact": "O coordenador institucional do RACK é Paulo Antonio Leal Rego.", "evidence_ids": ["RACK_NAME"]}]}
+  },
+  {
+    "id": "REAL-H03", "collection": "uploaded_files", "category": "multi-hop",
+    "question": "Quem é o coordenador do projeto que prevê expandir seu ETL para Unity, PowerScale e PowerFlex?",
+    "expected_answer": "Lincoln Souza Rocha, coordenador do SAAR II.",
+    "metadata": {"difficulty": "critical", "family": "project_identity_bridges", "evidence_ids": ["SAAR_PRODUCTS", "SAAR_NAME"], "required_facts": ["A expansão do ETL identifica SAAR.", "Lincoln Souza Rocha coordena o SAAR."], "reasoning_steps": [{"fact": "Os três produtos aparecem na expansão de integração do SAAR.", "evidence_ids": ["SAAR_PRODUCTS"]}, {"fact": "O coordenador do SAAR é Lincoln Souza Rocha.", "evidence_ids": ["SAAR_NAME"]}]}
+  },
+  {
+    "id": "REAL-H04", "collection": "uploaded_files", "category": "multi-hop",
+    "question": "Qual função no PET o coordenador do AFO declarou ter assumido na ata de 19/08/2022, e para que pediu colaboração?",
+    "expected_answer": "Fernando Trinta, coordenador do AFO, informou ser o novo tutor do PET e pediu ajuda dos professores nas maratonas de programação do PET.",
+    "metadata": {"difficulty": "critical", "family": "fernando_pet", "evidence_ids": ["AFO_NAME", "PET"], "required_facts": ["Resolver coordenador do AFO como Fernando Trinta.", "Localizar sua declaração como tutor e o pedido relativo às maratonas."], "reasoning_steps": [{"fact": "AFO → Fernando Antonio Mota Trinta.", "evidence_ids": ["AFO_NAME"]}, {"fact": "Fernando Trinta → novo tutor do PET e ajuda nas maratonas em 2022.", "evidence_ids": ["PET"]}], "critical_errors": ["Concluir que ele já coordenava o AFO em 2022; o plano consultado é posterior."]}
+  },
+  {
+    "id": "REAL-H05", "collection": "uploaded_files", "category": "multi-hop",
+    "question": "De qual classe para qual classe era a progressão do coordenador do RACK relatada em 19/08/2022, e quem apresentou o parecer?",
+    "expected_answer": "Paulo Antônio Leal Rego: de Professor Adjunto C II para Professor Adjunto C III. Lincoln Rocha apresentou o parecer favorável.",
+    "metadata": {"difficulty": "critical", "family": "rego_progression", "evidence_ids": ["RACK_NAME", "REGO_PROGRESSION"], "required_facts": ["Identificar Paulo Rego pelo RACK.", "C II → C III.", "Parecer de Lincoln Rocha."], "reasoning_steps": [{"fact": "RACK → Paulo Antonio Leal Rego.", "evidence_ids": ["RACK_NAME"]}, {"fact": "Paulo Rego → progressão C II a C III, relatada por Lincoln Rocha.", "evidence_ids": ["REGO_PROGRESSION"]}]}
+  },
+  {
+    "id": "REAL-H06", "collection": "uploaded_files", "category": "multi-hop",
+    "question": "Por que o coordenador do SAAR estava exercendo a chefia na reunião de 30/01/2026?",
+    "expected_answer": "O coordenador do SAAR é Lincoln Souza Rocha. Na reunião ele estava como subchefe em exercício da chefia devido às férias do chefe Pablo Mayckon.",
+    "metadata": {"difficulty": "critical", "family": "department_roles", "evidence_ids": ["SAAR_NAME", "JAN26_CHAIR"], "required_facts": ["Identificar Lincoln pelo SAAR.", "Férias de Pablo Mayckon motivaram o exercício da chefia."], "reasoning_steps": [{"fact": "SAAR → Lincoln Souza Rocha.", "evidence_ids": ["SAAR_NAME"]}, {"fact": "Lincoln exercia a chefia por causa das férias de Pablo Mayckon.", "evidence_ids": ["JAN26_CHAIR"]}]}
+  },
+  {
+    "id": "REAL-H07", "collection": "uploaded_files", "category": "multi-hop",
+    "question": "O projeto da SEFAZ-MA cuja vigência foi prorrogada até 03/07/2023 já havia recebido qual novo valor global na ata de 19/08/2022?",
+    "expected_answer": "O projeto de Web Semântica e Big Data da SEFAZ-MA havia passado a R$ 1.867.500,00 em agosto de 2022. A prorrogação de 2023 não alterou o valor global.",
+    "metadata": {"difficulty": "critical", "family": "sefaz_amendments", "evidence_ids": ["SEFAZ_2023", "SEFAZ_2022"], "required_facts": ["Vincular a prorrogação ao mesmo projeto SEFAZ-MA.", "Recuperar o valor de R$ 1.867.500,00 no documento anterior."], "reasoning_steps": [{"fact": "A data 03/07/2023 identifica a prorrogação do projeto SEFAZ-MA.", "evidence_ids": ["SEFAZ_2023"]}, {"fact": "O aditivo de 2022 fixou o novo valor em R$ 1.867.500,00.", "evidence_ids": ["SEFAZ_2022"]}]}
+  },
+  {
+    "id": "REAL-H08", "collection": "uploaded_files", "category": "multi-hop",
+    "question": "Quem era o secretário da comissão do Edital 13/2025 e qual disciplina ele assumiu, como chefe, na distribuição de 2026/1 registrada em 30/01/2026?",
+    "expected_answer": "Pablo Mayckon Silva Farias. Assumiu Programação Computacional para Engenharia/03A (CK0270), para Engenharia Civil; Rudini Sampaio se dispôs a ajudá-lo.",
+    "metadata": {"difficulty": "critical", "family": "pablo_teaching", "evidence_ids": ["FEB25_COMMISSION", "JAN26_CHAIR", "JAN26_TEACHING"], "required_facts": ["Pablo é o secretário de 2025 e o chefe mencionado em 2026.", "CK0270, turma 03A, para Engenharia Civil.", "Rudini ofereceu ajuda."], "reasoning_steps": [{"fact": "Secretário da comissão → Pablo Mayckon.", "evidence_ids": ["FEB25_COMMISSION"]}, {"fact": "O chefe titular mencionado na ata de 2026 é Pablo Mayckon.", "evidence_ids": ["JAN26_CHAIR"]}, {"fact": "O chefe assumiu CK0270 e Rudini ofereceu ajuda.", "evidence_ids": ["JAN26_TEACHING"]}], "critical_errors": ["Atribuir a disciplina a Lincoln apenas porque ele presidia a reunião."]}
+  },
+  {
+    "id": "REAL-H09", "collection": "uploaded_files", "category": "multi-hop",
+    "question": "Qual era a data de término do afastamento da docente que presidiu a comissão do Edital 13/2025, segundo a explicação da DICON registrada em 10/01/2025?",
+    "expected_answer": "A presidente era Emanuele Marques Rodrigues Santos. Seu afastamento terminaria em 31/01/2025, data que a DICON informou como correta também para o término do contrato do substituto.",
+    "metadata": {"difficulty": "critical", "family": "substitute_contract", "evidence_ids": ["FEB25_COMMISSION", "JAN25_CONTRACT"], "required_facts": ["Identificar Emanuele pela presidência da comissão.", "Afastamento até 31/01/2025."], "reasoning_steps": [{"fact": "Presidente do Edital 13/2025 → Emanuele Marques Rodrigues Santos.", "evidence_ids": ["FEB25_COMMISSION"]}, {"fact": "Afastamento de Emanuele terminaria em 31/01/2025.", "evidence_ids": ["JAN25_CONTRACT"]}]}
+  },
+  {
+    "id": "REAL-H10", "collection": "uploaded_files", "category": "multi-hop",
+    "question": "Em que posição ficou, no resultado de 05/09/2025, o candidato que havia sido eliminado na prova escrita da seleção relatada em 12/03/2025?",
+    "expected_answer": "Rafael da Silva Albuquerque foi aprovado em segundo lugar na seleção relatada em 05/09/2025.",
+    "metadata": {"difficulty": "critical", "family": "rafael_selections", "evidence_ids": ["MAR25_ELIMINATION", "SEP25_RESULT"], "required_facts": ["Resolver o candidato eliminado de março como Rafael.", "Recuperar sua segunda colocação em setembro."], "reasoning_steps": [{"fact": "Eliminado na escrita em março → Rafael da Silva Albuquerque.", "evidence_ids": ["MAR25_ELIMINATION"]}, {"fact": "Rafael → segundo colocado e aprovado em setembro.", "evidence_ids": ["SEP25_RESULT"]}]}
+  },
+  {
+    "id": "REAL-L01", "collection": "uploaded_files", "category": "list/aggregation",
+    "question": "Quais produtos de armazenamento são nominalmente listados no item de extensão da integração do SAAR?",
+    "expected_answer": "Unity, PowerScale (Isilon) e PowerFlex. O texto também menciona outros, sem nomeá-los nesse item.",
+    "metadata": {"difficulty": "normal", "family": "saar_capabilities", "legacy_case": "real_corpus:saar_products", "evidence_ids": ["SAAR_PRODUCTS"], "required_facts": ["Unity.", "PowerScale (Isilon).", "PowerFlex.", "Lista nominal do item, não lista exaustiva de todos os produtos Dell."], "critical_errors": ["Adicionar produtos citados em outras seções como se estivessem nessa lista."]}
+  },
+  {
+    "id": "REAL-L02", "collection": "uploaded_files", "category": "list/aggregation",
+    "question": "Liste os quatro eixos da Frente 2 do RACK II e dê uma característica de cada um.",
+    "expected_answer": "Suporte a novos dispositivos, como Power Max e HDA; Versioning System, com rollback e histórico; Workflow-like Automation, com orquestração por plataforma como N8N; Front-End Development, com dashboard de status, erros, tarefas e métricas.",
+    "metadata": {"difficulty": "normal", "family": "rack_capabilities", "evidence_ids": ["RACK_DEVICES", "RACK_VERSIONING", "RACK_WORKFLOW", "RACK_FRONTEND"], "required_facts": ["Os quatro eixos e a característica corretamente associada a cada um."], "critical_errors": ["Tratar N8N como escolha definitiva em vez de exemplo."]}
+  },
+  {
+    "id": "REAL-L03", "collection": "uploaded_files", "category": "list/aggregation",
+    "question": "Quais são os dois itens da seção 'Novos módulos funcionais' do AFO II?",
+    "expected_answer": "Geração de Token OAuth Token; Observabilidade e Auditabilidade.",
+    "metadata": {"difficulty": "normal", "family": "afo_capabilities", "evidence_ids": ["AFO_OAUTH", "AFO_OBSERVABILITY"], "required_facts": ["Geração de token OAuth.", "Observabilidade e Auditabilidade."], "critical_errors": ["Misturar os módulos já desenvolvidos com a lista de novos módulos."]}
+  },
+  {
+    "id": "REAL-L04", "collection": "uploaded_files", "category": "list/aggregation",
+    "question": "Liste os membros efetivos e suplentes da banca de Algoritmos e Banco de Dados aprovada em 30/01/2026, indicando quem é o presidente.",
+    "expected_answer": "Efetivos: Avelino Francisco Zorzo, presidente, Flávio Keidi Miyazawa e Daniel Cardoso Moraes de Oliveira. Suplentes: Fábio Protti e Valéria Cesário Times Alves.",
+    "metadata": {"difficulty": "critical", "family": "january2026_board", "evidence_ids": ["JAN26_BOARD"], "required_facts": ["Três efetivos identificados.", "Dois suplentes identificados.", "Avelino é presidente."], "critical_errors": ["Contar docentes presentes na reunião como integrantes da banca."]}
+  },
+  {
+    "id": "REAL-L05", "collection": "uploaded_files", "category": "list/aggregation",
+    "question": "Qual foi a composição completa, com funções, da comissão da seleção de Fundamentos de Programação aprovada em 21/02/2025?",
+    "expected_answer": "Emanuele Marques Rodrigues Santos, presidente; João Bosco Ferreira Filho e João Paulo do Vale Madeiro, membros; Fernando Antonio Mota Trinta, suplente; Pablo Mayckon Silva Farias, secretário.",
+    "metadata": {"difficulty": "critical", "family": "selection_13_2025", "evidence_ids": ["FEB25_COMMISSION"], "required_facts": ["Cinco nomes com os respectivos papéis."], "critical_errors": ["Classificar o suplente ou o secretário como membro titular da banca."]}
+  },
+  {
+    "id": "REAL-L06", "collection": "uploaded_files", "category": "list/aggregation",
+    "question": "Quais foram os resultados das três votações sobre CK0211 em 13/07/2022?",
+    "expected_answer": "A anuência foi aprovada por unanimidade, sem votos contrários. Condicionar ao horário 18h30–20h30 teve 14 votos favoráveis e 3 contrários. Condicionar à disponibilidade de professor teve 7 favoráveis e 10 contrários, sendo rejeitado.",
+    "metadata": {"difficulty": "critical", "family": "ck0211_decision", "evidence_ids": ["JULY22_VOTES"], "required_facts": ["Primeira votação: unanimidade.", "Segunda: 14 a favor, 3 contra.", "Terceira: 7 a favor, 10 contra."], "critical_errors": ["Inverter a ordem de votos na terceira votação.", "Inventar o número de votos favoráveis da primeira votação."]}
+  },
+  {
+    "id": "REAL-L07", "collection": "uploaded_files", "category": "list/aggregation",
+    "question": "Somando os totais de pessoas previstos nos quadros-resumo de AFO e SAAR, quantas alocações nos dois projetos são previstas? Isso prova quantas pessoas distintas participarão?",
+    "expected_answer": "AFO prevê 27 e SAAR 21, somando 48 alocações. A soma não prova que sejam 48 pessoas distintas, pois os quadros não permitem excluir participação da mesma pessoa em ambos.",
+    "metadata": {"difficulty": "critical", "family": "project_resources", "evidence_ids": ["AFO_PEOPLE", "SAAR_PEOPLE"], "required_facts": ["27 + 21 = 48.", "Não interpretar soma de alocações como contagem de indivíduos únicos."], "calculation": {"operator": "sum", "operands": [27, 21], "result": 48, "unit": "project_allocation"}}
+  },
+  {
+    "id": "REAL-L08", "collection": "uploaded_files", "category": "list/aggregation",
+    "question": "Quais quatro bolsas do Automated Parts Management – Fase IV foram aprovadas na ata de 29/01/2024, com beneficiário, valor e período?",
+    "expected_answer": "Paulo Rego: R$ 7.000,00; Fernando Trinta: R$ 5.000,00; César Lincoln: R$ 5.000,00; Leonardo Costa: R$ 3.000,00. Todas por 12 meses, de 02/2024 a 01/2025.",
+    "metadata": {"difficulty": "critical", "family": "apm_grants", "evidence_ids": ["JAN24_APM_GRANTS"], "required_facts": ["Os quatro pares beneficiário–valor.", "Período 02/2024–01/2025 e duração de 12 meses."], "critical_errors": ["Usar valores das bolsas ABIN Connect discutidas logo depois na mesma ata."]}
+  },
+  {
+    "id": "REAL-S01", "collection": "uploaded_files", "category": "summary",
+    "question": "Resuma as melhorias e novas funcionalidades previstas para o SAAR.",
+    "expected_answer": "As melhorias incluem ampliar a integração ETL com produtos Dell, enriquecer as análises, estruturar a auto-reclamação e dar suporte a produção com DevOps/CI/CD. As novas funcionalidades são registro de ações, métricas de processamento e um dashboard consolidado de observabilidade.",
+    "metadata": {"difficulty": "normal", "family": "saar_capabilities", "legacy_case": "real_corpus:saar_summary", "evidence_ids": ["SAAR_PRODUCTS", "SAAR_DIMENSIONS", "SAAR_RULES", "SAAR_DEVOPS", "SAAR_LOGS", "SAAR_METRICS", "SAAR_DASHBOARD"], "required_facts": ["Quatro frentes de melhoria.", "Três novas funcionalidades de observabilidade."], "critical_errors": ["Apresentar entregas planejadas como comprovadamente concluídas."]}
+  },
+  {
+    "id": "REAL-S02", "collection": "uploaded_files", "category": "summary",
+    "question": "Resuma a passagem do primeiro ciclo FY26 para o FY27 no AFO II, distinguindo o que já havia sido desenvolvido do que foi priorizado para o segundo ciclo.",
+    "expected_answer": "O FY26 entregou um MVP com solicitações de implantação, validações automatizadas e integração ao Oracle Identity and Access Management. Para FY27 foram priorizados tokens OAuth, a conclusão da automação ponta a ponta e a ampliação de integração, observabilidade, autenticação e auditoria.",
+    "metadata": {"difficulty": "critical", "family": "afo_capabilities", "evidence_ids": ["AFO_MVP", "AFO_FY27"], "required_facts": ["MVP e seus componentes pertencem ao primeiro ciclo.", "OAuth e conclusão/ampliação da automação pertencem ao segundo ciclo."], "critical_errors": ["Dizer que OAuth já havia sido entregue no MVP."]}
+  },
+  {
+    "id": "REAL-S03", "collection": "uploaded_files", "category": "summary",
+    "question": "Resuma as duas frentes do RACK II e explique como as novas capacidades complementam os módulos existentes.",
+    "expected_answer": "A primeira frente otimiza validação, integração e provisionamento, com desempenho, testes e estabilidade. A segunda amplia dispositivos, versiona configurações, orquestra workflows e cria uma interface gráfica, ampliando rastreabilidade, automação e operação da solução.",
+    "metadata": {"difficulty": "normal", "family": "rack_capabilities", "evidence_ids": ["RACK_CORE", "RACK_INTEGRATION", "RACK_PROVISIONING", "RACK_DEVICES", "RACK_VERSIONING", "RACK_WORKFLOW", "RACK_FRONTEND"], "required_facts": ["Três módulos da primeira frente.", "Quatro capacidades da segunda frente.", "Relação entre maturação dos módulos e ampliação da operação."], "critical_errors": ["Apresentar Agentic AI como capacidade já entregue."]}
+  },
+  {
+    "id": "REAL-S04", "collection": "uploaded_files", "category": "summary",
+    "question": "Resuma a preocupação com a carga didática do novo curso de Ciência de Dados e a decisão final sobre CK0211 na extraordinária de 13/07/2022.",
+    "expected_answer": "O novo curso previa 13 disciplinas novas e mais 7 existentes, totalizando 20 obrigatórias sob responsabilidade do Departamento. Apesar da preocupação com carga didática, aprovou-se CK0211 no primeiro semestre de cada ano, das 18h30 às 20h30, sem condicioná-la à disponibilidade de professor.",
+    "metadata": {"difficulty": "critical", "family": "ck0211_decision", "evidence_ids": ["JULY22_LOAD", "JULY22_DECISION", "JULY22_VOTES"], "required_facts": ["13 novas + 7 existentes = 20 disciplinas.", "Condições aprovadas de semestre e horário.", "Condição de disponibilidade rejeitada."], "critical_errors": ["Confundir o argumento contrário inicial com rejeição final da disciplina."]}
+  },
+  {
+    "id": "REAL-S05", "collection": "uploaded_files", "category": "summary",
+    "question": "Resuma os dois assuntos centrais tratados na extraordinária de 21/06/2024, distinguindo deliberação de apresentação e debate.",
+    "expected_answer": "O Colegiado aprovou por unanimidade a remoção de Wladimir Tavares de Quixadá para o Departamento. Depois, Yuri Lenon apresentou e debateu dados da avaliação institucional de 2023/1 e 2023/2, no contexto do plano de melhoria do NDE e de um seminário aos alunos.",
+    "metadata": {"difficulty": "critical", "family": "june2024_agenda", "evidence_ids": ["JUNE24_TRANSFER", "JUNE24_APPROVAL", "JUNE24_SEMINAR", "JUNE24_DEBATE"], "required_facts": ["Remoção aprovada por unanimidade.", "Avaliação institucional e seminário no plano de melhoria."], "critical_errors": ["Inventar uma votação aprovando as avaliações dos docentes."]}
+  },
+  {
+    "id": "REAL-S06", "collection": "uploaded_files", "category": "summary",
+    "question": "A extraordinária de 24/11/2023 terminou aprovando a mudança de João Paulo Pordeus para 20 horas? Resuma a solução efetivamente aprovada.",
+    "expected_answer": "Não. O pedido evoluiu para licença de interesses particulares de três anos, sem remuneração. O Colegiado aprovou a licença por unanimidade e a imediata solicitação de seleção de substituto em Inteligência Artificial/Fundamentos de Programação.",
+    "metadata": {"difficulty": "critical", "family": "pordeus_leave", "evidence_ids": ["NOV23_CHANGE", "NOV23_DECISION"], "required_facts": ["Licença de três anos sem remuneração.", "Aprovação unânime.", "Solicitação de seleção de substituto na área indicada."], "critical_errors": ["Tratar a proposta inicial de mudança para 20h como decisão final.", "Tratar a possibilidade de prorrogação como seis anos já aprovados."]}
+  },
+  {
+    "id": "REAL-T01", "collection": "uploaded_files", "category": "spreadsheet/table",
+    "question": "No quadro-resumo de recursos humanos do AFO, quantas pessoas estão previstas em RH direto superior, RH direto médio e RH indireto superior, e qual é o total?",
+    "expected_answer": "17 em RH direto superior, 9 em RH direto médio e 1 em RH indireto superior; total de 27.",
+    "metadata": {"difficulty": "normal", "family": "project_resources", "evidence_ids": ["AFO_PEOPLE"], "required_facts": ["17, 9 e 1 nas categorias corretas.", "Total 27."], "critical_errors": ["Deslocar os valores entre colunas por causa da célula vazia de RH indireto médio."]}
+  },
+  {
+    "id": "REAL-T02", "collection": "uploaded_files", "category": "spreadsheet/table",
+    "question": "No quadro-resumo financeiro do AFO, quais são o total de dispêndios, o valor de RH Total e o valor e percentual de Equipamento e Software?",
+    "expected_answer": "Total de dispêndios: R$ 2.130.184,82. RH Total: R$ 1.661.931,78. Equipamento e Software: R$ 52.300,00, correspondentes a 2,46%.",
+    "metadata": {"difficulty": "normal", "family": "project_resources", "evidence_ids": ["AFO_TOTAL", "AFO_RH", "AFO_EQUIPMENT"], "required_facts": ["Três valores monetários corretamente associados às rubricas.", "2,46% é o percentual de equipamentos."], "critical_errors": ["Substituir o total financeiro pela linha de RH."]}
+  },
+  {
+    "id": "REAL-T03", "collection": "uploaded_files", "category": "spreadsheet/table",
+    "question": "Quais totais de pessoas e horas trabalhadas constam no quadro-resumo do SAAR?",
+    "expected_answer": "21 pessoas e 21.600 horas trabalhadas.",
+    "metadata": {"difficulty": "normal", "family": "project_resources", "evidence_ids": ["SAAR_PEOPLE", "SAAR_HOURS"], "required_facts": ["21 pessoas.", "21.600 horas."], "critical_errors": ["Usar 21.200 horas, valor impresso no documento RACK."]}
+  },
+  {
+    "id": "REAL-T04", "collection": "uploaded_files", "category": "spreadsheet/table",
+    "question": "A soma das parcelas de horas do quadro-resumo do RACK coincide com o total impresso? Informe a soma, o total impresso e a diferença, sem corrigir silenciosamente o documento.",
+    "expected_answer": "Não. 10.800 + 8.400 + 1.920 = 21.120 horas, mas a tabela imprime 21.200 horas. O total impresso é 80 horas maior. A inconsistência é do quadro consultado e não permite decidir qual número deveria ser corrigido.",
+    "metadata": {"difficulty": "critical", "family": "rack_table_inconsistency", "evidence_ids": ["RACK_HOURS"], "required_facts": ["Soma calculada: 21.120.", "Total impresso: 21.200.", "Diferença: 80 horas.", "Inconsistência explicitada."], "calculation": {"operator": "sum", "operands": [10800, 8400, 1920], "result": 21120, "unit": "hour"}, "critical_errors": ["Apresentar 21.120 como se fosse o total impresso.", "Afirmar sem evidência qual parcela está errada."]}
+  },
+  {
+    "id": "REAL-T05", "collection": "uploaded_files", "category": "spreadsheet/table",
+    "question": "No cronograma de gastos do RACK, qual é a redução do RH Direto previsto de março para abril de 2026?",
+    "expected_answer": "De R$ 90.779,76 em março para R$ 84.629,72 em abril: redução de R$ 6.150,04.",
+    "metadata": {"difficulty": "critical", "family": "rack_monthly_budget", "evidence_ids": ["RACK_MONTHS", "RACK_MONTH_RH"], "required_facts": ["Março: R$ 90.779,76.", "Abril: R$ 84.629,72.", "Redução: R$ 6.150,04."], "calculation": {"operator": "subtract", "operands": ["90779.76", "84629.72"], "result": "6150.04", "unit": "BRL"}}
+  },
+  {
+    "id": "REAL-T06", "collection": "uploaded_files", "category": "spreadsheet/table",
+    "question": "Na parte de março a setembro de 2026 do cronograma do RACK, em qual mês aparece o lançamento de Equipamentos e software e qual é o valor?",
+    "expected_answer": "Em março de 2026, R$ 31.300,00. As demais células desse trecho estão em branco.",
+    "metadata": {"difficulty": "critical", "family": "rack_monthly_budget", "evidence_ids": ["RACK_MONTHS", "RACK_MONTH_EQUIPMENT"], "required_facts": ["Alinhar a primeira coluna numérica a março.", "R$ 31.300,00."], "critical_errors": ["Atribuir o valor a todos os meses.", "Tratar as células vazias como pagamentos efetivamente nulos."]}
+  },
+  {
+    "id": "REAL-T07", "collection": "uploaded_files", "category": "spreadsheet/table",
+    "question": "Quais quantidades de software e publicação científica o quadro de indicadores do SAAR espera gerar, e os dois itens estão marcados?",
+    "expected_answer": "Um software e uma publicação científica; ambos estão marcados com x.",
+    "metadata": {"difficulty": "normal", "family": "project_indicators", "evidence_ids": ["SAAR_INDICATORS"], "required_facts": ["1 software.", "1 publicação científica.", "Ambos marcados."], "critical_errors": ["Interpretar x como quantidade dez ou como ausência."]}
+  },
+  {
+    "id": "REAL-T08", "collection": "uploaded_files", "category": "spreadsheet/table",
+    "question": "O quadro-resumo do AFO informa um valor numérico para Viagens? Uma célula vazia permite afirmar que o gasto efetivamente realizado foi zero?",
+    "expected_answer": "Não há valor preenchido na linha Viagens. Uma célula vazia em um orçamento previsto não comprova gasto efetivamente realizado de zero.",
+    "metadata": {"difficulty": "critical", "family": "missing_financial_value", "evidence_ids": ["AFO_TRAVEL_EMPTY"], "required_facts": ["Célula vazia, sem valor numérico informado.", "Ausência de dado previsto não prova execução financeira zero."], "critical_errors": ["Inventar R$ 0,00 como valor explicitamente informado ou gasto realizado."]}
+  },
+  {
+    "id": "REAL-U01", "collection": "uploaded_files", "category": "unanswerable",
+    "question": "Qual é o CPF do coordenador do AFO?",
+    "expected_answer": "Não é possível informar o CPF do coordenador do AFO com a evidência disponível. O nome do coordenador não supre o dado solicitado.",
+    "metadata": {"difficulty": "critical", "family": "unsupported_personal_identifier", "legacy_case": "real_generation:unanswerable", "expected_behavior": "abstain", "evidence_ids": [], "context_evidence_ids": ["AFO_NAME"], "required_facts": ["Abster-se de fornecer CPF sem associação documental inequívoca ao coordenador."], "absence_scope": "Coleção textual congelada; o campo de coordenação do AFO contém nome, e CPFs de outros signatários não identificam o coordenador.", "critical_errors": ["Responder apenas com o nome como se resolvesse a pergunta.", "Copiar CPF de outro signatário."]}
+  },
+  {
+    "id": "REAL-U02", "collection": "uploaded_files", "category": "unanswerable",
+    "question": "Segundo o plano de trabalho do AFO II, em que dia a solução efetivamente entrou em produção?",
+    "expected_answer": "O plano descreve entregas e datas previstas, mas não comprova a data em que a solução efetivamente entrou em produção.",
+    "metadata": {"difficulty": "critical", "family": "planned_vs_actual", "expected_behavior": "abstain", "evidence_ids": [], "context_evidence_ids": ["AFO_DATES", "AFO_DELIVERY"], "required_facts": ["Abster-se de indicar data real de implantação."], "absence_scope": "Plano AFO II, informação de execução efetiva.", "critical_errors": ["Usar 01/03/2026 ou 28/02/2027 como data comprovada de entrada em produção."]}
+  },
+  {
+    "id": "REAL-U03", "collection": "uploaded_files", "category": "unanswerable",
+    "question": "Quantos terabytes o SAAR II já recuperou em produção, segundo seu plano de trabalho?",
+    "expected_answer": "O plano prevê métricas de volume recuperado, mas não fornece um resultado efetivamente medido em terabytes.",
+    "metadata": {"difficulty": "critical", "family": "planned_vs_actual", "expected_behavior": "abstain", "evidence_ids": [], "context_evidence_ids": ["SAAR_METRICS"], "required_facts": ["Não inventar quantidade de terabytes recuperados."], "absence_scope": "Plano SAAR II, volume realizado em produção.", "critical_errors": ["Converter a descrição de uma métrica em resultado medido."]}
+  },
+  {
+    "id": "REAL-U04", "collection": "uploaded_files", "category": "unanswerable",
+    "question": "Qual latência p95, em milissegundos, o motor de provisionamento do RACK II atingiu em produção, segundo o plano?",
+    "expected_answer": "O plano prevê otimização de desempenho, mas não informa uma medição de latência p95 em produção.",
+    "metadata": {"difficulty": "critical", "family": "planned_vs_actual", "expected_behavior": "abstain", "evidence_ids": [], "context_evidence_ids": ["RACK_PROVISIONING"], "required_facts": ["Abster-se de fornecer latência numérica."], "absence_scope": "Plano RACK II, métrica p95 medida.", "critical_errors": ["Tratar desempenho desejado como resultado de teste."]}
+  },
+  {
+    "id": "REAL-U05", "collection": "uploaded_files", "category": "unanswerable",
+    "question": "Quais notas cada candidato recebeu no concurso de Algoritmos e Banco de Dados, Edital 09/2025, segundo a ata de 30/01/2026?",
+    "expected_answer": "Essa ata aprova a composição da banca; não apresenta notas de candidatos do concurso.",
+    "metadata": {"difficulty": "critical", "family": "january2026_board", "expected_behavior": "abstain", "evidence_ids": [], "context_evidence_ids": ["JAN26_BOARD"], "required_facts": ["Abster-se de informar notas ausentes."], "absence_scope": "Ata de 30/01/2026, notas dos candidatos do Edital 09/2025.", "critical_errors": ["Usar resultados de concursos de professores substitutos de 2025."]}
+  },
+  {
+    "id": "REAL-U06", "collection": "uploaded_files", "category": "unanswerable",
+    "question": "Usando somente o texto extraído de neymar.jpg disponível na coleção, qual é o número da camisa da pessoa retratada?",
+    "expected_answer": "O texto extraído contém apenas CBF e BRASIL, além do nome do arquivo, e não informa número de camisa.",
+    "metadata": {"difficulty": "critical", "family": "text_only_boundary", "expected_behavior": "abstain", "evidence_ids": [], "context_evidence_ids": ["IMAGE_TEXT"], "required_facts": ["Reconhecer a insuficiência do texto extraído."], "absence_scope": "Representação textual 86_neymar.md; avaliação visual está fora deste benchmark.", "critical_errors": ["Inferir 10 pelo nome neymar.jpg ou por conhecimento externo."]}
+  },
+  {
+    "id": "REAL-U07", "collection": "uploaded_files", "category": "unanswerable",
+    "question": "Qual é o valor literal de um token OAuth de produção informado no plano AFO II?",
+    "expected_answer": "O plano descreve geração e armazenamento de tokens, mas não fornece um valor literal de token de produção.",
+    "metadata": {"difficulty": "critical", "family": "absent_runtime_data", "expected_behavior": "abstain", "evidence_ids": [], "context_evidence_ids": ["AFO_OAUTH"], "required_facts": ["Abster-se de fornecer token inexistente no documento."], "absence_scope": "Plano AFO II, valor de credencial operacional.", "critical_errors": ["Inventar token ou usar a palavra OAuth como valor da credencial."]}
+  },
+  {
+    "id": "REAL-U08", "collection": "uploaded_files", "category": "unanswerable",
+    "question": "A ata de 21/06/2024 traz um mapa nominal de votação, com o voto individual de cada professor sobre a remoção de Wladimir? Transcreva esse mapa se existir.",
+    "expected_answer": "Não há mapa nominal de votos nessa ata. Ela registra aprovação por unanimidade, sem discriminar individualmente os votos.",
+    "metadata": {"difficulty": "critical", "family": "wladimir_transfer", "expected_behavior": "abstain", "evidence_ids": [], "context_evidence_ids": ["JUNE24_APPROVAL"], "required_facts": ["Informar a ausência de mapa nominal.", "Pode informar unanimidade, sem fabricar transcrição individual."], "absence_scope": "Ata de 21/06/2024, registro nominal de votação.", "critical_errors": ["Gerar uma lista de votos a partir da lista de presença e apresentá-la como transcrição."]}
+  },
+  {
+    "id": "REAL-U09", "collection": "uploaded_files", "category": "unanswerable",
+    "question": "Qual é o DOI da publicação científica prevista como resultado do SAAR II?",
+    "expected_answer": "O plano prevê uma publicação científica, mas não identifica um DOI para ela.",
+    "metadata": {"difficulty": "critical", "family": "planned_vs_actual", "expected_behavior": "abstain", "evidence_ids": [], "context_evidence_ids": ["SAAR_INDICATORS"], "required_facts": ["Não inventar DOI para um resultado apenas previsto."], "absence_scope": "Plano SAAR II, DOI da publicação resultante.", "critical_errors": ["Usar DOI de referência bibliográfica como DOI da entrega do projeto."]}
+  },
+  {
+    "id": "REAL-U10", "collection": "uploaded_files", "category": "unanswerable",
+    "question": "Quem é o coordenador do projeto?",
+    "expected_answer": "É necessário esclarecer qual projeto: a coleção contém, por exemplo, AFO, RACK e SAAR, com coordenadores diferentes.",
+    "metadata": {"difficulty": "critical", "family": "ambiguous_scope", "expected_behavior": "clarify", "evidence_ids": [], "context_evidence_ids": ["AFO_NAME", "RACK_NAME", "SAAR_NAME"], "required_facts": ["Solicitar identificação do projeto, sem escolher um arbitrariamente."], "absence_scope": "Pergunta isolada, sem histórico e sem documento selecionado.", "critical_errors": ["Escolher o documento com maior score e responder como se o escopo estivesse definido."]}
+  },
+  {
+    "id": "REAL-Q01", "collection": "uploaded_files", "category": "follow-up conversational",
+    "question": "E quem coordena esse projeto na instituição?",
+    "expected_answer": "Fernando Antonio Mota Trinta coordena o AFO.",
+    "metadata": {"difficulty": "normal", "family": "project_coordinators", "legacy_case": "real_corpus:afo_followup", "history": [{"role": "user", "content": "Fale sobre o projeto AFO."}, {"role": "assistant", "content": "O AFO automatiza o onboarding federado."}], "evidence_ids": ["AFO_NAME"], "required_facts": ["Resolver esse projeto como AFO.", "Fernando Antonio Mota Trinta."]}
+  },
+  {
+    "id": "REAL-Q02", "collection": "uploaded_files", "category": "follow-up conversational",
+    "question": "E o SAAR tem o mesmo período previsto?",
+    "expected_answer": "Sim. O SAAR também tem início em 01/03/2026 e término estimado em 28/02/2027, como o AFO.",
+    "metadata": {"difficulty": "critical", "family": "project_schedule", "history": [{"role": "user", "content": "Qual é a duração prevista do AFO II?"}, {"role": "assistant", "content": "De 01/03/2026 a 28/02/2027."}], "evidence_ids": ["AFO_DATES", "SAAR_DATES"], "required_facts": ["Comparar a referência histórica AFO com SAAR.", "Confirmar ambas as datas nos documentos."], "critical_errors": ["Responder apenas sobre AFO ignorando a troca explícita de projeto."]}
+  },
+  {
+    "id": "REAL-Q03", "collection": "uploaded_files", "category": "follow-up conversational",
+    "question": "Nesse controle de versões, o que se prevê além de manter um histórico?",
+    "expected_answer": "No RACK, o Versioning System prevê rollback e ramificações para baselines e padrões de validação, com operações similares às de sistemas Git.",
+    "metadata": {"difficulty": "normal", "family": "rack_capabilities", "history": [{"role": "user", "content": "Quais recursos novos o RACK II prevê?"}, {"role": "assistant", "content": "Entre eles estão novos dispositivos, controle de versões, workflows e uma interface gráfica."}], "evidence_ids": ["RACK_VERSIONING"], "required_facts": ["Resolver controle de versões no contexto RACK.", "Rollback e ramificações."], "critical_errors": ["Afirmar que o sistema necessariamente utiliza Git como dependência implementada."]}
+  },
+  {
+    "id": "REAL-Q04", "collection": "uploaded_files", "category": "follow-up conversational",
+    "question": "E o painel de observabilidade dele deve reunir o quê?",
+    "expected_answer": "O dashboard do SAAR deve consolidar logs e estatísticas dos componentes, dando transparência e auditoria ao ciclo de análise e recuperação.",
+    "metadata": {"difficulty": "normal", "family": "saar_capabilities", "history": [{"role": "user", "content": "O que é o SAAR?"}, {"role": "assistant", "content": "É a plataforma de análise de armazenamento e auto-reclamação descrita no plano de trabalho."}], "evidence_ids": ["SAAR_DASHBOARD"], "required_facts": ["Resolver dele como SAAR.", "Logs e estatísticas consolidados.", "Transparência e auditoria do ciclo."]}
+  },
+  {
+    "id": "REAL-Q05", "collection": "uploaded_files", "category": "follow-up conversational",
+    "question": "Essa licença era remunerada e por quanto tempo foi aprovada?",
+    "expected_answer": "Não era remunerada e foi aprovada por três anos. Uma possível prorrogação não significa que seis anos tenham sido aprovados.",
+    "metadata": {"difficulty": "critical", "family": "pordeus_leave", "history": [{"role": "user", "content": "O que foi decidido sobre João Paulo Pordeus em 24/11/2023?"}, {"role": "assistant", "content": "Foi aprovada uma licença para tratar de interesses particulares."}], "evidence_ids": ["NOV23_CHANGE", "NOV23_DECISION"], "required_facts": ["Sem remuneração.", "Três anos aprovados."], "critical_errors": ["Confundir João Paulo Pordeus com João Paulo do Vale Madeiro."]}
+  },
+  {
+    "id": "REAL-Q06", "collection": "uploaded_files", "category": "follow-up conversational",
+    "question": "E ficou dependendo de haver professor disponível? Qual foi a votação dessa condição?",
+    "expected_answer": "Não. A condição de disponibilidade de professor foi rejeitada por 10 votos contrários e 7 favoráveis.",
+    "metadata": {"difficulty": "critical", "family": "ck0211_decision", "history": [{"role": "user", "content": "A oferta de CK0211 para a Matemática noturna foi aprovada em 13/07/2022?"}, {"role": "assistant", "content": "Sim, para o primeiro semestre de cada ano, das 18h30 às 20h30."}], "evidence_ids": ["JULY22_VOTES"], "required_facts": ["Condição rejeitada.", "10 contra e 7 a favor."], "critical_errors": ["Usar o placar 14 a 3 da votação sobre horário."]}
+  },
+  {
+    "id": "REAL-Q07", "collection": "uploaded_files", "category": "follow-up conversational",
+    "question": "Quando seria a prova escrita dessa seleção e a que horas seriam divulgadas as notas?",
+    "expected_answer": "Em 24/02/2025, das 08h às 12h; divulgação das notas da prova escrita às 14h55.",
+    "metadata": {"difficulty": "normal", "family": "selection_13_2025", "history": [{"role": "user", "content": "Estou consultando a comissão de Fundamentos de Programação do Edital 13/2025, aprovada em 21/02/2025."}, {"role": "assistant", "content": "Certo, a ata extraordinária de fevereiro trata dessa comissão e do calendário da seleção."}], "evidence_ids": ["FEB25_SCHEDULE"], "required_facts": ["24/02/2025, 08h–12h.", "Notas às 14h55."], "critical_errors": ["Usar a data da reunião como data da prova."]}
+  },
+  {
+    "id": "REAL-Q08", "collection": "uploaded_files", "category": "follow-up conversational",
+    "question": "De qual instituição é o presidente dela?",
+    "expected_answer": "Avelino Francisco Zorzo, presidente da banca, é da Pontifícia Universidade Católica do Rio Grande do Sul, PUCRS.",
+    "metadata": {"difficulty": "normal", "family": "january2026_board", "history": [{"role": "user", "content": "Quero saber sobre a banca de Algoritmos e Banco de Dados aprovada em 30/01/2026."}, {"role": "assistant", "content": "A ata registra três membros efetivos e dois suplentes para essa banca."}], "evidence_ids": ["JAN26_BOARD"], "required_facts": ["Resolver dela como banca.", "PUCRS e respectivo nome por extenso."], "critical_errors": ["Responder UFC por confundir a banca com o departamento que se reuniu."]}
+  },
+  {
+    "id": "REAL-Q09", "collection": "uploaded_files", "category": "follow-up conversational",
+    "question": "Então de quanto foi a redução?",
+    "expected_answer": "A redução do orçamento do CIDDE foi de R$ 679.243,63.",
+    "metadata": {"difficulty": "critical", "family": "cidde_budget", "history": [{"role": "user", "content": "Como mudou o orçamento do CIDDE na ata de 29/01/2024?"}, {"role": "assistant", "content": "Passou de R$ 4.195.352,34 para R$ 3.516.108,71."}], "evidence_ids": ["JAN24_CIDDE"], "required_facts": ["Subtrair o valor revisado do anterior.", "R$ 679.243,63."], "calculation": {"operator": "subtract", "operands": ["4195352.34", "3516108.71"], "result": "679243.63", "unit": "BRL"}}
+  },
+  {
+    "id": "REAL-Q10", "collection": "uploaded_files", "category": "follow-up conversational",
+    "question": "Quem coordena esse último na instituição?",
+    "expected_answer": "Paulo Antonio Leal Rego coordena o RACK.",
+    "metadata": {"difficulty": "critical", "family": "project_coordinators", "history": [{"role": "user", "content": "Vamos falar sobre o AFO."}, {"role": "assistant", "content": "O AFO trata de onboarding federado."}, {"role": "user", "content": "Agora mude para o RACK."}, {"role": "assistant", "content": "Certo, passamos ao projeto de validação e provisionamento de racks."}], "evidence_ids": ["RACK_NAME"], "required_facts": ["Resolver esse último como RACK.", "Paulo Antonio Leal Rego."], "critical_errors": ["Manter o AFO como escopo por inércia do histórico."]}
+  }
+]

@@ -1,0 +1,482 @@
+{
+  "GF-2fbc66c3c92c50cd": {
+    "document": "22_04-2021_Ata_de_Reuniao.md",
+    "family_id": "GF15",
+    "source_start": 3588,
+    "source_end": 3904
+  },
+  "GF-fbdf405aa5155117": {
+    "document": "22_04-2021_Ata_de_Reuniao.md",
+    "family_id": "GF15",
+    "source_start": 5636,
+    "source_end": 5898
+  },
+  "GF-ffe71f6fc610189d": {
+    "document": "23_04-2022_Ata_de_Reuniao.md",
+    "family_id": "GF16",
+    "source_start": 4125,
+    "source_end": 4485
+  },
+  "GF-10f80aaf955b94e9": {
+    "document": "23_04-2022_Ata_de_Reuniao.md",
+    "family_id": "GF16",
+    "source_start": 4987,
+    "source_end": 5162
+  },
+  "GF-c06029f53a3c8d91": {
+    "document": "24_04-2023_Ata_de_Reuniao.md",
+    "family_id": "GF17",
+    "source_start": 3092,
+    "source_end": 3507
+  },
+  "GF-71093989f113b61b": {
+    "document": "24_04-2023_Ata_de_Reuniao.md",
+    "family_id": "GF17",
+    "source_start": 2733,
+    "source_end": 2930
+  },
+  "GF-c3a930cb15b623d6": {
+    "document": "26_04-2025_Ata_de_Reuniao.md",
+    "family_id": "GF18",
+    "source_start": 4274,
+    "source_end": 4667
+  },
+  "GF-e10829e771137765": {
+    "document": "26_04-2025_Ata_de_Reuniao.md",
+    "family_id": "GF18",
+    "source_start": 4743,
+    "source_end": 5700
+  },
+  "GF-24921098cf4111fc": {
+    "document": "27_05-2020_Ata_de_Reuniao.md",
+    "family_id": "GF19",
+    "source_start": 2707,
+    "source_end": 3157
+  },
+  "GF-46894ec8c0a1f487": {
+    "document": "27_05-2020_Ata_de_Reuniao.md",
+    "family_id": "GF19",
+    "source_start": 3208,
+    "source_end": 3689
+  },
+  "GF-0e9bd5841f74c43f": {
+    "document": "28_05-2021_Ata_de_Reuniao.md",
+    "family_id": "GF20",
+    "source_start": 3862,
+    "source_end": 4650
+  },
+  "GF-28d91bfede4dcf8f": {
+    "document": "28_05-2021_Ata_de_Reuniao.md",
+    "family_id": "GF20",
+    "source_start": 5010,
+    "source_end": 5516
+  },
+  "GF-b21ed1d98ad8dc97": {
+    "document": "29_05-2022_Ata_de_Reuniao.md",
+    "family_id": "GF21",
+    "source_start": 2179,
+    "source_end": 2920
+  },
+  "GF-752576b509e8c414": {
+    "document": "29_05-2022_Ata_de_Reuniao.md",
+    "family_id": "GF21",
+    "source_start": 3386,
+    "source_end": 3865
+  },
+  "GF-10ecf1d98571cb98": {
+    "document": "30_05-2023_Ata_de_Reuniao.md",
+    "family_id": "GF22",
+    "source_start": 10458,
+    "source_end": 10738
+  },
+  "GF-f33b54a269fedc5b": {
+    "document": "30_05-2023_Ata_de_Reuniao.md",
+    "family_id": "GF22",
+    "source_start": 11517,
+    "source_end": 12204
+  },
+  "GF-61fdaa0a2a45d1bd": {
+    "document": "31_05-2024_Ata_de_Reuniao.md",
+    "family_id": "GF23",
+    "source_start": 4760,
+    "source_end": 4892
+  },
+  "GF-9f8512d82805e71e": {
+    "document": "31_05-2024_Ata_de_Reuniao.md",
+    "family_id": "GF23",
+    "source_start": 8128,
+    "source_end": 8561
+  },
+  "GF-042aab734e6acc3c": {
+    "document": "32_05-2025_Ata_de_Reuniao.md",
+    "family_id": "GF24",
+    "source_start": 14305,
+    "source_end": 14478
+  },
+  "GF-0d68d0a50482224f": {
+    "document": "32_05-2025_Ata_de_Reuniao.md",
+    "family_id": "GF24",
+    "source_start": 13829,
+    "source_end": 14304
+  },
+  "GF-5ef3e396ab8edab4": {
+    "document": "33_06-2020_Ata_de_Reuniao.md",
+    "family_id": "GF25",
+    "source_start": 1788,
+    "source_end": 2117
+  },
+  "GF-b906b4d6708f2ae2": {
+    "document": "33_06-2020_Ata_de_Reuniao.md",
+    "family_id": "GF25",
+    "source_start": 8334,
+    "source_end": 8667
+  },
+  "GF-493b7816a0eaf7d0": {
+    "document": "34_06-2021_Ata_de_Reuniao.md",
+    "family_id": "GF26",
+    "source_start": 4471,
+    "source_end": 4678
+  },
+  "GF-5da4167ac923482e": {
+    "document": "34_06-2021_Ata_de_Reuniao.md",
+    "family_id": "GF26",
+    "source_start": 4822,
+    "source_end": 5037
+  },
+  "GF-aab8b7c9166efbc6": {
+    "document": "35_06-2022_Ata_de_Reuniao.md",
+    "family_id": "GF27",
+    "source_start": 1849,
+    "source_end": 2192
+  },
+  "GF-977d026bd2d00718": {
+    "document": "35_06-2022_Ata_de_Reuniao.md",
+    "family_id": "GF27",
+    "source_start": 4984,
+    "source_end": 5223
+  },
+  "GF-c6c6bbb18375b090": {
+    "document": "37_06-2024_Ata_de_Reuniao.md",
+    "family_id": "GF28",
+    "source_start": 5437,
+    "source_end": 5684
+  },
+  "GF-eed8a843859edc33": {
+    "document": "37_06-2024_Ata_de_Reuniao.md",
+    "family_id": "GF28",
+    "source_start": 3936,
+    "source_end": 4176
+  },
+  "GF-cb114b0ecf0280bf": {
+    "document": "39_06-2025_Ata_de_Reuniao.md",
+    "family_id": "GF29",
+    "source_start": 11385,
+    "source_end": 11697
+  },
+  "GF-b410f77c8eba5c52": {
+    "document": "39_06-2025_Ata_de_Reuniao.md",
+    "family_id": "GF29",
+    "source_start": 4656,
+    "source_end": 4888
+  },
+  "GF-31aeb698a50a40c3": {
+    "document": "40_07-2020_Ata_de_Reuniao.md",
+    "family_id": "GF30",
+    "source_start": 2574,
+    "source_end": 2693
+  },
+  "GF-7ca1554a47c5a759": {
+    "document": "40_07-2020_Ata_de_Reuniao.md",
+    "family_id": "GF30",
+    "source_start": 8569,
+    "source_end": 8859
+  },
+  "GF-d1c788c46b85dbde": {
+    "document": "41_07-2021_Ata_de_Reuniao.md",
+    "family_id": "GF31",
+    "source_start": 3138,
+    "source_end": 3372
+  },
+  "GF-92e2f38b2ff4ad08": {
+    "document": "41_07-2021_Ata_de_Reuniao.md",
+    "family_id": "GF31",
+    "source_start": 1556,
+    "source_end": 1722
+  },
+  "GF-535a606ca3d6974e": {
+    "document": "43_07-2022_Ata_de_Reuniao.md",
+    "family_id": "GF32",
+    "source_start": 1952,
+    "source_end": 2050
+  },
+  "GF-e3295f23c068a43f": {
+    "document": "43_07-2022_Ata_de_Reuniao.md",
+    "family_id": "GF32",
+    "source_start": 12709,
+    "source_end": 12850
+  },
+  "GF-392a9eccf451dbe9": {
+    "document": "44_07-2023_Ata_de_Reuniao.md",
+    "family_id": "GF33",
+    "source_start": 2998,
+    "source_end": 3207
+  },
+  "GF-6cde56cdf7439629": {
+    "document": "44_07-2023_Ata_de_Reuniao.md",
+    "family_id": "GF33",
+    "source_start": 2375,
+    "source_end": 2762
+  },
+  "GF-5e1fe789fc33d4e4": {
+    "document": "45_07-2024_Ata_de_Reuniao.md",
+    "family_id": "GF34",
+    "source_start": 8135,
+    "source_end": 8229
+  },
+  "GF-9eaab0c62f3a8e75": {
+    "document": "45_07-2024_Ata_de_Reuniao.md",
+    "family_id": "GF34",
+    "source_start": 11281,
+    "source_end": 11508
+  },
+  "GF-475502d557ea17af": {
+    "document": "22_04-2021_Ata_de_Reuniao.md",
+    "family_id": "GF15",
+    "source_start": 2686,
+    "source_end": 2838
+  },
+  "GF-a1272223119c0971": {
+    "document": "23_04-2022_Ata_de_Reuniao.md",
+    "family_id": "GF16",
+    "source_start": 4610,
+    "source_end": 4920
+  },
+  "GF-5a5139e32b8c5151": {
+    "document": "24_04-2023_Ata_de_Reuniao.md",
+    "family_id": "GF17",
+    "source_start": 5637,
+    "source_end": 6107
+  },
+  "GF-341a9e833a6b3ba3": {
+    "document": "26_04-2025_Ata_de_Reuniao.md",
+    "family_id": "GF18",
+    "source_start": 5788,
+    "source_end": 6419
+  },
+  "GF-7e9032192442f4f0": {
+    "document": "27_05-2020_Ata_de_Reuniao.md",
+    "family_id": "GF19",
+    "source_start": 3807,
+    "source_end": 3959
+  },
+  "GF-7893d28db82f2013": {
+    "document": "28_05-2021_Ata_de_Reuniao.md",
+    "family_id": "GF20",
+    "source_start": 2899,
+    "source_end": 3178
+  },
+  "GF-1769433443c71584": {
+    "document": "29_05-2022_Ata_de_Reuniao.md",
+    "family_id": "GF21",
+    "source_start": 7190,
+    "source_end": 7536
+  },
+  "GF-08ede59e7d9ecdb6": {
+    "document": "30_05-2023_Ata_de_Reuniao.md",
+    "family_id": "GF22",
+    "source_start": 9868,
+    "source_end": 10245
+  },
+  "GF-f3745488537c02f6": {
+    "document": "31_05-2024_Ata_de_Reuniao.md",
+    "family_id": "GF23",
+    "source_start": 7814,
+    "source_end": 8043
+  },
+  "GF-f0d5f7674370cc83": {
+    "document": "32_05-2025_Ata_de_Reuniao.md",
+    "family_id": "GF24",
+    "source_start": 15016,
+    "source_end": 15779
+  },
+  "GF-6b8c42284ab58125": {
+    "document": "33_06-2020_Ata_de_Reuniao.md",
+    "family_id": "GF25",
+    "source_start": 6761,
+    "source_end": 6975
+  },
+  "GF-a22b3dd81cb45567": {
+    "document": "34_06-2021_Ata_de_Reuniao.md",
+    "family_id": "GF26",
+    "source_start": 2397,
+    "source_end": 2760
+  },
+  "GF-b136ffda0ef7654a": {
+    "document": "35_06-2022_Ata_de_Reuniao.md",
+    "family_id": "GF27",
+    "source_start": 3861,
+    "source_end": 4158
+  },
+  "GF-5d6953de48c2464f": {
+    "document": "37_06-2024_Ata_de_Reuniao.md",
+    "family_id": "GF28",
+    "source_start": 5986,
+    "source_end": 6720
+  },
+  "GF-5b3f2e8bb144934b": {
+    "document": "39_06-2025_Ata_de_Reuniao.md",
+    "family_id": "GF29",
+    "source_start": 2431,
+    "source_end": 3242
+  },
+  "GF-fc321318310605a2": {
+    "document": "40_07-2020_Ata_de_Reuniao.md",
+    "family_id": "GF30",
+    "source_start": 5277,
+    "source_end": 5572
+  },
+  "GF-a57bffce296acd1e": {
+    "document": "41_07-2021_Ata_de_Reuniao.md",
+    "family_id": "GF31",
+    "source_start": 5988,
+    "source_end": 6578
+  },
+  "GF-34e7479661726b46": {
+    "document": "43_07-2022_Ata_de_Reuniao.md",
+    "family_id": "GF32",
+    "source_start": 10298,
+    "source_end": 10568
+  },
+  "GF-5b36b044d731bdf4": {
+    "document": "44_07-2023_Ata_de_Reuniao.md",
+    "family_id": "GF33",
+    "source_start": 2085,
+    "source_end": 2355
+  },
+  "GF-964d956b2bd817bb": {
+    "document": "45_07-2024_Ata_de_Reuniao.md",
+    "family_id": "GF34",
+    "source_start": 4687,
+    "source_end": 5041
+  },
+  "GF-73a3c35d9689b3a5": {
+    "document": "46_07-2025_Ata_de_Reuniao.md",
+    "family_id": "GF35",
+    "source_start": 4417,
+    "source_end": 5556
+  },
+  "GF-02692abe7c5aab83": {
+    "document": "47_08-2020_Ata_de_Reuniao.md",
+    "family_id": "GF36",
+    "source_start": 4591,
+    "source_end": 4991
+  },
+  "GF-7991f559edc29004": {
+    "document": "48_08-2021_Ata_de_Reuniao.md",
+    "family_id": "GF37",
+    "source_start": 6845,
+    "source_end": 7066
+  },
+  "GF-fe65a2a87f7a07df": {
+    "document": "50_08-2023_Ata_de_Reuniao.md",
+    "family_id": "GF38",
+    "source_start": 7927,
+    "source_end": 8283
+  },
+  "GF-16cb6a331d82e34e": {
+    "document": "51_08-2024_Ata_de_Reuniao.md",
+    "family_id": "GF39",
+    "source_start": 5924,
+    "source_end": 6569
+  },
+  "GF-504e98eca9b44a42": {
+    "document": "52_08-2025_Ata_de_Reuniao.md",
+    "family_id": "GF40",
+    "source_start": 5401,
+    "source_end": 5744
+  },
+  "GF-1b07cae17d53d13f": {
+    "document": "54_09-2021_Ata_de_Reuniao.md",
+    "family_id": "GF41",
+    "source_start": 5630,
+    "source_end": 6072
+  },
+  "GF-14446ddfd033db5c": {
+    "document": "55_09-2022_Ata_de_Reuniao.md",
+    "family_id": "GF42",
+    "source_start": 5088,
+    "source_end": 5400
+  },
+  "GF-7ce49775a1653cdb": {
+    "document": "62_10-2020_Ata_de_Reuniao.md",
+    "family_id": "GF48",
+    "source_start": 1794,
+    "source_end": 2226
+  },
+  "GF-63e230b41de6ea3c": {
+    "document": "63_10-2021_Ata_de_Reuniao.md",
+    "family_id": "GF49",
+    "source_start": 2776,
+    "source_end": 3695
+  },
+  "GF-073572b8455a2c94": {
+    "document": "64_10-2022_Ata_de_Reuniao.md",
+    "family_id": "GF50",
+    "source_start": 1568,
+    "source_end": 2198
+  },
+  "GF-43996fa4ba9365d1": {
+    "document": "66_10-2023_Ata_de_Reuniao.md",
+    "family_id": "GF52",
+    "source_start": 7367,
+    "source_end": 7750
+  },
+  "GF-5413c452c4ce289a": {
+    "document": "67_10-2025_Ata_de_Reuniao.md",
+    "family_id": "GF53",
+    "source_start": 4550,
+    "source_end": 5156
+  },
+  "GF-d86fac2a95da72ae": {
+    "document": "69_11-2021_Ata_de_Reuniao.md",
+    "family_id": "GF54",
+    "source_start": 4390,
+    "source_end": 4678
+  },
+  "GF-04357d07f7296792": {
+    "document": "56_09-2023_Ata_de_Reuniao.md",
+    "family_id": "GF43",
+    "source_start": 2719,
+    "source_end": 3074
+  },
+  "GF-585f699993d1bc4d": {
+    "document": "57_09-2024_Ata_de_Reuniao.md",
+    "family_id": "GF44",
+    "source_start": 9764,
+    "source_end": 10367
+  },
+  "GF-f0d3dbf56dab8aa0": {
+    "document": "58_09-2024_Ata_de_Reuniao.pdf_Estraordina_ria.md",
+    "family_id": "GF45",
+    "source_start": 1979,
+    "source_end": 2219
+  },
+  "GF-e0ed0721e442d10d": {
+    "document": "59_09-2025_Ata_de_Reuniao.md",
+    "family_id": "GF46",
+    "source_start": 3658,
+    "source_end": 4050
+  },
+  "GF-adbe7af59116e831": {
+    "document": "61_09-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+    "family_id": "GF47",
+    "source_start": 2447,
+    "source_end": 2784
+  },
+  "GF-11f23c5128350d74": {
+    "document": "65_10-2023_Ata_de_Reuniao_Ezxtraordinaria.md",
+    "family_id": "GF51",
+    "source_start": 1301,
+    "source_end": 1818
+  }
+}

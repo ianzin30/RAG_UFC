@@ -1,0 +1,46 @@
+{
+  "cases": [
+    {
+      "category": "multi-hop",
+      "question": "Who requested the collaboration for updating the new PPC of the Computer Science Bachelor's course and what was his role?",
+      "expected_answer": "Prof. Pablo Mayckon Silva Farias requested the collaboration for updating the new PPC of the Computer Science Bachelor's course. He is the coordinator.",
+      "field": "role",
+      "bridge": "Prof. Pablo Mayckon Silva Farias",
+      "evidence": [
+        {
+          "document": "09_02-2022_Ata_de_Reuniao.md",
+          "quote": "Pablo, na qualidade de coordenador, informou a todos que gostaria que, se possível, o Colegiado aprovasse as novas ementas, bibliografias e o novo PPC na próxima reunião do Departamento em março."
+        }
+      ]
+    },
+    {
+      "category": "single-document factual",
+      "question": "What was the value of the research grant for the project 'FRDI - Financial Reconciliation Dell Service Provider Invoicing - PHASE II' and which professor coordinated it?",
+      "expected_answer": "The value of the research grant for the project 'FRDI - Financial Reconciliation Dell Service Provider Invoicing - PHASE II' was R$ 1,584,541.06, and it was coordinated by Prof. Rossana Andrade.",
+      "field": "value",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "09_02-2022_Ata_de_Reuniao.md",
+          "quote": "Termo Aditivo do Projeto intitulado: ' FRDI - Financial Reconciliation Dell Service Provider Invoicing - PHASE II ', celebrado entre a UFC e a DELL Computadores do Brasil Ltda, sob a coordenação da Profa. Rossana Andrade, cujo objetivo é a prorrogação por um mês do prazo de vigência do projeto de 31/01/2022 para 28/02/2022, bem como a alteração no orçamento de R$ 1.463.417,87 para R$ 1.584.541,06 (total do aditivo de R$ 121.123,19)."
+        },
+        {
+          "document": "09_02-2022_Ata_de_Reuniao.md",
+          "quote": "Termo Aditivo do Projeto intitulado: ' FRDI - Financial Reconciliation Dell Service Provider Invoicing - PHASE II ', celebrado entre a UFC e a DELL Computadores do Brasil Ltda, sob a coordenação da Profa. Rossana Andrade,"
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 5002,
+    "total_tokens": 5585,
+    "completion_tokens": 583,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": null
+  },
+  "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+  "latency_seconds": 21.608386874955613,
+  "source_sha256": {
+    "09_02-2022_Ata_de_Reuniao.md": "24cd6fc76da699871adec44dbd4450b2269f37f77a1fb6cafb976d5b178fb93f"
+  }
+}

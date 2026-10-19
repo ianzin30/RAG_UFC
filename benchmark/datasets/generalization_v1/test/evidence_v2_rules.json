@@ -1,0 +1,1446 @@
+{
+  "version": "evidence_v2",
+  "definition": "all explicit requirements at verified original positions; ambiguous source mappings receive no credit",
+  "anchors": {
+    "GF-2fbc66c3c92c50cd": {
+      "document": "22_04-2021_Ata_de_Reuniao.md",
+      "source_sha256": "5d612279636e4027edc8c42467a2a5ff0953009d86e21b2e870d44227d75a2b1",
+      "audited": true,
+      "quote_source_start": 3588,
+      "quote_source_end": 3904,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 3431,
+          "normalized_end": 3737,
+          "source_start": 3588,
+          "source_end": 3904,
+          "text": "o chefe do departamento solicitou a aprovação da banca para progressão funcional de adjunto II para adjunto II do Prof. João Paulo Pordeus. A proposição da banca foi feita com a seguinte composição: Prof. João Fernando (Presidente), Prof. José Macedo, Prof. Lincoln Rocha, e Prof. José Maria como suplente."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-fbdf405aa5155117": {
+      "document": "22_04-2021_Ata_de_Reuniao.md",
+      "source_sha256": "5d612279636e4027edc8c42467a2a5ff0953009d86e21b2e870d44227d75a2b1",
+      "audited": true,
+      "quote_source_start": 5636,
+      "quote_source_end": 5898,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5410,
+          "normalized_end": 5655,
+          "source_start": 5636,
+          "source_end": 5898,
+          "text": "aprovação do Projeto 'Proactive Monintoring Based On Machine Learning', tendo como parecerista o Prof. José Maria Monteiro, que apresentou parecer favorável à execução do projeto e à bolsa referente a coordenação para o professor Miguel Franlin."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-ffe71f6fc610189d": {
+      "document": "23_04-2022_Ata_de_Reuniao.md",
+      "source_sha256": "eb14372e0db8c6230d7d6c2ebac749d902ce53c2977eccb1fb36c1a87e690d45",
+      "audited": true,
+      "quote_source_start": 4125,
+      "quote_source_end": 4485,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 3884,
+          "normalized_end": 4244,
+          "source_start": 4125,
+          "source_end": 4485,
+          "text": "aprovou por ad referendum a substituição do Prof. Ângelo Brayner ao Prof. João Paulo Pordeus numa bolsa de pesquisa vinculada ao Projeto: 'Uso das Tecnologias da Web Semântica e Big Data para Integrar, Enriquecer e Explorar Dados', convênio entre a UFC e a SEFAZ-MA, coordenado pela Profa. Vânia Vidal, no valor de R$ 4.000,00 (quatro mil reais), por 18 meses."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-10f80aaf955b94e9": {
+      "document": "23_04-2022_Ata_de_Reuniao.md",
+      "source_sha256": "eb14372e0db8c6230d7d6c2ebac749d902ce53c2977eccb1fb36c1a87e690d45",
+      "audited": true,
+      "quote_source_start": 4987,
+      "quote_source_end": 5162,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4721,
+          "normalized_end": 4882,
+          "source_start": 4987,
+          "source_end": 5162,
+          "text": "o Prof. Ângelo solicitou melhorias na infraestrutura do Bloco CIPEMAC, visto que se encontra um pouco abandonado, sem bebedouro, salas sem móveis e equipamentos."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-c06029f53a3c8d91": {
+      "document": "24_04-2023_Ata_de_Reuniao.md",
+      "source_sha256": "cce82636f36df0449aafef24ddc6bf133abdb3afcf61f1dc34c389ce669e7d15",
+      "audited": true,
+      "quote_source_start": 3092,
+      "quote_source_end": 3507,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2956,
+          "normalized_end": 3346,
+          "source_start": 3092,
+          "source_end": 3507,
+          "text": "formação da Comissão de Avaliação Docente para o processo de Progressão Funcional da Profa. Ana Karolinna Maia de Oliveira da classe de Professor Adjunto C II para C III. Após discussão, os professores Rudini Menezes Sampaio (presidente), José Maria da Silva Monteiro Filho e Manoel Bezerra Campêlo Neto foram indicados para compor a supracitada comissão a qual foi aprovada pelo Colegiado."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-71093989f113b61b": {
+      "document": "24_04-2023_Ata_de_Reuniao.md",
+      "source_sha256": "cce82636f36df0449aafef24ddc6bf133abdb3afcf61f1dc34c389ce669e7d15",
+      "audited": true,
+      "quote_source_start": 2733,
+      "quote_source_end": 2930,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2640,
+          "normalized_end": 2816,
+          "source_start": 2733,
+          "source_end": 2930,
+          "text": "o Prof. Rudini Menezes apresentou Parecer favorável à Progressão Funcional do Prof. Pablo Mayckon Silva Farias da classe de Professor Adjunto C II para Professor Adjunto C III."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-c3a930cb15b623d6": {
+      "document": "26_04-2025_Ata_de_Reuniao.md",
+      "source_sha256": "22ec754c515d356e1a82fd8b9e87c61d818e42f36fac05a7c6b64eb95e761f46",
+      "audited": true,
+      "quote_source_start": 4274,
+      "quote_source_end": 4667,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4262,
+          "normalized_end": 4655,
+          "source_start": 4274,
+          "source_end": 4667,
+          "text": "4ª Matéria: Afastamento internacional do Prof. Javam Machado para participação no IEEE Symposium on Security and Privacy (San Francisco, EUA), de 09 a 16 de maio de 2025. Na ocasião, o prof. Javam Machado fez um breve relato sobre seu pedido de afastamento, ressaltando que deverá apresentar artigo científico nesse evento e que o Prof. José Maria Monteiro o substituirá durante o afastamento."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-e10829e771137765": {
+      "document": "26_04-2025_Ata_de_Reuniao.md",
+      "source_sha256": "22ec754c515d356e1a82fd8b9e87c61d818e42f36fac05a7c6b64eb95e761f46",
+      "audited": true,
+      "quote_source_start": 4743,
+      "quote_source_end": 5700,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4731,
+          "normalized_end": 5688,
+          "source_start": 4743,
+          "source_end": 5700,
+          "text": "5ª Matéria: Aprovação de Termo Aditivo ao Projeto de Pesquisa CH-IA: Chat-based Hardware dIAgnosti cs - Anexo: Tratamento de Dados Pessoais. Em seguida, o Prof. Javam Machado relatou o Termo Aditivo (Processo SEI n° 23067.015835/202551), sob sua coordenação, convênio com a empresa Lenovo, por meio do qual se pretende elaborar um Anexo de Tratamento de Dados Pessoais, não envolvendo aumento de prazo e nem de valores. Não havendo discussão, o referido termo aditivo foi aprovado por unanimidade pelo Colegiado. 6ª Matéria: Aprovação de Termo Aditivo ao Projeto de Pesquisa LDAR: Lenovo Diagnóstico para Arquitetura RISC Avançada - Anexo: Tratamento de Dados Pessoais. Dando sequência, o prof. Javam Machado informou que esse Termo Aditivo (Processo SEI n° 23067.015834/2025-15), sob sua coordenação, convênio com a empresa Lenovo, também precisará que se elabore um Anexo de Tratamento de Dados Pessoais, não envolvendo aumento de prazo e nem de recursos."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-24921098cf4111fc": {
+      "document": "27_05-2020_Ata_de_Reuniao.md",
+      "source_sha256": "0e0240bff8e3012e69576817bd53d0e921167fc1da61ded212b22382b5158801",
+      "audited": true,
+      "quote_source_start": 2707,
+      "quote_source_end": 3157,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2580,
+          "normalized_end": 3012,
+          "source_start": 2707,
+          "source_end": 3157,
+          "text": "o Prof. João Paulo Pordeus relatou a extensão do prazo do projeto de P&D com a empresa Delfos, intitulado: \"Uso de técnicas de aprendizado de máquina para manutenção preditiva em sistemas de geração de energia\", por um ano, com vigência estendida até 31/05/2021, sob sua coordenação. Na ocasião, explicou que a referida prorrogação seria para utilizar o recurso disponível do projeto e que não havia adicional de recurso financeiro."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-46894ec8c0a1f487": {
+      "document": "27_05-2020_Ata_de_Reuniao.md",
+      "source_sha256": "0e0240bff8e3012e69576817bd53d0e921167fc1da61ded212b22382b5158801",
+      "audited": true,
+      "quote_source_start": 3208,
+      "quote_source_end": 3689,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 3062,
+          "normalized_end": 3520,
+          "source_start": 3208,
+          "source_end": 3689,
+          "text": "indicação de Comissão Eleitoral para eleição da chefia do departamento para os biênios 2020-2022. Após discussão, o Colegiado indicou os professores João Fernando Lima Alcântara (presidente), João Paulo Pordeus Gomes e Emanuele Marques dos Santos; o servidor técnico-administrativo Felipe Peixoto Gomes, como representante dos servidores, e o aluno Francisco San Diego de Sousa Castilho, como representante dos alunos, para a composição da referida Comissão,"
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-0e9bd5841f74c43f": {
+      "document": "28_05-2021_Ata_de_Reuniao.md",
+      "source_sha256": "1b57d344260d24f742a85ef6fe768a0f2a5289eb1f0bcf0630540d952f29515b",
+      "audited": true,
+      "quote_source_start": 3862,
+      "quote_source_end": 4650,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 3728,
+          "normalized_end": 4471,
+          "source_start": 3862,
+          "source_end": 4650,
+          "text": "a solicitação do Professor Aposentado Fernando Carvalho de participação no Programa PROPAP/UFC. Nesse momento, o Prof. Fernando Trinta convidou o docente interessado a se pronunciar na reunião. O Prof. Fernando Carvalho informou que já esteve ligado ao Departamento através desse vínculo nos anos de 2018 e 2019, quando saiu para exercer o cargo de professor visitante junto à Coordenação da Pós-Graduação do Curso de Física em meados de 2019, tendo permanecido até março do corrente ano. Afirmou que sua ligação ao mencionado Programa será sem custo para o Departamento, visto que abdica da infraestrutura departamental, tendo já devolvido o gabinete outrora utilizado e abdicando do laboratório BIMO que funcionava no Bloco 952, anexo ao DC."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-28d91bfede4dcf8f": {
+      "document": "28_05-2021_Ata_de_Reuniao.md",
+      "source_sha256": "1b57d344260d24f742a85ef6fe768a0f2a5289eb1f0bcf0630540d952f29515b",
+      "audited": true,
+      "quote_source_start": 5010,
+      "quote_source_end": 5516,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4816,
+          "normalized_end": 5283,
+          "source_start": 5010,
+          "source_end": 5516,
+          "text": "a solicitação dos Professores Emanuele Santos e Fernando Trinta para alocação de espaço para projetos de pesquisa com a Superintendência de Pesquisa e Estratégia de Segurança Pública do Estado do Ceará. O Prof. Javam Machado sugeriu a utilização do Laboratório BIMO (Bloco 952) que no momento encontra-se sem utilização. Após discussão, o Colegiado decidiu, por meio de votação, ceder temporariamente o mencionado Laboratório durante a execução dos projetos em pauta."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-b21ed1d98ad8dc97": {
+      "document": "29_05-2022_Ata_de_Reuniao.md",
+      "source_sha256": "a04338cb97197a4971ea9f04778552a221ef01342c621591692e2814a7b4af34",
+      "audited": true,
+      "quote_source_start": 2179,
+      "quote_source_end": 2920,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2063,
+          "normalized_end": 2774,
+          "source_start": 2179,
+          "source_end": 2920,
+          "text": "nova Comissão de Avaliação do processo de Progressão Funcional da Profa. Valéria Lelli da classe de Professor Adjunto CI para Professor Adjunto CII, atendendo ao pedido da CPPD para que fosse formada nova Comissão composta, obrigatoriamente, por três (3) docentes de classe superior à do avaliado, no caso, membros da Classe D, com denominação Associado, e/ou Classe E, com denominação Titular, cuja portaria deverá ser anexada ao processo. Dessa forma, o Prof. Paulo Rego, que faz parte da mesma classe da professora avaliada, foi substituído pela Profa. Rossana Andrade, ficando com a seguinte composição: Rossana Maria de Castro Andrade (presidente), José Maria da Silva Monteiro Filho e Lincoln Souza Rocha."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-752576b509e8c414": {
+      "document": "29_05-2022_Ata_de_Reuniao.md",
+      "source_sha256": "a04338cb97197a4971ea9f04778552a221ef01342c621591692e2814a7b4af34",
+      "audited": true,
+      "quote_source_start": 3386,
+      "quote_source_end": 3865,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 3239,
+          "normalized_end": 3681,
+          "source_start": 3386,
+          "source_end": 3865,
+          "text": "o Prof. João Bosco Ferreira solicitou alteração na composição da Comissão de Avaliação de seu processo de Progressão Funcional da classe de Professor Adjunto CI para Professor Adjunto CII. Dessa forma, o Prof. Paulo Rêgo, que faz parte da mesma classe do avaliado, foi substituído pela Profa. Rossana Andrade, ficando com a seguinte composição: Rossana Maria de Castro Andrade (presidente), Fernando Antonio Mota Trinta e Lincoln Souza Rocha."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-10ecf1d98571cb98": {
+      "document": "30_05-2023_Ata_de_Reuniao.md",
+      "source_sha256": "9bcf193d73cfca8f0ac3e3aadb68088a8799ce3e3ca442e1a90f2418134a6ba6",
+      "audited": true,
+      "quote_source_start": 10458,
+      "quote_source_end": 10738,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 10130,
+          "normalized_end": 10410,
+          "source_start": 10458,
+          "source_end": 10738,
+          "text": "o Prof. João Paulo Pordeus relatou a bolsa de pesquisa do Prof. César Lincoln vinculada ao projeto CEREIA (Centro de Referência em Inteligência Artificial), coordenado pelo Prof. José Soares de Andrade Júnior, no valor de R$ 3.000,00 (três mil reais), por sessenta meses (5 anos)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-f33b54a269fedc5b": {
+      "document": "30_05-2023_Ata_de_Reuniao.md",
+      "source_sha256": "9bcf193d73cfca8f0ac3e3aadb68088a8799ce3e3ca442e1a90f2418134a6ba6",
+      "audited": true,
+      "quote_source_start": 11517,
+      "quote_source_end": 12204,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 11188,
+          "normalized_end": 11875,
+          "source_start": 11517,
+          "source_end": 12204,
+          "text": "o Prof. César Lincoln relatou o projeto intitulado: \"Plataforma Big Data e IA para Governança dos Programas de Educação Básica do FNDE\", sob a coordenação do Prof. José Macedo, cujo objetivo principal é desenvolver estudos científicos e tecnológicos visando projetar e implementar uma plataforma de dados que permitirá integrar e analisar fontes de dados relacionadas com os programas e ações do FNDE, possibilitando a implantação de um novo modelo de governança das ações estratégicas relacionadas com a educação básica. Esse projeto tem duração de 24 meses e orçamento total no valor de R$ 10.639.266,00 (dez milhões, seiscentos e trinta e nove mil e duzentos e sessenta e seis reais)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-61fdaa0a2a45d1bd": {
+      "document": "31_05-2024_Ata_de_Reuniao.md",
+      "source_sha256": "0525db4ec4091a500404170371bc85c95c008b23b3e2caedcc6fa97ea89ba069",
+      "audited": true,
+      "quote_source_start": 4760,
+      "quote_source_end": 4892,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4525,
+          "normalized_end": 4646,
+          "source_start": 4760,
+          "source_end": 4892,
+          "text": "Proposta 2 (sugerida pelo Prof. Ângelo Brayner): Iniciar com o tema afastamento internacional e implementar a posteriori."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-9f8512d82805e71e": {
+      "document": "31_05-2024_Ata_de_Reuniao.md",
+      "source_sha256": "0525db4ec4091a500404170371bc85c95c008b23b3e2caedcc6fa97ea89ba069",
+      "audited": true,
+      "quote_source_start": 8128,
+      "quote_source_end": 8561,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 7751,
+          "normalized_end": 8143,
+          "source_start": 8128,
+          "source_end": 8561,
+          "text": "o Prof. Angelo Brayner relatou o projeto de pesquisa: \"LTAD: Lenovo ThinksmArt office Diagnostics\", convênio entre a UFC e a empresa Lenovo Tecnologia (Brasil) Limitada, sob a coordenação do Prof. José Maria Monteiro. Esse projeto terá duração de 10 meses (01/07/2024 a 30/04/2025) e orçamento no valor de R$ 1.705.533,00 (um milhão, setecentos e cinco mil, quinhentos e trinta e três reais)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-042aab734e6acc3c": {
+      "document": "32_05-2025_Ata_de_Reuniao.md",
+      "source_sha256": "a68f53d1b644ae8ce9cc65cc9c2d719c2e0ae0dee2c2b65b34f5b296e3031dfe",
+      "audited": true,
+      "quote_source_start": 14305,
+      "quote_source_end": 14478,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 13473,
+          "normalized_end": 13646,
+          "source_start": 14305,
+          "source_end": 14478,
+          "text": "12ª Matéria: Discussão sobre a possibilidade de adiamento da Reunião Ordinária do dia 06/06/2025 para o dia 13/06/2025, a pedido dos Professores Yuri Lenon e Ângelo Brayner."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-0d68d0a50482224f": {
+      "document": "32_05-2025_Ata_de_Reuniao.md",
+      "source_sha256": "a68f53d1b644ae8ce9cc65cc9c2d719c2e0ae0dee2c2b65b34f5b296e3031dfe",
+      "audited": true,
+      "quote_source_start": 13829,
+      "quote_source_end": 14304,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 13028,
+          "normalized_end": 13472,
+          "source_start": 13829,
+          "source_end": 14304,
+          "text": "11ª Matéria: Aprovação de Comissão de Avaliação da Progressão Funcional de Adjunto III para IV do Prof. Ângelo Brayner. Dando prosseguimento, o chefe colocou em pauta a indicação da referida Comissão. Após discussão, os docentes Javam de Castro Machado (presidente), Francisco Heron de Carvalho Junior e José Maria da Silva Monteiro Filho foram indicados para composição da supracitada comissão, que foi aprovada por unanimidade pelo Colegiado."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-5ef3e396ab8edab4": {
+      "document": "33_06-2020_Ata_de_Reuniao.md",
+      "source_sha256": "7c7f0473dfd9c3a4aa7d33226c66b76b6a3bbc8aedf3a5a17ad2474a3c7cb85e",
+      "audited": true,
+      "quote_source_start": 1788,
+      "quote_source_end": 2117,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 1657,
+          "normalized_end": 1982,
+          "source_start": 1788,
+          "source_end": 2117,
+          "text": "o professor João Paulo Pordeus Gomes relatou sobre a aprovação do projeto, intitulado 'Pesquisa e desenvolvimento de tecnologia para automatização do processo de coleta de métricas de testes de software', sob a coordenação da professora Emanuele Marques dos Santos, em parceria com a empresa Dell Computadores do Brasil LTDA,"
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-b906b4d6708f2ae2": {
+      "document": "33_06-2020_Ata_de_Reuniao.md",
+      "source_sha256": "7c7f0473dfd9c3a4aa7d33226c66b76b6a3bbc8aedf3a5a17ad2474a3c7cb85e",
+      "audited": true,
+      "quote_source_start": 8334,
+      "quote_source_end": 8667,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 7980,
+          "normalized_end": 8299,
+          "source_start": 8334,
+          "source_end": 8667,
+          "text": "a Comissão Eleitoral é formada pelos professores João Fernando Lima Alcântara (presidente), João Paulo Pordeus Gomes, e Emanuele Marques dos Santos; o servidor técnico-administrativo Felipe Peixoto Gomes, como representante dos servidores, e o aluno Francisco San Diego de Sousa Castilho, como representante dos alunos;"
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-493b7816a0eaf7d0": {
+      "document": "34_06-2021_Ata_de_Reuniao.md",
+      "source_sha256": "1f6d24de8c2b5fb52174b01a5d7f247ab5276a9bb2fa7729d9104e4fa84b1db4",
+      "audited": true,
+      "quote_source_start": 4471,
+      "quote_source_end": 4678,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4251,
+          "normalized_end": 4449,
+          "source_start": 4471,
+          "source_end": 4678,
+          "text": "um convite feito ao Prof. José Antônio Macedo para coordenar preparação de conteúdo para o curso 'Inovação e Estratégias Digitais Aplicadas aos Pequenos Negócios' para o Grupo de Comunicação O POVO."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-5da4167ac923482e": {
+      "document": "34_06-2021_Ata_de_Reuniao.md",
+      "source_sha256": "1f6d24de8c2b5fb52174b01a5d7f247ab5276a9bb2fa7729d9104e4fa84b1db4",
+      "audited": true,
+      "quote_source_start": 4822,
+      "quote_source_end": 5037,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4582,
+          "normalized_end": 4781,
+          "source_start": 4822,
+          "source_end": 5037,
+          "text": "o Prof. José Antônio Macedo informou que participou de uma reunião com o pessoal da Samsung e que eles têm interesse em desenvolver alguns projetos com os pesquisadores do Departamento de Computação."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-aab8b7c9166efbc6": {
+      "document": "35_06-2022_Ata_de_Reuniao.md",
+      "source_sha256": "904af04c63cb979a824e611247d0d827bb71fa8f80db6fd0f20f6aff25dda2f0",
+      "audited": true,
+      "quote_source_start": 1849,
+      "quote_source_end": 2192,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 1718,
+          "normalized_end": 2056,
+          "source_start": 1849,
+          "source_end": 2192,
+          "text": "renovação de uma bolsa de pesquisa destinada ao Prof. Javam Machado por 8 meses (maio a dezembro de 2022), no valor de R$ 3.600,00 (três mil e seiscentos reais), no projeto GALP - 'Simulação Numérica de Invasão de Água em Poços Produtores nos Campos do Pré-Sal', coordenado pelo Prof. Francisco Nepomuceno Filho do Departamento de Física."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-977d026bd2d00718": {
+      "document": "35_06-2022_Ata_de_Reuniao.md",
+      "source_sha256": "904af04c63cb979a824e611247d0d827bb71fa8f80db6fd0f20f6aff25dda2f0",
+      "audited": true,
+      "quote_source_start": 4984,
+      "quote_source_end": 5223,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4730,
+          "normalized_end": 4950,
+          "source_start": 4984,
+          "source_end": 5223,
+          "text": "o Prof. Javam Machado relatou seu afastamento com o objetivo de participar de evento internacional (ACM SIGMOD2022), na cidade da Filadélfia (USA) e visita científica ao AT&T labs-research, no período de 13 a 26/06/2022."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-c6c6bbb18375b090": {
+      "document": "37_06-2024_Ata_de_Reuniao.md",
+      "source_sha256": "bcad54d00c5a2dfe781bcb8d44b5347b287d56c85d59df1b386fd766e57dc8e9",
+      "audited": true,
+      "quote_source_start": 5437,
+      "quote_source_end": 5684,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5128,
+          "normalized_end": 5357,
+          "source_start": 5437,
+          "source_end": 5684,
+          "text": "o Colegiado aprovou os nomes dos Professores Javam Machado (suplente) e César Lincoln (suplente) para a composição das Unidades Curriculares de Banco de Dados e de Lógica, Inteligência Artificial e Probabilidade, respectivamente."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-eed8a843859edc33": {
+      "document": "37_06-2024_Ata_de_Reuniao.md",
+      "source_sha256": "bcad54d00c5a2dfe781bcb8d44b5347b287d56c85d59df1b386fd766e57dc8e9",
+      "audited": true,
+      "quote_source_start": 3936,
+      "quote_source_end": 4176,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 3699,
+          "normalized_end": 3928,
+          "source_start": 3936,
+          "source_end": 4176,
+          "text": "o Prof. César Lincoln relatou seu pedido de afastamento do país com o objetivo de participar da Conferência Internacional sobre Aprendizado de Máquina (ICML) 2024, em Viena - Áustria, durante o período de 21/07/2024 a 28/07/2024."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-cb114b0ecf0280bf": {
+      "document": "39_06-2025_Ata_de_Reuniao.md",
+      "source_sha256": "01f237ec62580692271b7ee4be8ac12424f36ee85b52b7ca3d81b055502bb06c",
+      "audited": true,
+      "quote_source_start": 11385,
+      "quote_source_end": 11697,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 11372,
+          "normalized_end": 11684,
+          "source_start": 11385,
+          "source_end": 11697,
+          "text": "11ª Matéria: Aprovação de Parecer da Progressão Funcional de Professor Adjunto C III para C IV da Profa. Ana Karolinna Maia. Nesse momento, o chefe passou a palavra ao presidente da Comissão de Avaliação, Prof. Heron Carvalho, que apresentou Parecer favorável à Progressão Funcional da Profa. Ana Karolinna Maia."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-b410f77c8eba5c52": {
+      "document": "39_06-2025_Ata_de_Reuniao.md",
+      "source_sha256": "01f237ec62580692271b7ee4be8ac12424f36ee85b52b7ca3d81b055502bb06c",
+      "audited": true,
+      "quote_source_start": 4656,
+      "quote_source_end": 4888,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4644,
+          "normalized_end": 4876,
+          "source_start": 4656,
+          "source_end": 4888,
+          "text": "o Prof. Heron Carvalho se predispôs a colaborar, aceitando o cargo de representante suplente dos docentes do DC no Conselho do Centro de Ciências, tendo sido aprovado por unanimidade pelo Colegiado, com mandato até setembro de 2026."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-31aeb698a50a40c3": {
+      "document": "40_07-2020_Ata_de_Reuniao.md",
+      "source_sha256": "d99a03e00a6da9708b15211ed0774505ba2225194d99140df71aeed948d5f811",
+      "audited": true,
+      "quote_source_start": 2574,
+      "quote_source_end": 2693,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2497,
+          "normalized_end": 2614,
+          "source_start": 2574,
+          "source_end": 2693,
+          "text": "Prof. João Fernando, na presidência, Prof. João Paulo Pordeus e Prof. Yuri Lenon para a banca do Prof. César Lincoln;"
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-7ca1554a47c5a759": {
+      "document": "40_07-2020_Ata_de_Reuniao.md",
+      "source_sha256": "d99a03e00a6da9708b15211ed0774505ba2225194d99140df71aeed948d5f811",
+      "audited": true,
+      "quote_source_start": 8569,
+      "quote_source_end": 8859,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 8297,
+          "normalized_end": 8587,
+          "source_start": 8569,
+          "source_end": 8859,
+          "text": "O segundo projeto é intitulado 'Pesquisa e Desenvolvimento de Tecnologia de Self-Healing para Automatização de Testes de Software' e contempla o Prof. César Lincoln Cavalcante Mattos com uma bolsa de R$ 3.000,00 (três mil reais) por um período de 6 (seis) meses, iniciando em julho de 2020."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-d1c788c46b85dbde": {
+      "document": "41_07-2021_Ata_de_Reuniao.md",
+      "source_sha256": "73db2460d2b515c58cc692d99487c880652496a84a224b66a97d9119dff2bea7",
+      "audited": true,
+      "quote_source_start": 3138,
+      "quote_source_end": 3372,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2987,
+          "normalized_end": 3212,
+          "source_start": 3138,
+          "source_end": 3372,
+          "text": "o Colegiado decidiu formar uma comissão inicial formada pelos Professores Ângelo (presidente), César e Emanuele, com possibilidade de ingresso de mais membros, para colaborar com o DEMA na estruturação desse Projeto de Curso."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-92e2f38b2ff4ad08": {
+      "document": "41_07-2021_Ata_de_Reuniao.md",
+      "source_sha256": "73db2460d2b515c58cc692d99487c880652496a84a224b66a97d9119dff2bea7",
+      "audited": true,
+      "quote_source_start": 1556,
+      "quote_source_end": 1722,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 1493,
+          "normalized_end": 1659,
+          "source_start": 1556,
+          "source_end": 1722,
+          "text": "o Prof. Javam Machado apresentou Parecer favorável à Progressão Funcional do Prof. Ângelo Roncalli Alencar Brayner da classe de Professor Adjunto CI para Adjunto CII."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-535a606ca3d6974e": {
+      "document": "43_07-2022_Ata_de_Reuniao.md",
+      "source_sha256": "bf14a0472160e18ee11cf53ad7b98ebdcfed2a8af2ba23fd70a7668018bdd571",
+      "audited": true,
+      "quote_source_start": 1952,
+      "quote_source_end": 2050,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 1857,
+          "normalized_end": 1955,
+          "source_start": 1952,
+          "source_end": 2050,
+          "text": "Chapa 1: Prof. João Paulo do Vale Madeiro (Chefe) e Prof. Fernando Antonio Mota Trinta (Subchefe)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-e3295f23c068a43f": {
+      "document": "43_07-2022_Ata_de_Reuniao.md",
+      "source_sha256": "bf14a0472160e18ee11cf53ad7b98ebdcfed2a8af2ba23fd70a7668018bdd571",
+      "audited": true,
+      "quote_source_start": 12709,
+      "quote_source_end": 12850,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 11934,
+          "normalized_end": 12055,
+          "source_start": 12709,
+          "source_end": 12850,
+          "text": "2.uma bolsa de pesquisador sênior para o Prof. João Paulo do Vale no valor de R$ 5.000,00 (cinco mil reais) por 57 meses."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-392a9eccf451dbe9": {
+      "document": "44_07-2023_Ata_de_Reuniao.md",
+      "source_sha256": "95e176af6e6bedf43eecfbe23a64333254c4f2158978460c4aee222db5613f7d",
+      "audited": true,
+      "quote_source_start": 2998,
+      "quote_source_end": 3207,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2825,
+          "normalized_end": 3010,
+          "source_start": 2998,
+          "source_end": 3207,
+          "text": "o Prof. José Maria Monteiro apresentou Parecer favorável à Progressão Funcional do Prof. Ângelo Roncalli Alencar Brayner, da classe de Professor Adjunto CII para Professor Adjunto CIII."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-6cde56cdf7439629": {
+      "document": "44_07-2023_Ata_de_Reuniao.md",
+      "source_sha256": "95e176af6e6bedf43eecfbe23a64333254c4f2158978460c4aee222db5613f7d",
+      "audited": true,
+      "quote_source_start": 2375,
+      "quote_source_end": 2762,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2229,
+          "normalized_end": 2594,
+          "source_start": 2375,
+          "source_end": 2762,
+          "text": "o Prof. Ângelo Brayner sugeriu a seguinte proposta: 1. Adiar a decisão e fazer uma consulta aos setores competentes para saber se o Curso segue as DCNs. Paralelo a isso, fazer um levantamento da carga horária dos professores (disciplinas obrigatórias e opcionais) por quatro (4) semestres seguidos, visando analisar a possibilidade de oferta da referida disciplina."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-5e1fe789fc33d4e4": {
+      "document": "45_07-2024_Ata_de_Reuniao.md",
+      "source_sha256": "09d977be45c3327a6847d0ff2acc439120d77cffe3bc315dd909bdc5e2c6ffbd",
+      "audited": true,
+      "quote_source_start": 8135,
+      "quote_source_end": 8229,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 7752,
+          "normalized_end": 7844,
+          "source_start": 8135,
+          "source_end": 8229,
+          "text": "O Prof. Javam Machado se comprometeu em pintar novamente a sala e deixá-la própria para uso."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-9eaab0c62f3a8e75": {
+      "document": "45_07-2024_Ata_de_Reuniao.md",
+      "source_sha256": "09d977be45c3327a6847d0ff2acc439120d77cffe3bc315dd909bdc5e2c6ffbd",
+      "audited": true,
+      "quote_source_start": 11281,
+      "quote_source_end": 11508,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 10740,
+          "normalized_end": 10947,
+          "source_start": 11281,
+          "source_end": 11508,
+          "text": "o Prof. Javam Machado solicitou afastamento do país com o objetivo de realizar missão científica no AT&T - LabsResearch (Projeto Capes/PrInt), em New York - USA, durante o período de 01/09/2024 a 30/09/2024."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-475502d557ea17af": {
+      "document": "22_04-2021_Ata_de_Reuniao.md",
+      "source_sha256": "5d612279636e4027edc8c42467a2a5ff0953009d86e21b2e870d44227d75a2b1",
+      "audited": true,
+      "quote_source_start": 2686,
+      "quote_source_end": 2838,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2545,
+          "normalized_end": 2687,
+          "source_start": 2686,
+          "source_end": 2838,
+          "text": "5. Joseane Oliveira Vale Paiva (mestranda) no valor de R$ 2.250,00 (dois mil, duzentos e cinquenta reais), todas elas com duração de 10 meses."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-a1272223119c0971": {
+      "document": "23_04-2022_Ata_de_Reuniao.md",
+      "source_sha256": "eb14372e0db8c6230d7d6c2ebac749d902ce53c2977eccb1fb36c1a87e690d45",
+      "audited": true,
+      "quote_source_start": 4610,
+      "quote_source_end": 4920,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4357,
+          "normalized_end": 4654,
+          "source_start": 4610,
+          "source_end": 4920,
+          "text": "O Prof. Miguel Franklin relatou a bolsa de pesquisa, vinculada ao Projeto \"DELL Scope Management Tool PHASE II\" (Processo SEI: 23067.001166/2022-98), destinada ao aluno de doutorado, Pedro Almir Martins de Oliveira, no valor de R$ 2.000,00 (dois mil reais), por 11 meses (a partir de abril/ 2022)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-5a5139e32b8c5151": {
+      "document": "24_04-2023_Ata_de_Reuniao.md",
+      "source_sha256": "cce82636f36df0449aafef24ddc6bf133abdb3afcf61f1dc34c389ce669e7d15",
+      "audited": true,
+      "quote_source_start": 5637,
+      "quote_source_end": 6107,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5312,
+          "normalized_end": 5782,
+          "source_start": 5637,
+          "source_end": 6107,
+          "text": "o Prof. Lincoln Rocha relatou o Projeto de Pesquisa intitulado \"LDEC - Lenovo Diagnostics Evolution Chatbot\", convênio entre a UFC e a empresa Lenovo, sob a coordenação do Prof. Javam Machado e com a participação de outros docentes deste departamento. O orçamento total do projeto é no valor de R$ 10.840.158,56 (dez milhões, oitocentos e quarenta mil, cento e cinquenta e oito reais e cinquenta e seis centavos), durante o período de 18 meses (01/07/2023 a 31/12/2024)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-341a9e833a6b3ba3": {
+      "document": "26_04-2025_Ata_de_Reuniao.md",
+      "source_sha256": "22ec754c515d356e1a82fd8b9e87c61d818e42f36fac05a7c6b64eb95e761f46",
+      "audited": true,
+      "quote_source_start": 5788,
+      "quote_source_end": 6419,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5776,
+          "normalized_end": 6407,
+          "source_start": 5788,
+          "source_end": 6419,
+          "text": "7ª Matéria: Aprovação do Projeto de Pesquisa 'Wise Control: Plataforma Inteligente para Controle de Acesso'. Em seguida, o Prof. Lincoln Rocha relatou o Projeto de Pesquisa intitulado: 'Wise Control: Plataforma Inteligente para Controle de Acesso' (Processo SEI n° 23067.015773/2025-88), sob a coordenação do Prof. Paulo Rego, a ser formalizado entre a EMBRAPII, SEBRAE, Data Wise e a UFC, com a interveniência da Fundação de Apoio FASTEF. Esse projeto terá a duração de Maio/2025 a Abril/2026 (12 meses), com orçamento financeiro estimado em R$ 775.554,00 (setecentos e setenta e cinco mil, quinhentos e cinquenta e quatro reais)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-7e9032192442f4f0": {
+      "document": "27_05-2020_Ata_de_Reuniao.md",
+      "source_sha256": "0e0240bff8e3012e69576817bd53d0e921167fc1da61ded212b22382b5158801",
+      "audited": true,
+      "quote_source_start": 3807,
+      "quote_source_end": 3959,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 3626,
+          "normalized_end": 3774,
+          "source_start": 3807,
+          "source_end": 3959,
+          "text": "solicitação de licença para trato de interesses particulares por três anos a partir de 01/07/2020 da servidora técnico-administrativa Rosely Araújo."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-7893d28db82f2013": {
+      "document": "28_05-2021_Ata_de_Reuniao.md",
+      "source_sha256": "1b57d344260d24f742a85ef6fe768a0f2a5289eb1f0bcf0630540d952f29515b",
+      "audited": true,
+      "quote_source_start": 2899,
+      "quote_source_end": 3178,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2797,
+          "normalized_end": 3060,
+          "source_start": 2899,
+          "source_end": 3178,
+          "text": "pedido de renovação do afastamento parcial do servidor Daniel Ribeiro Matos, no período de 10/05/2021 a 02/09/2021, com a finalidade de dar sequência a Curso de Doutorado em Ciência da Computação junto ao Programa de Pós-Graduação em Ciência da Computação da UFC."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-1769433443c71584": {
+      "document": "29_05-2022_Ata_de_Reuniao.md",
+      "source_sha256": "a04338cb97197a4971ea9f04778552a221ef01342c621591692e2814a7b4af34",
+      "audited": true,
+      "quote_source_start": 7190,
+      "quote_source_end": 7536,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 6857,
+          "normalized_end": 7176,
+          "source_start": 7190,
+          "source_end": 7536,
+          "text": "o Coordenador do Curso de Engenharia Metalúrgica, Prof. Marcelo Ferreira Motta, solicitou a anuência deste Departamento em ofertar as disciplinas para o mencionado curso, quais sejam: Cálculo Numérico, 64h, obrigatória; e Programação Computacional para Engenharia, 64h, obrigatória, (Processo SEI 23067.023636/2022-74)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-08ede59e7d9ecdb6": {
+      "document": "30_05-2023_Ata_de_Reuniao.md",
+      "source_sha256": "9bcf193d73cfca8f0ac3e3aadb68088a8799ce3e3ca442e1a90f2418134a6ba6",
+      "audited": true,
+      "quote_source_start": 9868,
+      "quote_source_end": 10245,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 9543,
+          "normalized_end": 9920,
+          "source_start": 9868,
+          "source_end": 10245,
+          "text": "Proposta: Este Departamento adotará como prática interna, a partir de agora, para os afastamentos a partir de 15 dias, que os docentes interessados deverão comunicar esses afastamentos à Chefia do Departamento, com antecedência mínima de três dias à data da reunião em que o afastamento será votado, que indicará um relator pertencente à Unidade Curricular de suas disciplinas."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-f3745488537c02f6": {
+      "document": "31_05-2024_Ata_de_Reuniao.md",
+      "source_sha256": "0525db4ec4091a500404170371bc85c95c008b23b3e2caedcc6fa97ea89ba069",
+      "audited": true,
+      "quote_source_start": 7814,
+      "quote_source_end": 8043,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 7439,
+          "normalized_end": 7668,
+          "source_start": 7814,
+          "source_end": 8043,
+          "text": "a Profa. Valéria Lelli relatou o 'II Workshop de Testes de Segurança do GREat', ação de extensão do Projeto 'Fábrica de Testes de Segurança', sob a coordenação da Profa Rossana Andrade, que realizar-se-á nos dias 09 e 10/05/2024."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-f0d5f7674370cc83": {
+      "document": "32_05-2025_Ata_de_Reuniao.md",
+      "source_sha256": "a68f53d1b644ae8ce9cc65cc9c2d719c2e0ae0dee2c2b65b34f5b296e3031dfe",
+      "audited": true,
+      "quote_source_start": 15016,
+      "quote_source_end": 15779,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 14153,
+          "normalized_end": 14911,
+          "source_start": 15016,
+          "source_end": 15779,
+          "text": "13ª Matéria: Aprovação de Aditivo do Projeto LTAD: Lenovo ThinksmArt office Diagnostics . O Prof. Joaquim Bento relatou o Termo Aditivo ao projeto de pesquisa intitulado 'LTAD: Lenovo ThinksmArt office Diagnostics ', celebrado entre a UFC e a Lenovo Tecnologia Brasil LTDA, sob a coordenação do Prof. José Maria Monteiro, por meio do qual se pretende: 1. construir uma PoC (Proof of Concept) que realize o diagnóstico de hardware em dispositivos de automatização de escritórios; 2. alterar a vigência (acréscimo), ficando o novo período de 01/08/2025 a 31/03/2027; 2. alterar os valores por acréscimo; passando para um orçamento total de R$ 5.853.275,80 (cinco milhões, oitocentos e cinquenta e três mil, duzentos e setenta e cinco reais e oitenta centavos)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-6b8c42284ab58125": {
+      "document": "33_06-2020_Ata_de_Reuniao.md",
+      "source_sha256": "7c7f0473dfd9c3a4aa7d33226c66b76b6a3bbc8aedf3a5a17ad2474a3c7cb85e",
+      "audited": true,
+      "quote_source_start": 6761,
+      "quote_source_end": 6975,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 6452,
+          "normalized_end": 6665,
+          "source_start": 6761,
+          "source_end": 6975,
+          "text": "2. O projeto intitulado 'Interlocks Audit Tool', com duração de 6 meses, com um orçamento total de R$ 459.468,24 (quatrocentos e cinquenta e nove mil, quatrocentos e sessenta oito reais e vinte e quatro centavos)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-a22b3dd81cb45567": {
+      "document": "34_06-2021_Ata_de_Reuniao.md",
+      "source_sha256": "1f6d24de8c2b5fb52174b01a5d7f247ab5276a9bb2fa7729d9104e4fa84b1db4",
+      "audited": true,
+      "quote_source_start": 2397,
+      "quote_source_end": 2760,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2315,
+          "normalized_end": 2675,
+          "source_start": 2397,
+          "source_end": 2760,
+          "text": "a Profa. Ana Karolinna Maia informou que submeteu o Projeto \"Disjoint Paths with 2-Congestion in Digraphs \" ao Programa 'L'ORÉAL-UNESCO-ABC Para Mulheres na Ciência 2021', na área de Matemática, e que precisou de uma Declaração de anuência do Departamento de Computação para concorrer ao prêmio no valor de R$ 50.000,00 (cinquenta mil) para executar o projeto."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-b136ffda0ef7654a": {
+      "document": "35_06-2022_Ata_de_Reuniao.md",
+      "source_sha256": "904af04c63cb979a824e611247d0d827bb71fa8f80db6fd0f20f6aff25dda2f0",
+      "audited": true,
+      "quote_source_start": 3861,
+      "quote_source_end": 4158,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 3637,
+          "normalized_end": 3920,
+          "source_start": 3861,
+          "source_end": 4158,
+          "text": "o Prof. Pablo, na qualidade de vice-coordenador do curso, solicitou a colaboração dos docentes na atualização dos Planos de Ensino para o Novo PPC do Curso de Bacharelado em Ciência da Computação. Continuou informando que o prazo para o fechamento dessa atividade é o dia 17/06/2022."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-5d6953de48c2464f": {
+      "document": "37_06-2024_Ata_de_Reuniao.md",
+      "source_sha256": "bcad54d00c5a2dfe781bcb8d44b5347b287d56c85d59df1b386fd766e57dc8e9",
+      "audited": true,
+      "quote_source_start": 5986,
+      "quote_source_end": 6720,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5626,
+          "normalized_end": 6331,
+          "source_start": 5986,
+          "source_end": 6720,
+          "text": "o Prof. José Maria Monteiro relatou o Projeto de Pesquisa intitulado \"ReArte: Estratégias e Soluções Digitais para a Plataforma Rede das Artes\", convênio entre a UFC e a Fundação Nacional de Artes (Funarte), sob a coordenação do Prof. Angelo Brayner. O objetivo deste projeto é a qualificação das Políticas para as Artes no Brasil, através da implementação eficaz de soluções digitais, como o mapa das Artes, para comunicação, circulação, transparência e avaliação de projetos financiados pelo Programa de Difusão Nacional da Funarte. O orçamento total do projeto é no valor de R$ 2.004.390,00 (dois milhões, quatro mil, trezentos e noventa reais), durante o período de 01/08/2024 a 31/07/2025 (12 meses)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-5b3f2e8bb144934b": {
+      "document": "39_06-2025_Ata_de_Reuniao.md",
+      "source_sha256": "01f237ec62580692271b7ee4be8ac12424f36ee85b52b7ca3d81b055502bb06c",
+      "audited": true,
+      "quote_source_start": 2431,
+      "quote_source_end": 3242,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2420,
+          "normalized_end": 3231,
+          "source_start": 2431,
+          "source_end": 3242,
+          "text": "3ª Matéria: Homologação de ad referendum : Termo Aditivo a Projeto Dell dos Professores Wendley Souza e Rossana Andrade. Em seguida, o Prof. Pablo Mayckon informou que esse Aditivo alterou o nome, valor orçamentário e duração do projeto. De acordo com esse Termo Aditivo, constatouse a necessidade de adequação no escopo do projeto originalmente intitulado ' Sales CRM Performance Improvements' , passando a ser denominado: ' Inventory and Logistics Modernization'. Outras alterações aconteceram, a saber: 1.duração: Passou de 12 meses para 13 meses; 2. orçamento: Valor do projeto R$ 957.783,13 (novecentos e cinquenta e sete mil, setecentos e oitenta e três reais e treze centavos) para Valor do projeto R$ 2.422.401,09 (dois milhões, quatrocentos e vinte e dois mil, quatrocentos e um reais e nove centavos)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-fc321318310605a2": {
+      "document": "40_07-2020_Ata_de_Reuniao.md",
+      "source_sha256": "d99a03e00a6da9708b15211ed0774505ba2225194d99140df71aeed948d5f811",
+      "audited": true,
+      "quote_source_start": 5277,
+      "quote_source_end": 5572,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5081,
+          "normalized_end": 5361,
+          "source_start": 5277,
+          "source_end": 5572,
+          "text": "uma bolsa de pesquisa para o aluno de mestrado Antônio Diogo Forte Martins, no valor de R$1.600,00 (mil e seiscentos reais) por um período de 6 (seis) meses iniciando em julho de 2020. A bolsa de pesquisa é vinculada ao projeto Lenovo Chatbot, coordenado pelo Prof. Javam Machado."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-a57bffce296acd1e": {
+      "document": "41_07-2021_Ata_de_Reuniao.md",
+      "source_sha256": "73db2460d2b515c58cc692d99487c880652496a84a224b66a97d9119dff2bea7",
+      "audited": true,
+      "quote_source_start": 5988,
+      "quote_source_end": 6578,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5712,
+          "normalized_end": 6284,
+          "source_start": 5988,
+          "source_end": 6578,
+          "text": "uma alteração no montante e tempo de duração do Projeto de Pesquisa: 'eHealth-Risk: Smart Health Risk Monitoring and Detection System Solution for Ambient Assisted Living (AAL) using Internet of Things Devices', sob coordenação da Profa. Rossana Andrade. Esse projeto já havia sido aprovado em reunião de Departamento anteriormente, passando do valor total de R$ 512.784,21 (quinhentos e doze mil, setecentos e oitenta e quatro reais e vinte e um centavos) para R$ 794.283,85 (setecentos e noventa e quatro mil, duzentos e oitenta e três reais e oitenta e cinco centavos)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-34e7479661726b46": {
+      "document": "43_07-2022_Ata_de_Reuniao.md",
+      "source_sha256": "bf14a0472160e18ee11cf53ad7b98ebdcfed2a8af2ba23fd70a7668018bdd571",
+      "audited": true,
+      "quote_source_start": 10298,
+      "quote_source_end": 10568,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 9703,
+          "normalized_end": 9958,
+          "source_start": 10298,
+          "source_end": 10568,
+          "text": "bolsa de inovação da aluna Lívia Iorrana Jucá Eugênio, que foi convocada para a Residência em Segurança da Informação (UFC/Samsung/SiDi), em substituição a um aluno desistente. A bolsa será no valor de 2.500,00 (dois mil e quinhentos reais), por 14 meses."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-5b36b044d731bdf4": {
+      "document": "44_07-2023_Ata_de_Reuniao.md",
+      "source_sha256": "95e176af6e6bedf43eecfbe23a64333254c4f2158978460c4aee222db5613f7d",
+      "audited": true,
+      "quote_source_start": 2085,
+      "quote_source_end": 2355,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 1966,
+          "normalized_end": 2212,
+          "source_start": 2085,
+          "source_end": 2355,
+          "text": "essa disciplina é obrigatória para o Curso de Engenharia de Alimentos em atendimento às diretrizes curriculares atualmente vigentes e que serão duas ofertas anuais com 50 vagas por semestre para cada turma, sendo a previsão de início para 2024/1."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-964d956b2bd817bb": {
+      "document": "45_07-2024_Ata_de_Reuniao.md",
+      "source_sha256": "09d977be45c3327a6847d0ff2acc439120d77cffe3bc315dd909bdc5e2c6ffbd",
+      "audited": true,
+      "quote_source_start": 4687,
+      "quote_source_end": 5041,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4464,
+          "normalized_end": 4787,
+          "source_start": 4687,
+          "source_end": 5041,
+          "text": "o Prof. Paulo Rego relatou a aprovação da chefia, por ad referendum, à implementação de bolsa de doutorado para Francisco Victor da Silva Pinheiro, vinculada ao Projeto 'Plataforma de Comunicação Segura: ABIN Connect', no valor de R$ 3.100,00 (três mil e cem reais), durante o período de 12 meses (julho/2024 a junho/2025)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-73a3c35d9689b3a5": {
+      "document": "46_07-2025_Ata_de_Reuniao.md",
+      "source_sha256": "5f37b8abb639c9b1e9c9a14569c6cdb5dd7fa20351f5f7d066be99712b4e534b",
+      "audited": true,
+      "quote_source_start": 4417,
+      "quote_source_end": 5556,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4405,
+          "normalized_end": 5544,
+          "source_start": 4417,
+          "source_end": 5556,
+          "text": "4ª Matéria: Homologação de ad referendum : Participação do Prof. Javam Machado em Projeto com o Departamento de Administração. Em seguida, o Prof. Pablo Mayckon informou que o Prof. Javam Machado havia solicitado aprovação de sua participação no projeto 'Customização de LLMs Open-Source para Automação de Processos: Projeto do Kunumi Lab UFC', coordenado pelo professor Carlos de Oliveira Caminha Neto do Departamento de Administração da FEAAC. Esse projeto possui duração de 12 meses, nos termos do processo 23067.015424/2025-66. Na ocasião, o Prof. Javam Machado esclareceu suas atividades na bolsa desse projeto, ao passo que o chefe explicou que havia entendido que se tratava apenas da aprovação da participação. Dessa forma, o chefe decidiu aprovar o ad referendum dado e, em seguida, aprovar a bolsa do prof. Javam. Assim sendo, o Colegiado aprovou a participação do Prof. Javam Machado nesse Projeto. 5ª Matéria: Aprovação de bolsa do Prof. Javam Machado no Projeto com a Administração. O prof. Javam Machado informou que a bolsa está vinculada ao projeto acima mencionado, no valor de R$ 4.000,00 (quatro mil reais) por 12 meses."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-02692abe7c5aab83": {
+      "document": "47_08-2020_Ata_de_Reuniao.md",
+      "source_sha256": "01c1e0b9e701ce0968a918dccce731ea2157340091731f25630f6dde0a6e7dbc",
+      "audited": true,
+      "quote_source_start": 4591,
+      "quote_source_end": 4991,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4368,
+          "normalized_end": 4762,
+          "source_start": 4591,
+          "source_end": 4991,
+          "text": "a Profa. Emanuele Marques informou sobre a alteração no valor de sua bolsa de coordenadora do projeto intitulado: 'Pesquisa e desenvolvimento de tecnologia para automatização do processo de coleta de métricas de testes de software', em parceria com a empresa Dell Computadores do Brasil LTDA, com duração de 9 meses; que mudou de R$ 5.000,00 (cinco mil reais) para R$ 6.000,00 (seis mil reais)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-7991f559edc29004": {
+      "document": "48_08-2021_Ata_de_Reuniao.md",
+      "source_sha256": "16625620d6b8e98724bcfbee716fbbe64f71f1459cc7b7eb96006dfb00f735cf",
+      "audited": true,
+      "quote_source_start": 6845,
+      "quote_source_end": 7066,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 6531,
+          "normalized_end": 6738,
+          "source_start": 6845,
+          "source_end": 7066,
+          "text": "uma bolsa de pesquisador Sênior para o Prof. Paulo Rego em projeto na UECE, intitulado \"Brazil ID\", no valor de R$ 3.060,00 (três mil e sessenta reais), por um período de 7 meses (julho/2021 a janeiro/2022)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-fe65a2a87f7a07df": {
+      "document": "50_08-2023_Ata_de_Reuniao.md",
+      "source_sha256": "8b650e6ddb2f4d10e572dcfee69a5ea79e4094628e3aa6800df5344e8c2e7882",
+      "audited": true,
+      "quote_source_start": 7927,
+      "quote_source_end": 8283,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 7527,
+          "normalized_end": 7855,
+          "source_start": 7927,
+          "source_end": 8283,
+          "text": "o Prof. Lincoln Rocha relatou a extensão da bolsa do Prof. Fernando Trinta, vinculada ao Projeto de Pesquisa e Desenvolvimento de uma Ferramenta de Gerenciamento e Visualização de Fluxos de Resolução de Problemas - Guided Troubleshooting Tool, no valor de R$ 5.000,00 (cinco mil reais), no período de agosto/23 a fevereiro/2024."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-16cb6a331d82e34e": {
+      "document": "51_08-2024_Ata_de_Reuniao.md",
+      "source_sha256": "e8be1f6c9b4c13b9f2257c847e799b3610870445f100ac81250601c3aa677151",
+      "audited": true,
+      "quote_source_start": 5924,
+      "quote_source_end": 6569,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5636,
+          "normalized_end": 6231,
+          "source_start": 5924,
+          "source_end": 6569,
+          "text": "o Prof. João Paulo Madeiro relatou a renovação de bolsa de pesquisa destinada ao Prof. Joaquim Bento, vinculada ao Projeto de Pesquisa intitulado: 'Disponibilizar gerador de malhas não estruturadas 3D para simulação de reservatórios e integrar soluções disponibilizadas com outras plataformas de simulação/gerador e simulador composicional baseado em malhas não estruturadas', órgão fomentador: Petrobrás, projeto desenvolvido no Departamento de Engenharia Metalúrgica. A bolsa terá a duração de sete meses (01/08/2024 a 28/02/2025), no valor de R$ 3.520,00 (três mil, quinhentos e vinte reais)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-504e98eca9b44a42": {
+      "document": "52_08-2025_Ata_de_Reuniao.md",
+      "source_sha256": "a9e0b57d82f0b67dadb15a2a7ba1447931a7e3803f3be4f35dbebcd944911c01",
+      "audited": true,
+      "quote_source_start": 5401,
+      "quote_source_end": 5744,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5386,
+          "normalized_end": 5729,
+          "source_start": 5401,
+          "source_end": 5744,
+          "text": "8ª Matéria: Bolsa para o Prof. José Maria como Coordenador do Projeto LTAD - Lenovo (Processo: 23067.027992/2024-29). Logo após, o Prof. José Maria Monteiro informou que trata-se de uma renovação da bolsa de pesquisa que está vinculada ao projeto acima mencionado, no valor de R$ 9.000,00 (nove mil reais) por 20 meses a partir de agosto/2025."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-1b07cae17d53d13f": {
+      "document": "54_09-2021_Ata_de_Reuniao.md",
+      "source_sha256": "b168a7c8ff0cf6b6fcf700c10ff1b11c18cf2fccde4bb6ba4a842d944ac13d60",
+      "audited": true,
+      "quote_source_start": 5630,
+      "quote_source_end": 6072,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5411,
+          "normalized_end": 5853,
+          "source_start": 5630,
+          "source_end": 6072,
+          "text": "o Prof. João Paulo Pordeus relatou o pedido de bolsa de pesquisa para a profa. Emanuele Santos, durante o período de 09/2021 a 01/2022, no valor de R$ 4.000,00 (quatro mil reais), vinculada ao Projeto de Pesquisa intitulada: Pesquisa e Desenvolvimento de Tecnologia Baseada em Inteligência Artificial para Melhoria de Reconexões de Atendimento de Clientes na Plataforma de Chatbot da Dell Technologies, sob coordenação do Prof. Lincoln Rocha."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-14446ddfd033db5c": {
+      "document": "55_09-2022_Ata_de_Reuniao.md",
+      "source_sha256": "02f75c6cbd031e04fa893518f78886b260ca5ff8f45b6ddf725b82bf2bddfe04",
+      "audited": true,
+      "quote_source_start": 5088,
+      "quote_source_end": 5400,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4912,
+          "normalized_end": 5206,
+          "source_start": 5088,
+          "source_end": 5400,
+          "text": "as bolsas de pesquisa vinculadas ao Projeto de P&D intitulado: 'AI4Wellness', sob coordenação do Prof. José Antonio Macedo, convênio celebrado entre a UFC e a Samsung, a saber: 1.uma bolsa de pesquisa para o Prof. César Lincoln Cavalcante no valor de R$ 5.000,00 (cinco mil reais) por 56 meses;"
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-7ce49775a1653cdb": {
+      "document": "62_10-2020_Ata_de_Reuniao.md",
+      "source_sha256": "565a64d2cf4d5eef617969fb65e1c1de10ac5dd17f58f0c34547b35926ef9cb2",
+      "audited": true,
+      "quote_source_start": 1794,
+      "quote_source_end": 2226,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 1724,
+          "normalized_end": 2129,
+          "source_start": 1794,
+          "source_end": 2226,
+          "text": "a Profa. Emanuele Santos informou que houve alteração no valor de sua bolsa de coordenação no projeto de pesquisa intitulado: 'Pesquisa e desenvolvimento de tecnologia para automatização do processo de coleta de métricas de testes de software', em parceria com a empresa Dell, devido ao atraso na implementação da mesma, passando do valor de R$ 6.000,00 (seis mil reais) para R$ 7.000,00 (sete mil reais)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-63e230b41de6ea3c": {
+      "document": "63_10-2021_Ata_de_Reuniao.md",
+      "source_sha256": "ebf67dbe1d8f4fd66e208de96c828eac24fe65fa04ca06363cec82221d1800f4",
+      "audited": true,
+      "quote_source_start": 2776,
+      "quote_source_end": 3695,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2635,
+          "normalized_end": 3510,
+          "source_start": 2776,
+          "source_end": 3695,
+          "text": "o Prof. Joaquim Bento relatou o Projeto de fomento à inovação financiado através da Lei de Informática intitulado \"Projeto Connor: Residência em Segurança Cibernética\", sob coordenação do Prof. Javam Machado, convênio entre a UFC e a Lenovo Tecnologia Brasil Ltda com a interveniência da Fundação Cearense de Pesquisa e Cultura. O projeto prevê: 1. Doze bolsas para professores do Departamento de Computação da UFC; 2. Duas bolsas para professores da UFC Campus de Quixadá; 3. Uma bolsa para professor do Instituto UFC Virtual; 4. Uma bolsa para professor da USP; 5. Nove bolsas para alunos de pós-graduação da UFC; 6. Dez bolsas para alunos da residência. O orçamento total do projeto é no valor de R$ 2.655.956,25 (dois milhões, seiscentos e cinquenta e cinco mil, novecentos e cinquenta e seis reais e vinte e cinco centavos), durante o período de 01/12/2021 a 31/01/2024."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-073572b8455a2c94": {
+      "document": "64_10-2022_Ata_de_Reuniao.md",
+      "source_sha256": "15151a88a307fb1ac0e2acc4e411b82f5044e8e875a6b3b80eedf6eb966062ad",
+      "audited": true,
+      "quote_source_start": 1568,
+      "quote_source_end": 2198,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 1464,
+          "normalized_end": 2078,
+          "source_start": 1568,
+          "source_end": 2198,
+          "text": "o Prof. João Paulo Pordeus relatou o Termo Aditivo do projeto 'Pesquisa e o desenvolvimento de solução para gestão sobre as áreas de cobertura de serviços da Dell por meio de múltiplos serviços de provimento de mapas', coordenado pelo Prof. Fernando Trinta. Esse projeto tinha previsão de término em 31/01/2023, mas a empresa solicitou a extensão de dois meses para finalizar o projeto de forma completa, com algumas funcionalidades que foram licitadas ao longo deste último ano. Essa extensão terá um custo de R$ 264.231,27 (duzentos e sessenta e quatro mil, duzentos e trinta e um reais e vinte e sete centavos)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-43996fa4ba9365d1": {
+      "document": "66_10-2023_Ata_de_Reuniao.md",
+      "source_sha256": "3fff08c2a8f9cdcf4d2df44c09dd09514000b8d71fa517d563dad353f054666e",
+      "audited": true,
+      "quote_source_start": 7367,
+      "quote_source_end": 7750,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 7029,
+          "normalized_end": 7403,
+          "source_start": 7367,
+          "source_end": 7750,
+          "text": "o Prof. Paulo Rego relatou o projeto de pesquisa intitulado \"Desenvolvimento de uma Engine de Processamento de Vídeo para Detecção de Eventos de Trânsito\", convênio EMBRAPII/UFC, sob sua coordenação, com início previsto para dezembro/2023 e duração de oito (08) meses. O mencionado projeto terá orçamento total no valor de R$ 308.020,00 (trezentos e oito mil e vinte reais)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-5413c452c4ce289a": {
+      "document": "67_10-2025_Ata_de_Reuniao.md",
+      "source_sha256": "0d640674521fafd951a42f690ac6a1b0609f808721f1a871273b93c41e311f3a",
+      "audited": true,
+      "quote_source_start": 4550,
+      "quote_source_end": 5156,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4535,
+          "normalized_end": 5141,
+          "source_start": 4550,
+          "source_end": 5156,
+          "text": "5ª Matéria: Homologação de a d referendum : Bolsas para Profs. Emanuel e César em projeto de Inovação. Em seguida, o Prof. Pablo Mayckon relatou que aprovou ad referendum a participação dos professores César Lincoln e Emanuel Bezerra no projeto \"Copiloto de Gestão de Vulnerabilidades com IA\", bem como o recebimento de bolsas, durante o período de 01/10/2025 a 01/06/2026 (vigência do projeto), para ambos, conforme segue: 1. Bolsa destinada ao Prof. César Lincoln no valor de R$ 6.000,00 (seis mil reais); 2. Bolsa destinada ao Prof. Emanuel Bezerra no valor de R$ 6.500,00 (seis mil e quinhentos reais)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-d86fac2a95da72ae": {
+      "document": "69_11-2021_Ata_de_Reuniao.md",
+      "source_sha256": "c8196dc42caf697b3623831e24acdffa0856bc4ed7138d36687602e94bad95f9",
+      "audited": true,
+      "quote_source_start": 4390,
+      "quote_source_end": 4678,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4216,
+          "normalized_end": 4504,
+          "source_start": 4390,
+          "source_end": 4678,
+          "text": "A primeira parte do Projeto intitulada: 'LDAR: Lenovo Diagnóstico para Arquitetura RISC Avançada', ficou com o orçamento total no valor de R$ 2.346.118,60 (dois milhões, trezentos e quarenta e seis mil, cento e dezoito reais e sessenta centavos), durante o período de jan/2022 a dez/2022."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-04357d07f7296792": {
+      "document": "56_09-2023_Ata_de_Reuniao.md",
+      "source_sha256": "b93c7353587e0f7514d0af3b77e9a018a4fe6bbc2af40610b3786ca1dc37b9b1",
+      "audited": true,
+      "quote_source_start": 2719,
+      "quote_source_end": 3074,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2536,
+          "normalized_end": 2857,
+          "source_start": 2719,
+          "source_end": 3074,
+          "text": "Na sequência, houve a 2a. votação e haviam duas propostas, a saber: Proposta 1: Sim, atende e temos interesse no servidor; e Proposta 2: Sim, atende e não temos interesse no servidor. A proposta 1 foi a vencedora com 14 (quatorze) votos, enquanto a proposta 2 obteve 4 (quatro) votos. Tivemos também 03 (três) abstenções."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-585f699993d1bc4d": {
+      "document": "57_09-2024_Ata_de_Reuniao.md",
+      "source_sha256": "64d269d0ab52da196ced2e9b6b66955c8205abddcf38b93eaab5798e5624500b",
+      "audited": true,
+      "quote_source_start": 9764,
+      "quote_source_end": 10367,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 9309,
+          "normalized_end": 9897,
+          "source_start": 9764,
+          "source_end": 10367,
+          "text": "8ª Matéria: Indicação de Comissão Julgadora para a seleção de Professor Substituto do Edital 78/2024 (https://progep.ufc.br/pt/edital-no-78-2024/). O chefe explicou a necessidade de se aprovar uma comissão julgadora, e informou que a comissão do concurso anterior, cuja vaga não havia sido preenchida, fora composta pelos docentes Pablo Mayckon, César Lincoln e Yuri Lenon. Colocada a matéria em discussão, foi proposta a mesma comissão julgadora do concurso anterior, composta pelos docentes Pablo Mayckon, César Lincoln e Yuri Lenon, tendo como secretário o professor Emanuel Rodrigues;"
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-f0d3dbf56dab8aa0": {
+      "document": "58_09-2024_Ata_de_Reuniao.pdf_Estraordina_ria.md",
+      "source_sha256": "5b145adf7a8d38e84351c0d37818b1b50e5732a84d07b2cf3d94c1ad8e71b1cb",
+      "audited": true,
+      "quote_source_start": 1979,
+      "quote_source_end": 2219,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 1874,
+          "normalized_end": 2106,
+          "source_start": 1979,
+          "source_end": 2219,
+          "text": "o certame contou com apenas um candidato inscrito, a saber, André Luís da Costa Mendonça, que foi aprovado em 1º lugar e indicado pela Banca Julgadora para o preenchimento da vaga de Professor Substituto, conforme Edital Nº 78/2024."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-e0ed0721e442d10d": {
+      "document": "59_09-2025_Ata_de_Reuniao.md",
+      "source_sha256": "1f4f4c1f3b30c391eb03cb3375a9b36aaa53c60e9217b2daff023799cc123eaa",
+      "audited": true,
+      "quote_source_start": 3658,
+      "quote_source_end": 4050,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 3643,
+          "normalized_end": 4035,
+          "source_start": 3658,
+          "source_end": 4050,
+          "text": "5ª Matéria: Alocação temporária das disciplinas do Professor Substituto em 2025/2. Em seguida, o Prof. Pablo Mayckon informou que houve a Seleção para Professor Substituto e que a homologação do resultado já saiu. O próximo passo é a contratação, que ele esperava que não demorasse muito, pois estava ministrando aulas para 3 disciplinas no momento, ainda havendo 2 disciplinas sem professor."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-adbe7af59116e831": {
+      "document": "61_09-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+      "source_sha256": "f0e347dd88500c510f1b73297ba796c2999e80b4f29d46559e11019be56113f2",
+      "audited": true,
+      "quote_source_start": 2447,
+      "quote_source_end": 2784,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2433,
+          "normalized_end": 2770,
+          "source_start": 2447,
+          "source_end": 2784,
+          "text": "apenas dois candidatos, ambos doutorandos do MDCC, fizeram suas inscrições e obtiveram indeferimento das mesmas, visto que deixaram de apresentar um documento obrigatório, segundo o edital, qual seja: f) documento de anuência do coordenador do curso e do orientador, no caso de candidato aluno de programa de pós-graduação stricto sensu,"
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-11f23c5128350d74": {
+      "document": "65_10-2023_Ata_de_Reuniao_Ezxtraordinaria.md",
+      "source_sha256": "abcdc788646fa68e722130c20c561d69cd1b7bdf66ae1f5cd5955781fdc42c98",
+      "audited": true,
+      "quote_source_start": 1301,
+      "quote_source_end": 1818,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 1225,
+          "normalized_end": 1730,
+          "source_start": 1301,
+          "source_end": 1818,
+          "text": "O Chefe inicia a discussão apresentando a ementa da disciplina Tecnologias digitais e Sociedade com carga horária de 64h e oferta semestral. A proposta inicial apresentada foi a adequação da ementa à disciplina CK0232 - Informática e sociedade, para que as turmas pudessem ser unidas. Porém, o Chefe explica que, devido a carga horária de Informática e sociedade ser apenas 32h, será necessário que a turma do curso de Ciências Biológicas tenha mais um dia de aula para completar a quantidade de créditos."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    }
+  }
+}

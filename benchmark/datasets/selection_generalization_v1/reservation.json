@@ -1,0 +1,19 @@
+{
+  "status": "prepared_not_evaluated",
+  "retrieval_calls": 0,
+  "questions": 30,
+  "families": 13,
+  "implementation_sha256_at_reservation": "0b511970a37ce48bb8fd1c793a530c29789cd84a55709745ae213d0d1fbb9a49",
+  "test_files_sha256": {
+    "annotation_drafts.json": "8a075cfaea7c8e4fcb02ac1ce661b9b0a86761d264b3d5c682ef8351992bcdc1",
+    "curation.py": "961dce888e90da7600eda22f29e5eac7b285899eb137c7664eb934120deca478",
+    "evidence.json": "fad67bf7e253371865b222aaee23060235f343a31abfa4903f9e97118cc26e11",
+    "evidence_v2_rules.json": "c3cecbc047b25620bd3e831de15f92a876a338d87a7d185da4d96106c955df3d",
+    "facts.json": "8ffd8068fe9cdf06a044128537ecc86b73afa8a84481cd02530e46e72792c678",
+    "questions.json": "42d3bc9f65961866a2c4cce789f76d270bf6999a731691bb9ef3e0da9daf7e73",
+    "source_audit.json": "8f962844354717e548a204188067cb69864ececbd94f3a869e9bb10513000c18"
+  },
+  "split_manifest_sha256": "dce866fee78ae7b1e469296e29d2ba08e0e484f0b40b4e598b52cc593f378811",
+  "evaluation_gate": "require passing development_gate before searches; no eligible policy established yet",
+  "scope": "institutional meeting minutes only; no claim of transfer to other genres or domains"
+}

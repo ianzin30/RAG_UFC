@@ -1,0 +1,66 @@
+{
+  "reserved_families": [
+    "GF55",
+    "GF56",
+    "GF57",
+    "GF58",
+    "GF59",
+    "GF60",
+    "GF61",
+    "GF62",
+    "GF63",
+    "GF64",
+    "GF65",
+    "GF66",
+    "GF67"
+  ],
+  "previous_family_splits_sha256": "4f01bb128724f85add209214425309233fb3c385f1ae84e937fb9228e53a1519",
+  "inventory_sha256": "b26c98f9b6b8f28cd33658df825ffcf4f56df7c2d34c8f6751cd50a0c13457f1",
+  "selection": "all remaining families in inventory order; no retrieval-driven filtering",
+  "quotas": {
+    "multi-hop": 10,
+    "cross-document": 10,
+    "single-document factual": 10
+  },
+  "family_pairs": [
+    [
+      "GF55",
+      "GF56"
+    ],
+    [
+      "GF57",
+      "GF58"
+    ],
+    [
+      "GF59",
+      "GF60"
+    ],
+    [
+      "GF61",
+      "GF62"
+    ],
+    [
+      "GF63",
+      "GF64"
+    ],
+    [
+      "GF65",
+      "GF66"
+    ]
+  ],
+  "source_sha256": {
+    "70_11-2022_Ata_de_Reuniao.md": "9b632f908568b5b2c5aa0b2fee1186e0b2abd543c8fd6a9fad8773fb9d54cd3b",
+    "72_11-2023_Ata_de_Reuniao.md": "0098430b24e772119fd9ebbdeccf3fc759c41eaeab6af313f2d7346d7fb64a27",
+    "73_11-2024_Ata_de_Reuniao.md": "b4eba8f1e586436c94d4885b9511e427bdab380f46d40bb0586a7ddc2e228168",
+    "74_11-2025_Ata_de_Reuniao.md": "95ac5c1ca13aadbf1d8b2f969017c43ee597eb5a313ef3f6527bda7177dbeb77",
+    "75_11-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md": "f49fe9441f30b9019d811724a11cb0a604e51d887eb4410f5896c9d910f66949",
+    "76_11-2025_Ata_de_Reuniao.pdf_Extraordinaria.md": "c95d9714b9be301e62b7c44bc1f6a69135185f05c446f5d32be5f6d6249a09e8",
+    "77_11-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md": "5bbca3db56d76768e405476548aca3c7fb809cbf35ef2c44bbf7506e4721d0d3",
+    "78_12-2020_Ata_de_Reuniao.md": "b1db2cf36843be32bb6b990bc75b0a3869f9503e9f2d6ae5c5a02e5ab3609bf6",
+    "79_12-2021_Ata_de_Reuniao.md": "e94e9f6cb324ae453d76d29116bb39bf5153fb754341799eebf0f1c1feb071f5",
+    "80_12-2022_Ata_de_Reuniao.md": "a68233ff09832d42110d91f99be3a8ad48720f696642ad56c0523a3d65faacd6",
+    "81_12-2023_Ata_de_Reuniao.md": "ae7248e8a251b7a3f86ddb37a20a83f70f6f56ea00c38b90fe898993ac7f4ab6",
+    "83_12-2025_Ata_de_Reuniao.md": "f92e2191965108712f8363bc499aba03a0373f412989770df92366b3d6ae51b8",
+    "84_062022_Ata_de_Reuniao_Extraordinaria.md": "9b88cdf29018f696fed5e748ab8bc87f161e2b63ba7f682deeac7af3e26b1550"
+  }
+}

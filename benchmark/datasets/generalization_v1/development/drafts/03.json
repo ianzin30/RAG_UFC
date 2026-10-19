@@ -1,0 +1,42 @@
+{
+  "cases": [
+    {
+      "category": "multi-hop",
+      "question": "Who proposed the approval of the banca for Emanuel Bezerra Rodrigues' progression from adjunto II to adjunto III, and who was selected as a member of this banca?",
+      "expected_answer": "The proposal for the banca was made by the Chefe de Departamento, Prof. Fernando Trinta, and the members selected were Prof. José Neuman, Prof. Miguel Franklin, and Prof. Fernando Trinta.",
+      "field": "member_selection",
+      "bridge": "The Chefe de Departamento proposed the banca and selected the members, connecting the two quotes.",
+      "evidence": [
+        {
+          "document": "08_02-2021_Ata_de_Reuniao.md",
+          "quote": "O chefe solicitou por voluntários para compor a referida banca. Dessa forma, a banca final foi definida como Prof. José Neuman, presidente da banca, professores Miguel Franklin e Fernando Trinta. Como suplente foi escolhida a Profa. Rossana."
+        }
+      ]
+    },
+    {
+      "category": "single-document factual",
+      "question": "What is the value of the scholarship approved for Paulo Artur de Sousa Duarte, and what is the reason for extending his scholarship for one more month?",
+      "expected_answer": "The value of the scholarship is R$ 2,500,00 (two thousand five hundred reais), and the reason for extending it is to approve the extension of the time of the scholarship for one more month.",
+      "field": "scholarship_value",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "08_02-2021_Ata_de_Reuniao.md",
+          "quote": "O último ponto de pauta previsto foi a aprovação de bolsa para o aluno Paulo Artur de Sousa Duarte, vinculada ao projeto DELL Interlocks Audit Tool. A Profa. Rossana iniciou a pauta informando que a votação se refere a aprovação da extensão do tempo da bolsa por mais 01 mês. O valor da bolsa é de R$ 2.500,00 (dois mil e quinhentos reais)."
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4550,
+    "total_tokens": 5034,
+    "completion_tokens": 484,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": null
+  },
+  "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+  "latency_seconds": 18.173295290966053,
+  "source_sha256": {
+    "08_02-2021_Ata_de_Reuniao.md": "fe5e16281b51b904f931fda72a03830b2f1b4a3696f7edadcc51fdeb31649d7e"
+  }
+}

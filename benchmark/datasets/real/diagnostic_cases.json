@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "provider": "ufc",
+  "model": "phi4:latest",
+  "case_ids": [
+    "REAL-F01", "REAL-F03", "REAL-E03", "REAL-E05",
+    "REAL-C01", "REAL-C09", "REAL-H03", "REAL-H07",
+    "REAL-L07", "REAL-L08", "REAL-S01", "REAL-S06",
+    "REAL-T04", "REAL-T05", "REAL-U03", "REAL-U10",
+    "REAL-Q01", "REAL-Q07"
+  ],
+  "selection_reason": "Two cases per category; factual/entity lookup, scope comparison, dependent links, enumeration/numerical aggregation, summaries, PDF tables, missing fact/ambiguous scope, conversational resolution. Includes failures before and after retrieval in the frozen baseline.",
+  "expected_plan_intents": {
+    "REAL-F01": ["single_fact", "entity_lookup"],
+    "REAL-F03": ["single_fact"],
+    "REAL-E03": ["entity_lookup", "single_fact"],
+    "REAL-E05": ["entity_lookup", "single_fact"],
+    "REAL-C01": ["comparison", "cross_document"],
+    "REAL-C09": ["comparison", "cross_document"],
+    "REAL-H03": ["multi_hop"],
+    "REAL-H07": ["multi_hop", "cross_document"],
+    "REAL-L07": ["aggregation", "spreadsheet/table", "cross_document"],
+    "REAL-L08": ["list_extraction"],
+    "REAL-S01": ["summary"],
+    "REAL-S06": ["summary", "single_fact"],
+    "REAL-T04": ["spreadsheet/table", "aggregation"],
+    "REAL-T05": ["spreadsheet/table", "aggregation"],
+    "REAL-U03": ["single_fact", "unanswerable", "insufficient_scope"],
+    "REAL-U10": ["entity_lookup", "single_fact", "insufficient_scope"],
+    "REAL-Q01": ["entity_lookup", "single_fact"],
+    "REAL-Q07": ["single_fact", "entity_lookup"]
+  },
+  "gold_corrections": [],
+  "review": "All selected positive/context quotes and adjacent source text reviewed against local Markdown on 2026-10-03. Arithmetic checked separately: 10800+8400+1920=21120, printed 21200, difference80; 90779.76-84629.72=6150.04;27+21=48 allocations. No corrections found. Absence claim U03 requires whole-document review, not only its context quote. This is author review, not independent human validation."
+}

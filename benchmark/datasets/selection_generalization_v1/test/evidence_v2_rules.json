@@ -1,0 +1,852 @@
+{
+  "version": "evidence_v2",
+  "definition": "all explicit requirements at verified original positions; ambiguous source mappings receive no credit",
+  "anchors": {
+    "GF-7e1bcbf1bbf4d13f": {
+      "document": "70_11-2022_Ata_de_Reuniao.md",
+      "source_sha256": "9b632f908568b5b2c5aa0b2fee1186e0b2abd543c8fd6a9fad8773fb9d54cd3b",
+      "audited": true,
+      "quote_source_start": 1526,
+      "quote_source_end": 1707,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 1463,
+          "normalized_end": 1619,
+          "source_start": 1526,
+          "source_end": 1707,
+          "text": "o Prof. João Paulo Pordeus relatou o 3º Termo Aditivo ao projeto de P&D denominado 'LDE: Lenovo Diagnostics Evolution', coordenado pelo Prof. Javam Machado."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-06eed12d0e1eea35": {
+      "document": "70_11-2022_Ata_de_Reuniao.md",
+      "source_sha256": "9b632f908568b5b2c5aa0b2fee1186e0b2abd543c8fd6a9fad8773fb9d54cd3b",
+      "audited": true,
+      "quote_source_start": 5060,
+      "quote_source_end": 5869,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4841,
+          "normalized_end": 5583,
+          "source_start": 5060,
+          "source_end": 5869,
+          "text": "no Projeto intitulado: 'Uma Solução Inteligente para Visualização, Classificação e Predição de Desconexões Indesejadas Durante o Atendimento de Clientes na Plataforma de Chatbot da Dell', sob coordenação do Prof. Lincoln Rocha, Parceria: Dell Computadores do Brasil LTDA/ASTEF/UFC, durante o período de dezembro/2022 e janeiro/2023, a saber: 1.Bolsa do Prof. Lincoln Rocha - Mudança de R$ 7.000,00 (sete mil reais) para R$ 9.450,00 (nove mil, quatrocentos e cinquenta reais); 2. Bolsa do Prof. César Lincoln - Mudança de R$ 5.000,00 (cinco mil reais) para R$ 6.400,00 (seis mil e quatrocentos reais); 3. Bolsa do Prof. João Paulo Pordeus - Mudança de R$ 5.000,00 (cinco mil reais) para R$ 6.750,00 (seis mil, setecentos e cinquenta reais); 4."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-467b1d1a67576423": {
+      "document": "72_11-2023_Ata_de_Reuniao.md",
+      "source_sha256": "0098430b24e772119fd9ebbdeccf3fc759c41eaeab6af313f2d7346d7fb64a27",
+      "audited": true,
+      "quote_source_start": 11253,
+      "quote_source_end": 11417,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 10598,
+          "normalized_end": 10744,
+          "source_start": 11253,
+          "source_end": 11417,
+          "text": "projeto de extensão intitulado: 'Olimpíada Cearense de Informática (OCI)', sob a coordenação do Prof. Fernando Trinta, tutor do PET da Computação."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-026bd9b8ac45f843": {
+      "document": "72_11-2023_Ata_de_Reuniao.md",
+      "source_sha256": "0098430b24e772119fd9ebbdeccf3fc759c41eaeab6af313f2d7346d7fb64a27",
+      "audited": true,
+      "quote_source_start": 11748,
+      "quote_source_end": 11983,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 11067,
+          "normalized_end": 11293,
+          "source_start": 11748,
+          "source_end": 11983,
+          "text": "o projeto de extensão da Empresa Júnior do Curso de Ciência da Computação/UFC, sob coordenação do Prof. Fernando Trinta. A empresa júnior pode oferecer serviços de consultoria e soluções tecnológicas para as diversas empresas."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-7d974ed6fc2d2bed": {
+      "document": "73_11-2024_Ata_de_Reuniao.md",
+      "source_sha256": "b4eba8f1e586436c94d4885b9511e427bdab380f46d40bb0586a7ddc2e228168",
+      "audited": true,
+      "quote_source_start": 6878,
+      "quote_source_end": 6984,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 6551,
+          "normalized_end": 6656,
+          "source_start": 6878,
+          "source_end": 6984,
+          "text": "o Prof. Angelo Brayner sugeriu que esse tema fosse abordado novamente na próxima reunião deste Colegiado."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-085d4a266b83d689": {
+      "document": "73_11-2024_Ata_de_Reuniao.md",
+      "source_sha256": "b4eba8f1e586436c94d4885b9511e427bdab380f46d40bb0586a7ddc2e228168",
+      "audited": true,
+      "quote_source_start": 10321,
+      "quote_source_end": 10501,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 9816,
+          "normalized_end": 9990,
+          "source_start": 10321,
+          "source_end": 10501,
+          "text": "O Prof. Angelo Brayner relatou sua bolsa de coordenação, vinculada ao Projeto supracitado, no valor de R$ 11.500,00 (onze mil e quinhentos reais), por um período de 12 meses."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-423c5f51a223da93": {
+      "document": "74_11-2025_Ata_de_Reuniao.md",
+      "source_sha256": "95ac5c1ca13aadbf1d8b2f969017c43ee597eb5a313ef3f6527bda7177dbeb77",
+      "audited": true,
+      "quote_source_start": 7909,
+      "quote_source_end": 8009,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 7893,
+          "normalized_end": 7993,
+          "source_start": 7909,
+          "source_end": 8009,
+          "text": "A filmagem foi feita pela UFC Virtual por iniciativa do Prof. Fernando Trinta em parceria com o PET;"
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-dcf6e3c220a89615": {
+      "document": "74_11-2025_Ata_de_Reuniao.md",
+      "source_sha256": "95ac5c1ca13aadbf1d8b2f969017c43ee597eb5a313ef3f6527bda7177dbeb77",
+      "audited": true,
+      "quote_source_start": 18608,
+      "quote_source_end": 18918,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 18590,
+          "normalized_end": 18900,
+          "source_start": 18608,
+          "source_end": 18918,
+          "text": "o chefe relatou a bolsa vinculada ao projeto intitulado 'Pesquisa e desenvolvimento de sistema de integração, baseado em microsserviços, para soluções biométricas', destinada ao Prof. Fernando Trinta (Coordenador), no valor de R$ 3.000,00 (três mil reais), no período de dezembro/2025 até julho/2026 (8 meses)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-34b32d133525d7da": {
+      "document": "75_11-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+      "source_sha256": "f49fe9441f30b9019d811724a11cb0a604e51d887eb4410f5896c9d910f66949",
+      "audited": true,
+      "quote_source_start": 3399,
+      "quote_source_end": 3713,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 3384,
+          "normalized_end": 3698,
+          "source_start": 3399,
+          "source_end": 3713,
+          "text": "o Prof. José Maria agradeceu publicamente ao Prof. Victor que se empenhou para chegar a um consenso. Ele teve sensibilidade aguçada de ver a situação da área de Banco de Dados e conseguiu conversar com seu grupo que também compreendeu a situação. Finalizou afirmando que se há um consenso, se deve ao Prof. Victor."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-aa3f64b8b2136341": {
+      "document": "75_11-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+      "source_sha256": "f49fe9441f30b9019d811724a11cb0a604e51d887eb4410f5896c9d910f66949",
+      "audited": true,
+      "quote_source_start": 2135,
+      "quote_source_end": 2434,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2120,
+          "normalized_end": 2419,
+          "source_start": 2135,
+          "source_end": 2434,
+          "text": "o Prof. Victor considerou o que foi apresentado na reunião passada, tendo percebido duas visões: A primeira se refere a olhar a situação do curso de um modo geral; e a segunda é que ele defendeu a volta da vaga para Algoritmos, visto que, com a saída da Profa. Cláudia, está complicado para o grupo;"
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-540773a1b78c7154": {
+      "document": "76_11-2025_Ata_de_Reuniao.pdf_Extraordinaria.md",
+      "source_sha256": "c95d9714b9be301e62b7c44bc1f6a69135185f05c446f5d32be5f6d6249a09e8",
+      "audited": true,
+      "quote_source_start": 6576,
+      "quote_source_end": 6830,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 6561,
+          "normalized_end": 6815,
+          "source_start": 6576,
+          "source_end": 6830,
+          "text": "o Prof. Rudini argumentou que jamais ousaria dizer que, com a saída dos líderes de grupo, os mais antigos, como Javam, Creto ou Cláudia, as vagas não deveriam voltar para seus grupos de origem, pois imagina a grande falta que eles fariam aos seus grupos."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-f0f97770224aa365": {
+      "document": "76_11-2025_Ata_de_Reuniao.pdf_Extraordinaria.md",
+      "source_sha256": "c95d9714b9be301e62b7c44bc1f6a69135185f05c446f5d32be5f6d6249a09e8",
+      "audited": true,
+      "quote_source_start": 7628,
+      "quote_source_end": 7920,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 7613,
+          "normalized_end": 7905,
+          "source_start": 7628,
+          "source_end": 7920,
+          "text": "o Prof. Rudini relatou que se lembra da época e não foi que tomaram a vaga da Profa. Vânia, mas foi consenso do Colegiado de fortalecer a área de Inteligência Artificial que estava começando no Departamento. Sugeriu também a área de Teoria da Computação como setor de estudos para o concurso."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-17e769e86c46b2ab": {
+      "document": "77_11-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+      "source_sha256": "5bbca3db56d76768e405476548aca3c7fb809cbf35ef2c44bbf7506e4721d0d3",
+      "audited": true,
+      "quote_source_start": 5670,
+      "quote_source_end": 5997,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5655,
+          "normalized_end": 5982,
+          "source_start": 5670,
+          "source_end": 5997,
+          "text": "o Prof. João Paulo Pordeus fez um breve relato sobre o Prof. Alexandre. Informou que estudou com ele no Curso de Engenharia Elétrica e que ele, Alexandre, fora um dos melhores alunos da graduação. Sua formação (Graduação, Mestrado e Doutorado) foi feita na área de telecomunicações, com camadas de rede de mais baixa abstração."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-69e1ff2c51a38936": {
+      "document": "77_11-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+      "source_sha256": "5bbca3db56d76768e405476548aca3c7fb809cbf35ef2c44bbf7506e4721d0d3",
+      "audited": true,
+      "quote_source_start": 4681,
+      "quote_source_end": 4805,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4666,
+          "normalized_end": 4790,
+          "source_start": 4681,
+          "source_end": 4805,
+          "text": "E concluiu informando que, considerando sua área de atuação, esse docente poderá contribuir na pesquisa com o grupo do LSBD."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-318ab84b003d2f3d": {
+      "document": "78_12-2020_Ata_de_Reuniao.md",
+      "source_sha256": "b1db2cf36843be32bb6b990bc75b0a3869f9503e9f2d6ae5c5a02e5ab3609bf6",
+      "audited": true,
+      "quote_source_start": 4403,
+      "quote_source_end": 4835,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4138,
+          "normalized_end": 4556,
+          "source_start": 4403,
+          "source_end": 4835,
+          "text": "O quarto ponto de pauta foi a criação de banca de avaliação para Avaliação de Desempenho Final do Estágio Probatório (30 meses) do professor César Lincoln. O colegiado sugeriu como banca os seguintes professores: João Fernando Lima Alcântara (presidente), João Paulo Pordeus Gomes, Yuri Lenon Barbosa Nogueira, tendo como suplente o professor Rudini Menezes Sampaio. Após votação, a banca foi aprovada por unanimidade."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-7956af14a016fec1": {
+      "document": "78_12-2020_Ata_de_Reuniao.md",
+      "source_sha256": "b1db2cf36843be32bb6b990bc75b0a3869f9503e9f2d6ae5c5a02e5ab3609bf6",
+      "audited": true,
+      "quote_source_start": 5720,
+      "quote_source_end": 6165,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5416,
+          "normalized_end": 5861,
+          "source_start": 5720,
+          "source_end": 6165,
+          "text": "O sétimo ponto de pauta foi um relato do parecer parcial sobre Estágio Probatório do professor João Paulo Madeiro. O relato foi feito pelo professor João Fernando Lima Alcântara, que no papel de presidente da comissão de avaliação, relatou que houve uma reunião prévia com a chefia, onde de acordo com o relatório preparado pelo professor João Paulo Madeiro, verificou-se um total de 1205,4 pontos em itens relacionados às atividades do docente."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-c38d96e3660b416e": {
+      "document": "79_12-2021_Ata_de_Reuniao.md",
+      "source_sha256": "e94e9f6cb324ae453d76d29116bb39bf5153fb754341799eebf0f1c1feb071f5",
+      "audited": true,
+      "quote_source_start": 6559,
+      "quote_source_end": 6756,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 6091,
+          "normalized_end": 6282,
+          "source_start": 6559,
+          "source_end": 6756,
+          "text": "a formação de banca de progressão de Adjunto I para Adjunto II da Profa. Valéria Lelli. Assim, a banca ficou formada por Prof. José Maria (presidente), Prof. Lincoln Rocha e Prof. Paulo Rego."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-218ff22e45855677": {
+      "document": "79_12-2021_Ata_de_Reuniao.md",
+      "source_sha256": "e94e9f6cb324ae453d76d29116bb39bf5153fb754341799eebf0f1c1feb071f5",
+      "audited": true,
+      "quote_source_start": 6802,
+      "quote_source_end": 7225,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 6321,
+          "normalized_end": 6728,
+          "source_start": 6802,
+          "source_end": 7225,
+          "text": "O ponto de pauta seguinte foi a aprovação da proposta de curso de especialização intitulado 'Formação em Pensamento Computacional na Educação Integral', de interesse do Prof. Joaquim Bento. O Prof. José Maria, designado como relator, iniciou a explanação do curso. O curso de especialização está incluído em um projeto maior intitulado 'Programe-se' e terá como público alvo principal professores do estado."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-8f04d0e74dfb685a": {
+      "document": "80_12-2022_Ata_de_Reuniao.md",
+      "source_sha256": "a68233ff09832d42110d91f99be3a8ad48720f696642ad56c0523a3d65faacd6",
+      "audited": true,
+      "quote_source_start": 5795,
+      "quote_source_end": 5976,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5491,
+          "normalized_end": 5668,
+          "source_start": 5795,
+          "source_end": 5976,
+          "text": "o 1º Termo Aditivo ao projeto de P&D denominado 'LDAR: Lenovo Diagnóstico para Arquitetura RISC Avançada', coordenado pelo Prof. Javam Machado, em parceria com a empresa Lenovo."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-ed8ccd5f86195082": {
+      "document": "80_12-2022_Ata_de_Reuniao.md",
+      "source_sha256": "a68233ff09832d42110d91f99be3a8ad48720f696642ad56c0523a3d65faacd6",
+      "audited": true,
+      "quote_source_start": 6861,
+      "quote_source_end": 7025,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 6492,
+          "normalized_end": 6639,
+          "source_start": 6861,
+          "source_end": 7025,
+          "text": "o pedido de afastamento para licença capacitação do Prof. Javam Machado na AT&T Labs-Research, New York USA, no período de 01/04/2023 a 30/06/2023."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-fc043323ad7e96f3": {
+      "document": "70_11-2022_Ata_de_Reuniao.md",
+      "source_sha256": "9b632f908568b5b2c5aa0b2fee1186e0b2abd543c8fd6a9fad8773fb9d54cd3b",
+      "audited": true,
+      "quote_source_start": 6911,
+      "quote_source_end": 7373,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 6568,
+          "normalized_end": 7011,
+          "source_start": 6911,
+          "source_end": 7373,
+          "text": "o projeto pedagógico do Curso de Pósgraduação Lato Sensu (Especialização), intitulado Residência em Segurança Cibernética - Turma 2023/2025, financiado pela Lenovo, sob a coordenação do Prof. Javam Machado. O referido Curso tem por objetivo a formação e capacitação de uma turma de 13 profissionais altamente qualificados na área de segurança cibernética. Possui uma carga horária total de 576h (36 créditos), a serem distribuídos em 18 meses."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-0d83a0d707e56531": {
+      "document": "72_11-2023_Ata_de_Reuniao.md",
+      "source_sha256": "0098430b24e772119fd9ebbdeccf3fc759c41eaeab6af313f2d7346d7fb64a27",
+      "audited": true,
+      "quote_source_start": 6362,
+      "quote_source_end": 6633,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 6044,
+          "normalized_end": 6280,
+          "source_start": 6362,
+          "source_end": 6633,
+          "text": "o chefe colocou em discussão as contribuições para as cestas natalinas dos funcionários terceirizados (pessoal da limpeza). Após discussão, o Colegiado definiu o valor da cota das cestas de natal em no mínimo R$ 50,00 (cinquenta reais)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-57368fec7ee354ca": {
+      "document": "73_11-2024_Ata_de_Reuniao.md",
+      "source_sha256": "b4eba8f1e586436c94d4885b9511e427bdab380f46d40bb0586a7ddc2e228168",
+      "audited": true,
+      "quote_source_start": 8949,
+      "quote_source_end": 9597,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 8528,
+          "normalized_end": 9143,
+          "source_start": 8949,
+          "source_end": 9597,
+          "text": "Iniciado o diálogo entre o Colegiado e o servidor Vlademiro, em dado momento ele foi indagado sobre se eventual participação futura sua no PGD (Programa de Gestão e Desempenho, cuja implantação no Centro de Ciências estava correntemente sendo analisada), na modalidade de teletrabalho, em regime de execução parcial, atenderia às suas necessidades, ao que ele respondeu que sim. Após essa manifestação, o Colegiado deu por temporariamente contemplada a demanda do servidor, e, não havendo mais necessidade de manifestação quanto à solicitação original de remoção, decidiu por retirar esse ponto da pauta da reunião."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-44a6ea259966cd22": {
+      "document": "74_11-2025_Ata_de_Reuniao.md",
+      "source_sha256": "95ac5c1ca13aadbf1d8b2f969017c43ee597eb5a313ef3f6527bda7177dbeb77",
+      "audited": true,
+      "quote_source_start": 20085,
+      "quote_source_end": 20479,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 20067,
+          "normalized_end": 20461,
+          "source_start": 20085,
+          "source_end": 20479,
+          "text": "27ª Matéria: Aprovação de bolsa para o Prof. Substituto Eduardo Duarte no projeto CIDDE. Fazendo uso da palavra, o Prof. Javam Machado informou que ele irá colaborar nas pesquisas no projeto acima mencionado. A bolsa será no valor de R$ 5.000,00 (cinco mil reais), por 17 meses a partir de novembro de 2025. Não havendo discussão, a mencionada bolsa foi aprovada por unanimidade pelo Colegiado."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-b10302ba690c1a9d": {
+      "document": "75_11-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+      "source_sha256": "f49fe9441f30b9019d811724a11cb0a604e51d887eb4410f5896c9d910f66949",
+      "audited": true,
+      "quote_source_start": 1546,
+      "quote_source_end": 1751,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 1531,
+          "normalized_end": 1736,
+          "source_start": 1546,
+          "source_end": 1751,
+          "text": "a pauta única desta reunião é a deliberação do setor de estudo e o programa para o Concurso Público a ser realizado para o preenchimento da vaga da Profa. Cláudia Linhares, docente aposentada recentemente."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-d7653b13c0eb0f74": {
+      "document": "76_11-2025_Ata_de_Reuniao.pdf_Extraordinaria.md",
+      "source_sha256": "c95d9714b9be301e62b7c44bc1f6a69135185f05c446f5d32be5f6d6249a09e8",
+      "audited": true,
+      "quote_source_start": 3116,
+      "quote_source_end": 3265,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 3102,
+          "normalized_end": 3251,
+          "source_start": 3116,
+          "source_end": 3265,
+          "text": "o Prof. Pablo Mayckon corrigiu a data-limite, dita anteriormente pelo prof. Lincoln Rocha, que é na terça-feira da próxima semana e não quarta-feira."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-f1fa6ee79c28c596": {
+      "document": "77_11-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+      "source_sha256": "5bbca3db56d76768e405476548aca3c7fb809cbf35ef2c44bbf7506e4721d0d3",
+      "audited": true,
+      "quote_source_start": 2782,
+      "quote_source_end": 2966,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2768,
+          "normalized_end": 2952,
+          "source_start": 2782,
+          "source_end": 2966,
+          "text": "Continuou informando que conversara com o interessado no dia anterior e que ele não entrara em detalhes sobre a motivação do pedido de remoção, tendo apenas alegado motivos familiares."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-20f5f879fd9db16a": {
+      "document": "78_12-2020_Ata_de_Reuniao.md",
+      "source_sha256": "b1db2cf36843be32bb6b990bc75b0a3869f9503e9f2d6ae5c5a02e5ab3609bf6",
+      "audited": true,
+      "quote_source_start": 8540,
+      "quote_source_end": 8767,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 8169,
+          "normalized_end": 8396,
+          "source_start": 8540,
+          "source_end": 8767,
+          "text": "Além destas, estão previstas bolsas para alunos de graduação do departamento de teleinformática e para o departamento de computação, a saber: Maurício de Moura dos Santos, no valor de R$ 900,00 (novecentos reais), por 12 meses."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-a88ab9bac837e9ef": {
+      "document": "79_12-2021_Ata_de_Reuniao.md",
+      "source_sha256": "e94e9f6cb324ae453d76d29116bb39bf5153fb754341799eebf0f1c1feb071f5",
+      "audited": true,
+      "quote_source_start": 10429,
+      "quote_source_end": 10644,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 9761,
+          "normalized_end": 9962,
+          "source_start": 10429,
+          "source_end": 10644,
+          "text": "O último ponto de pauta foi solicitado pelo Prof. Fernando Trinta para lembrar os professores da confraternização de natal que será realizada na Casa José de Alencar a partir das 12h no dia 10/12/2021."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-30f099004c3cce22": {
+      "document": "84_062022_Ata_de_Reuniao_Extraordinaria.md",
+      "source_sha256": "9b88cdf29018f696fed5e748ab8bc87f161e2b63ba7f682deeac7af3e26b1550",
+      "audited": true,
+      "quote_source_start": 2275,
+      "quote_source_end": 2592,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 2156,
+          "normalized_end": 2458,
+          "source_start": 2275,
+          "source_end": 2592,
+          "text": "Proposta 2: Negar a anuência, apontar as motivações (criação de novo curso, perda de professor), e sugerir criação de nova disciplina com código CB, e nos disponibilizar a ajudar quando possível. A proposta 2 ganhou por 12 votos, enquanto a proposta 1 obteve 3 votos, contando também com 03 abstenções."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-af3f03ea4aa85b48": {
+      "document": "72_11-2023_Ata_de_Reuniao.md",
+      "source_sha256": "0098430b24e772119fd9ebbdeccf3fc759c41eaeab6af313f2d7346d7fb64a27",
+      "audited": true,
+      "quote_source_start": 7811,
+      "quote_source_end": 8615,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 7394,
+          "normalized_end": 8126,
+          "source_start": 7811,
+          "source_end": 8615,
+          "text": "o Prof. João Paulo Pordeus relatou o 3o Termo Aditivo ao projeto intitulado 'AI-CID: Identificação de Dano Induzido pelo Cliente via Inteligência Artificial', convênio entre a UFC e a empresa Lenovo Tecnologia Brasil Limitada, sob sua coordenação, que trata da alteração da duração do projeto de quinze (15) meses para três (3) meses (janeiro/2024 a março/2024), tendo, consequentemente, acarretado a redução do orçamento originalmente previsto. Continuou informando que houve alteração nos valores das bolsas dos Professores João Paulo Pordeus (Coordenador) e Javam Machado (Pesquisador) para R$ 7.500,00 (sete mil e quinhentos reais) e R$ 7.200,00 (sete mil e duzentos reais), respectivamente; ambas pelo mesmo período do projeto."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-8d9511aff10061d4": {
+      "document": "70_11-2022_Ata_de_Reuniao.md",
+      "source_sha256": "9b632f908568b5b2c5aa0b2fee1186e0b2abd543c8fd6a9fad8773fb9d54cd3b",
+      "audited": true,
+      "quote_source_start": 8514,
+      "quote_source_end": 8802,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 8135,
+          "normalized_end": 8398,
+          "source_start": 8514,
+          "source_end": 8802,
+          "text": "a Ação de Extensão 'WTSG - Workshop em Testes de Segurança' que está vinculada ao Projeto de Extensão FTS - Fábrica de Testes de Segurança. Esse evento gratuito está previsto para acontecer no dia 09/12/2022, no GREAT, sob a coordenação da Profa. Rossana Andrade."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-6a6feac8fc75c5e0": {
+      "document": "72_11-2023_Ata_de_Reuniao.md",
+      "source_sha256": "0098430b24e772119fd9ebbdeccf3fc759c41eaeab6af313f2d7346d7fb64a27",
+      "audited": true,
+      "quote_source_start": 5745,
+      "quote_source_end": 5986,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5467,
+          "normalized_end": 5690,
+          "source_start": 5745,
+          "source_end": 5986,
+          "text": "O supracitado docente continuou relatando a ação extensionista (evento) \"Workshop de Testes de Segurança do GREat (WTSG)\", também coordenado pela Profa. Rossana Andrade, que deverá acontecer em janeiro ou fevereiro de 2024."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-ec987c07d58f05ab": {
+      "document": "73_11-2024_Ata_de_Reuniao.md",
+      "source_sha256": "b4eba8f1e586436c94d4885b9511e427bdab380f46d40bb0586a7ddc2e228168",
+      "audited": true,
+      "quote_source_start": 10584,
+      "quote_source_end": 10731,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 10066,
+          "normalized_end": 10213,
+          "source_start": 10584,
+          "source_end": 10731,
+          "text": "uma bolsa para a Prof.ª Fabiane do Amaral Gubert (Departamento de Enfermagem), no valor de R$ 7.500,00 (sete mil e quinhentos reais), por 12 meses;"
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-f29c262ec4f25ece": {
+      "document": "74_11-2025_Ata_de_Reuniao.md",
+      "source_sha256": "95ac5c1ca13aadbf1d8b2f969017c43ee597eb5a313ef3f6527bda7177dbeb77",
+      "audited": true,
+      "quote_source_start": 21687,
+      "quote_source_end": 21926,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 21667,
+          "normalized_end": 21906,
+          "source_start": 21687,
+          "source_end": 21926,
+          "text": "Três bolsas vinculadas ao Projeto 'Plataforma de Comunicação Segura: ABIN Connect', a saber: 1. Kelvin de Lima Rodrigues (graduando em Engenharia de Computação IFCE), período de out/2025 a fev/2026, valor mensal de R$ 1.000,00 (mil reais);"
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-6161f60886f1a9ea": {
+      "document": "73_11-2024_Ata_de_Reuniao.md",
+      "source_sha256": "b4eba8f1e586436c94d4885b9511e427bdab380f46d40bb0586a7ddc2e228168",
+      "audited": true,
+      "quote_source_start": 11251,
+      "quote_source_end": 11945,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 10714,
+          "normalized_end": 11370,
+          "source_start": 11251,
+          "source_end": 11945,
+          "text": "12ª Matéria: Aprovação de Termo Aditivo ao Termo de Cooperação LENOVO/UFC 002/2023 - Projeto 'CH-IA: Chat-based Hardware dIAgnostics'. O Prof. José Maria Monteiro relatou o Termo Aditivo ao Termo de Cooperação LENOVO/UFC 002/2023 (SEI n° 23067.027126/2023-57), sob a coordenação do Prof. Javam Machado, por meio do qual se pretende: 1. alteração da vigência (acréscimo) por um período de 24 meses, ficando o novo período de 01/01/2025 a 31/12/2026; 2. alteração de valores por acréscimo; passando para um orçamento de R$ 9.272.185,85 (nove milhões, duzentos e setenta e dois mil, cento e oitenta e cinco reais e oitenta e cinco centavos) para o ano de 2025"
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-1b6bf45467a2e2cf": {
+      "document": "74_11-2025_Ata_de_Reuniao.md",
+      "source_sha256": "95ac5c1ca13aadbf1d8b2f969017c43ee597eb5a313ef3f6527bda7177dbeb77",
+      "audited": true,
+      "quote_source_start": 3976,
+      "quote_source_end": 4373,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 3961,
+          "normalized_end": 4358,
+          "source_start": 3976,
+          "source_end": 4373,
+          "text": "O projeto, intitulado 'Pesquisa e desenvolvimento de sistema de integração, baseado em microsserviços, para soluções biométricas', é uma parceria entre a UFC, a Unidade EMBRAPII LESC/UFC e a empresa Akiyama, sob coordenação do Prof. Fernando Trinta, com duração de 8 meses a partir de dezembro/2025 e orçamento no valor de R$ 635.520,00 (seiscentos e trinta e cinco mil, quinhentos e vinte reais)."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-d1843171b426e05a": {
+      "document": "76_11-2025_Ata_de_Reuniao.pdf_Extraordinaria.md",
+      "source_sha256": "c95d9714b9be301e62b7c44bc1f6a69135185f05c446f5d32be5f6d6249a09e8",
+      "audited": true,
+      "quote_source_start": 11939,
+      "quote_source_end": 12162,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 11923,
+          "normalized_end": 12146,
+          "source_start": 11939,
+          "source_end": 12162,
+          "text": "decidir o setor de estudos naquela reunião (18/11/25) ou segunda-feira (24/11/25): Proposta 1 - Hoje; 2. Proposta 2 - Segunda-feira. Posta a matéria em votação. A proposta 2 venceu por 11 votos contra 9 votos da Proposta 1."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-dfd23574895a6085": {
+      "document": "75_11-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+      "source_sha256": "f49fe9441f30b9019d811724a11cb0a604e51d887eb4410f5896c9d910f66949",
+      "audited": true,
+      "quote_source_start": 4104,
+      "quote_source_end": 4229,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 4086,
+          "normalized_end": 4211,
+          "source_start": 4104,
+          "source_end": 4229,
+          "text": "O Colegiado aprovou por unanimidade o setor de estudo 'Algoritmos e Banco de Dados' e o programa para o supracitado concurso."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-304cf5bb38d3a5c2": {
+      "document": "76_11-2025_Ata_de_Reuniao.pdf_Extraordinaria.md",
+      "source_sha256": "c95d9714b9be301e62b7c44bc1f6a69135185f05c446f5d32be5f6d6249a09e8",
+      "audited": true,
+      "quote_source_start": 11625,
+      "quote_source_end": 11876,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 11609,
+          "normalized_end": 11860,
+          "source_start": 11625,
+          "source_end": 11876,
+          "text": "primeiramente, vamos decidir se aproveitamos ou não o 'slot' dado pelo Centro de Ciências (fazer o concurso imediatamente): Proposta 1 - Sim; Proposta 2 - Não. Posta a matéria em votação. A proposta 1 venceu por 12 votos, contra 7 votos da Proposta 2."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-83e305ee5e8bf73d": {
+      "document": "77_11-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+      "source_sha256": "5bbca3db56d76768e405476548aca3c7fb809cbf35ef2c44bbf7506e4721d0d3",
+      "audited": true,
+      "quote_source_start": 3058,
+      "quote_source_end": 3257,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 3044,
+          "normalized_end": 3243,
+          "source_start": 3058,
+          "source_end": 3257,
+          "text": "o Prof. Pablo solicitara ao interessado os relatórios das avaliações institucionais feitas pelos discentes das suas disciplinas nos últimos 5 anos, tendo verificado que suas notas são bastante altas."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-62a9cd151ad8a3a9": {
+      "document": "78_12-2020_Ata_de_Reuniao.md",
+      "source_sha256": "b1db2cf36843be32bb6b990bc75b0a3869f9503e9f2d6ae5c5a02e5ab3609bf6",
+      "audited": true,
+      "quote_source_start": 6166,
+      "quote_source_end": 6262,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5862,
+          "normalized_end": 5958,
+          "source_start": 6166,
+          "source_end": 6262,
+          "text": "Ressaltase que o candidato precisa de 900 pontos para obter aprovação em seu estágio probatório."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-20d4466af90ba2bb": {
+      "document": "77_11-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+      "source_sha256": "5bbca3db56d76768e405476548aca3c7fb809cbf35ef2c44bbf7506e4721d0d3",
+      "audited": true,
+      "quote_source_start": 5367,
+      "quote_source_end": 5574,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5352,
+          "normalized_end": 5559,
+          "source_start": 5367,
+          "source_end": 5574,
+          "text": "O Prof. Pablo também respondeu a terceira pergunta informando as disciplinas que o interessado tem ministrado nos últimos semestres, a saber, Processamento Digital de Sinais, Sistemas Lineares, entre outras."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-353b6494c3ef161c": {
+      "document": "78_12-2020_Ata_de_Reuniao.md",
+      "source_sha256": "b1db2cf36843be32bb6b990bc75b0a3869f9503e9f2d6ae5c5a02e5ab3609bf6",
+      "audited": true,
+      "quote_source_start": 3914,
+      "quote_source_end": 4056,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 3674,
+          "normalized_end": 3805,
+          "source_start": 3914,
+          "source_end": 4056,
+          "text": "O terceiro ponto de pauta foi a aprovação da criação da disciplina Privacidade de Dados, por iniciativa do professor Javam Machado."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-18f94e9de9200bfe": {
+      "document": "79_12-2021_Ata_de_Reuniao.md",
+      "source_sha256": "e94e9f6cb324ae453d76d29116bb39bf5153fb754341799eebf0f1c1feb071f5",
+      "audited": true,
+      "quote_source_start": 5824,
+      "quote_source_end": 6006,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5369,
+          "normalized_end": 5538,
+          "source_start": 5824,
+          "source_end": 6006,
+          "text": "a aprovação do afastamento do Prof. Heron para estágio sênior entre 01/04/2022 e 30/01/2023 (10 meses) no Khoury College of Computer Sciences of Northeastern University."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-f56e7042414df249": {
+      "document": "81_12-2023_Ata_de_Reuniao.md",
+      "source_sha256": "ae7248e8a251b7a3f86ddb37a20a83f70f6f56ea00c38b90fe898993ac7f4ab6",
+      "audited": true,
+      "quote_source_start": 5630,
+      "quote_source_end": 6232,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5280,
+          "normalized_end": 5860,
+          "source_start": 5630,
+          "source_end": 6232,
+          "text": "o projeto de pesquisa: 'CIDDE: Customer-Induced Damage Detection Evolution', coordenado pelo Prof. Joaquim Bento, em parceria com a empresa Lenovo, durante o período de 12 meses (abril/2024 a março/2025), com orçamento de R$ 4.195.352,34. Após discussão, o supracitado projeto foi aprovado pelo Colegiado. Continuou relatando as bolsas de pesquisa vinculadas ao supracitado projeto, a saber: 1.uma bolsa de coordenador para o Prof. Joaquim Bento no valor de R$ 9.000,00 (nove mil reais); 2.uma bolsa de pesquisa para o Prof. Javam Machado no valor de R$ 8.000,00 (oito mil reais);"
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    },
+    "GF-6afc026419eae2f1": {
+      "document": "83_12-2025_Ata_de_Reuniao.md",
+      "source_sha256": "f92e2191965108712f8363bc499aba03a0373f412989770df92366b3d6ae51b8",
+      "audited": true,
+      "quote_source_start": 5799,
+      "quote_source_end": 6241,
+      "requirements": [
+        {
+          "name": "explicit_documentary_requirement",
+          "normalized_start": 5781,
+          "normalized_end": 6223,
+          "source_start": 5799,
+          "source_end": 6241,
+          "text": "6ª Matéria: Aprovação de bolsa no Projeto da Lenovo \"DHUNA: Diagnóstico de Hardware UNificado para Múltiplas Arquiteturas\" (Processo: 23067.056121/2025-01). Em seguida, o Prof. Joaquim Bento relatou a bolsa destinada ao Prof. Javam Machado vinculada ao projeto acima mencionado, no valor de R$ 2.000,00 (dois mil reais), durante o período de 01/12/2025 a 31/03/2028. Não havendo discussão, a bolsa foi aprovada por unanimidade pelo Colegiado."
+        }
+      ],
+      "audit_note": "Source quote checked for unique raw position; question and relation reviewed separately."
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "description": "Frozen 25-case selection for architecture controls. Does not modify the 80-case dataset or its gold.",
+  "baseline": "real_80_cumbuco_phi4_params_2026-10-03",
+  "case_ids": ["REAL-F01", "REAL-F03", "REAL-E03", "REAL-E05", "REAL-C01", "REAL-C09", "REAL-H03", "REAL-H07", "REAL-L07", "REAL-L08", "REAL-S01", "REAL-S06", "REAL-T04", "REAL-T05", "REAL-U03", "REAL-U10", "REAL-Q01", "REAL-Q07", "REAL-F05", "REAL-E02", "REAL-H02", "REAL-H08", "REAL-L05", "REAL-U02", "REAL-Q08"]
+}

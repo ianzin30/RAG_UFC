@@ -1,0 +1,30 @@
+{
+  "cases": [
+    {
+      "category": "cross-document",
+      "question": "Em que projeto de pesquisa foi a bolsa de R$ 3.300,00 para Pedro Almir Martins de Oliveira aprovada?",
+      "expected_answer": "Projeto LG Avantte",
+      "field": "project_name",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "13_03-2021_Ata_de_Reuniao.md",
+          "quote": "1. 4º Aditivo LG Avantte (Processo SEI nº 23067.041245/202070) - uma bolsa para o aluno Pedro Almir Martins de Oliveira, no valor de R$ 3.300,00 (três mil e trezentos reais), no período de janeiro a março/2021;"
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 9205,
+    "total_tokens": 9399,
+    "completion_tokens": 194,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": null
+  },
+  "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+  "latency_seconds": 27.727003332984168,
+  "source_sha256": {
+    "13_03-2021_Ata_de_Reuniao.md": "341d40528472b8db10affe6fbc6c3e72c175a2c74fecec1861add9f3810a3af7",
+    "14_03-2022_Ata_de_Reuniao.md": "b43d51947ae08f0f08e7eafd096ce7da1797cc9c2adb92317dbacf0344053944"
+  }
+}

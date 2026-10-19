@@ -1,0 +1,46 @@
+{
+  "cases": [
+    {
+      "category": "multi-hop",
+      "question": "Who approved the extension of the term of cooperation for the project with LG Electronics?",
+      "expected_answer": "Rossana Maria de Castro Andrade",
+      "field": "approval",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "01_01-2021_Ata_de_Reuniao.md",
+          "quote": "O Prof. Javam, relator escolhido, expôs que o aditivo propõe aumentar a duração do termo até 30 de abril de 2022 e acrescer o orçamento do projeto em R$15.777.703,95 (quinze milhões, setecentos e setenta e sete mil, setecentos e três reais e noventa e cinco centavos), passando a ter o montante total de R$ 33.457.665,48 (trinta e três milhões, quatrocentos e cinquenta e sete mil, seiscentos e sessenta e cinco reais e quarenta e oito centavos)."
+        },
+        {
+          "document": "01_01-2021_Ata_de_Reuniao.md",
+          "quote": "Este aumento reflete também no aumento dos recursos financeiros a serem disponibilizados para a Universidade Federal do Ceará, previstos em 3.34% do montante total do projeto."
+        }
+      ]
+    },
+    {
+      "category": "single-document factual",
+      "question": "What was the value of the scholarship approved for the PhD student David Viana?",
+      "expected_answer": "R$ 5.000,00",
+      "field": "scholarship_value",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "01_01-2021_Ata_de_Reuniao.md",
+          "quote": "Em seguida, o ponto de pauta em debate foi a aprovação de bolsa para aluno de doutorado David Viana, relatada pelo Prof. Paulo Rego, em projeto intitulado 'Lenovo LDE', no valor de R$ 5.000,00 (cinco mil reais) por um período de 12 meses, com início em janeiro de 2021."
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4196,
+    "total_tokens": 4750,
+    "completion_tokens": 554,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": null
+  },
+  "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+  "latency_seconds": 19.37517608399503,
+  "source_sha256": {
+    "01_01-2021_Ata_de_Reuniao.md": "c4c7e89b673cf5ed70baf1f8b183a514a403cf289eebf3f167ee7746d99bf939"
+  }
+}

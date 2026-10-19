@@ -1,0 +1,43 @@
+{
+  "cases": [
+    {
+      "category": "multi-hop",
+      "question": "Who approved the adjustment of the value of the professor's Lincoln Rocha's research grant in the project 'Apolo: An Intelligent and Integrated Environment for Improving Automatic Customer Support Chatbot Solutions and Business Decision Support', and what was the new value?",
+      "expected_answer": "The Colegiado approved the adjustment of the value of the professor's Lincoln Rocha's research grant in the project 'Apolo: An Intelligent and Integrated Environment for Improving Automatic Customer Support Chatbot Solutions and Business Decision Support'. The new value was R$ 9,450,00.",
+      "field": "vote_outcome",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "70_11-2022_Ata_de_Reuniao.md",
+          "quote": "Dando prosseguimento, o Prof. Lincoln Rocha relatou os ajustes de valores de Bolsas no Projeto intitulado: 'Apolo: Um Ambiente Inteligente e Integrado para Melhoria do Atendimento Automático nos Canais de Suporte da Dell e Apoio à Tomada de Decisões de Negócio', sob coordenação do Prof. Lincoln Rocha, Parceria: Dell Computadores do Brasil LTDA/ASTEF/UFC, durante o período de dezembro/2022 e janeiro/2023, a saber: 1.Bolsa do Prof. Lincoln Rocha - Mudança de R$ 7.000,00 (sete mil reais) para R$ 9.450,00 (nove mil, quatrocentos e cinquenta reais);"
+        }
+      ]
+    },
+    {
+      "category": "single-document factual",
+      "question": "What was the new monthly value of the research grant for Professor Paulo Rego in the project 'Pesquisa e Desenvolvimento de uma Ferramenta de Gerenciamento e Visualização de Fluxos de Resolução de Problemas' after the adjustment?",
+      "expected_answer": "The new monthly value of the research grant for Professor Paulo Rego in the project 'Pesquisa e Desenvolvimento de uma Ferramenta de Gerenciamento e Visualização de Fluxos de Resolução de Problemas' after the adjustment was R$ 9,500,00.",
+      "field": "scholarship_value",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "70_11-2022_Ata_de_Reuniao.md",
+          "quote": "A Bolsa do Prof. Paulo Rego de R$ 7.000,00 (sete mil reais) para R$ 9.500,00 (nove mil e quinhentos reais) por dois meses (dez/22 e jan/23)."
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4999,
+    "total_tokens": 5609,
+    "completion_tokens": 610,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": null
+  },
+  "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+  "latency_seconds": 22.926981374970637,
+  "source_only": true,
+  "source_sha256": {
+    "70_11-2022_Ata_de_Reuniao.md": "9b632f908568b5b2c5aa0b2fee1186e0b2abd543c8fd6a9fad8773fb9d54cd3b"
+  }
+}

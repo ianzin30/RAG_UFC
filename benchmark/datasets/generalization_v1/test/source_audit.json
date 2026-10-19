@@ -1,0 +1,12 @@
+{
+  "status": "reviewed_against_markdown",
+  "method": "Implementing agent manually curated all questions, answers, bridge relations and quotes against original Markdown; no independent human review",
+  "cases": 60,
+  "multi_hop": 20,
+  "cross_document": 20,
+  "controls": 20,
+  "outside_old_fields": 60,
+  "authored_after_development_freeze": true,
+  "frozen_implementation_sha256": "daa38cf78654619435945f95e43a73baacd22713cf5307e68d190d87476adb03",
+  "cross_fact_design": "Two seven-document financial cycles and one six-document staffing/teaching cycle; each fact in two questions; cluster uncertainty accounts for shared evidence"
+}

@@ -1,0 +1,1262 @@
+[
+  {
+    "id": "GEN-TEST-001",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de abril de 2021, qual projeto recebeu parecer favorável do suplente da banca de progressão de João Paulo Pordeus?",
+    "expected_answer": "Proactive Monintoring Based On Machine Learning.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-2fbc66c3c92c50cd",
+        "GF-fbdf405aa5155117"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF15"
+      ],
+      "field": "project_review",
+      "outside_old_fields": true,
+      "bridge": "A banca identifica José Maria; seu parecer identifica o projeto em outro item.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-002",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Em abril de 2022, que carências do CIPEMAC foram apontadas pelo professor que substituiu João Paulo Pordeus na bolsa do convênio com a SEFAZ-MA?",
+    "expected_answer": "Sem bebedouro, salas sem móveis e equipamentos.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-ffe71f6fc610189d",
+        "GF-10f80aaf955b94e9"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF16"
+      ],
+      "field": "infrastructure_needs",
+      "outside_old_fields": true,
+      "bridge": "A substituição identifica Ângelo, que relata as carências em outro ponto.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-003",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de abril de 2023, para quais classes foi aprovada a progressão que recebeu parecer do presidente da comissão de avaliação de Ana Karolinna?",
+    "expected_answer": "Pablo Mayckon: Professor Adjunto C II para Professor Adjunto C III.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-c06029f53a3c8d91",
+        "GF-71093989f113b61b"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF17"
+      ],
+      "field": "career_progression",
+      "outside_old_fields": true,
+      "bridge": "A comissão identifica Rudini; outro parecer dele identifica a progressão de Pablo.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-004",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Quais projetos Lenovo tiveram anexos sobre dados pessoais relatados, em abril de 2025, pelo docente que viajaria ao IEEE Symposium on Security and Privacy?",
+    "expected_answer": "CH-IA e LDAR.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-c3a930cb15b623d6",
+        "GF-e10829e771137765"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF18"
+      ],
+      "field": "data_protection_amendments",
+      "outside_old_fields": true,
+      "bridge": "O afastamento identifica Javam; os dois aditivos relatados por ele identificam CH-IA e LDAR.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-005",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na reunião extraordinária de maio de 2020, para qual comissão foi indicado o professor que relatou a prorrogação do projeto de manutenção preditiva com a Delfos?",
+    "expected_answer": "Comissão Eleitoral para eleição da chefia, biênio 2020-2022.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-24921098cf4111fc",
+        "GF-46894ec8c0a1f487"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF19"
+      ],
+      "field": "committee_membership",
+      "outside_old_fields": true,
+      "bridge": "O relato da Delfos identifica Pordeus, depois indicado para a comissão eleitoral.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-006",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Em maio de 2021, qual espaço foi cedido temporariamente aos projetos de segurança pública depois de ser desocupado pelo professor cuja participação no PROPAP foi aprovada?",
+    "expected_answer": "Laboratório BIMO, Bloco 952.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-0e9bd5841f74c43f",
+        "GF-28d91bfede4dcf8f"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF20"
+      ],
+      "field": "laboratory_allocation",
+      "outside_old_fields": true,
+      "bridge": "O pedido de PROPAP identifica o espaço antes ocupado; outro item documenta sua cessão.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-007",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na reunião de maio de 2022, além de Valéria Lelli, qual outro docente tinha uma comissão de progressão presidida pela professora que substituiu Paulo Rego na avaliação de Valéria?",
+    "expected_answer": "João Bosco Ferreira.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-b21ed1d98ad8dc97",
+        "GF-752576b509e8c414"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF21"
+      ],
+      "field": "career_committee",
+      "outside_old_fields": true,
+      "bridge": "A primeira comissão identifica Rossana; a outra liga Rossana à avaliação de João Bosco.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-008",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de maio de 2023, qual orçamento do projeto sobre governança da educação básica foi relatado pelo docente que receberia uma bolsa de R$ 3.000,00 no CEREIA?",
+    "expected_answer": "R$ 10.639.266,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-10ecf1d98571cb98",
+        "GF-f33b54a269fedc5b"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF22"
+      ],
+      "field": "project_budget",
+      "outside_old_fields": true,
+      "bridge": "A bolsa CEREIA identifica César Lincoln; sua relatoria identifica o orçamento do FNDE.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-009",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de maio de 2024, qual orçamento do projeto Lenovo relatado pelo professor que propôs implementar posteriormente o piloto de plenário virtual?",
+    "expected_answer": "R$ 1.705.533,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-61fdaa0a2a45d1bd",
+        "GF-9f8512d82805e71e"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF23"
+      ],
+      "field": "project_budget",
+      "outside_old_fields": true,
+      "bridge": "A proposta identifica Ângelo; a relatoria dele identifica o orçamento LTAD.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-010",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de maio de 2025, quem presidia a comissão de progressão do outro professor que pediu adiamento da reunião de junho junto com Yuri Lenon?",
+    "expected_answer": "Javam de Castro Machado, na comissão de Ângelo Brayner.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-042aab734e6acc3c",
+        "GF-0d68d0a50482224f"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF24"
+      ],
+      "field": "career_committee",
+      "outside_old_fields": true,
+      "bridge": "O pedido conjunto identifica Ângelo; outro item identifica Javam como presidente de sua comissão.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-011",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de junho de 2020, qual representante dos servidores compunha a comissão eleitoral junto com a docente responsável pelo projeto de coleta de métricas de testes de software?",
+    "expected_answer": "Felipe Peixoto Gomes.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-5ef3e396ab8edab4",
+        "GF-b906b4d6708f2ae2"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF25"
+      ],
+      "field": "electoral_representation",
+      "outside_old_fields": true,
+      "bridge": "O projeto identifica Emanuele; a composição eleitoral com ela identifica Felipe.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-012",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Segundo junho de 2021, que empresa manifestou interesse em projetos com o DC ao professor convidado para preparar o curso do Grupo O POVO?",
+    "expected_answer": "Samsung.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-493b7816a0eaf7d0",
+        "GF-5da4167ac923482e"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF26"
+      ],
+      "field": "company_interest",
+      "outside_old_fields": true,
+      "bridge": "O convite identifica Macedo; outro relato dele identifica Samsung.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-013",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de junho de 2022, para qual cidade iria ao ACM SIGMOD o docente cuja bolsa no GALP foi renovada por oito meses?",
+    "expected_answer": "Filadélfia, USA.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-aab8b7c9166efbc6",
+        "GF-977d026bd2d00718"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF27"
+      ],
+      "field": "travel_destination",
+      "outside_old_fields": true,
+      "bridge": "A bolsa GALP identifica Javam; seu afastamento identifica Filadélfia.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-014",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de junho de 2024, qual destino do afastamento para ICML do docente escolhido como novo suplente de Lógica, Inteligência Artificial e Probabilidade?",
+    "expected_answer": "Viena, Áustria.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-c6c6bbb18375b090",
+        "GF-eed8a843859edc33"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF28"
+      ],
+      "field": "travel_destination",
+      "outside_old_fields": true,
+      "bridge": "A substituição curricular identifica César Lincoln; seu afastamento identifica Viena.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-015",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de junho de 2025, até quando duraria o mandato no Conselho do Centro do professor que apresentou o parecer de progressão de Ana Karolinna?",
+    "expected_answer": "Até setembro de 2026, para Heron Carvalho.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-cb114b0ecf0280bf",
+        "GF-b410f77c8eba5c52"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF29"
+      ],
+      "field": "representation_term",
+      "outside_old_fields": true,
+      "bridge": "O parecer identifica Heron; sua indicação ao conselho informa o mandato.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-016",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de julho de 2020, qual bolsa no projeto de Self-Healing foi aprovada para o docente cuja banca de progressão incluía João Paulo Pordeus e Yuri Lenon?",
+    "expected_answer": "R$ 3.000,00 por seis meses, para César Lincoln.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-31aeb698a50a40c3",
+        "GF-7ca1554a47c5a759"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF30"
+      ],
+      "field": "scholarship_value",
+      "outside_old_fields": true,
+      "bridge": "A banca identifica César Lincoln; a bolsa de Self-Healing é vinculada a ele em outro ponto.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-017",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de julho de 2021, entre quais classes progrediu o professor escolhido para presidir a comissão inicial de colaboração com o DEMA no novo curso de Ciência de Dados?",
+    "expected_answer": "Ângelo Brayner: Adjunto CI para Adjunto CII.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-d1c788c46b85dbde",
+        "GF-92e2f38b2ff4ad08"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF31"
+      ],
+      "field": "career_progression",
+      "outside_old_fields": true,
+      "bridge": "A comissão identifica Ângelo; o parecer anterior documenta sua progressão.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-018",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de julho de 2022, qual bolsa do AI4Wellness seria paga ao docente eleito chefe na chapa vencedora?",
+    "expected_answer": "João Paulo do Vale: R$ 5.000,00 por 57 meses.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-535a606ca3d6974e",
+        "GF-e3295f23c068a43f"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF32"
+      ],
+      "field": "scholarship_value",
+      "outside_old_fields": true,
+      "bridge": "A eleição identifica Madeiro; a bolsa sênior no outro item é destinada a ele.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-019",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de julho de 2023, quantos semestres deveriam ser examinados no levantamento de carga horária proposto pelo docente cuja progressão de CII para CIII foi aprovada?",
+    "expected_answer": "Quatro semestres seguidos.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-392a9eccf451dbe9",
+        "GF-6cde56cdf7439629"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF33"
+      ],
+      "field": "workload_review",
+      "outside_old_fields": true,
+      "bridge": "A progressão identifica Ângelo; sua proposta exige levantamento por quatro semestres.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-020",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na ata de julho de 2024, em que cidade ocorreria a missão científica do professor que se comprometeu a pintar a sala para substitutos e visitantes?",
+    "expected_answer": "New York, USA.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-5e1fe789fc33d4e4",
+        "GF-9eaab0c62f3a8e75"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF34"
+      ],
+      "field": "travel_destination",
+      "outside_old_fields": true,
+      "bridge": "A pintura identifica Javam; sua missão ao AT&T informa New York.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-021",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na ata de abril de 2021, qual bolsa mensal foi prevista para Joseane Oliveira Vale Paiva no FRDI-Phase II?",
+    "expected_answer": "R$ 2.250,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-475502d557ea17af"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF15"
+      ],
+      "field": "scholarship_value",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-022",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Quanto e por quantos meses receberia Pedro Almir no DELL Scope Management Tool PHASE II segundo abril de 2022?",
+    "expected_answer": "R$ 2.000,00 por 11 meses.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-a1272223119c0971"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF16"
+      ],
+      "field": "scholarship_value",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-023",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Qual orçamento total foi informado em abril de 2023 para o Lenovo Diagnostics Evolution Chatbot?",
+    "expected_answer": "R$ 10.840.158,56.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-5a5139e32b8c5151"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF17"
+      ],
+      "field": "project_budget",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-024",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Qual orçamento estimado do Wise Control foi aprovado em abril de 2025?",
+    "expected_answer": "R$ 775.554,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-341a9e833a6b3ba3"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF18"
+      ],
+      "field": "project_budget",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-025",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Em maio de 2020, qual duração e início da licença para interesses particulares solicitada por Rosely Araújo?",
+    "expected_answer": "Três anos a partir de 01/07/2020.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-7e9032192442f4f0"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF19"
+      ],
+      "field": "leave_period",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-026",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Qual período da renovação do afastamento parcial de Daniel Ribeiro Matos foi aprovado em maio de 2021?",
+    "expected_answer": "10/05/2021 a 02/09/2021.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-7893d28db82f2013"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF20"
+      ],
+      "field": "leave_period",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-027",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Quais disciplinas e cargas horárias foram aprovadas para Engenharia Metalúrgica em maio de 2022?",
+    "expected_answer": "Cálculo Numérico e Programação Computacional para Engenharia, ambas 64h e obrigatórias.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-1769433443c71584"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF21"
+      ],
+      "field": "teaching_offer",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-028",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Qual antecedência mínima de comunicação à chefia foi adotada em maio de 2023 para afastamentos a partir de 15 dias?",
+    "expected_answer": "Três dias antes da reunião em que o afastamento seria votado.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-08ede59e7d9ecdb6"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF22"
+      ],
+      "field": "absence_procedure",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-029",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Em que dias ocorreria o II Workshop de Testes de Segurança do GREat aprovado em maio de 2024?",
+    "expected_answer": "09 e 10/05/2024.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-f3745488537c02f6"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF23"
+      ],
+      "field": "event_dates",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-030",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Para qual orçamento total passou o LTAD após o aditivo aprovado em maio de 2025?",
+    "expected_answer": "R$ 5.853.275,80.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-f0d5f7674370cc83"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF24"
+      ],
+      "field": "project_budget",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-031",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Qual orçamento do Interlocks Audit Tool foi apresentado em junho de 2020?",
+    "expected_answer": "R$ 459.468,24.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-6b8c42284ab58125"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF25"
+      ],
+      "field": "project_budget",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-032",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Em junho de 2021, qual valor do prêmio ao qual Ana Karolinna concorreria com o projeto sobre caminhos em dígrafos?",
+    "expected_answer": "R$ 50.000,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-a22b3dd81cb45567"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF26"
+      ],
+      "field": "award_value",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-033",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Qual prazo para concluir a atualização dos planos do novo PPC foi informado em junho de 2022?",
+    "expected_answer": "17/06/2022.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-b136ffda0ef7654a"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF27"
+      ],
+      "field": "teaching_plan_deadline",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-034",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Qual orçamento do ReArte foi apresentado na reunião de junho de 2024?",
+    "expected_answer": "R$ 2.004.390,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-5d6953de48c2464f"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF28"
+      ],
+      "field": "project_budget",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-035",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na ata de junho de 2025, qual novo nome e orçamento substituíram o Sales CRM Performance Improvements?",
+    "expected_answer": "Inventory and Logistics Modernization; R$ 2.422.401,09.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-5b3f2e8bb144934b"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF29"
+      ],
+      "field": "project_rename_budget",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-036",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Qual valor e duração da bolsa de Antônio Diogo Forte Martins no Lenovo Chatbot foram aprovados em julho de 2020?",
+    "expected_answer": "R$ 1.600,00 por seis meses.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-fc321318310605a2"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF30"
+      ],
+      "field": "scholarship_value",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-037",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Para qual valor total passou o eHealth-Risk após a alteração aprovada em julho de 2021?",
+    "expected_answer": "R$ 794.283,85.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-a57bffce296acd1e"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF31"
+      ],
+      "field": "project_budget",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-038",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Qual valor e duração da bolsa de Lívia Iorrana Jucá Eugênio na residência UFC/Samsung/SiDi foram informados em julho de 2022?",
+    "expected_answer": "R$ 2.500,00 por 14 meses.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-34e7479661726b46"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF32"
+      ],
+      "field": "scholarship_value",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-039",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Quantas vagas por semestre eram previstas para Introdução à Programação em Engenharia de Alimentos na reunião de julho de 2023?",
+    "expected_answer": "50 vagas por semestre para cada turma.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-5b36b044d731bdf4"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF33"
+      ],
+      "field": "teaching_capacity",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-040",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Qual bolsa do ABIN Connect para Francisco Victor da Silva Pinheiro foi aprovada em julho de 2024?",
+    "expected_answer": "R$ 3.100,00 por 12 meses.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-964d956b2bd817bb"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF34"
+      ],
+      "field": "scholarship_value",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-041",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Consultando as duas atas, qual bolsa do Kunumi Lab para Javam aparece em julho de 2025 e para qual valor passou a bolsa de Emanuele no projeto de coleta de métricas em agosto de 2020?",
+    "expected_answer": "R$ 4.000,00 por 12 meses; R$ 6.000,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-73a3c35d9689b3a5",
+        "GF-02692abe7c5aab83"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF35",
+        "GF36"
+      ],
+      "field": "cross_document_financial_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-042",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Comparando os registros, para qual valor passou a bolsa de Emanuele no projeto de coleta de métricas em agosto de 2020 e qual bolsa Brazil ID para Paulo Rego aparece em agosto de 2021?",
+    "expected_answer": "R$ 6.000,00; R$ 3.060,00 por sete meses.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-02692abe7c5aab83",
+        "GF-7991f559edc29004"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF36",
+        "GF37"
+      ],
+      "field": "cross_document_financial_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-043",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Para reunir as informações dos dois períodos, qual bolsa Brazil ID para Paulo Rego aparece em agosto de 2021 e qual bolsa GTT para Fernando Trinta aparece em agosto de 2023?",
+    "expected_answer": "R$ 3.060,00 por sete meses; R$ 5.000,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-7991f559edc29004",
+        "GF-fe65a2a87f7a07df"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF37",
+        "GF38"
+      ],
+      "field": "cross_document_financial_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-044",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Quais informações constam nas duas atas: qual bolsa GTT para Fernando Trinta aparece em agosto de 2023 e qual renovação da bolsa de Joaquim Bento na Petrobras aparece em agosto de 2024?",
+    "expected_answer": "R$ 5.000,00; R$ 3.520,00 por sete meses.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-fe65a2a87f7a07df",
+        "GF-16cb6a331d82e34e"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF38",
+        "GF39"
+      ],
+      "field": "cross_document_financial_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-045",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Consultando as duas atas, qual renovação da bolsa de Joaquim Bento na Petrobras aparece em agosto de 2024 e qual renovação da bolsa de José Maria no LTAD aparece em agosto de 2025?",
+    "expected_answer": "R$ 3.520,00 por sete meses; R$ 9.000,00 por 20 meses.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-16cb6a331d82e34e",
+        "GF-504e98eca9b44a42"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF39",
+        "GF40"
+      ],
+      "field": "cross_document_financial_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-046",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Comparando os registros, qual renovação da bolsa de José Maria no LTAD aparece em agosto de 2025 e qual bolsa de Emanuele no chatbot Dell aparece em setembro de 2021?",
+    "expected_answer": "R$ 9.000,00 por 20 meses; R$ 4.000,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-504e98eca9b44a42",
+        "GF-1b07cae17d53d13f"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF40",
+        "GF41"
+      ],
+      "field": "cross_document_financial_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-047",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Para reunir as informações dos dois períodos, qual bolsa de Emanuele no chatbot Dell aparece em setembro de 2021 e qual bolsa do Kunumi Lab para Javam aparece em julho de 2025?",
+    "expected_answer": "R$ 4.000,00; R$ 4.000,00 por 12 meses.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-1b07cae17d53d13f",
+        "GF-73a3c35d9689b3a5"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF35",
+        "GF41"
+      ],
+      "field": "cross_document_financial_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-048",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Consultando as duas atas, qual bolsa de César Lincoln no AI4Wellness aparece em setembro de 2022 e qual novo valor da bolsa de Emanuele na coleta de métricas aparece em outubro de 2020?",
+    "expected_answer": "R$ 5.000,00 por 56 meses; R$ 7.000,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-14446ddfd033db5c",
+        "GF-7ce49775a1653cdb"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF42",
+        "GF48"
+      ],
+      "field": "cross_document_financial_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-049",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Comparando os registros, qual novo valor da bolsa de Emanuele na coleta de métricas aparece em outubro de 2020 e qual orçamento total do Connor aparece em outubro de 2021?",
+    "expected_answer": "R$ 7.000,00; R$ 2.655.956,25.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-7ce49775a1653cdb",
+        "GF-63e230b41de6ea3c"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF48",
+        "GF49"
+      ],
+      "field": "cross_document_financial_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-050",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Para reunir as informações dos dois períodos, qual orçamento total do Connor aparece em outubro de 2021 e qual custo da extensão de dois meses do projeto Dell de cobertura por mapas aparece em outubro de 2022?",
+    "expected_answer": "R$ 2.655.956,25; R$ 264.231,27.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-63e230b41de6ea3c",
+        "GF-073572b8455a2c94"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF49",
+        "GF50"
+      ],
+      "field": "cross_document_financial_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-051",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Quais informações constam nas duas atas: qual custo da extensão de dois meses do projeto Dell de cobertura por mapas aparece em outubro de 2022 e qual orçamento da engine de vídeo para eventos de trânsito aparece na ata ordinária de outubro de 2023?",
+    "expected_answer": "R$ 264.231,27; R$ 308.020,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-073572b8455a2c94",
+        "GF-43996fa4ba9365d1"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF50",
+        "GF52"
+      ],
+      "field": "cross_document_financial_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-052",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Consultando as duas atas, qual orçamento da engine de vídeo para eventos de trânsito aparece na ata ordinária de outubro de 2023 e quais bolsas de César Lincoln e Emanuel no Copiloto de Gestão de Vulnerabilidades aparecem em outubro de 2025?",
+    "expected_answer": "R$ 308.020,00; R$ 6.000,00 e R$ 6.500,00, respectivamente.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-43996fa4ba9365d1",
+        "GF-5413c452c4ce289a"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF52",
+        "GF53"
+      ],
+      "field": "cross_document_financial_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-053",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Comparando os registros, quais bolsas de César Lincoln e Emanuel no Copiloto de Gestão de Vulnerabilidades aparecem em outubro de 2025 e qual orçamento da parte LDAR após o desmembramento aparece em novembro de 2021?",
+    "expected_answer": "R$ 6.000,00 e R$ 6.500,00, respectivamente; R$ 2.346.118,60.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-5413c452c4ce289a",
+        "GF-d86fac2a95da72ae"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF53",
+        "GF54"
+      ],
+      "field": "cross_document_financial_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-054",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Para reunir as informações dos dois períodos, qual orçamento da parte LDAR após o desmembramento aparece em novembro de 2021 e qual bolsa de César Lincoln no AI4Wellness aparece em setembro de 2022?",
+    "expected_answer": "R$ 2.346.118,60; R$ 5.000,00 por 56 meses.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-d86fac2a95da72ae",
+        "GF-14446ddfd033db5c"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF42",
+        "GF54"
+      ],
+      "field": "cross_document_financial_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-055",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Consultando as duas atas, qual placar da segunda votação sobre interesse na remoção de Camilo aparece em setembro de 2023 e quem compôs a comissão julgadora e a secretaria do Edital 78/2024 na ata ordinária de setembro de 2024?",
+    "expected_answer": "14 a favor, quatro contra e três abstenções; Pablo Mayckon, César Lincoln e Yuri Lenon; secretário Emanuel Rodrigues.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-04357d07f7296792",
+        "GF-585f699993d1bc4d"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF43",
+        "GF44"
+      ],
+      "field": "cross_document_staffing_teaching",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-056",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Comparando os registros, quem compôs a comissão julgadora e a secretaria do Edital 78/2024 na ata ordinária de setembro de 2024 e qual candidato venceu o Edital 78/2024 na ata extraordinária de setembro de 2024?",
+    "expected_answer": "Pablo Mayckon, César Lincoln e Yuri Lenon; secretário Emanuel Rodrigues; André Luís da Costa Mendonça.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-585f699993d1bc4d",
+        "GF-f0d3dbf56dab8aa0"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF44",
+        "GF45"
+      ],
+      "field": "cross_document_staffing_teaching",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-057",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Para reunir as informações dos dois períodos, qual candidato venceu o Edital 78/2024 na ata extraordinária de setembro de 2024 e quantas disciplinas Pablo ministrava e quantas ainda estavam sem professor na ata ordinária de setembro de 2025?",
+    "expected_answer": "André Luís da Costa Mendonça; Três ministradas por Pablo e duas sem professor.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-f0d3dbf56dab8aa0",
+        "GF-e0ed0721e442d10d"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF45",
+        "GF46"
+      ],
+      "field": "cross_document_staffing_teaching",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-058",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Quais informações constam nas duas atas: quantas disciplinas Pablo ministrava e quantas ainda estavam sem professor na ata ordinária de setembro de 2025 e qual documento faltava às inscrições do Edital 106/2025 na ata extraordinária de setembro de 2025?",
+    "expected_answer": "Três ministradas por Pablo e duas sem professor; Anuência do coordenador do curso e do orientador.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-e0ed0721e442d10d",
+        "GF-adbe7af59116e831"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF46",
+        "GF47"
+      ],
+      "field": "cross_document_staffing_teaching",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-059",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Consultando as duas atas, qual documento faltava às inscrições do Edital 106/2025 na ata extraordinária de setembro de 2025 e quais cargas horárias de Tecnologias Digitais e Sociedade e de Informática e Sociedade foram contrastadas na ata extraordinária de outubro de 2023?",
+    "expected_answer": "Anuência do coordenador do curso e do orientador; 64h e 32h, respectivamente.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-adbe7af59116e831",
+        "GF-11f23c5128350d74"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF47",
+        "GF51"
+      ],
+      "field": "cross_document_staffing_teaching",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-TEST-060",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Comparando os registros, quais cargas horárias de Tecnologias Digitais e Sociedade e de Informática e Sociedade foram contrastadas na ata extraordinária de outubro de 2023 e qual placar da segunda votação sobre interesse na remoção de Camilo aparece em setembro de 2023?",
+    "expected_answer": "64h e 32h, respectivamente; 14 a favor, quatro contra e três abstenções.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-11f23c5128350d74",
+        "GF-04357d07f7296792"
+      ],
+      "split": "test",
+      "family_ids": [
+        "GF43",
+        "GF51"
+      ],
+      "field": "cross_document_staffing_teaching",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  }
+]

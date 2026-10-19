@@ -1,0 +1,42 @@
+{
+  "cases": [
+    {
+      "category": "multi-hop",
+      "question": "Who approved the project for Sales CRM Performance improvements and what was the total budget?",
+      "expected_answer": "The Colegiado approved the project for Sales CRM Performance improvements with a total budget of R$ 957,783,13.",
+      "field": "vote_outcome",
+      "bridge": "The project was discussed and approved during the meeting, and the budget was mentioned in the quote.",
+      "evidence": [
+        {
+          "document": "10_02-2025_Ata_de_Reuniao.md",
+          "quote": "A Profa. Valéria Lelli relatou o projeto de pesquisa intitulado \"Sales CRM - Performance improvements\", convênio entre a UFC e a DELL Computadores do Brasil LTDA., sob a coordenação do prof. Wendley Souza da Silva do Campus da UFC em Sobral, com orçamento no valor de R$ 957.783,13 (novecentos e cinquenta e sete mil, setecentos e oitenta e três reais e treze centavos), durante o período de 12 (doze) meses."
+        }
+      ]
+    },
+    {
+      "category": "single-document factual",
+      "question": "What was the unanimous decision regarding the professor's international leave to participate in a doctoral committee?",
+      "expected_answer": "The Colegiado unanimously approved the professor's international leave to participate in a doctoral committee from 16/02/2025 to 23/02/2025.",
+      "field": "duration",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "10_02-2025_Ata_de_Reuniao.md",
+          "quote": "O Prof. Miguel Franklin informou a todos que foi convidado para participar de uma Banca de Doutorado na Université de Technologie de Troyes, bem como participar de reuniões de trabalho para estabelecer colaborações entre as duas\n\nuniversidades, em Troyes - França, durante o período de 16/02/2025 a 23/02/2025, Após discussão, o afastamento foi então colocado em votação e aprovado por unanimidade pelo Colegiado."
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4463,
+    "total_tokens": 4967,
+    "completion_tokens": 504,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": null
+  },
+  "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+  "latency_seconds": 18.491671499970835,
+  "source_sha256": {
+    "10_02-2025_Ata_de_Reuniao.md": "ebc3d9727939f3f55b6632674f385d9a6ddedd9f16982f660e2bc44d45e47053"
+  }
+}

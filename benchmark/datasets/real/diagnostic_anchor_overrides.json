@@ -1,0 +1,8 @@
+{
+  "reason": "Supplementary diagnostic scoring of required factual spans. Original quotes bundle project headings with coordinator fields in separate structural parents. Full original-anchor coverage remains reported separately; gold answers unchanged.",
+  "overrides": {
+    "AFO_NAME": "Coordenador na Instituição Fernando Antonio Mota Trinta",
+    "RACK_NAME": "Coordenador na Instituição Paulo Antonio Leal Rego",
+    "SAAR_NAME": "Coordenador na Instituição Lincoln Souza Rocha"
+  }
+}

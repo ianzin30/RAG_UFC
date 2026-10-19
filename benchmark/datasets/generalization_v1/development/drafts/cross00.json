@@ -1,0 +1,34 @@
+{
+  "cases": [
+    {
+      "category": "cross-document",
+      "question": "Qual professor foi indicado para a Comissão de Avaliação de Progressão Funcional da classe de Professor Adjunto IV para Professor Associado I?",
+      "expected_answer": "Prof. Neuman",
+      "field": "name",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "12_03-2020_Ata_de_Reuniao.md",
+          "quote": "O Prof. Neuman decidiu deixar a Comissão de Avaliação de Progressão Funcional da classe de Professor Adjunto IV para Professor Associado I e na classe de Professor Associado."
+        },
+        {
+          "document": "13_03-2021_Ata_de_Reuniao.md",
+          "quote": "Logo após, o Prof. José Neuman fez uma breve apresentação do Prof. Alberto Sampaio."
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 8537,
+    "total_tokens": 8728,
+    "completion_tokens": 191,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": null
+  },
+  "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+  "latency_seconds": 24.619043457962107,
+  "source_sha256": {
+    "12_03-2020_Ata_de_Reuniao.md": "0c8d2097d41b558969e57890ddc0e53ba53554e0a1a4c5052d2dd1f44e097e65",
+    "13_03-2021_Ata_de_Reuniao.md": "341d40528472b8db10affe6fbc6c3e72c175a2c74fecec1861add9f3810a3af7"
+  }
+}

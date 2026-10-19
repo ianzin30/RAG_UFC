@@ -1,0 +1,928 @@
+{
+  "old_evidence_documents": [
+    "05_01-2024_Ata_de_Reuniao.md",
+    "06_01-2025_Ata_de_Reuniao.md",
+    "07_01-2026_Ata_de_Reuniao.md",
+    "11_02-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+    "15_03-2023_Ata_de_Reuniao_Extraordina_ria.md",
+    "19_03-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+    "38_06-2024_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+    "42_07-2022_Ata_de_Reuniao_Extraordina_ria.md",
+    "49_08-2022_Ata_de_Reuniao.md",
+    "53_09-2020_Ata_de_Reuniao.md",
+    "60_09-2025_Ata_de_Reuniao.pdf_Extraordinaria.md",
+    "71_11-2023_Ata_de_Reuniao_Extraordinaria.md",
+    "85_AFO.md",
+    "86_neymar.md",
+    "87_RACK.md",
+    "88_SAAR.md"
+  ],
+  "family_grouping": "same source text, same source-backed meeting date, or >=0.85 sampled character-shingle Jaccard; connected components; old-source families excluded",
+  "families": [
+    {
+      "family_id": "GF01",
+      "documents": [
+        {
+          "document_id": "6e927981e601916feabd4a72",
+          "relative_path": "uploaded_files/01_01-2021_Ata_de_Reuniao.md",
+          "name": "01-2021_Ata_de_Reuniao.pdf",
+          "dates": [
+            "06/11/2020",
+            "15/01/2021"
+          ]
+        },
+        {
+          "document_id": "4c36908b738b195def1e3c63",
+          "relative_path": "uploaded_files/68_11-2020_Ata_de_Reuniao.md",
+          "name": "11-2020_Ata_de_Reuniao.pdf",
+          "dates": [
+            "06/11/2020"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF02",
+      "documents": [
+        {
+          "document_id": "151363e1c3483df6bdf4391f",
+          "relative_path": "uploaded_files/02_01-2022_Ata_de_Reuniao_Extraordina_ria.md",
+          "name": "01-2022_Ata_de_Reuniao Extraordinária.pdf",
+          "dates": [
+            "21/01/2022"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF03",
+      "documents": [
+        {
+          "document_id": "a9dfdc7ddb74879db753691e",
+          "relative_path": "uploaded_files/03_01-2022_Ata_de_Reuniao.md",
+          "name": "01-2022_Ata_de_Reuniao.docx",
+          "dates": [
+            "14/01/2022"
+          ]
+        },
+        {
+          "document_id": "83a72350ca5115edd123643f",
+          "relative_path": "uploaded_files/04_01-2022_Ata_de_Reuniao.md",
+          "name": "01-2022_Ata_de_Reuniao.pdf",
+          "dates": [
+            "14/01/2022"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF04",
+      "documents": [
+        {
+          "document_id": "01fb018df6495e6e6b4984a8",
+          "relative_path": "uploaded_files/08_02-2021_Ata_de_Reuniao.md",
+          "name": "02-2021_Ata_de_Reuniao.pdf",
+          "dates": [
+            "05/02/2021"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF05",
+      "documents": [
+        {
+          "document_id": "cc93f230ea86ac2f149e55e7",
+          "relative_path": "uploaded_files/09_02-2022_Ata_de_Reuniao.md",
+          "name": "02-2022_Ata_de_Reuniao.pdf",
+          "dates": [
+            "04/02/2022"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF06",
+      "documents": [
+        {
+          "document_id": "e3e16a8182d12265df89531e",
+          "relative_path": "uploaded_files/10_02-2025_Ata_de_Reuniao.md",
+          "name": "02-2025_Ata_de_Reuniao.pdf",
+          "dates": [
+            "07/02/2025"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF07",
+      "documents": [
+        {
+          "document_id": "e0edcb5e242d432df0dc988a",
+          "relative_path": "uploaded_files/12_03-2020_Ata_de_Reuniao.md",
+          "name": "03-2020_Ata_de_Reuniao.pdf",
+          "dates": [
+            "06/03/2020"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF08",
+      "documents": [
+        {
+          "document_id": "42f5d1ea16bdc40376316912",
+          "relative_path": "uploaded_files/13_03-2021_Ata_de_Reuniao.md",
+          "name": "03-2021_Ata_de_Reuniao.pdf",
+          "dates": [
+            "05/03/2021"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF09",
+      "documents": [
+        {
+          "document_id": "1b8c5c38e486e2af71104a9e",
+          "relative_path": "uploaded_files/14_03-2022_Ata_de_Reuniao.md",
+          "name": "03-2022_Ata_de_Reuniao.pdf",
+          "dates": [
+            "18/03/2022"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF10",
+      "documents": [
+        {
+          "document_id": "a3da8e6604d45ad22529f692",
+          "relative_path": "uploaded_files/16_03-2023_Ata_de_Reuniao.md",
+          "name": "03-2023_Ata_de_Reuniao.pdf",
+          "dates": [
+            "03/03/2023"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF11",
+      "documents": [
+        {
+          "document_id": "204994754ccee7676770b946",
+          "relative_path": "uploaded_files/17_03-2024_Ata_de_Reuniao.md",
+          "name": "03-2024_Ata_de_Reuniao.pdf",
+          "dates": [
+            "01/03/2024"
+          ]
+        },
+        {
+          "document_id": "9dca2317a2860ab774e78488",
+          "relative_path": "uploaded_files/25_04-2024_Ata_de_Reuniao.md",
+          "name": "04-2024_Ata_de_Reuniao.pdf",
+          "dates": [
+            "01/03/2024",
+            "05/04/2024"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF12",
+      "documents": [
+        {
+          "document_id": "a0f6674272e7517a202d63de",
+          "relative_path": "uploaded_files/18_03-2025_Ata_de_Reuniao.md",
+          "name": "03-2025_Ata_de_Reuniao.pdf",
+          "dates": [
+            "07/03/2025"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF13",
+      "documents": [
+        {
+          "document_id": "7f3c27f4244ceb7c473d1f0e",
+          "relative_path": "uploaded_files/20_04-2020_Ata_de_Reuniao_Extraordinaria.md",
+          "name": "04-2020_Ata_de_Reuniao Extraordinaria.pdf",
+          "dates": [
+            "24/04/2020"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF14",
+      "documents": [
+        {
+          "document_id": "a9f843a471794ef9f772a746",
+          "relative_path": "uploaded_files/21_04-2020_Ata_de_Reuniao.md",
+          "name": "04-2020_Ata_de_Reuniao.pdf",
+          "dates": [
+            "03/04/2020"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF15",
+      "documents": [
+        {
+          "document_id": "be59cb513cfdcb6b7597225e",
+          "relative_path": "uploaded_files/22_04-2021_Ata_de_Reuniao.md",
+          "name": "04-2021_Ata_de_Reuniao.pdf",
+          "dates": [
+            "09/04/2021"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF16",
+      "documents": [
+        {
+          "document_id": "4d224096fa9202529a994a96",
+          "relative_path": "uploaded_files/23_04-2022_Ata_de_Reuniao.md",
+          "name": "04-2022_Ata_de_Reuniao.pdf",
+          "dates": [
+            "01/04/2022"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF17",
+      "documents": [
+        {
+          "document_id": "cecf94fd50aa175977ba64f1",
+          "relative_path": "uploaded_files/24_04-2023_Ata_de_Reuniao.md",
+          "name": "04-2023_Ata_de_Reuniao.pdf",
+          "dates": [
+            "14/04/2023"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF18",
+      "documents": [
+        {
+          "document_id": "6c3e70a1b3de75a837bd622f",
+          "relative_path": "uploaded_files/26_04-2025_Ata_de_Reuniao.md",
+          "name": "04-2025_Ata_de_Reuniao.pdf",
+          "dates": [
+            "04/04/2025"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF19",
+      "documents": [
+        {
+          "document_id": "18585c16703b82ec6f8574ef",
+          "relative_path": "uploaded_files/27_05-2020_Ata_de_Reuniao.md",
+          "name": "05-2020_Ata_de_Reuniao.pdf",
+          "dates": [
+            "06/05/2020"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF20",
+      "documents": [
+        {
+          "document_id": "79eca3dee196992df05486a3",
+          "relative_path": "uploaded_files/28_05-2021_Ata_de_Reuniao.md",
+          "name": "05-2021_Ata_de_Reuniao.pdf",
+          "dates": [
+            "21/05/2021"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF21",
+      "documents": [
+        {
+          "document_id": "dc2c677636ec92e4aa15887d",
+          "relative_path": "uploaded_files/29_05-2022_Ata_de_Reuniao.md",
+          "name": "05-2022_Ata_de_Reuniao.pdf",
+          "dates": [
+            "06/05/2022"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF22",
+      "documents": [
+        {
+          "document_id": "d9f69169e907a2d10511c2d5",
+          "relative_path": "uploaded_files/30_05-2023_Ata_de_Reuniao.md",
+          "name": "05-2023_Ata_de_Reuniao.pdf",
+          "dates": [
+            "05/05/2023"
+          ]
+        },
+        {
+          "document_id": "899a319ec07271049ae1d1aa",
+          "relative_path": "uploaded_files/36_06-2023_Ata_de_Reuniao.md",
+          "name": "06-2023_Ata_de_Reuniao.pdf",
+          "dates": [
+            "02/06/2023",
+            "05/05/2023"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF23",
+      "documents": [
+        {
+          "document_id": "0c4507c2c318799be3cf3810",
+          "relative_path": "uploaded_files/31_05-2024_Ata_de_Reuniao.md",
+          "name": "05-2024_Ata_de_Reuniao.pdf",
+          "dates": [
+            "03/05/2024"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF24",
+      "documents": [
+        {
+          "document_id": "954bc75a041030e25021638b",
+          "relative_path": "uploaded_files/32_05-2025_Ata_de_Reuniao.md",
+          "name": "05-2025_Ata_de_Reuniao.pdf",
+          "dates": [
+            "09/05/2025"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF25",
+      "documents": [
+        {
+          "document_id": "e776b87fbc9e6285e76ba458",
+          "relative_path": "uploaded_files/33_06-2020_Ata_de_Reuniao.md",
+          "name": "06-2020_Ata_de_Reuniao.pdf",
+          "dates": [
+            "01/06/2020"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF26",
+      "documents": [
+        {
+          "document_id": "f13c2c321848351037b4415a",
+          "relative_path": "uploaded_files/34_06-2021_Ata_de_Reuniao.md",
+          "name": "06-2021_Ata_de_Reuniao.pdf",
+          "dates": [
+            "11/06/2021"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF27",
+      "documents": [
+        {
+          "document_id": "968e33a3e29f86616fcc6249",
+          "relative_path": "uploaded_files/35_06-2022_Ata_de_Reuniao.md",
+          "name": "06-2022_Ata_de_Reuniao.pdf",
+          "dates": [
+            "03/06/2022"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF28",
+      "documents": [
+        {
+          "document_id": "18cf72dfa91d5768f4e6b606",
+          "relative_path": "uploaded_files/37_06-2024_Ata_de_Reuniao.md",
+          "name": "06-2024_Ata_de_Reuniao.pdf",
+          "dates": [
+            "07/06/2024"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF29",
+      "documents": [
+        {
+          "document_id": "fad721378e2d90f05a593f13",
+          "relative_path": "uploaded_files/39_06-2025_Ata_de_Reuniao.md",
+          "name": "06-2025_Ata_de_Reuniao.pdf",
+          "dates": [
+            "06/06/2025",
+            "21/06/2025",
+            "26/06/2025"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF30",
+      "documents": [
+        {
+          "document_id": "006f4b4b70113c7e8d4003a3",
+          "relative_path": "uploaded_files/40_07-2020_Ata_de_Reuniao.md",
+          "name": "07-2020_Ata_de_Reuniao.pdf",
+          "dates": []
+        }
+      ]
+    },
+    {
+      "family_id": "GF31",
+      "documents": [
+        {
+          "document_id": "bed725a9262d8585f6c35761",
+          "relative_path": "uploaded_files/41_07-2021_Ata_de_Reuniao.md",
+          "name": "07-2021_Ata_de_Reuniao.pdf",
+          "dates": [
+            "02/07/2021"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF32",
+      "documents": [
+        {
+          "document_id": "710108f3363d9a3d17e9bbd8",
+          "relative_path": "uploaded_files/43_07-2022_Ata_de_Reuniao.md",
+          "name": "07-2022_Ata_de_Reuniao.pdf",
+          "dates": [
+            "01/07/2022"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF33",
+      "documents": [
+        {
+          "document_id": "e913359eefa1384b47a712dd",
+          "relative_path": "uploaded_files/44_07-2023_Ata_de_Reuniao.md",
+          "name": "07-2023_Ata_de_Reuniao.pdf",
+          "dates": [
+            "07/07/2023"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF34",
+      "documents": [
+        {
+          "document_id": "ffe35522efdc4b7526b63422",
+          "relative_path": "uploaded_files/45_07-2024_Ata_de_Reuniao.md",
+          "name": "07-2024_Ata_de_Reuniao.pdf",
+          "dates": [
+            "19/07/2024"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF35",
+      "documents": [
+        {
+          "document_id": "aa4800a504ffba62403e539f",
+          "relative_path": "uploaded_files/46_07-2025_Ata_de_Reuniao.md",
+          "name": "07-2025_Ata_de_Reuniao.pdf",
+          "dates": [
+            "04/07/2025"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF36",
+      "documents": [
+        {
+          "document_id": "72d54a2434a41f60ce3d4d96",
+          "relative_path": "uploaded_files/47_08-2020_Ata_de_Reuniao.md",
+          "name": "08-2020_Ata_de_Reuniao.pdf",
+          "dates": [
+            "07/08/2020"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF37",
+      "documents": [
+        {
+          "document_id": "be2036039a58e1a95686d8d2",
+          "relative_path": "uploaded_files/48_08-2021_Ata_de_Reuniao.md",
+          "name": "08-2021_Ata_de_Reuniao.pdf",
+          "dates": [
+            "06/08/2021"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF38",
+      "documents": [
+        {
+          "document_id": "9769fd1c168d4887e37de280",
+          "relative_path": "uploaded_files/50_08-2023_Ata_de_Reuniao.md",
+          "name": "08-2023_Ata_de_Reuniao.pdf",
+          "dates": [
+            "18/08/2023"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF39",
+      "documents": [
+        {
+          "document_id": "515a2627e97c59d6f56405fc",
+          "relative_path": "uploaded_files/51_08-2024_Ata_de_Reuniao.md",
+          "name": "08-2024_Ata_de_Reuniao.pdf",
+          "dates": [
+            "02/08/2024"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF40",
+      "documents": [
+        {
+          "document_id": "133d2db31f0b744ce9c5bb0b",
+          "relative_path": "uploaded_files/52_08-2025_Ata_de_Reuniao.md",
+          "name": "08-2025_Ata_de_Reuniao.pdf",
+          "dates": [
+            "01/08/2025"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF41",
+      "documents": [
+        {
+          "document_id": "4cd68a543d96e55f56cbf3d7",
+          "relative_path": "uploaded_files/54_09-2021_Ata_de_Reuniao.md",
+          "name": "09-2021_Ata_de_Reuniao.pdf",
+          "dates": [
+            "03/09/2021"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF42",
+      "documents": [
+        {
+          "document_id": "f7f022fe2e2109e9f0afddc2",
+          "relative_path": "uploaded_files/55_09-2022_Ata_de_Reuniao.md",
+          "name": "09-2022_Ata_de_Reuniao.pdf",
+          "dates": [
+            "02/09/2022"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF43",
+      "documents": [
+        {
+          "document_id": "18a40fc4786fa841f66f3507",
+          "relative_path": "uploaded_files/56_09-2023_Ata_de_Reuniao.md",
+          "name": "09-2023_Ata_de_Reuniao.pdf",
+          "dates": [
+            "01/09/2023"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF44",
+      "documents": [
+        {
+          "document_id": "ec46d3d03714d57f88f0cd35",
+          "relative_path": "uploaded_files/57_09-2024_Ata_de_Reuniao.md",
+          "name": "09-2024_Ata_de_Reuniao.pdf",
+          "dates": [
+            "06/09/2024"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF45",
+      "documents": [
+        {
+          "document_id": "11635d24bc63a3a991b59afd",
+          "relative_path": "uploaded_files/58_09-2024_Ata_de_Reuniao.pdf_Estraordina_ria.md",
+          "name": "09-2024_Ata_de_Reuniao.pdf Estraordinária.pdf",
+          "dates": [
+            "27/09/2024"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF46",
+      "documents": [
+        {
+          "document_id": "6bfadd2e584c96a3672a835f",
+          "relative_path": "uploaded_files/59_09-2025_Ata_de_Reuniao.md",
+          "name": "09-2025_Ata_de_Reuniao.pdf",
+          "dates": [
+            "12/09/2025"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF47",
+      "documents": [
+        {
+          "document_id": "9b91a16e2ea2ceee07f26611",
+          "relative_path": "uploaded_files/61_09-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+          "name": "09-2025_Ata_de_Reuniao.pdf Extraordinária.pdf",
+          "dates": []
+        }
+      ]
+    },
+    {
+      "family_id": "GF48",
+      "documents": [
+        {
+          "document_id": "4a249d5acb7f49ea1d0536bb",
+          "relative_path": "uploaded_files/62_10-2020_Ata_de_Reuniao.md",
+          "name": "10-2020_Ata_de_Reuniao.pdf",
+          "dates": [
+            "02/10/2020"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF49",
+      "documents": [
+        {
+          "document_id": "fb1d1db99a3eac20462e6226",
+          "relative_path": "uploaded_files/63_10-2021_Ata_de_Reuniao.md",
+          "name": "10-2021_Ata_de_Reuniao.pdf",
+          "dates": [
+            "01/10/2021"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF50",
+      "documents": [
+        {
+          "document_id": "86f4057b25443b866c9efbdf",
+          "relative_path": "uploaded_files/64_10-2022_Ata_de_Reuniao.md",
+          "name": "10-2022_Ata_de_Reuniao.pdf",
+          "dates": [
+            "07/10/2022"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF51",
+      "documents": [
+        {
+          "document_id": "e33d69eb826a4fa22fb3a33d",
+          "relative_path": "uploaded_files/65_10-2023_Ata_de_Reuniao_Ezxtraordinaria.md",
+          "name": "10-2023_Ata_de_Reuniao Ezxtraordinaria.pdf",
+          "dates": [
+            "24/10/2023"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF52",
+      "documents": [
+        {
+          "document_id": "da95f64652fae5b24f1d4d98",
+          "relative_path": "uploaded_files/66_10-2023_Ata_de_Reuniao.md",
+          "name": "10-2023_Ata_de_Reuniao.pdf",
+          "dates": [
+            "06/10/2023"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF53",
+      "documents": [
+        {
+          "document_id": "8b42ed7f9f61347ff48e73c5",
+          "relative_path": "uploaded_files/67_10-2025_Ata_de_Reuniao.md",
+          "name": "10-2025_Ata_de_Reuniao.pdf",
+          "dates": [
+            "03/10/2025"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF54",
+      "documents": [
+        {
+          "document_id": "34f50f5579204c9a5d8471c4",
+          "relative_path": "uploaded_files/69_11-2021_Ata_de_Reuniao.md",
+          "name": "11-2021_Ata_de_Reuniao.pdf",
+          "dates": [
+            "05/11/2021"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF55",
+      "documents": [
+        {
+          "document_id": "9f57a85d19cb07b7922baf22",
+          "relative_path": "uploaded_files/70_11-2022_Ata_de_Reuniao.md",
+          "name": "11-2022_Ata_de_Reuniao.pdf",
+          "dates": [
+            "04/11/2022"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF56",
+      "documents": [
+        {
+          "document_id": "730447a0ded0410a05d4a42a",
+          "relative_path": "uploaded_files/72_11-2023_Ata_de_Reuniao.md",
+          "name": "11-2023_Ata_de_Reuniao.pdf",
+          "dates": [
+            "17/11/2023"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF57",
+      "documents": [
+        {
+          "document_id": "5769dd933c985aae60d1433a",
+          "relative_path": "uploaded_files/73_11-2024_Ata_de_Reuniao.md",
+          "name": "11-2024_Ata_de_Reuniao.pdf",
+          "dates": [
+            "08/11/2024"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF58",
+      "documents": [
+        {
+          "document_id": "fa4f5b0eaa559039a8287658",
+          "relative_path": "uploaded_files/74_11-2025_Ata_de_Reuniao.md",
+          "name": "11-2025_Ata_de_Reuniao.pdf",
+          "dates": [
+            "07/11/2025"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF59",
+      "documents": [
+        {
+          "document_id": "bb1daec44962fa5101f0899f",
+          "relative_path": "uploaded_files/75_11-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+          "name": "11-2025_Ata_de_Reuniao.pdf  Extraordinária.pdf",
+          "dates": [
+            "24/11/2025"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF60",
+      "documents": [
+        {
+          "document_id": "5b0c9993efbec6c80c84fdc4",
+          "relative_path": "uploaded_files/76_11-2025_Ata_de_Reuniao.pdf_Extraordinaria.md",
+          "name": "11-2025_Ata_de_Reuniao.pdf Extraordinaria.pdf",
+          "dates": [
+            "18/11/2025"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF61",
+      "documents": [
+        {
+          "document_id": "83ed51968999f2e0b0e613f7",
+          "relative_path": "uploaded_files/77_11-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+          "name": "11-2025_Ata_de_Reuniao.pdf Extraordinária.pdf",
+          "dates": [
+            "11/11/2025"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF62",
+      "documents": [
+        {
+          "document_id": "7eb81071c2a228df23fe5071",
+          "relative_path": "uploaded_files/78_12-2020_Ata_de_Reuniao.md",
+          "name": "12-2020_Ata_de_Reuniao.pdf",
+          "dates": [
+            "04/12/2020"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF63",
+      "documents": [
+        {
+          "document_id": "1f30ad68bdd085f8fe220e1f",
+          "relative_path": "uploaded_files/79_12-2021_Ata_de_Reuniao.md",
+          "name": "12-2021_Ata_de_Reuniao.pdf",
+          "dates": [
+            "03/12/2021"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF64",
+      "documents": [
+        {
+          "document_id": "d2d3a25bdb60404c66c491a6",
+          "relative_path": "uploaded_files/80_12-2022_Ata_de_Reuniao.md",
+          "name": "12-2022_Ata_de_Reuniao.pdf",
+          "dates": [
+            "02/12/2022"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF65",
+      "documents": [
+        {
+          "document_id": "7d05473e618e02b6b1478b7e",
+          "relative_path": "uploaded_files/81_12-2023_Ata_de_Reuniao.md",
+          "name": "12-2023_Ata_de_Reuniao.pdf",
+          "dates": [
+            "01/12/2023"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF66",
+      "documents": [
+        {
+          "document_id": "3d1341d01f2cf460d4064cf1",
+          "relative_path": "uploaded_files/83_12-2025_Ata_de_Reuniao.md",
+          "name": "12-2025_Ata_de_Reuniao.pdf",
+          "dates": [
+            "05/12/2025"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "GF67",
+      "documents": [
+        {
+          "document_id": "85891f6d88053f09fe348820",
+          "relative_path": "uploaded_files/84_062022_Ata_de_Reuniao_Extraordinaria.md",
+          "name": "062022_Ata_de_Reuniao Extraordinaria.pdf",
+          "dates": [
+            "21/06/2022"
+          ]
+        }
+      ]
+    }
+  ],
+  "excluded_family_count": 16
+}

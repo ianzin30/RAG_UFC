@@ -1,0 +1,34 @@
+{
+  "cases": [
+    {
+      "category": "cross-document",
+      "question": "Qual professor foi indicado como suplente para a Unidade Curricular 'Engenharia de Dados'?",
+      "expected_answer": "Lincoln Souza Rocha",
+      "field": "professor_name",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "17_03-2024_Ata_de_Reuniao.md",
+          "quote": "2. Engenharia de Dados: Angelo Roncalli Alencar Brayner (Titular) e Javam de Castro Machado (Suplente)"
+        },
+        {
+          "document": "18_03-2025_Ata_de_Reuniao.md",
+          "quote": "2. Engenharia de Dados: Angelo Roncalli Alencar Brayner (Titular) e Javam de Castro Machado (Suplente)"
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 8954,
+    "total_tokens": 9148,
+    "completion_tokens": 194,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": null
+  },
+  "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+  "latency_seconds": 26.69852237496525,
+  "source_sha256": {
+    "17_03-2024_Ata_de_Reuniao.md": "8ccd1549acedf679d77a37402d229c6a9bad570c9b4edde9d409ec9930603236",
+    "18_03-2025_Ata_de_Reuniao.md": "dbb9fc73062b602b3eefcf15ae651d4f7cc43005dbf1105a63246616b84e43c9"
+  }
+}

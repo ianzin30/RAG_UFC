@@ -1,0 +1,46 @@
+{
+  "cases": [
+    {
+      "category": "multi-hop",
+      "question": "Who was approved as the representative of the 'Algorithms and Optimization' unit curriculum?",
+      "expected_answer": "Ana Karolinna Maia de Oliveira",
+      "field": "scholarship_value",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "03_01-2022_Ata_de_Reuniao.md",
+          "quote": "Algoritmos e Otimização: Titular: Ana Karolinna Maia de Oliveira e Suplente: Rudini Menezes Sampaio"
+        },
+        {
+          "document": "03_01-2022_Ata_de_Reuniao.md",
+          "quote": "Após discussão, o Colegiado aprovou os novos Representantes das Unidades Curriculares, conforme indicado acima."
+        }
+      ]
+    },
+    {
+      "category": "single-document factual",
+      "question": "What is the total budget of the project 'AI-CID: Identifying Client-induced Damage via Artificial Intelligence'?",
+      "expected_answer": "R$ 1,576,265.88",
+      "field": "promotion_committee",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "03_01-2022_Ata_de_Reuniao.md",
+          "quote": "O orçamento total do projeto é no valor de R$ 1.576.265,88 (um milhão, quinhentos e setenta e seis mil, duzentos e sessenta e cinco reais e oitenta e oito centavos), durante o período de mar/2022 a dez/2022."
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4316,
+    "total_tokens": 4724,
+    "completion_tokens": 408,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": null
+  },
+  "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+  "latency_seconds": 15.574284417030867,
+  "source_sha256": {
+    "03_01-2022_Ata_de_Reuniao.md": "470abeb975324a2bec8be5447d42303e447370b929e5133888c21724954963e7"
+  }
+}

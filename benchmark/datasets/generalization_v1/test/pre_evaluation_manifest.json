@@ -1,0 +1,18 @@
+{
+  "status": "frozen_before_test_retrieval",
+  "created_utc": "2026-10-07T16:12:23.117836+00:00",
+  "development_freeze_sha256": "1621e6161a7cbeda02817c269f6b5dbd230581428d9c83332fe6a86e2fb04b8b",
+  "files": {
+    "evidence.json": "de4cdedd32793b0c67f662f34bdeb7fc11c495a83c76f6055e4f5ff9fceb10e6",
+    "source_audit.json": "97316b5e811eaaf6d0d06d9f3379417d12c60fda807c9d78d2542afeb79ce324",
+    "curation.py": "0d174354dbc9e137515c8c5cc7bf1df239baaa4947d38d81bcfc77404a0e4d64",
+    "questions.json": "78fdb5b45659d3e49ae32bc575df6faab9fa7d978aa45f7fda0491ee7e7cac65",
+    "annotation_drafts.json": "ca03973196310fabd6018668eaf5dde8d04c617f3d44f08d26cc2876d061e7c1",
+    "facts.json": "1e735cae509077dc37fad01b42587b9093867edb8b4722c2210a748bfd61cd03",
+    "evidence_v2_rules.json": "0aa148e8895418f7b34ee208d9182eab3b295779f2fcd48d5fe116afd6070868"
+  },
+  "test_family_count": 40,
+  "development_family_count": 14,
+  "family_overlap": [],
+  "manual_fact_audit": "Source facts compared across development/test and old annotations; shared names or generic values alone are not the same fact."
+}

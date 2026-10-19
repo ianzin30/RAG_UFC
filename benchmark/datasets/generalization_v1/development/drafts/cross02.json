@@ -1,0 +1,34 @@
+{
+  "cases": [
+    {
+      "category": "cross-document",
+      "question": "Qual professor foi indicado para formar a Comissão de Avaliação de Progressão Funcional do Prof. Pablo Mayckon Silva Farias da classe de Professor Adjunto C II para C III?",
+      "expected_answer": "Emanuele Marques Rodrigues Santos",
+      "field": "professor_name",
+      "bridge": "",
+      "evidence": [
+        {
+          "document": "14_03-2022_Ata_de_Reuniao.md",
+          "quote": "Em seguida, o chefe colocou em discussão a formação da Comissão de Avaliação de Progressão Funcional do Prof. Pablo Mayckon Silva Farias da classe de Professor Adjunto C II para C III. Após discussão, os professores Rudini Menezes Sampaio (presidente), Emanuele Marques Rodrigues Santos e João Fernando Lima Alcântara foram indicados para compor a supracitada comissão a qual foi aprovada pelo Colegiado."
+        },
+        {
+          "document": "16_03-2023_Ata_de_Reuniao.md",
+          "quote": "Dando prosseguimento, o chefe colocou em discussão a formação da Comissão de Avaliação de Progressão Funcional do Prof. Emanuel Bezerra Rodrigues da classe de Professor Adjunto C III para C IV. Após discussão, os professores Rossana Maria de Castro Andrade (presidente), Rudini Menezes Sampaio e Lincoln Souza Rocha foram indicados para a composição da supracitada comissão que foi aprovada pelo Colegiado."
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 8787,
+    "total_tokens": 9148,
+    "completion_tokens": 361,
+    "prompt_tokens_details": null,
+    "completion_tokens_details": null
+  },
+  "model": "Qwen/Qwen2.5-7B-Instruct-AWQ",
+  "latency_seconds": 30.110144625010435,
+  "source_sha256": {
+    "14_03-2022_Ata_de_Reuniao.md": "b43d51947ae08f0f08e7eafd096ce7da1797cc9c2adb92317dbacf0344053944",
+    "16_03-2023_Ata_de_Reuniao.md": "6a53e7b0ad83e17e6fa84bf324ade2df5af9042d11152a6d2312565aef02ae99"
+  }
+}

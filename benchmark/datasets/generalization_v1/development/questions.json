@@ -1,0 +1,420 @@
+[
+  {
+    "id": "GEN-DEVELOPMENT-001",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na reunião de janeiro de 2021, qual foi o repasse previsto para a UFC no projeto cujo quinto aditivo estendeu o termo até abril de 2022?",
+    "expected_answer": "R$ 1.136.073,99",
+    "metadata": {
+      "evidence_ids": [
+        "GF-6b90d416938a6fd2",
+        "GF-5579983727cf8bd2"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF01"
+      ],
+      "field": "university_transfer",
+      "outside_old_fields": true,
+      "bridge": "Identificar o termo LG pelo quinto aditivo e ligar ao repasse da UFC descrito posteriormente.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-002",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na reunião extraordinária de janeiro de 2022, qual intervalo de contratação impedia os últimos substitutos de concorrer à seleção antecipada por causa do afastamento previsto para abril?",
+    "expected_answer": "Dois anos entre contratações.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-121ecb394124cbfd",
+        "GF-4a74d6ea96ea85df"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF02"
+      ],
+      "field": "hiring_restriction",
+      "outside_old_fields": true,
+      "bridge": "Relacionar a vaga antecipada ao impedimento aplicado aos substitutos anteriores.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-003",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na reunião de 14 de janeiro de 2022, qual bolsa do AI-CID foi prevista para o suplente da unidade de Lógica, Inteligência Artificial e Probabilidade?",
+    "expected_answer": "R$ 7.000,00 por dez meses para João Paulo Pordeus.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-be1c3670b7ce210d",
+        "GF-cf7b818e440bf3af"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF03"
+      ],
+      "field": "scholarship_value",
+      "outside_old_fields": true,
+      "bridge": "O suplente identifica João Paulo Pordeus; buscar a bolsa dessa pessoa no outro item da pauta.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-004",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na reunião de fevereiro de 2021, qual valor da bolsa prorrogada por um mês foi apresentado pela suplente da banca de progressão de Emanuel Bezerra?",
+    "expected_answer": "R$ 2.500,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-f28cb1c91c366104",
+        "GF-4287186232e0e41b"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF04"
+      ],
+      "field": "scholarship_value",
+      "outside_old_fields": true,
+      "bridge": "Identificar Rossana como suplente e ligar sua apresentação ao valor da bolsa de Paulo Artur.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-005",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na reunião de fevereiro de 2022, qual orçamento do projeto Portal Engenharia da Aplicação foi relatado pelo docente cujo estágio probatório foi aprovado nessa mesma reunião?",
+    "expected_answer": "R$ 269.900,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-0c9a31d9c3120134",
+        "GF-2da44e4fc10cefb1"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF05"
+      ],
+      "field": "project_budget",
+      "outside_old_fields": true,
+      "bridge": "Identificar João Paulo do Vale Madeiro pelo estágio e ligar à relatoria do PENAP.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-006",
+    "collection": "uploaded_files",
+    "category": "multi-hop",
+    "question": "Na reunião de fevereiro de 2025, qual foi o novo orçamento do projeto Lenovo cujo aditivo foi relatado pelo professor convidado a ensinar Interface Homem-máquina na Universidade Católica do Porto?",
+    "expected_answer": "R$ 7.742.468,70.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-09d30abf7f2db580",
+        "GF-4ae3089b7d5859f4"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF06"
+      ],
+      "field": "project_budget",
+      "outside_old_fields": true,
+      "bridge": "Identificar José Maria Monteiro pelo convite e ligar ao aditivo CIDDE relatado em outro item.",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-007",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na reunião de janeiro de 2021, qual valor mensal foi aprovado para a bolsa de David Viana no Lenovo LDE?",
+    "expected_answer": "R$ 5.000,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-5b7948fbcad455fd"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF01"
+      ],
+      "field": "scholarship_value",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-008",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na reunião extraordinária de janeiro de 2022, quem assumiria temporariamente teoria e prática de Programação Computacional para Engenharia?",
+    "expected_answer": "Rudini Menezes (teoria) e Ana Karolinna Maia (prática).",
+    "metadata": {
+      "evidence_ids": [
+        "GF-4459a98770307be6"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF02"
+      ],
+      "field": "teaching_assignment",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-009",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Qual orçamento total do Scope Management Tool Phase II foi informado na reunião de 14 de janeiro de 2022?",
+    "expected_answer": "R$ 2.000.089,10.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-61470b9ba718a7c0"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF03"
+      ],
+      "field": "project_budget",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-010",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na ata de fevereiro de 2021, qual disciplina foi o último plano de ensino que faltava aprovar?",
+    "expected_answer": "Qualidade de Software (CK0231 T01).",
+    "metadata": {
+      "evidence_ids": [
+        "GF-0a2b0fa4bf078ab5"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF04"
+      ],
+      "field": "teaching_plan",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-011",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na reunião de fevereiro de 2022, qual valor da bolsa renovada para Vânia Maria Ponte Vidal no projeto da SEFAZ do Maranhão?",
+    "expected_answer": "R$ 10.500,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-5c83e9cbc2e7e0d4"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF05"
+      ],
+      "field": "scholarship_value",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-012",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na programação de alocação de 2025.2 apresentada em fevereiro de 2025, quando seria apresentada a demanda recebida?",
+    "expected_answer": "27/06/2025.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-4c352b6e404935f0"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF06"
+      ],
+      "field": "allocation_calendar",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-013",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na ata extraordinária de abril de 2020, quantos votos houve a favor, contra e em abstenção na publicação da carta aberta?",
+    "expected_answer": "9 SIM, 8 NÃO e 3 ABSTENÇÃO.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-416fad0fe06a1a7c"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF13"
+      ],
+      "field": "vote_counts",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-014",
+    "collection": "uploaded_files",
+    "category": "single-document factual",
+    "question": "Na ata ordinária de abril de 2020, para qual valor passou a parcela do Departamento no aditivo LG Sample Test?",
+    "expected_answer": "R$ 11.216,60.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-ea2885af2fa6331c"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF14"
+      ],
+      "field": "department_transfer",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-015",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Na ata de março de 2020, qual total do Avantte após o aditivo e, na de março de 2021, qual valor da bolsa de Pedro Almir nesse projeto?",
+    "expected_answer": "R$ 13.685.961,53 e R$ 3.300,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-87ea604b7453695e",
+        "GF-445e22db4ed23fca"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF07",
+        "GF08"
+      ],
+      "field": "cross_document_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-016",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Comparando março de 2021 e março de 2022, quais valores das bolsas de Pedro Almir no LG Avantte e de Rossana no FURUKAWA Quest?",
+    "expected_answer": "R$ 3.300,00 e R$ 4.000,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-445e22db4ed23fca",
+        "GF-bf59e0bafae6b6ac"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF08",
+        "GF09"
+      ],
+      "field": "cross_document_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-017",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Qual bolsa da professora no FURUKAWA Quest aparece em março de 2022, e qual novo orçamento do Guided Troubleshooting Tool aparece em março de 2023?",
+    "expected_answer": "R$ 4.000,00 por 10 meses; R$ 1.592.778,98.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-bf59e0bafae6b6ac",
+        "GF-4e75600c95fed226"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF09",
+        "GF10"
+      ],
+      "field": "cross_document_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-018",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Que valor do Guided Troubleshooting Tool após redução de bolsista aparece em março de 2023, e qual bolsa de Paulo Dias da Rocha Neto aparece em março de 2024?",
+    "expected_answer": "R$ 1.592.778,98 e R$ 1.390,00.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-4e75600c95fed226",
+        "GF-23f07f6f153ca526"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF10",
+        "GF11"
+      ],
+      "field": "cross_document_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-019",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Qual bolsa do estudante da UECE aparece em março de 2024 e quantos substitutos tinham disciplinas previstas na oferta apresentada em março de 2025?",
+    "expected_answer": "Paulo Dias, R$ 1.390,00; um substituto.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-23f07f6f153ca526",
+        "GF-40350a9d8a1b20c8"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF11",
+        "GF12"
+      ],
+      "field": "cross_document_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  },
+  {
+    "id": "GEN-DEVELOPMENT-020",
+    "collection": "uploaded_files",
+    "category": "cross-document",
+    "question": "Qual total do Avantte aparece em março de 2020 e quantos substitutos estavam previstos na oferta apresentada em março de 2025?",
+    "expected_answer": "R$ 13.685.961,53; um substituto.",
+    "metadata": {
+      "evidence_ids": [
+        "GF-40350a9d8a1b20c8",
+        "GF-87ea604b7453695e"
+      ],
+      "split": "development",
+      "family_ids": [
+        "GF07",
+        "GF12"
+      ],
+      "field": "cross_document_comparison",
+      "outside_old_fields": true,
+      "bridge": "",
+      "history": []
+    }
+  }
+]
