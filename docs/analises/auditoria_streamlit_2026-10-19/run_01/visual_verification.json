@@ -1,0 +1,27 @@
+{
+  "fixture": "Actual Chat.show, toolbar and sources with fake RAG, temporary JSON and synthetic Markdown",
+  "observed": [
+    "submission",
+    "progress callback",
+    "ready response",
+    "source quote highlight",
+    "Markdown source preview",
+    "generation error"
+  ],
+  "mobile": {
+    "width": 390,
+    "document_width": 390
+  },
+  "screenshots": [
+    "01-ready.png",
+    "02-progress.png",
+    "03-response-sources.png",
+    "04-generation-error.png",
+    "05-mobile.png",
+    "06-source-preview.png",
+    "07-report-desktop.png",
+    "08-report-mobile.png",
+    "09-report-dark.png"
+  ],
+  "limitations": "No real Spark model, full production sidebar/uploads or real interruptions."
+}

@@ -1,0 +1,571 @@
+{
+  "title": "Auditoria do chat: da pergunta à resposta com fontes",
+  "date": "2026-10-19",
+  "production_changed": false,
+  "new_model_calls": 0,
+  "new_retrieval_calls": 0,
+  "tests": {
+    "total": 134,
+    "audit_characterizations": 27,
+    "existing": 107,
+    "failures": 0,
+    "errors": 0,
+    "note": "Passing characterizations include assertions of current defects; they do not mean defects were fixed.",
+    "test_names": [
+      "test_normal_send_and_rerun_execute_flow_once",
+      "test_error_is_not_retried_but_becomes_semantic_history[error]",
+      "test_error_is_not_retried_but_becomes_semantic_history[timeout]",
+      "test_identical_text_is_a_second_explicit_submission",
+      "test_empty_answer_is_marked_complete_and_persisted",
+      "test_empty_citations_remain_empty_despite_legacy_sources[abstain]",
+      "test_empty_citations_remain_empty_despite_legacy_sources[clarification]",
+      "test_empty_citations_remain_empty_despite_legacy_sources[empty_sources]",
+      "test_profile_change_reuses_stale_service",
+      "test_model_switch_updates_existing_provider_once",
+      "test_collection_change_rebuilds_service",
+      "test_mutated_active_chat_receives_late_result_risk_injection",
+      "test_mutated_selection_does_not_bind_result_to_original_profile[model_name-audit-B]",
+      "test_mutated_selection_does_not_bind_result_to_original_profile[collection-value1]",
+      "test_persistence_failure_is_not_shown_to_user",
+      "test_two_sessions_overwrite_a_newer_snapshot",
+      "test_source_fields_survive_reload",
+      "test_unknown_source_id_is_rendered_as_cited",
+      "test_duplicate_source_is_not_deduplicated",
+      "test_shared_duplicate_source_object_collides_in_widget_keys",
+      "test_malformed_source_crashes_after_ready_status",
+      "test_missing_file_falls_back_to_visible_preview_error",
+      "test_mismatched_focus_quote_highlights_other_text",
+      "test_source_expander_checkbox_key_changes_after_rerun",
+      "test_invalid_runtime_configuration_is_not_validated_at_settings_load",
+      "test_runtime_config_cache_does_not_reload_toml_automatically",
+      "test_environment_authority_changes_after_application_bootstrap"
+    ]
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "title": "Aplicação e cliente Spark não compartilham a configuração efetiva",
+      "priority": "P0",
+      "evidence_class": "estático comprovado",
+      "impact": "O perfil versionado da aplicação aponta para o endpoint local e Qwen 2.5, com overrides VLLM_*; preencher somente LLM_* não conecta o chat à Spark.",
+      "reproduction": "Seguir Chat → RAGService → RAGEngine → ProviderRegistry e comparar [llm] com o leitor LLMSettings. Nenhuma inferência real foi feita nesta auditoria.",
+      "tests": [],
+      "references": [
+        {
+          "path": "config/config.toml",
+          "line": 5,
+          "needle": "[llm]"
+        },
+        {
+          "path": "application/service/rag/v2/Providers.py",
+          "line": 285,
+          "needle": "os.getenv(\"VLLM_BASE_URL\")"
+        },
+        {
+          "path": "llm_client.py",
+          "line": 43,
+          "needle": "class LLMSettings"
+        }
+      ],
+      "proposal": "Criar posteriormente um único resolvedor de configuração efetiva e um adaptador Spark na camada de providers, reutilizando transporte público com metadados. Não importar o runner do benchmark no frontend."
+    },
+    {
+      "id": "F02",
+      "title": "A autoridade do ambiente depende da ordem de inicialização",
+      "priority": "P1",
+      "evidence_class": "reproduzido com ambiente sintético",
+      "impact": "Um valor definido no processo vence no cliente isolado, mas pode ser sobrescrito pelo .env quando o bootstrap da aplicação roda.",
+      "reproduction": "Processo define process-model; arquivo temporário define file-model; LLMSettings retorna process-model antes e file-model depois do bootstrap.",
+      "tests": [
+        "test_environment_authority_changes_after_application_bootstrap"
+      ],
+      "references": [
+        {
+          "path": "application/service/RuntimeConfig.py",
+          "line": 36,
+          "needle": "load_dotenv(dotenv_path=ENV_FILE, override=True)"
+        },
+        {
+          "path": "llm_client.py",
+          "line": 54,
+          "needle": "os.environ.get(name, values.get(name))"
+        }
+      ],
+      "proposal": "Definir uma única precedência explícita. TOML como configuração normal; ambiente como override de implantação documentado; .env fornece segredos e compatibilidade transitória. Não sobrescrever os.environ como efeito colateral da leitura de configuração."
+    },
+    {
+      "id": "F03",
+      "title": "Uma aba antiga pode sobrescrever mensagens mais recentes",
+      "priority": "P1",
+      "evidence_class": "reproduzido em duas sessões AppTest",
+      "impact": "O arquivo é gravado atomicamente, mas contém um snapshot completo desatualizado. Uma aba sem nova pergunta pode apagar do disco uma atualização da outra.",
+      "reproduction": "Abrir duas sessões isoladas; enviar nova mensagem na primeira; executar rerun na segunda. A mensagem nova desaparece do JSON temporário.",
+      "tests": [
+        "test_two_sessions_overwrite_a_newer_snapshot"
+      ],
+      "references": [
+        {
+          "path": "application/presentation/chat_sessions/State.py",
+          "line": 88,
+          "needle": "def initialize_chat_sessions"
+        },
+        {
+          "path": "application/presentation/chat_sessions/Storage.py",
+          "line": 68,
+          "needle": "def persist_chat_state"
+        }
+      ],
+      "proposal": "Persistir mutações por conversa, sem gravar em um render sem alteração. Introduzir revisão do snapshot e rejeitar conflito de gravação; conflito ou falha de armazenamento não deve repetir a geração. Preservar a política atual de histórico compartilhado; não introduzir autenticação nesta etapa."
+    },
+    {
+      "id": "F04",
+      "title": "Falhas viram mensagens do assistente enviadas ao modelo",
+      "priority": "P1",
+      "evidence_class": "reproduzido no fluxo normal com erro simulado",
+      "impact": "A mensagem genérica de erro é salva como fala do assistente e integra as seis mensagens enviadas na pergunta seguinte.",
+      "reproduction": "Simular timeout; enviar outra pergunta bem-sucedida; inspecionar o histórico recebido pelo RAG simulado.",
+      "tests": [
+        "test_error_is_not_retried_but_becomes_semantic_history"
+      ],
+      "references": [
+        {
+          "path": "application/presentation/chat/Chat.py",
+          "line": 452,
+          "needle": "recent_history ="
+        },
+        {
+          "path": "application/presentation/chat/Chat.py",
+          "line": 530,
+          "needle": "elif answer_text:"
+        }
+      ],
+      "proposal": "Separar conteúdo conversacional de estado operacional do turno. Exibir o erro sem incluí-lo como resposta factual no próximo prompt. A pergunta já aceita e o resultado remoto desconhecido precisam de identidade e estado próprios."
+    },
+    {
+      "id": "F05",
+      "title": "O excerto completo perde seu estado ao marcar a opção",
+      "priority": "P1",
+      "evidence_class": "reproduzido no caminho normal de fontes válidas",
+      "impact": "A chave do checkbox inclui id(source), que muda quando mensagens são clonadas. Ao clicar, o rerun cria uma chave nova e a opção volta a desmarcada.",
+      "reproduction": "Gerar resposta sintética com fonte válida; marcar Ver excerto completo; conferir que a chave mudou e o valor voltou a falso.",
+      "tests": [
+        "test_source_expander_checkbox_key_changes_after_rerun"
+      ],
+      "references": [
+        {
+          "path": "application/presentation/chat/Chat.py",
+          "line": 258,
+          "needle": "source_key ="
+        },
+        {
+          "path": "application/presentation/chat_sessions/Normalization.py",
+          "line": 110,
+          "needle": "def clone_messages"
+        }
+      ],
+      "proposal": "Usar chaves estáveis ligadas ao turno e à identidade documental, sem id de objetos em memória. A mesma identidade deve governar fonte, destaque e preview."
+    },
+    {
+      "id": "F06",
+      "title": "Uma resposta pronta pode não estar salva, sem aviso ao usuário",
+      "priority": "P1",
+      "evidence_class": "reproduzido com falha de armazenamento",
+      "impact": "A geração conclui, mas erro de gravação é apenas registrado em warning. A resposta fica na memória enquanto o arquivo conserva a versão anterior.",
+      "reproduction": "Após inicializar uma sessão temporária, fazer a escrita falhar e enviar uma pergunta. A resposta aparece; o arquivo não muda; nenhum erro de armazenamento aparece na interface.",
+      "tests": [
+        "test_persistence_failure_is_not_shown_to_user"
+      ],
+      "references": [
+        {
+          "path": "application/presentation/chat_sessions/Storage.py",
+          "line": 59,
+          "needle": "except Exception as exc:"
+        },
+        {
+          "path": "application/presentation/chat/Chat.py",
+          "line": 498,
+          "needle": "status.update(label=\"Resposta pronta.\""
+        }
+      ],
+      "proposal": "Retornar resultado da persistência à coordenação do turno; avisar que a resposta não foi salva e permitir repetir apenas a gravação, sem repetir o RAG."
+    },
+    {
+      "id": "F07",
+      "title": "Fontes malformadas podem quebrar a tela depois de Resposta pronta",
+      "priority": "P2",
+      "evidence_class": "reproduzido por injeção de resultado inválido",
+      "impact": "provenance=[None] causa erro no render. O serviço simulado já devolveu a resposta e o status foi concluído, mas a mensagem do assistente não chega a ser persistida.",
+      "reproduction": "Injetar uma fonte malformada em cited_sources e enviar uma pergunta. Não se comprovou que o RAG V2 normal produza esse formato.",
+      "tests": [
+        "test_malformed_source_crashes_after_ready_status"
+      ],
+      "references": [
+        {
+          "path": "application/presentation/chat/Chat.py",
+          "line": 240,
+          "needle": "for item in source.get(\"provenance\", [])"
+        },
+        {
+          "path": "application/presentation/chat/Chat.py",
+          "line": 227,
+          "needle": "render_sources(sources)"
+        }
+      ],
+      "proposal": "Validar e normalizar uma única vez o contrato de fontes na fronteira do resultado e da leitura de histórico. Render deve falhar de forma localizada e visível, preservando resposta e fontes válidas."
+    },
+    {
+      "id": "F08",
+      "title": "Fontes e destaques inconsistentes são aceitos na apresentação",
+      "priority": "P2",
+      "evidence_class": "reproduzido por injeção de dados inválidos",
+      "impact": "A UI rotula E999 como Fonte citada mesmo sem E999 em evidence. Também destaca Atlas quando o campo quote diz Aurora, se os offsets estão dentro do tamanho do excerto.",
+      "reproduction": "Injetar identidade documental estranha à evidência ou offsets que não correspondem ao quote. O backend normal possui verificações; a lacuna é na restauração/fronteira de apresentação.",
+      "tests": [
+        "test_unknown_source_id_is_rendered_as_cited",
+        "test_mismatched_focus_quote_highlights_other_text"
+      ],
+      "references": [
+        {
+          "path": "application/presentation/chat/Chat.py",
+          "line": 185,
+          "needle": "def _valid_focus_spans"
+        },
+        {
+          "path": "application/service/rag/v2/Sources.py",
+          "line": 12,
+          "needle": "def preserve_v2_fields"
+        },
+        {
+          "path": "application/presentation/chat_sessions/Normalization.py",
+          "line": 74,
+          "needle": "preserve_v2_fields(message, normalized_message)"
+        }
+      ],
+      "proposal": "Verificar relações entre IDs e igualdade literal dos destaques em um contrato compartilhado. A interface não deve fazer nova avaliação semântica; deve consumir somente os dados documentais validados."
+    },
+    {
+      "id": "F09",
+      "title": "Objetos duplicados de fonte podem colidir nas chaves de widgets",
+      "priority": "P2",
+      "evidence_class": "reproduzido por injeção; não observado no RAG normal",
+      "impact": "Duas cópias distintas da mesma fonte geram duplicação visual; repetir a mesma instância de objeto causa StreamlitDuplicateElementKey.",
+      "reproduction": "Injetar cited_sources=[fonte,fonte] e depois duas cópias independentes. O Engine normalmente deduplica IDs antes de montar cited_sources.",
+      "tests": [
+        "test_duplicate_source_is_not_deduplicated",
+        "test_shared_duplicate_source_object_collides_in_widget_keys"
+      ],
+      "references": [
+        {
+          "path": "application/presentation/chat/Chat.py",
+          "line": 258,
+          "needle": "source_key ="
+        },
+        {
+          "path": "application/service/rag/v2/Engine.py",
+          "line": 167,
+          "needle": "ordered_ids ="
+        }
+      ],
+      "proposal": "Canonizar fontes por identidade estável e preservar associação com claims; aplicar a mesma normalização ao resultado novo e ao histórico."
+    },
+    {
+      "id": "F10",
+      "title": "Mudança de configuração pode deixar serviço e seletor com valores antigos",
+      "priority": "P2",
+      "evidence_class": "cache reproduzido; perfil alterado simulado",
+      "impact": "RuntimeConfig é cacheado e o serviço fica em session_state. A invalidação observa nome do modelo e coleção, sem uma identidade do perfil de endpoint/configuração.",
+      "reproduction": "Mudar o endpoint sintético e enviar outra pergunta: a instância anterior permanece. Alterar o documento de configuração em memória: get_runtime_config mantém o valor antigo.",
+      "tests": [
+        "test_profile_change_reuses_stale_service",
+        "test_runtime_config_cache_does_not_reload_toml_automatically"
+      ],
+      "references": [
+        {
+          "path": "application/service/RuntimeConfig.py",
+          "line": 48,
+          "needle": "@lru_cache"
+        },
+        {
+          "path": "application/presentation/chat/Chat.py",
+          "line": 398,
+          "needle": "collection_changed ="
+        },
+        {
+          "path": "application/presentation/chat/Chat.py",
+          "line": 425,
+          "needle": "elif model_changed:"
+        }
+      ],
+      "proposal": "Definir contrato explícito de recarga. Inicialmente exigir reinício controlado ao mudar perfil; posteriormente invalidar por fingerprint de configuração no início de um novo turno, sem trocar parâmetros durante um turno em andamento."
+    },
+    {
+      "id": "F11",
+      "title": "Uma resposta não tem vínculo persistido com o turno e perfil de origem",
+      "priority": "P2",
+      "evidence_class": "risco demonstrado por mutação de estado injetada",
+      "impact": "Se o chat ativo muda durante a chamada, o código posterior escreve no chat agora ativo. O resultado também não persiste a identidade do modelo/coleção usados por mensagem.",
+      "reproduction": "Durante ask simulado, trocar chat ativo ou seleção. O teste evidencia ausência de vínculo; não simula fielmente interrupção/concor­rência do servidor Streamlit.",
+      "tests": [
+        "test_mutated_active_chat_receives_late_result_risk_injection",
+        "test_mutated_selection_does_not_bind_result_to_original_profile"
+      ],
+      "references": [
+        {
+          "path": "application/presentation/chat/Chat.py",
+          "line": 486,
+          "needle": "answer_trace = rag_service.ask_question_with_trace"
+        },
+        {
+          "path": "application/presentation/chat/Chat.py",
+          "line": 457,
+          "needle": "chat_sessions.update_active_chat_messages(st.session_state.messages)"
+        }
+      ],
+      "proposal": "Capturar chat_id, turn_id, perfil, coleção e histórico ao aceitar o envio. Persistir o resultado no chat de origem. Testar interrupção e retomada reais antes de adotar processamento em background."
+    },
+    {
+      "id": "F12",
+      "title": "Resposta vazia e configuração desconhecida não têm validação uniforme",
+      "priority": "P2",
+      "evidence_class": "reproduzido nas fronteiras com dublê e configuração inválida",
+      "impact": "Uma resposta vazia do serviço é marcada pronta. Um provider desconhecido passa por load_settings e só falha na resolução do provider.",
+      "reproduction": "Simular answer_text vazio; separadamente carregar provider inválido. Isso não prova que o transporte normal, que rejeita conteúdo vazio, entregue uma resposta vazia.",
+      "tests": [
+        "test_empty_answer_is_marked_complete_and_persisted",
+        "test_invalid_runtime_configuration_is_not_validated_at_settings_load"
+      ],
+      "references": [
+        {
+          "path": "application/presentation/chat/Chat.py",
+          "line": 487,
+          "needle": "answer_text = str(answer_trace.get"
+        },
+        {
+          "path": "application/service/rag/v2/Config.py",
+          "line": 7,
+          "needle": "class ModelSelection"
+        },
+        {
+          "path": "application/service/rag/v2/Providers.py",
+          "line": 438,
+          "needle": "Unknown provider"
+        }
+      ],
+      "proposal": "Validar o perfil no carregamento e o TurnResult antes de anunciar conclusão. Não usar conteúdo vazio para representar abstenção ou esclarecimento; esses são estados explícitos."
+    }
+  ],
+  "configuration_matrix": [
+    [
+      "Modelo e provider da aplicação",
+      "[llm]",
+      "RAGService / ProviderRegistry / ModelOptions",
+      "Manter [llm] como autoridade",
+      "Preservar modelos salvos por turno; modelo antigo indisponível deve ter aviso, não troca silenciosa de identidade histórica."
+    ],
+    [
+      "Endpoint e autenticação Spark",
+      "[llm.providers.vllm] + VLLM_* versus LLM_* no cliente",
+      "Providers / LLMClient / adaptador no benchmark",
+      "Propor [llm.providers.spark], credencial referenciada por nome de variável",
+      "Não renomear variáveis nem alterar .env nesta auditoria. Migração posterior deve aceitar compatibilidade explicitamente e avisar conflitos."
+    ],
+    [
+      "LLM_BASE_URL / LLM_MODEL atuais",
+      "Ambiente/.env e defaults em llm_client.py",
+      "Cliente e check_llm",
+      "Valores normais no TOML; overrides de implantação explícitos",
+      "Durante transição, overrides não podem vencer silenciosamente outra autoridade. Documentar origem efetiva; não mostrar chave."
+    ],
+    [
+      "Thinking e sampling",
+      "Configuração de benchmark explícita; app pode herdar defaults do servidor",
+      "Payload do provider",
+      "Perfil explícito da aplicação, separado do benchmark",
+      "Qwen 3.6 precisa de thinking explícito; parâmetros do experimento não devem ser herdados implicitamente."
+    ],
+    [
+      "Janela e saída por papel",
+      "[llm] e defaults de LLMConfig; benchmark tem perfil distinto",
+      "AgentTeam / Providers",
+      "Manter limites por papel no perfil da aplicação e conferir entrada com tokenizer do gerador",
+      "Não trocar todos os papéis para 4096 nem confundir 3000 BGE com janela Qwen. Validar cada papel com a Spark posteriormente."
+    ],
+    [
+      "Orçamento documental",
+      "[rag_v2].context_tokens=3000; experimento muda pack_order para 6000",
+      "RAGFlow versus InvestigationController",
+      "Manter 3000 na aplicação; perfis experimentais separados",
+      "Não promover 6000 nem trocar o controlador nesta etapa."
+    ],
+    [
+      "Histórico enviado",
+      "messages[-6:] literal em Chat.py",
+      "Submissão ao RAG",
+      "Propor [streamlit.chat].history_messages=6",
+      "Preservar o tamanho padrão, mas separar avisos operacionais de conteúdo semântico em correção posterior."
+    ],
+    [
+      "Máximo de chats e título padrão",
+      "Constants.py: 6 e Nova conversa",
+      "Operações de chat",
+      "Propor [streamlit.chat].max_sessions=6 e default_title",
+      "Definir o que ocorre se limite novo for menor que o histórico existente; não excluir conversas."
+    ],
+    [
+      "Título curto",
+      "Normalization.truncate_title: 34 caracteres",
+      "Títulos automáticos/manuais",
+      "Propor [streamlit.chat].title_max_chars=34",
+      "Default mantém comportamento; normalização em um único lugar."
+    ],
+    [
+      "Caminho e política do histórico",
+      "Constants.py: data/local_chat_sessions.json; armazenamento compartilhado",
+      "Storage",
+      "Propor [streamlit.history].path; política compartilhada explícita",
+      "Não mudar para histórico privado por usuário nem migrar banco automaticamente; preservar formato antigo ao adicionar revisão."
+    ],
+    [
+      "Modelo escolhido por conversa",
+      "JSON do chat + session_state + widget",
+      "Toolbar / State / Chat.show",
+      "Seleção por conversa sobre perfil validado; snapshot por turno",
+      "Não duplicar lista/modelo padrão em seção Streamlit."
+    ],
+    [
+      "Título e layout da página",
+      "set_page_config em application/app.py",
+      "Bootstrap da interface",
+      "Propor [streamlit.page] para título/layout",
+      "Aplicar antes de renderizar; não incluir regras de negócio em CSS."
+    ],
+    [
+      "Tema e paleta",
+      "Theme.py + SessionState.dark + .streamlit/config.toml",
+      "CSS próprio e widgets nativos",
+      "Uma referência de tema proposta; manter tokens visuais em camada de tema",
+      "Framework nativo não lê config/config.toml automaticamente; launcher deve passar opções nativas mapeadas, sem regravar arquivo no início de cada sessão."
+    ],
+    [
+      "Opções nativas de servidor",
+      "Defaults/CLI/env STREAMLIT_* e .streamlit/config.toml",
+      "Servidor Streamlit",
+      "Se centralizadas no projeto, launcher traduz campos permitidos para flags nativas",
+      "Preservar precedência CLI explícita de implantação e opções de segurança. Não aplicar server.* via chamadas tardias da página."
+    ],
+    [
+      "Excerto e progresso",
+      "900 caracteres em Chat.py; mapas e defaults de status na apresentação",
+      "Fontes / status",
+      "Configurar apenas limites de produto; textos e CSS ficam na apresentação",
+      "Remover o mapa de progresso inicial sobrescrito, se confirmado sem uso; não mover toda string para TOML."
+    ],
+    [
+      "Perfis e assinaturas experimentais",
+      "[benchmark.*], hash do TOML inteiro e implementação",
+      "Runners históricos",
+      "Preservar sem alteração; futura mudança exige versão/assinatura nova",
+      "Mesmo alteração só de interface pode invalidar retomada antiga. Usar snapshots históricos; não flexibilizar checks para forçar compatibilidade."
+    ]
+  ],
+  "duplication_inventory": [
+    {
+      "area": "RuntimeConfig e LLMSettings",
+      "class": "lógica concorrente",
+      "finding": "Precedências diferentes e modelo/URL em autoridades distintas.",
+      "direction": "Unificar resolução de configuração; manter segredo fora do objeto público."
+    },
+    {
+      "area": "Providers e SparkProvider do benchmark",
+      "class": "compatibilidade com política experimental distinta",
+      "finding": "O adaptador experimental reutiliza payload do provider, mas acessa client._sdk e aplica guardas próprias.",
+      "direction": "Extrair futuramente transporte público com metadados, mantendo retries e políticas de benchmark explicitamente separados."
+    },
+    {
+      "area": "Chat.show",
+      "class": "responsabilidades sobrepostas",
+      "finding": "Render, criação do serviço, execução, fontes e persistência no mesmo método; troca de modelo em dois caminhos. O teste de troca simples fez somente uma atualização.",
+      "direction": "Não afirmar chamada duplicada já comprovada; separar coordenação do turno da renderização."
+    },
+    {
+      "area": "Sources / Normalization / montagem da mensagem",
+      "class": "compatibilidade necessária e validação dispersa",
+      "finding": "Compatibilidade sources/cited_sources existe e vazio autoritativo está correto; cópia não valida vínculo e formatos.",
+      "direction": "Evoluir a fronteira existente em vez de criar um segundo normalizador semântico na UI."
+    },
+    {
+      "area": "SessionState / State / Operations / Storage",
+      "class": "lógica concorrente de estado",
+      "finding": "Mensagens e seleção são copiadas entre chat ativo, session_state e disco; initialize também persiste.",
+      "direction": "Um repositório controla mutações persistentes, UI mantém seleção efêmera e turno captura origem."
+    },
+    {
+      "area": "RAGFlow e InvestigationController",
+      "class": "fluxos distintos intencionalmente",
+      "finding": "Um produz resposta e verificação; o outro investiga contexto com orçamento de decisões.",
+      "direction": "Não fundir para reduzir linhas. A adoção experimental requer contrato de resposta e avaliação próprios."
+    },
+    {
+      "area": "Tema nativo e CSS da aplicação",
+      "class": "camadas necessárias com defaults duplicados",
+      "finding": "Há mecanismos diferentes e cores/defaults sobrepostos.",
+      "direction": "Compartilhar referência de tema, preservando fronteira de configuração do servidor."
+    }
+  ],
+  "responsibilities": [
+    [
+      "Interface",
+      "Selecionar chat/modelo/coleção, aceitar envio e renderizar estados/fontes já validados.",
+      "Sem transporte HTTP, seleção de evidência ou gravação direta de snapshots durante render."
+    ],
+    [
+      "Coordenação do turno",
+      "Capturar identidade de envio e perfil; executar RAG uma vez por submissão; associar resultado ao chat de origem.",
+      "Uma execução pode conter várias chamadas de agentes. Rerun não é novo envio."
+    ],
+    [
+      "Configuração",
+      "Resolver e validar um perfil efetivo, sem segredos expostos; controlar recarga/invalidação.",
+      "Não depender da ordem de imports ou ler defaults conflitantes em cada consumidor."
+    ],
+    [
+      "RAG / transporte",
+      "RAG decide recuperação, resposta e verificação; provider monta payload e transporte realiza chamada contabilizada.",
+      "Retry HTTP, reparo JSON e feedback de investigação têm contagens e limites separados."
+    ],
+    [
+      "Contrato de resultado e fontes",
+      "Validar status, IDs, campos e destaques literais; preservar cited_sources vazio e versão.",
+      "Não reavaliar verdade semântica na UI; metadados inválidos não devem derrubar a conversa inteira."
+    ],
+    [
+      "Persistência",
+      "Gravar mutações com revisão/conflito e informar resultado de gravação; restaurar formato validado.",
+      "Não repetir geração após erro de disco; manter política compartilhada explicitada."
+    ]
+  ],
+  "scope": "Real Chat.show, toolbar, sessions and JSON persistence under AppTest with fake RAG, temporary storage/documents and network guard. Real browser uses the same synthetic fixture.",
+  "limitations": [
+    "No real Spark inference or answer quality evaluation.",
+    "The full production Page, sidebar imports/uploads, native authentication and real server interruption/concurrency were not exercised end to end.",
+    "State-injection tests establish a missing origin contract, not proof that ordinary synchronous UI interactions interleave in that way.",
+    "Malformed results demonstrate resilience gaps; current backend guards can prevent those shapes in ordinary operation.",
+    "Production remains RAG V2 at 3000 document tokens; experimental feedback/6000 controller is not promoted."
+  ],
+  "working_behaviors": [
+    "Normal submission: one flow execution; plain rerun: no second execution.",
+    "Identical question explicitly submitted twice: two flow executions, correctly.",
+    "Simple model change calls set_model once; collection change recreates service.",
+    "Exceptions/timeouts do not automatically rerun the flow in the tested path.",
+    "Callbacks are cleared after success and errors.",
+    "Empty cited_sources remains authoritative, including after history reload.",
+    "Valid evidence IDs and focus spans survive persistence reload."
+  ],
+  "next_order": [
+    "P0: integrate effective application profile and Spark transport, keeping RAGFlow and 3000 unchanged.",
+    "P1: protect persistent conversations and turn lifecycle; separate operational failures and persistence errors.",
+    "P1/P2: stabilize source widget identities; validate result/source boundaries and literal highlights.",
+    "P2: improve status wording, profile reload contract and native configuration bridge.",
+    "Only later: assess experimental controller and answer generation as separate intervention."
+  ]
+}

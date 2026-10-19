@@ -1,0 +1,9 @@
+{
+  "checked_files": 1474,
+  "changed": [],
+  "scope": "Captured application/configuration/native Streamlit settings, benchmark code/datasets/results, root client/dependencies and existing local chat history. Secrets were excluded.",
+  "production_changed_by_audit": false,
+  "rechecked_after_cleanup": true,
+  "test_server_stopped": true,
+  "temporary_browser_terminated": true
+}

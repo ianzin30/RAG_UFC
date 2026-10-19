@@ -1,0 +1,44 @@
+[
+  {
+    "area": "RuntimeConfig e LLMSettings",
+    "class": "lógica concorrente",
+    "finding": "Precedências diferentes e modelo/URL em autoridades distintas.",
+    "direction": "Unificar resolução de configuração; manter segredo fora do objeto público."
+  },
+  {
+    "area": "Providers e SparkProvider do benchmark",
+    "class": "compatibilidade com política experimental distinta",
+    "finding": "O adaptador experimental reutiliza payload do provider, mas acessa client._sdk e aplica guardas próprias.",
+    "direction": "Extrair futuramente transporte público com metadados, mantendo retries e políticas de benchmark explicitamente separados."
+  },
+  {
+    "area": "Chat.show",
+    "class": "responsabilidades sobrepostas",
+    "finding": "Render, criação do serviço, execução, fontes e persistência no mesmo método; troca de modelo em dois caminhos. O teste de troca simples fez somente uma atualização.",
+    "direction": "Não afirmar chamada duplicada já comprovada; separar coordenação do turno da renderização."
+  },
+  {
+    "area": "Sources / Normalization / montagem da mensagem",
+    "class": "compatibilidade necessária e validação dispersa",
+    "finding": "Compatibilidade sources/cited_sources existe e vazio autoritativo está correto; cópia não valida vínculo e formatos.",
+    "direction": "Evoluir a fronteira existente em vez de criar um segundo normalizador semântico na UI."
+  },
+  {
+    "area": "SessionState / State / Operations / Storage",
+    "class": "lógica concorrente de estado",
+    "finding": "Mensagens e seleção são copiadas entre chat ativo, session_state e disco; initialize também persiste.",
+    "direction": "Um repositório controla mutações persistentes, UI mantém seleção efêmera e turno captura origem."
+  },
+  {
+    "area": "RAGFlow e InvestigationController",
+    "class": "fluxos distintos intencionalmente",
+    "finding": "Um produz resposta e verificação; o outro investiga contexto com orçamento de decisões.",
+    "direction": "Não fundir para reduzir linhas. A adoção experimental requer contrato de resposta e avaliação próprios."
+  },
+  {
+    "area": "Tema nativo e CSS da aplicação",
+    "class": "camadas necessárias com defaults duplicados",
+    "finding": "Há mecanismos diferentes e cores/defaults sobrepostos.",
+    "direction": "Compartilhar referência de tema, preservando fronteira de configuração do servidor."
+  }
+]

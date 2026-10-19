@@ -1,0 +1,114 @@
+[
+  [
+    "Modelo e provider da aplicação",
+    "[llm]",
+    "RAGService / ProviderRegistry / ModelOptions",
+    "Manter [llm] como autoridade",
+    "Preservar modelos salvos por turno; modelo antigo indisponível deve ter aviso, não troca silenciosa de identidade histórica."
+  ],
+  [
+    "Endpoint e autenticação Spark",
+    "[llm.providers.vllm] + VLLM_* versus LLM_* no cliente",
+    "Providers / LLMClient / adaptador no benchmark",
+    "Propor [llm.providers.spark], credencial referenciada por nome de variável",
+    "Não renomear variáveis nem alterar .env nesta auditoria. Migração posterior deve aceitar compatibilidade explicitamente e avisar conflitos."
+  ],
+  [
+    "LLM_BASE_URL / LLM_MODEL atuais",
+    "Ambiente/.env e defaults em llm_client.py",
+    "Cliente e check_llm",
+    "Valores normais no TOML; overrides de implantação explícitos",
+    "Durante transição, overrides não podem vencer silenciosamente outra autoridade. Documentar origem efetiva; não mostrar chave."
+  ],
+  [
+    "Thinking e sampling",
+    "Configuração de benchmark explícita; app pode herdar defaults do servidor",
+    "Payload do provider",
+    "Perfil explícito da aplicação, separado do benchmark",
+    "Qwen 3.6 precisa de thinking explícito; parâmetros do experimento não devem ser herdados implicitamente."
+  ],
+  [
+    "Janela e saída por papel",
+    "[llm] e defaults de LLMConfig; benchmark tem perfil distinto",
+    "AgentTeam / Providers",
+    "Manter limites por papel no perfil da aplicação e conferir entrada com tokenizer do gerador",
+    "Não trocar todos os papéis para 4096 nem confundir 3000 BGE com janela Qwen. Validar cada papel com a Spark posteriormente."
+  ],
+  [
+    "Orçamento documental",
+    "[rag_v2].context_tokens=3000; experimento muda pack_order para 6000",
+    "RAGFlow versus InvestigationController",
+    "Manter 3000 na aplicação; perfis experimentais separados",
+    "Não promover 6000 nem trocar o controlador nesta etapa."
+  ],
+  [
+    "Histórico enviado",
+    "messages[-6:] literal em Chat.py",
+    "Submissão ao RAG",
+    "Propor [streamlit.chat].history_messages=6",
+    "Preservar o tamanho padrão, mas separar avisos operacionais de conteúdo semântico em correção posterior."
+  ],
+  [
+    "Máximo de chats e título padrão",
+    "Constants.py: 6 e Nova conversa",
+    "Operações de chat",
+    "Propor [streamlit.chat].max_sessions=6 e default_title",
+    "Definir o que ocorre se limite novo for menor que o histórico existente; não excluir conversas."
+  ],
+  [
+    "Título curto",
+    "Normalization.truncate_title: 34 caracteres",
+    "Títulos automáticos/manuais",
+    "Propor [streamlit.chat].title_max_chars=34",
+    "Default mantém comportamento; normalização em um único lugar."
+  ],
+  [
+    "Caminho e política do histórico",
+    "Constants.py: data/local_chat_sessions.json; armazenamento compartilhado",
+    "Storage",
+    "Propor [streamlit.history].path; política compartilhada explícita",
+    "Não mudar para histórico privado por usuário nem migrar banco automaticamente; preservar formato antigo ao adicionar revisão."
+  ],
+  [
+    "Modelo escolhido por conversa",
+    "JSON do chat + session_state + widget",
+    "Toolbar / State / Chat.show",
+    "Seleção por conversa sobre perfil validado; snapshot por turno",
+    "Não duplicar lista/modelo padrão em seção Streamlit."
+  ],
+  [
+    "Título e layout da página",
+    "set_page_config em application/app.py",
+    "Bootstrap da interface",
+    "Propor [streamlit.page] para título/layout",
+    "Aplicar antes de renderizar; não incluir regras de negócio em CSS."
+  ],
+  [
+    "Tema e paleta",
+    "Theme.py + SessionState.dark + .streamlit/config.toml",
+    "CSS próprio e widgets nativos",
+    "Uma referência de tema proposta; manter tokens visuais em camada de tema",
+    "Framework nativo não lê config/config.toml automaticamente; launcher deve passar opções nativas mapeadas, sem regravar arquivo no início de cada sessão."
+  ],
+  [
+    "Opções nativas de servidor",
+    "Defaults/CLI/env STREAMLIT_* e .streamlit/config.toml",
+    "Servidor Streamlit",
+    "Se centralizadas no projeto, launcher traduz campos permitidos para flags nativas",
+    "Preservar precedência CLI explícita de implantação e opções de segurança. Não aplicar server.* via chamadas tardias da página."
+  ],
+  [
+    "Excerto e progresso",
+    "900 caracteres em Chat.py; mapas e defaults de status na apresentação",
+    "Fontes / status",
+    "Configurar apenas limites de produto; textos e CSS ficam na apresentação",
+    "Remover o mapa de progresso inicial sobrescrito, se confirmado sem uso; não mover toda string para TOML."
+  ],
+  [
+    "Perfis e assinaturas experimentais",
+    "[benchmark.*], hash do TOML inteiro e implementação",
+    "Runners históricos",
+    "Preservar sem alteração; futura mudança exige versão/assinatura nova",
+    "Mesmo alteração só de interface pode invalidar retomada antiga. Usar snapshots históricos; não flexibilizar checks para forçar compatibilidade."
+  ]
+]
