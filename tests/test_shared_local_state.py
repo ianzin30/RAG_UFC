@@ -45,15 +45,16 @@ def test_shared_chat_sessions_persist_to_local_json_without_active_chat(monkeypa
     storage.persist_chat_state(lambda: sessions, user_id="ignored-user")
 
     payload = json.loads((tmp_path / "local_chat_sessions.json").read_text(encoding="utf-8"))
-    assert payload == {
-        "chat_sessions": sessions,
-        "next_chat_session_id": 3,
-    }
+    assert payload["chat_sessions"] == sessions
+    assert payload["next_chat_session_id"] == 3
+    assert payload["schema_version"] == 2 and payload["revision"] == 1
     assert "active_chat_id" not in payload
-    assert storage.load_persisted_chat_state(user_id="another-ignored-user") == payload
+    loaded = storage.load_persisted_chat_state(user_id="another-ignored-user")
+    assert loaded["chat_sessions"][0]["messages"] == sessions[0]["messages"]
+    assert loaded["revision"] == payload["revision"]
 
 
-def test_activate_chat_marks_selected_chat_newest_without_touching_previous(monkeypatch):
+def test_activate_chat_marks_selected_chat_newest_without_touching_previous(monkeypatch, tmp_path):
     monkeypatch.syspath_prepend(str(APPLICATION_DIR))
     operations = importlib.import_module("presentation.chat_sessions.Operations")
     state = importlib.import_module("presentation.chat_sessions.State")
@@ -89,8 +90,9 @@ def test_activate_chat_marks_selected_chat_newest_without_touching_previous(monk
 
     monkeypatch.setattr(state, "st", fake_st)
     monkeypatch.setattr(operations, "st", fake_st)
-    monkeypatch.setattr(state, "persist_chat_state", lambda *args, **kwargs: None)
-    monkeypatch.setattr(operations, "persist_chat_state", lambda *args, **kwargs: None)
+    storage = importlib.import_module("presentation.chat_sessions.Storage")
+    monkeypatch.setattr(storage, "CHAT_STORAGE_PATH", tmp_path / "chats.json")
+    assert storage.mutate(lambda current: current.update(chat_sessions=fake_st.session_state.chat_sessions)).ok
 
     operations.activate_chat("chat_2")
 

@@ -23,7 +23,8 @@ def coerce_messages(messages) -> list[dict[str, object]]:
         if not role:
             continue
 
-        normalized_message: dict[str, object] = {"role": role, "content": content}
+        normalized_message: dict[str, object] = deepcopy(message)
+        normalized_message.update(role=role, content=content)
         route = str(message.get("route", "")).strip().lower()
         if route in {"casual", "retrieval"}:
             normalized_message["route"] = route
@@ -72,7 +73,8 @@ def coerce_messages(messages) -> list[dict[str, object]]:
 
         from service.rag.v2.Sources import preserve_v2_fields
         preserve_v2_fields(message, normalized_message)
-        normalized_messages.append(normalized_message)
+        from service.rag.v2.Sources import normalize_presentation
+        normalized_messages.append(normalize_presentation(normalized_message))
     return normalized_messages
 
 
@@ -95,6 +97,8 @@ def coerce_chat_session(chat) -> dict[str, object] | None:
         "messages": coerce_messages(chat.get("messages")),
         "created_at": created_at,
         "updated_at": updated_at,
+        "revision": chat.get("revision", 0),
+        "turns": deepcopy(chat.get("turns", [])),
     }
 
 
@@ -137,17 +141,21 @@ def coerce_chat_timestamp(value) -> str:
 
 
 def build_default_title() -> str:
+    from service.RuntimeConfig import get_chat_config
+    default_title = get_chat_config().default_title
     titles = {chat["title"] for chat in st.session_state.get("chat_sessions", [])}
-    if DEFAULT_CHAT_TITLE not in titles:
-        return DEFAULT_CHAT_TITLE
+    if default_title not in titles:
+        return default_title
 
     index = 2
-    while f"{DEFAULT_CHAT_TITLE} {index}" in titles:
+    while f"{default_title} {index}" in titles:
         index += 1
-    return f"{DEFAULT_CHAT_TITLE} {index}"
+    return f"{default_title} {index}"
 
 
-def truncate_title(text: str, max_length: int = 34) -> str:
+def truncate_title(text: str, max_length: int | None = None) -> str:
+    from service.RuntimeConfig import get_chat_config
+    max_length = max_length or get_chat_config().title_max_chars
     normalized = re.sub(r"\s+", " ", (text or "").strip())
     if not normalized:
         return build_default_title()
