@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from benchmark.questions import load_questions
+from benchmark.core.questions import load_questions
 
 
 def test_load_questions_accepts_optional_fields(tmp_path: Path) -> None:

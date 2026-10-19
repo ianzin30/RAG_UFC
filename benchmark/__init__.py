@@ -1,2 +1,1 @@
-"""Benchmark package for retrieval debugging studies."""
-
+"""Current retrieval evidence-selection benchmark."""
