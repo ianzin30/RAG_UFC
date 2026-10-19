@@ -71,6 +71,7 @@ def resolve_markdown_preview_path(
         candidate = root / relative_path
         if _is_safe_markdown_path(candidate, root):
             return candidate.resolve()
+        return None
 
     source_candidate = _candidate_from_source(document.get("source"), root)
     if source_candidate is not None:
