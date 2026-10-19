@@ -1,0 +1,4833 @@
+{
+  "kind": "final_pool_feasibility_diagnostic",
+  "gold_informed": true,
+  "used_by_selector": false,
+  "new_model_calls": 0,
+  "new_searches": 0,
+  "selection_comparison_executed": false,
+  "source_run": "/Users/fernandotrinta/Desktop/RAG-UFC/RAG_UFC/benchmark/results/rounds/agent_interface_qwen36_spark_2026-10-15/run_01",
+  "source_sha256": {
+    "historical_preservation.json": "d98315aee6804afc4fdf06b81800c7026f031b53cf64e6a986c911952721b90b",
+    "protected_before.json": "400c6e7075405ab3af1a3b37e57bba5036c9cb8d7d020374c70f9513d2d84ab2",
+    "timing.json": "874458b43c111aeb956dc223b6ffde7fa3c421634d8e5ef7a29f90fa604cae43",
+    "input_budget_audit.json": "f3475d4b86c22f7388e9b6bd2e42c6341c7cecca4b24a1d8f4922ef5948d4a1c",
+    "report.md": "592366c54b8cec98cd5f2ac38b4dd1a70362f330d1aa8f956800f31f84d8ff69",
+    "evaluation_rules.json": "370055bc4abeba65839a0a4ce360d15d038d3ff4d0c38bc9a77dcab0473c6509",
+    "comparison.json": "a3963597ac66d8ad9f28a7abe13eeb74b4a277e839088fe15c2fb2b01195edb6",
+    "planner_contracts.json": "249ce12ecd348b92442565810a88d1465e9ea342bd69a247cba91d3c1bb986f4",
+    "control_reproduction.json": "5c5852d59331160b728648c3d450c981552b47845df43176dbc59a20712e82aa",
+    "cache.json": "6519c0f865c8a1b902237c0343649fc0d7dbdbc0cd45b48de67f1998885e67c0",
+    "report.html": "bb368a9e1c030d87d9c0a2441054113420abde0d0d575a6e327a8b521162c5d7",
+    "preflight.json": "b23dab5c159cc059a90a1d80ca57e41854b527c9d8928e8d26596cfa2beacdc0",
+    "final_validation.json": "8069936e6712508630e8aeb77438a7e57803cdf75429ead74101248d6ffb4c78",
+    "code.zip": "b45fb54ac6108b01d0219a6ba1627240ff622dd561a4c6356f8e9eb39b8d954a",
+    "execution_status.json": "ae707c8bb0bf62b20398f7e8e23904b4610de444c937076b18ded3d2afd6c958",
+    "signature.json": "923db1d0868fe179e1ca2c916839d08d0c5d5738882b8c8638eb008a4c2f4b08",
+    "preflight_cache.json": "eaf55b7c01387e20d78339138889f340d7d3f439b9c8248b836341f4010eb1fd",
+    "C_simple/retrieval.json": "7b31709aabf4ba843a00f30e059d214ecbe686562646189d2869a8b37959c05c",
+    "D_feedback/retrieval.json": "1c485fa5176d2b463140154ffd27ec01d2cca97d8b76ad2126a2ca3245fe201a",
+    "B_tolerant/retrieval.json": "fcfa2bf5becc70de5af792f8397b8033b6e7bb4afc8c9980d323ad2eb1ee42ce",
+    "A_baseline/retrieval.json": "fe20c079b77dc0d51e55f4a187bc9958beb29219eaeb3f67c8751fc8d290c669"
+  },
+  "code_sha256": {
+    "docs/analises/auditar_viabilidade_interface.py": "7819eb39125225f049953b2f82d479684134326976b5cfe4aaf90c88f7adcccf",
+    "benchmark/selection/diagnostic.py": "f3e09b0b55349c268173327d8e44e50276dc274efabc2fc18a58edeae0a7e6d1",
+    "benchmark/evaluation/evidence.py": "b3c88a5f88cd3697dfced136eac59c8736c60aef70724c885a2a6b0eed24f67d",
+    "application/service/rag/v2/EvidenceSelection.py": "2c9cb51cd0e7d5d49350845d9ebffdcbca05a24c593f5d99c2c4e95e360aa16a",
+    "benchmark/search/runtime.py": "829b54a55591cc758ad083605623b820138cc935f999c8d8ceedbbd59a97060c"
+  },
+  "index_sha256": "ed3705cd8bb6f12c14835806f10d5cc1abf2bdd5fa38a682eedcbf0a4d2b0c60",
+  "scipy_version": "1.17.1",
+  "python_version": "3.11.13 (main, Jun  3 2025, 18:38:25) [Clang 17.0.0 (clang-1700.0.13.3)]",
+  "budget": 3000,
+  "validation": {
+    "historical_files_unchanged": true,
+    "rows_reproduced": 140,
+    "witnesses_rescored": true
+  },
+  "summary": {
+    "collection": {
+      "complete": 52,
+      "candidate_coverage_not_proven": 14,
+      "selection_loss_feasible": 4
+    },
+    "oracle_scope": {
+      "complete": 58,
+      "candidate_coverage_not_proven": 10,
+      "selection_loss_feasible": 2
+    }
+  },
+  "elapsed_seconds": 7.148523333016783,
+  "rows": [
+    {
+      "key": "REAL-F01:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 12,
+        "parents": [
+          "cd062c683396c7f2b5f4fc69"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "cd062c683396c7f2b5f4fc69",
+            "tokens": 12,
+            "global_parent_rank": 6,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_NAME": true
+      },
+      "candidate_hits": {
+        "AFO_NAME": true
+      }
+    },
+    {
+      "key": "REAL-F01:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 12,
+        "parents": [
+          "cd062c683396c7f2b5f4fc69"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "cd062c683396c7f2b5f4fc69",
+            "tokens": 12,
+            "global_parent_rank": 4,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_NAME": true
+      },
+      "candidate_hits": {
+        "AFO_NAME": true
+      }
+    },
+    {
+      "key": "REAL-F02:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 35,
+        "parents": [
+          "11cefb9f32bb05474015425d",
+          "b7c71da37780e670881c37a6",
+          "d7f2bf3407a792873c81453d",
+          "4b802a265381cc124a095c1a"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "11cefb9f32bb05474015425d",
+            "tokens": 11,
+            "global_parent_rank": 7,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "b7c71da37780e670881c37a6",
+            "tokens": 8,
+            "global_parent_rank": 22,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "d7f2bf3407a792873c81453d",
+            "tokens": 8,
+            "global_parent_rank": 24,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "4b802a265381cc124a095c1a",
+            "tokens": 8,
+            "global_parent_rank": 30,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_DATES": true
+      },
+      "candidate_hits": {
+        "AFO_DATES": true
+      }
+    },
+    {
+      "key": "REAL-F02:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_DATES": false
+      },
+      "candidate_hits": {
+        "AFO_DATES": false
+      }
+    },
+    {
+      "key": "REAL-F03:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 139,
+        "parents": [
+          "3910fdc4494dc990261186e6"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "3910fdc4494dc990261186e6",
+            "tokens": 139,
+            "global_parent_rank": 5,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_TOOLS": true
+      },
+      "candidate_hits": {
+        "RACK_TOOLS": true
+      }
+    },
+    {
+      "key": "REAL-F03:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 139,
+        "parents": [
+          "3910fdc4494dc990261186e6"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "3910fdc4494dc990261186e6",
+            "tokens": 139,
+            "global_parent_rank": 5,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_TOOLS": true
+      },
+      "candidate_hits": {
+        "RACK_TOOLS": true
+      }
+    },
+    {
+      "key": "REAL-F04:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 81,
+        "parents": [
+          "866a754ec9a4240537e4eadf"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "866a754ec9a4240537e4eadf",
+            "tokens": 81,
+            "global_parent_rank": 1,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_DIMENSIONS": true
+      },
+      "candidate_hits": {
+        "SAAR_DIMENSIONS": true
+      }
+    },
+    {
+      "key": "REAL-F04:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 81,
+        "parents": [
+          "866a754ec9a4240537e4eadf"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "866a754ec9a4240537e4eadf",
+            "tokens": 81,
+            "global_parent_rank": 1,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_DIMENSIONS": true
+      },
+      "candidate_hits": {
+        "SAAR_DIMENSIONS": true
+      }
+    },
+    {
+      "key": "REAL-F05:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1088,
+        "parents": [
+          "6ee6ae5c9096afac6c5dd7b5",
+          "9d1c5a19bec420243615e0de"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "6ee6ae5c9096afac6c5dd7b5",
+            "tokens": 155,
+            "global_parent_rank": 1,
+            "document": "42_07-2022_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "9d1c5a19bec420243615e0de",
+            "tokens": 933,
+            "global_parent_rank": 2,
+            "document": "42_07-2022_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JULY22_DECISION": true,
+        "JULY22_VOTES": true
+      },
+      "candidate_hits": {
+        "JULY22_DECISION": true,
+        "JULY22_VOTES": true
+      }
+    },
+    {
+      "key": "REAL-F05:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1088,
+        "parents": [
+          "6ee6ae5c9096afac6c5dd7b5",
+          "9d1c5a19bec420243615e0de"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "6ee6ae5c9096afac6c5dd7b5",
+            "tokens": 155,
+            "global_parent_rank": 1,
+            "document": "42_07-2022_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "9d1c5a19bec420243615e0de",
+            "tokens": 933,
+            "global_parent_rank": 2,
+            "document": "42_07-2022_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JULY22_DECISION": true,
+        "JULY22_VOTES": true
+      },
+      "candidate_hits": {
+        "JULY22_DECISION": true,
+        "JULY22_VOTES": true
+      }
+    },
+    {
+      "key": "REAL-F06:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 867,
+        "parents": [
+          "6b32030463418c199bf95101"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "6b32030463418c199bf95101",
+            "tokens": 867,
+            "global_parent_rank": 1,
+            "document": "06_01-2025_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN25_CONTRACT": true
+      },
+      "candidate_hits": {
+        "JAN25_CONTRACT": true
+      }
+    },
+    {
+      "key": "REAL-F06:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 867,
+        "parents": [
+          "6b32030463418c199bf95101"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "6b32030463418c199bf95101",
+            "tokens": 867,
+            "global_parent_rank": 1,
+            "document": "06_01-2025_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN25_CONTRACT": true
+      },
+      "candidate_hits": {
+        "JAN25_CONTRACT": true
+      }
+    },
+    {
+      "key": "REAL-F07:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 888,
+        "parents": [
+          "207515ba8134a0a5e60ee836"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "207515ba8134a0a5e60ee836",
+            "tokens": 888,
+            "global_parent_rank": 1,
+            "document": "38_06-2024_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JUNE24_TRANSFER": true,
+        "JUNE24_APPROVAL": true
+      },
+      "candidate_hits": {
+        "JUNE24_TRANSFER": true,
+        "JUNE24_APPROVAL": true
+      }
+    },
+    {
+      "key": "REAL-F07:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 888,
+        "parents": [
+          "207515ba8134a0a5e60ee836"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "207515ba8134a0a5e60ee836",
+            "tokens": 888,
+            "global_parent_rank": 1,
+            "document": "38_06-2024_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JUNE24_TRANSFER": true,
+        "JUNE24_APPROVAL": true
+      },
+      "candidate_hits": {
+        "JUNE24_TRANSFER": true,
+        "JUNE24_APPROVAL": true
+      }
+    },
+    {
+      "key": "REAL-F08:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1447,
+        "parents": [
+          "b2aad6288473066246d34276"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "b2aad6288473066246d34276",
+            "tokens": 1447,
+            "global_parent_rank": 1,
+            "document": "05_01-2024_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN24_CIDDE": true
+      },
+      "candidate_hits": {
+        "JAN24_CIDDE": true
+      }
+    },
+    {
+      "key": "REAL-F08:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1447,
+        "parents": [
+          "b2aad6288473066246d34276"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "b2aad6288473066246d34276",
+            "tokens": 1447,
+            "global_parent_rank": 1,
+            "document": "05_01-2024_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN24_CIDDE": true
+      },
+      "candidate_hits": {
+        "JAN24_CIDDE": true
+      }
+    },
+    {
+      "key": "REAL-F09:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 873,
+        "parents": [
+          "998c353599228b98a343ed0d"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "998c353599228b98a343ed0d",
+            "tokens": 873,
+            "global_parent_rank": 11,
+            "document": "07_01-2026_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN26_OPENING": true
+      },
+      "candidate_hits": {
+        "JAN26_OPENING": true
+      }
+    },
+    {
+      "key": "REAL-F09:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 873,
+        "parents": [
+          "998c353599228b98a343ed0d"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "998c353599228b98a343ed0d",
+            "tokens": 873,
+            "global_parent_rank": 6,
+            "document": "07_01-2026_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN26_OPENING": true
+      },
+      "candidate_hits": {
+        "JAN26_OPENING": true
+      }
+    },
+    {
+      "key": "REAL-F10:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1447,
+        "parents": [
+          "b2aad6288473066246d34276"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "b2aad6288473066246d34276",
+            "tokens": 1447,
+            "global_parent_rank": 1,
+            "document": "05_01-2024_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN24_LDAR": true
+      },
+      "candidate_hits": {
+        "JAN24_LDAR": true
+      }
+    },
+    {
+      "key": "REAL-F10:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1447,
+        "parents": [
+          "b2aad6288473066246d34276"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "b2aad6288473066246d34276",
+            "tokens": 1447,
+            "global_parent_rank": 1,
+            "document": "05_01-2024_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN24_LDAR": true
+      },
+      "candidate_hits": {
+        "JAN24_LDAR": true
+      }
+    },
+    {
+      "key": "REAL-E01:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 10,
+        "parents": [
+          "27da368a03995cc6af4256f5"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "27da368a03995cc6af4256f5",
+            "tokens": 10,
+            "global_parent_rank": 17,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_NAME": true
+      },
+      "candidate_hits": {
+        "SAAR_NAME": true
+      }
+    },
+    {
+      "key": "REAL-E01:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 10,
+        "parents": [
+          "27da368a03995cc6af4256f5"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "27da368a03995cc6af4256f5",
+            "tokens": 10,
+            "global_parent_rank": 11,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_NAME": true
+      },
+      "candidate_hits": {
+        "SAAR_NAME": true
+      }
+    },
+    {
+      "key": "REAL-E02:collection",
+      "condition": "collection",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_NAME": false
+      },
+      "candidate_hits": {
+        "RACK_NAME": false
+      }
+    },
+    {
+      "key": "REAL-E02:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 12,
+        "parents": [
+          "e55185df733e9e241ae4d346"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "e55185df733e9e241ae4d346",
+            "tokens": 12,
+            "global_parent_rank": 5,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_NAME": true
+      },
+      "candidate_hits": {
+        "RACK_NAME": true
+      }
+    },
+    {
+      "key": "REAL-E03:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 239,
+        "parents": [
+          "0ae823f0b525739198530f28"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "0ae823f0b525739198530f28",
+            "tokens": 239,
+            "global_parent_rank": 1,
+            "document": "49_08-2022_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "PET": true
+      },
+      "candidate_hits": {
+        "PET": true
+      }
+    },
+    {
+      "key": "REAL-E03:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 239,
+        "parents": [
+          "0ae823f0b525739198530f28"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "0ae823f0b525739198530f28",
+            "tokens": 239,
+            "global_parent_rank": 1,
+            "document": "49_08-2022_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "PET": true
+      },
+      "candidate_hits": {
+        "PET": true
+      }
+    },
+    {
+      "key": "REAL-E04:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 664,
+        "parents": [
+          "800f111d1a192ee39a16c023"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "800f111d1a192ee39a16c023",
+            "tokens": 664,
+            "global_parent_rank": 3,
+            "document": "11_02-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "FEB25_COMMISSION": true
+      },
+      "candidate_hits": {
+        "FEB25_COMMISSION": true
+      }
+    },
+    {
+      "key": "REAL-E04:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 664,
+        "parents": [
+          "800f111d1a192ee39a16c023"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "800f111d1a192ee39a16c023",
+            "tokens": 664,
+            "global_parent_rank": 1,
+            "document": "11_02-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "FEB25_COMMISSION": true
+      },
+      "candidate_hits": {
+        "FEB25_COMMISSION": true
+      }
+    },
+    {
+      "key": "REAL-E05:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 873,
+        "parents": [
+          "998c353599228b98a343ed0d"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "998c353599228b98a343ed0d",
+            "tokens": 873,
+            "global_parent_rank": 1,
+            "document": "07_01-2026_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN26_BOARD": true
+      },
+      "candidate_hits": {
+        "JAN26_BOARD": true
+      }
+    },
+    {
+      "key": "REAL-E05:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 873,
+        "parents": [
+          "998c353599228b98a343ed0d"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "998c353599228b98a343ed0d",
+            "tokens": 873,
+            "global_parent_rank": 1,
+            "document": "07_01-2026_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN26_BOARD": true
+      },
+      "candidate_hits": {
+        "JAN26_BOARD": true
+      }
+    },
+    {
+      "key": "REAL-E06:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1447,
+        "parents": [
+          "b2aad6288473066246d34276"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "b2aad6288473066246d34276",
+            "tokens": 1447,
+            "global_parent_rank": 1,
+            "document": "05_01-2024_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN24_LDAR": true
+      },
+      "candidate_hits": {
+        "JAN24_LDAR": true
+      }
+    },
+    {
+      "key": "REAL-E06:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1447,
+        "parents": [
+          "b2aad6288473066246d34276"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "b2aad6288473066246d34276",
+            "tokens": 1447,
+            "global_parent_rank": 1,
+            "document": "05_01-2024_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN24_LDAR": true
+      },
+      "candidate_hits": {
+        "JAN24_LDAR": true
+      }
+    },
+    {
+      "key": "REAL-E07:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 671,
+        "parents": [
+          "8b99c8b03148c378565bb81b"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "8b99c8b03148c378565bb81b",
+            "tokens": 671,
+            "global_parent_rank": 1,
+            "document": "15_03-2023_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SEFAZ_2023": true
+      },
+      "candidate_hits": {
+        "SEFAZ_2023": true
+      }
+    },
+    {
+      "key": "REAL-E07:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 671,
+        "parents": [
+          "8b99c8b03148c378565bb81b"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "8b99c8b03148c378565bb81b",
+            "tokens": 671,
+            "global_parent_rank": 1,
+            "document": "15_03-2023_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SEFAZ_2023": true
+      },
+      "candidate_hits": {
+        "SEFAZ_2023": true
+      }
+    },
+    {
+      "key": "REAL-E08:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 116,
+        "parents": [
+          "e9f35790ed2cce8fc6d987a6"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "e9f35790ed2cce8fc6d987a6",
+            "tokens": 116,
+            "global_parent_rank": 1,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_PILLARS": true
+      },
+      "candidate_hits": {
+        "SAAR_PILLARS": true
+      }
+    },
+    {
+      "key": "REAL-E08:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 116,
+        "parents": [
+          "e9f35790ed2cce8fc6d987a6"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "e9f35790ed2cce8fc6d987a6",
+            "tokens": 116,
+            "global_parent_rank": 1,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_PILLARS": true
+      },
+      "candidate_hits": {
+        "SAAR_PILLARS": true
+      }
+    },
+    {
+      "key": "REAL-C01:collection",
+      "condition": "collection",
+      "stage": "selection_loss_feasible",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 24,
+        "parents": [
+          "e55185df733e9e241ae4d346",
+          "cd062c683396c7f2b5f4fc69"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "e55185df733e9e241ae4d346",
+            "tokens": 12,
+            "global_parent_rank": 59,
+            "document": "87_RACK.md",
+            "selected_in_D": false
+          },
+          {
+            "parent_id": "cd062c683396c7f2b5f4fc69",
+            "tokens": 12,
+            "global_parent_rank": 61,
+            "document": "85_AFO.md",
+            "selected_in_D": false
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_NAME": false,
+        "RACK_NAME": false
+      },
+      "candidate_hits": {
+        "AFO_NAME": true,
+        "RACK_NAME": true
+      }
+    },
+    {
+      "key": "REAL-C01:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "selection_loss_feasible",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 24,
+        "parents": [
+          "e55185df733e9e241ae4d346",
+          "cd062c683396c7f2b5f4fc69"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "e55185df733e9e241ae4d346",
+            "tokens": 12,
+            "global_parent_rank": 66,
+            "document": "87_RACK.md",
+            "selected_in_D": false
+          },
+          {
+            "parent_id": "cd062c683396c7f2b5f4fc69",
+            "tokens": 12,
+            "global_parent_rank": 68,
+            "document": "85_AFO.md",
+            "selected_in_D": false
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_NAME": false,
+        "RACK_NAME": false
+      },
+      "candidate_hits": {
+        "AFO_NAME": true,
+        "RACK_NAME": true
+      }
+    },
+    {
+      "key": "REAL-C02:collection",
+      "condition": "collection",
+      "stage": "selection_loss_feasible",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 285,
+        "parents": [
+          "f443f3b7f468d055a9fa59f0",
+          "e8966bc9f5c546d21cd9d20d",
+          "aa72bfbd8db0eabcc161bec4"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "f443f3b7f468d055a9fa59f0",
+            "tokens": 62,
+            "global_parent_rank": 32,
+            "document": "85_AFO.md",
+            "selected_in_D": false
+          },
+          {
+            "parent_id": "e8966bc9f5c546d21cd9d20d",
+            "tokens": 97,
+            "global_parent_rank": 33,
+            "document": "88_SAAR.md",
+            "selected_in_D": false
+          },
+          {
+            "parent_id": "aa72bfbd8db0eabcc161bec4",
+            "tokens": 126,
+            "global_parent_rank": 67,
+            "document": "87_RACK.md",
+            "selected_in_D": false
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_OBJECTIVE": false,
+        "RACK_OBJECTIVE": false,
+        "SAAR_OBJECTIVE": false
+      },
+      "candidate_hits": {
+        "AFO_OBJECTIVE": true,
+        "RACK_OBJECTIVE": true,
+        "SAAR_OBJECTIVE": true
+      }
+    },
+    {
+      "key": "REAL-C02:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "selection_loss_feasible",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 285,
+        "parents": [
+          "f443f3b7f468d055a9fa59f0",
+          "e8966bc9f5c546d21cd9d20d",
+          "aa72bfbd8db0eabcc161bec4"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "f443f3b7f468d055a9fa59f0",
+            "tokens": 62,
+            "global_parent_rank": 28,
+            "document": "85_AFO.md",
+            "selected_in_D": false
+          },
+          {
+            "parent_id": "e8966bc9f5c546d21cd9d20d",
+            "tokens": 97,
+            "global_parent_rank": 29,
+            "document": "88_SAAR.md",
+            "selected_in_D": false
+          },
+          {
+            "parent_id": "aa72bfbd8db0eabcc161bec4",
+            "tokens": 126,
+            "global_parent_rank": 53,
+            "document": "87_RACK.md",
+            "selected_in_D": false
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_OBJECTIVE": false,
+        "RACK_OBJECTIVE": false,
+        "SAAR_OBJECTIVE": false
+      },
+      "candidate_hits": {
+        "AFO_OBJECTIVE": true,
+        "RACK_OBJECTIVE": true,
+        "SAAR_OBJECTIVE": true
+      }
+    },
+    {
+      "key": "REAL-C03:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 390,
+        "parents": [
+          "3201aa8f0185405462801f69",
+          "b0cee57865f740a37fa0583a"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "3201aa8f0185405462801f69",
+            "tokens": 206,
+            "global_parent_rank": 2,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "b0cee57865f740a37fa0583a",
+            "tokens": 184,
+            "global_parent_rank": 5,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_INDICATORS": true,
+        "SAAR_INDICATORS": true
+      },
+      "candidate_hits": {
+        "AFO_INDICATORS": true,
+        "SAAR_INDICATORS": true
+      }
+    },
+    {
+      "key": "REAL-C03:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 390,
+        "parents": [
+          "3201aa8f0185405462801f69",
+          "b0cee57865f740a37fa0583a"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "3201aa8f0185405462801f69",
+            "tokens": 206,
+            "global_parent_rank": 2,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "b0cee57865f740a37fa0583a",
+            "tokens": 184,
+            "global_parent_rank": 3,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_INDICATORS": true,
+        "SAAR_INDICATORS": true
+      },
+      "candidate_hits": {
+        "AFO_INDICATORS": true,
+        "SAAR_INDICATORS": true
+      }
+    },
+    {
+      "key": "REAL-C04:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1735,
+        "parents": [
+          "fcab5566be878201a8b6e640",
+          "8b99c8b03148c378565bb81b"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "fcab5566be878201a8b6e640",
+            "tokens": 1064,
+            "global_parent_rank": 1,
+            "document": "49_08-2022_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "8b99c8b03148c378565bb81b",
+            "tokens": 671,
+            "global_parent_rank": 2,
+            "document": "15_03-2023_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SEFAZ_2022": true,
+        "SEFAZ_2023": true
+      },
+      "candidate_hits": {
+        "SEFAZ_2022": true,
+        "SEFAZ_2023": true
+      }
+    },
+    {
+      "key": "REAL-C04:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1735,
+        "parents": [
+          "fcab5566be878201a8b6e640",
+          "8b99c8b03148c378565bb81b"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "fcab5566be878201a8b6e640",
+            "tokens": 1064,
+            "global_parent_rank": 1,
+            "document": "49_08-2022_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "8b99c8b03148c378565bb81b",
+            "tokens": 671,
+            "global_parent_rank": 2,
+            "document": "15_03-2023_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SEFAZ_2022": true,
+        "SEFAZ_2023": true
+      },
+      "candidate_hits": {
+        "SEFAZ_2022": true,
+        "SEFAZ_2023": true
+      }
+    },
+    {
+      "key": "REAL-C05:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1735,
+        "parents": [
+          "8b99c8b03148c378565bb81b",
+          "fcab5566be878201a8b6e640"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "8b99c8b03148c378565bb81b",
+            "tokens": 671,
+            "global_parent_rank": 1,
+            "document": "15_03-2023_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "fcab5566be878201a8b6e640",
+            "tokens": 1064,
+            "global_parent_rank": 2,
+            "document": "49_08-2022_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RESIDENCY_2022": true,
+        "RESIDENCY_2023": true
+      },
+      "candidate_hits": {
+        "RESIDENCY_2022": true,
+        "RESIDENCY_2023": true
+      }
+    },
+    {
+      "key": "REAL-C05:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1735,
+        "parents": [
+          "8b99c8b03148c378565bb81b",
+          "fcab5566be878201a8b6e640"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "8b99c8b03148c378565bb81b",
+            "tokens": 671,
+            "global_parent_rank": 1,
+            "document": "15_03-2023_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "fcab5566be878201a8b6e640",
+            "tokens": 1064,
+            "global_parent_rank": 2,
+            "document": "49_08-2022_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RESIDENCY_2022": true,
+        "RESIDENCY_2023": true
+      },
+      "candidate_hits": {
+        "RESIDENCY_2022": true,
+        "RESIDENCY_2023": true
+      }
+    },
+    {
+      "key": "REAL-C06:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1387,
+        "parents": [
+          "38ac2d440401190ca2894093",
+          "1770478f36c9d77c32485b70"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "38ac2d440401190ca2894093",
+            "tokens": 710,
+            "global_parent_rank": 1,
+            "document": "19_03-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "1770478f36c9d77c32485b70",
+            "tokens": 677,
+            "global_parent_rank": 2,
+            "document": "60_09-2025_Ata_de_Reuniao.pdf_Extraordinaria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "MAR25_EDITAL": true,
+        "MAR25_ELIMINATION": true,
+        "SEP25_EDITAL": true,
+        "SEP25_RESULT": true
+      },
+      "candidate_hits": {
+        "MAR25_EDITAL": true,
+        "MAR25_ELIMINATION": true,
+        "SEP25_EDITAL": true,
+        "SEP25_RESULT": true
+      }
+    },
+    {
+      "key": "REAL-C06:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1387,
+        "parents": [
+          "38ac2d440401190ca2894093",
+          "1770478f36c9d77c32485b70"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "38ac2d440401190ca2894093",
+            "tokens": 710,
+            "global_parent_rank": 1,
+            "document": "19_03-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "1770478f36c9d77c32485b70",
+            "tokens": 677,
+            "global_parent_rank": 2,
+            "document": "60_09-2025_Ata_de_Reuniao.pdf_Extraordinaria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "MAR25_EDITAL": true,
+        "MAR25_ELIMINATION": true,
+        "SEP25_EDITAL": true,
+        "SEP25_RESULT": true
+      },
+      "candidate_hits": {
+        "MAR25_EDITAL": true,
+        "MAR25_ELIMINATION": true,
+        "SEP25_EDITAL": true,
+        "SEP25_RESULT": true
+      }
+    },
+    {
+      "key": "REAL-C07:collection",
+      "condition": "collection",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JULY22_CHAIR": false,
+        "JAN24_CHAIR": true
+      },
+      "candidate_hits": {
+        "JULY22_CHAIR": false,
+        "JAN24_CHAIR": true
+      }
+    },
+    {
+      "key": "REAL-C07:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1866,
+        "parents": [
+          "f28906ead88d510b7c642801",
+          "9d1c5a19bec420243615e0de"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "f28906ead88d510b7c642801",
+            "tokens": 933,
+            "global_parent_rank": 1,
+            "document": "05_01-2024_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "9d1c5a19bec420243615e0de",
+            "tokens": 933,
+            "global_parent_rank": 2,
+            "document": "42_07-2022_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JULY22_CHAIR": true,
+        "JAN24_CHAIR": true
+      },
+      "candidate_hits": {
+        "JULY22_CHAIR": true,
+        "JAN24_CHAIR": true
+      }
+    },
+    {
+      "key": "REAL-C08:collection",
+      "condition": "collection",
+      "stage": "selection_loss_feasible",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1867,
+        "parents": [
+          "207515ba8134a0a5e60ee836",
+          "29edec218c3f501cf695b41f"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "207515ba8134a0a5e60ee836",
+            "tokens": 888,
+            "global_parent_rank": 1,
+            "document": "38_06-2024_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "29edec218c3f501cf695b41f",
+            "tokens": 979,
+            "global_parent_rank": 5,
+            "document": "53_09-2020_Ata_de_Reuniao.md",
+            "selected_in_D": false
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SEP20_CHAIR": false,
+        "JUNE24_CHAIR": true
+      },
+      "candidate_hits": {
+        "SEP20_CHAIR": true,
+        "JUNE24_CHAIR": true
+      }
+    },
+    {
+      "key": "REAL-C08:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1867,
+        "parents": [
+          "207515ba8134a0a5e60ee836",
+          "29edec218c3f501cf695b41f"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "207515ba8134a0a5e60ee836",
+            "tokens": 888,
+            "global_parent_rank": 1,
+            "document": "38_06-2024_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "29edec218c3f501cf695b41f",
+            "tokens": 979,
+            "global_parent_rank": 3,
+            "document": "53_09-2020_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SEP20_CHAIR": true,
+        "JUNE24_CHAIR": true
+      },
+      "candidate_hits": {
+        "SEP20_CHAIR": true,
+        "JUNE24_CHAIR": true
+      }
+    },
+    {
+      "key": "REAL-C09:collection",
+      "condition": "collection",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": [
+          "cfb2ba8bc16b3e74491d56ee"
+        ]
+      },
+      "pending_anchors": [
+        "JULY22_CHAIR"
+      ],
+      "selected_hits": {
+        "JULY22_CHAIR": false,
+        "JUNE24_CHAIR": false
+      },
+      "candidate_hits": {
+        "JULY22_CHAIR": false,
+        "JUNE24_CHAIR": false
+      }
+    },
+    {
+      "key": "REAL-C09:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": [
+          "afedd5d4682d0573ca3bc7b3",
+          "cfb2ba8bc16b3e74491d56ee",
+          "8b269a2a6c4881b1b8a61e9f"
+        ]
+      },
+      "pending_anchors": [
+        "JULY22_CHAIR"
+      ],
+      "selected_hits": {
+        "JULY22_CHAIR": false,
+        "JUNE24_CHAIR": true
+      },
+      "candidate_hits": {
+        "JULY22_CHAIR": false,
+        "JUNE24_CHAIR": true
+      }
+    },
+    {
+      "key": "REAL-C10:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 366,
+        "parents": [
+          "882a8d94771d4dcc6209ac45",
+          "3578980947d552b91560aa84"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "882a8d94771d4dcc6209ac45",
+            "tokens": 182,
+            "global_parent_rank": 8,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "3578980947d552b91560aa84",
+            "tokens": 184,
+            "global_parent_rank": 9,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_HOURS": true,
+        "SAAR_HOURS": true
+      },
+      "candidate_hits": {
+        "AFO_HOURS": true,
+        "SAAR_HOURS": true
+      }
+    },
+    {
+      "key": "REAL-C10:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 366,
+        "parents": [
+          "882a8d94771d4dcc6209ac45",
+          "3578980947d552b91560aa84"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "882a8d94771d4dcc6209ac45",
+            "tokens": 182,
+            "global_parent_rank": 7,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "3578980947d552b91560aa84",
+            "tokens": 184,
+            "global_parent_rank": 8,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_HOURS": true,
+        "SAAR_HOURS": true
+      },
+      "candidate_hits": {
+        "AFO_HOURS": true,
+        "SAAR_HOURS": true
+      }
+    },
+    {
+      "key": "REAL-H01:collection",
+      "condition": "collection",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_OAUTH": true,
+        "AFO_NAME": false
+      },
+      "candidate_hits": {
+        "AFO_OAUTH": true,
+        "AFO_NAME": false
+      }
+    },
+    {
+      "key": "REAL-H01:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_OAUTH": true,
+        "AFO_NAME": false
+      },
+      "candidate_hits": {
+        "AFO_OAUTH": true,
+        "AFO_NAME": false
+      }
+    },
+    {
+      "key": "REAL-H02:collection",
+      "condition": "collection",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_TOOLS": true,
+        "RACK_NAME": false
+      },
+      "candidate_hits": {
+        "RACK_TOOLS": true,
+        "RACK_NAME": false
+      }
+    },
+    {
+      "key": "REAL-H02:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_TOOLS": true,
+        "RACK_NAME": false
+      },
+      "candidate_hits": {
+        "RACK_TOOLS": true,
+        "RACK_NAME": false
+      }
+    },
+    {
+      "key": "REAL-H03:collection",
+      "condition": "collection",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_PRODUCTS": true,
+        "SAAR_NAME": false
+      },
+      "candidate_hits": {
+        "SAAR_PRODUCTS": true,
+        "SAAR_NAME": false
+      }
+    },
+    {
+      "key": "REAL-H03:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_PRODUCTS": true,
+        "SAAR_NAME": false
+      },
+      "candidate_hits": {
+        "SAAR_PRODUCTS": true,
+        "SAAR_NAME": false
+      }
+    },
+    {
+      "key": "REAL-H04:collection",
+      "condition": "collection",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_NAME": false,
+        "PET": true
+      },
+      "candidate_hits": {
+        "AFO_NAME": false,
+        "PET": true
+      }
+    },
+    {
+      "key": "REAL-H04:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_NAME": false,
+        "PET": true
+      },
+      "candidate_hits": {
+        "AFO_NAME": false,
+        "PET": true
+      }
+    },
+    {
+      "key": "REAL-H05:collection",
+      "condition": "collection",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": [
+          "bfd9eff556a657a7c1a8c669"
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_NAME": false,
+        "REGO_PROGRESSION": true
+      },
+      "candidate_hits": {
+        "RACK_NAME": false,
+        "REGO_PROGRESSION": true
+      }
+    },
+    {
+      "key": "REAL-H05:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": [
+          "bfd9eff556a657a7c1a8c669"
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_NAME": false,
+        "REGO_PROGRESSION": true
+      },
+      "candidate_hits": {
+        "RACK_NAME": false,
+        "REGO_PROGRESSION": true
+      }
+    },
+    {
+      "key": "REAL-H06:collection",
+      "condition": "collection",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_NAME": false,
+        "JAN26_CHAIR": true
+      },
+      "candidate_hits": {
+        "SAAR_NAME": false,
+        "JAN26_CHAIR": true
+      }
+    },
+    {
+      "key": "REAL-H06:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": [
+          "b7f5d668645448db5cde3b61"
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_NAME": false,
+        "JAN26_CHAIR": true
+      },
+      "candidate_hits": {
+        "SAAR_NAME": false,
+        "JAN26_CHAIR": true
+      }
+    },
+    {
+      "key": "REAL-H07:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1735,
+        "parents": [
+          "8b99c8b03148c378565bb81b",
+          "fcab5566be878201a8b6e640"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "8b99c8b03148c378565bb81b",
+            "tokens": 671,
+            "global_parent_rank": 1,
+            "document": "15_03-2023_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "fcab5566be878201a8b6e640",
+            "tokens": 1064,
+            "global_parent_rank": 2,
+            "document": "49_08-2022_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SEFAZ_2023": true,
+        "SEFAZ_2022": true
+      },
+      "candidate_hits": {
+        "SEFAZ_2023": true,
+        "SEFAZ_2022": true
+      }
+    },
+    {
+      "key": "REAL-H07:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1735,
+        "parents": [
+          "8b99c8b03148c378565bb81b",
+          "fcab5566be878201a8b6e640"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "8b99c8b03148c378565bb81b",
+            "tokens": 671,
+            "global_parent_rank": 1,
+            "document": "15_03-2023_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "fcab5566be878201a8b6e640",
+            "tokens": 1064,
+            "global_parent_rank": 2,
+            "document": "49_08-2022_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SEFAZ_2023": true,
+        "SEFAZ_2022": true
+      },
+      "candidate_hits": {
+        "SEFAZ_2023": true,
+        "SEFAZ_2022": true
+      }
+    },
+    {
+      "key": "REAL-H08:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1537,
+        "parents": [
+          "998c353599228b98a343ed0d",
+          "800f111d1a192ee39a16c023"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "998c353599228b98a343ed0d",
+            "tokens": 873,
+            "global_parent_rank": 2,
+            "document": "07_01-2026_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "800f111d1a192ee39a16c023",
+            "tokens": 664,
+            "global_parent_rank": 3,
+            "document": "11_02-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "FEB25_COMMISSION": true,
+        "JAN26_CHAIR": true,
+        "JAN26_TEACHING": true
+      },
+      "candidate_hits": {
+        "FEB25_COMMISSION": true,
+        "JAN26_CHAIR": true,
+        "JAN26_TEACHING": true
+      }
+    },
+    {
+      "key": "REAL-H08:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1537,
+        "parents": [
+          "998c353599228b98a343ed0d",
+          "800f111d1a192ee39a16c023"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "998c353599228b98a343ed0d",
+            "tokens": 873,
+            "global_parent_rank": 1,
+            "document": "07_01-2026_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "800f111d1a192ee39a16c023",
+            "tokens": 664,
+            "global_parent_rank": 2,
+            "document": "11_02-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "FEB25_COMMISSION": true,
+        "JAN26_CHAIR": true,
+        "JAN26_TEACHING": true
+      },
+      "candidate_hits": {
+        "FEB25_COMMISSION": true,
+        "JAN26_CHAIR": true,
+        "JAN26_TEACHING": true
+      }
+    },
+    {
+      "key": "REAL-H09:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1531,
+        "parents": [
+          "6b32030463418c199bf95101",
+          "800f111d1a192ee39a16c023"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "6b32030463418c199bf95101",
+            "tokens": 867,
+            "global_parent_rank": 1,
+            "document": "06_01-2025_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "800f111d1a192ee39a16c023",
+            "tokens": 664,
+            "global_parent_rank": 3,
+            "document": "11_02-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "FEB25_COMMISSION": true,
+        "JAN25_CONTRACT": true
+      },
+      "candidate_hits": {
+        "FEB25_COMMISSION": true,
+        "JAN25_CONTRACT": true
+      }
+    },
+    {
+      "key": "REAL-H09:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1531,
+        "parents": [
+          "6b32030463418c199bf95101",
+          "800f111d1a192ee39a16c023"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "6b32030463418c199bf95101",
+            "tokens": 867,
+            "global_parent_rank": 1,
+            "document": "06_01-2025_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "800f111d1a192ee39a16c023",
+            "tokens": 664,
+            "global_parent_rank": 2,
+            "document": "11_02-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "FEB25_COMMISSION": true,
+        "JAN25_CONTRACT": true
+      },
+      "candidate_hits": {
+        "FEB25_COMMISSION": true,
+        "JAN25_CONTRACT": true
+      }
+    },
+    {
+      "key": "REAL-H10:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1387,
+        "parents": [
+          "38ac2d440401190ca2894093",
+          "1770478f36c9d77c32485b70"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "38ac2d440401190ca2894093",
+            "tokens": 710,
+            "global_parent_rank": 1,
+            "document": "19_03-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "1770478f36c9d77c32485b70",
+            "tokens": 677,
+            "global_parent_rank": 3,
+            "document": "60_09-2025_Ata_de_Reuniao.pdf_Extraordinaria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "MAR25_ELIMINATION": true,
+        "SEP25_RESULT": true
+      },
+      "candidate_hits": {
+        "MAR25_ELIMINATION": true,
+        "SEP25_RESULT": true
+      }
+    },
+    {
+      "key": "REAL-H10:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1387,
+        "parents": [
+          "38ac2d440401190ca2894093",
+          "1770478f36c9d77c32485b70"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "38ac2d440401190ca2894093",
+            "tokens": 710,
+            "global_parent_rank": 1,
+            "document": "19_03-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "1770478f36c9d77c32485b70",
+            "tokens": 677,
+            "global_parent_rank": 2,
+            "document": "60_09-2025_Ata_de_Reuniao.pdf_Extraordinaria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "MAR25_ELIMINATION": true,
+        "SEP25_RESULT": true
+      },
+      "candidate_hits": {
+        "MAR25_ELIMINATION": true,
+        "SEP25_RESULT": true
+      }
+    },
+    {
+      "key": "REAL-L01:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 86,
+        "parents": [
+          "176780cf3b1b5830f247e366"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "176780cf3b1b5830f247e366",
+            "tokens": 86,
+            "global_parent_rank": 1,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_PRODUCTS": true
+      },
+      "candidate_hits": {
+        "SAAR_PRODUCTS": true
+      }
+    },
+    {
+      "key": "REAL-L01:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 86,
+        "parents": [
+          "176780cf3b1b5830f247e366"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "176780cf3b1b5830f247e366",
+            "tokens": 86,
+            "global_parent_rank": 1,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_PRODUCTS": true
+      },
+      "candidate_hits": {
+        "SAAR_PRODUCTS": true
+      }
+    },
+    {
+      "key": "REAL-L02:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 235,
+        "parents": [
+          "33c338fc5c6ef4c40791b5df",
+          "974d190647a725da104205f5",
+          "c7ed5fe4dd5c4baec3de93db",
+          "b52aa13d72d32ed394c42621"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "33c338fc5c6ef4c40791b5df",
+            "tokens": 52,
+            "global_parent_rank": 7,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "974d190647a725da104205f5",
+            "tokens": 62,
+            "global_parent_rank": 8,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "c7ed5fe4dd5c4baec3de93db",
+            "tokens": 57,
+            "global_parent_rank": 9,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "b52aa13d72d32ed394c42621",
+            "tokens": 64,
+            "global_parent_rank": 10,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_DEVICES": true,
+        "RACK_VERSIONING": true,
+        "RACK_WORKFLOW": true,
+        "RACK_FRONTEND": true
+      },
+      "candidate_hits": {
+        "RACK_DEVICES": true,
+        "RACK_VERSIONING": true,
+        "RACK_WORKFLOW": true,
+        "RACK_FRONTEND": true
+      }
+    },
+    {
+      "key": "REAL-L02:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 235,
+        "parents": [
+          "33c338fc5c6ef4c40791b5df",
+          "974d190647a725da104205f5",
+          "c7ed5fe4dd5c4baec3de93db",
+          "b52aa13d72d32ed394c42621"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "33c338fc5c6ef4c40791b5df",
+            "tokens": 52,
+            "global_parent_rank": 6,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "974d190647a725da104205f5",
+            "tokens": 62,
+            "global_parent_rank": 7,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "c7ed5fe4dd5c4baec3de93db",
+            "tokens": 57,
+            "global_parent_rank": 8,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "b52aa13d72d32ed394c42621",
+            "tokens": 64,
+            "global_parent_rank": 9,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_DEVICES": true,
+        "RACK_VERSIONING": true,
+        "RACK_WORKFLOW": true,
+        "RACK_FRONTEND": true
+      },
+      "candidate_hits": {
+        "RACK_DEVICES": true,
+        "RACK_VERSIONING": true,
+        "RACK_WORKFLOW": true,
+        "RACK_FRONTEND": true
+      }
+    },
+    {
+      "key": "REAL-L03:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 153,
+        "parents": [
+          "c19efb39086cd4df5031d8f6",
+          "afbb2b6cd7deb9346dd74702"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "c19efb39086cd4df5031d8f6",
+            "tokens": 78,
+            "global_parent_rank": 3,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "afbb2b6cd7deb9346dd74702",
+            "tokens": 75,
+            "global_parent_rank": 8,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_OAUTH": true,
+        "AFO_OBSERVABILITY": true
+      },
+      "candidate_hits": {
+        "AFO_OAUTH": true,
+        "AFO_OBSERVABILITY": true
+      }
+    },
+    {
+      "key": "REAL-L03:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 153,
+        "parents": [
+          "c19efb39086cd4df5031d8f6",
+          "afbb2b6cd7deb9346dd74702"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "c19efb39086cd4df5031d8f6",
+            "tokens": 78,
+            "global_parent_rank": 3,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "afbb2b6cd7deb9346dd74702",
+            "tokens": 75,
+            "global_parent_rank": 8,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_OAUTH": true,
+        "AFO_OBSERVABILITY": true
+      },
+      "candidate_hits": {
+        "AFO_OAUTH": true,
+        "AFO_OBSERVABILITY": true
+      }
+    },
+    {
+      "key": "REAL-L04:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 873,
+        "parents": [
+          "998c353599228b98a343ed0d"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "998c353599228b98a343ed0d",
+            "tokens": 873,
+            "global_parent_rank": 1,
+            "document": "07_01-2026_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN26_BOARD": true
+      },
+      "candidate_hits": {
+        "JAN26_BOARD": true
+      }
+    },
+    {
+      "key": "REAL-L04:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 873,
+        "parents": [
+          "998c353599228b98a343ed0d"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "998c353599228b98a343ed0d",
+            "tokens": 873,
+            "global_parent_rank": 1,
+            "document": "07_01-2026_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN26_BOARD": true
+      },
+      "candidate_hits": {
+        "JAN26_BOARD": true
+      }
+    },
+    {
+      "key": "REAL-L05:collection",
+      "condition": "collection",
+      "stage": "selection_loss_feasible",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 664,
+        "parents": [
+          "800f111d1a192ee39a16c023"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "800f111d1a192ee39a16c023",
+            "tokens": 664,
+            "global_parent_rank": 4,
+            "document": "11_02-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": false
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "FEB25_COMMISSION": false
+      },
+      "candidate_hits": {
+        "FEB25_COMMISSION": true
+      }
+    },
+    {
+      "key": "REAL-L05:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 664,
+        "parents": [
+          "800f111d1a192ee39a16c023"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "800f111d1a192ee39a16c023",
+            "tokens": 664,
+            "global_parent_rank": 1,
+            "document": "11_02-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "FEB25_COMMISSION": true
+      },
+      "candidate_hits": {
+        "FEB25_COMMISSION": true
+      }
+    },
+    {
+      "key": "REAL-L06:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 933,
+        "parents": [
+          "9d1c5a19bec420243615e0de"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "9d1c5a19bec420243615e0de",
+            "tokens": 933,
+            "global_parent_rank": 2,
+            "document": "42_07-2022_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JULY22_VOTES": true
+      },
+      "candidate_hits": {
+        "JULY22_VOTES": true
+      }
+    },
+    {
+      "key": "REAL-L06:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 933,
+        "parents": [
+          "9d1c5a19bec420243615e0de"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "9d1c5a19bec420243615e0de",
+            "tokens": 933,
+            "global_parent_rank": 1,
+            "document": "42_07-2022_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JULY22_VOTES": true
+      },
+      "candidate_hits": {
+        "JULY22_VOTES": true
+      }
+    },
+    {
+      "key": "REAL-L07:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 366,
+        "parents": [
+          "3578980947d552b91560aa84",
+          "882a8d94771d4dcc6209ac45"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "3578980947d552b91560aa84",
+            "tokens": 184,
+            "global_parent_rank": 1,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "882a8d94771d4dcc6209ac45",
+            "tokens": 182,
+            "global_parent_rank": 3,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_PEOPLE": true,
+        "SAAR_PEOPLE": true
+      },
+      "candidate_hits": {
+        "AFO_PEOPLE": true,
+        "SAAR_PEOPLE": true
+      }
+    },
+    {
+      "key": "REAL-L07:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 366,
+        "parents": [
+          "3578980947d552b91560aa84",
+          "882a8d94771d4dcc6209ac45"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "3578980947d552b91560aa84",
+            "tokens": 184,
+            "global_parent_rank": 1,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "882a8d94771d4dcc6209ac45",
+            "tokens": 182,
+            "global_parent_rank": 2,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_PEOPLE": true,
+        "SAAR_PEOPLE": true
+      },
+      "candidate_hits": {
+        "AFO_PEOPLE": true,
+        "SAAR_PEOPLE": true
+      }
+    },
+    {
+      "key": "REAL-L08:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 951,
+        "parents": [
+          "eef2b5f4fb13ae6ed8e5d45c"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "eef2b5f4fb13ae6ed8e5d45c",
+            "tokens": 951,
+            "global_parent_rank": 1,
+            "document": "05_01-2024_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN24_APM_GRANTS": true
+      },
+      "candidate_hits": {
+        "JAN24_APM_GRANTS": true
+      }
+    },
+    {
+      "key": "REAL-L08:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 951,
+        "parents": [
+          "eef2b5f4fb13ae6ed8e5d45c"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "eef2b5f4fb13ae6ed8e5d45c",
+            "tokens": 951,
+            "global_parent_rank": 1,
+            "document": "05_01-2024_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN24_APM_GRANTS": true
+      },
+      "candidate_hits": {
+        "JAN24_APM_GRANTS": true
+      }
+    },
+    {
+      "key": "REAL-S01:collection",
+      "condition": "collection",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_PRODUCTS": true,
+        "SAAR_DIMENSIONS": true,
+        "SAAR_RULES": false,
+        "SAAR_DEVOPS": false,
+        "SAAR_LOGS": true,
+        "SAAR_METRICS": true,
+        "SAAR_DASHBOARD": false
+      },
+      "candidate_hits": {
+        "SAAR_PRODUCTS": true,
+        "SAAR_DIMENSIONS": true,
+        "SAAR_RULES": true,
+        "SAAR_DEVOPS": false,
+        "SAAR_LOGS": true,
+        "SAAR_METRICS": true,
+        "SAAR_DASHBOARD": false
+      }
+    },
+    {
+      "key": "REAL-S01:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_PRODUCTS": true,
+        "SAAR_DIMENSIONS": true,
+        "SAAR_RULES": true,
+        "SAAR_DEVOPS": false,
+        "SAAR_LOGS": true,
+        "SAAR_METRICS": true,
+        "SAAR_DASHBOARD": true
+      },
+      "candidate_hits": {
+        "SAAR_PRODUCTS": true,
+        "SAAR_DIMENSIONS": true,
+        "SAAR_RULES": true,
+        "SAAR_DEVOPS": false,
+        "SAAR_LOGS": true,
+        "SAAR_METRICS": true,
+        "SAAR_DASHBOARD": true
+      }
+    },
+    {
+      "key": "REAL-S02:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 331,
+        "parents": [
+          "14290988c954971bae8fc896",
+          "33236813c5686b971845b6a5"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "14290988c954971bae8fc896",
+            "tokens": 158,
+            "global_parent_rank": 1,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "33236813c5686b971845b6a5",
+            "tokens": 173,
+            "global_parent_rank": 6,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_MVP": true,
+        "AFO_FY27": true
+      },
+      "candidate_hits": {
+        "AFO_MVP": true,
+        "AFO_FY27": true
+      }
+    },
+    {
+      "key": "REAL-S02:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 331,
+        "parents": [
+          "14290988c954971bae8fc896",
+          "33236813c5686b971845b6a5"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "14290988c954971bae8fc896",
+            "tokens": 158,
+            "global_parent_rank": 1,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "33236813c5686b971845b6a5",
+            "tokens": 173,
+            "global_parent_rank": 5,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_MVP": true,
+        "AFO_FY27": true
+      },
+      "candidate_hits": {
+        "AFO_MVP": true,
+        "AFO_FY27": true
+      }
+    },
+    {
+      "key": "REAL-S03:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 419,
+        "parents": [
+          "33c338fc5c6ef4c40791b5df",
+          "b52aa13d72d32ed394c42621",
+          "c7ed5fe4dd5c4baec3de93db",
+          "974d190647a725da104205f5",
+          "714aefc865566effad8f0ba0",
+          "9ed2a4d17bd1d1cdf42ee2a1",
+          "15a1f346ff01c3006035945b"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "33c338fc5c6ef4c40791b5df",
+            "tokens": 52,
+            "global_parent_rank": 5,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "b52aa13d72d32ed394c42621",
+            "tokens": 64,
+            "global_parent_rank": 6,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "c7ed5fe4dd5c4baec3de93db",
+            "tokens": 57,
+            "global_parent_rank": 7,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "974d190647a725da104205f5",
+            "tokens": 62,
+            "global_parent_rank": 8,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "714aefc865566effad8f0ba0",
+            "tokens": 52,
+            "global_parent_rank": 9,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "9ed2a4d17bd1d1cdf42ee2a1",
+            "tokens": 78,
+            "global_parent_rank": 12,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "15a1f346ff01c3006035945b",
+            "tokens": 54,
+            "global_parent_rank": 17,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_CORE": true,
+        "RACK_INTEGRATION": true,
+        "RACK_PROVISIONING": true,
+        "RACK_DEVICES": true,
+        "RACK_VERSIONING": true,
+        "RACK_WORKFLOW": true,
+        "RACK_FRONTEND": true
+      },
+      "candidate_hits": {
+        "RACK_CORE": true,
+        "RACK_INTEGRATION": true,
+        "RACK_PROVISIONING": true,
+        "RACK_DEVICES": true,
+        "RACK_VERSIONING": true,
+        "RACK_WORKFLOW": true,
+        "RACK_FRONTEND": true
+      }
+    },
+    {
+      "key": "REAL-S03:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 419,
+        "parents": [
+          "33c338fc5c6ef4c40791b5df",
+          "b52aa13d72d32ed394c42621",
+          "c7ed5fe4dd5c4baec3de93db",
+          "974d190647a725da104205f5",
+          "714aefc865566effad8f0ba0",
+          "9ed2a4d17bd1d1cdf42ee2a1",
+          "15a1f346ff01c3006035945b"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "33c338fc5c6ef4c40791b5df",
+            "tokens": 52,
+            "global_parent_rank": 4,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "b52aa13d72d32ed394c42621",
+            "tokens": 64,
+            "global_parent_rank": 5,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "c7ed5fe4dd5c4baec3de93db",
+            "tokens": 57,
+            "global_parent_rank": 6,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "974d190647a725da104205f5",
+            "tokens": 62,
+            "global_parent_rank": 7,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "714aefc865566effad8f0ba0",
+            "tokens": 52,
+            "global_parent_rank": 8,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "9ed2a4d17bd1d1cdf42ee2a1",
+            "tokens": 78,
+            "global_parent_rank": 9,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "15a1f346ff01c3006035945b",
+            "tokens": 54,
+            "global_parent_rank": 15,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_CORE": true,
+        "RACK_INTEGRATION": true,
+        "RACK_PROVISIONING": true,
+        "RACK_DEVICES": true,
+        "RACK_VERSIONING": true,
+        "RACK_WORKFLOW": true,
+        "RACK_FRONTEND": true
+      },
+      "candidate_hits": {
+        "RACK_CORE": true,
+        "RACK_INTEGRATION": true,
+        "RACK_PROVISIONING": true,
+        "RACK_DEVICES": true,
+        "RACK_VERSIONING": true,
+        "RACK_WORKFLOW": true,
+        "RACK_FRONTEND": true
+      }
+    },
+    {
+      "key": "REAL-S04:collection",
+      "condition": "collection",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JULY22_LOAD": true,
+        "JULY22_DECISION": false,
+        "JULY22_VOTES": true
+      },
+      "candidate_hits": {
+        "JULY22_LOAD": true,
+        "JULY22_DECISION": false,
+        "JULY22_VOTES": true
+      }
+    },
+    {
+      "key": "REAL-S04:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1088,
+        "parents": [
+          "9d1c5a19bec420243615e0de",
+          "6ee6ae5c9096afac6c5dd7b5"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "9d1c5a19bec420243615e0de",
+            "tokens": 933,
+            "global_parent_rank": 1,
+            "document": "42_07-2022_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "6ee6ae5c9096afac6c5dd7b5",
+            "tokens": 155,
+            "global_parent_rank": 2,
+            "document": "42_07-2022_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JULY22_LOAD": true,
+        "JULY22_DECISION": true,
+        "JULY22_VOTES": true
+      },
+      "candidate_hits": {
+        "JULY22_LOAD": true,
+        "JULY22_DECISION": true,
+        "JULY22_VOTES": true
+      }
+    },
+    {
+      "key": "REAL-S05:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 888,
+        "parents": [
+          "207515ba8134a0a5e60ee836"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "207515ba8134a0a5e60ee836",
+            "tokens": 888,
+            "global_parent_rank": 1,
+            "document": "38_06-2024_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JUNE24_TRANSFER": true,
+        "JUNE24_APPROVAL": true,
+        "JUNE24_SEMINAR": true,
+        "JUNE24_DEBATE": true
+      },
+      "candidate_hits": {
+        "JUNE24_TRANSFER": true,
+        "JUNE24_APPROVAL": true,
+        "JUNE24_SEMINAR": true,
+        "JUNE24_DEBATE": true
+      }
+    },
+    {
+      "key": "REAL-S05:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 888,
+        "parents": [
+          "207515ba8134a0a5e60ee836"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "207515ba8134a0a5e60ee836",
+            "tokens": 888,
+            "global_parent_rank": 1,
+            "document": "38_06-2024_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JUNE24_TRANSFER": true,
+        "JUNE24_APPROVAL": true,
+        "JUNE24_SEMINAR": true,
+        "JUNE24_DEBATE": true
+      },
+      "candidate_hits": {
+        "JUNE24_TRANSFER": true,
+        "JUNE24_APPROVAL": true,
+        "JUNE24_SEMINAR": true,
+        "JUNE24_DEBATE": true
+      }
+    },
+    {
+      "key": "REAL-S06:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 2071,
+        "parents": [
+          "7d80a1b8b07a3c80b70c0e48",
+          "66b1b6c8a21ef2420204b6ba"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "7d80a1b8b07a3c80b70c0e48",
+            "tokens": 934,
+            "global_parent_rank": 1,
+            "document": "71_11-2023_Ata_de_Reuniao_Extraordinaria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "66b1b6c8a21ef2420204b6ba",
+            "tokens": 1137,
+            "global_parent_rank": 2,
+            "document": "71_11-2023_Ata_de_Reuniao_Extraordinaria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "NOV23_CHANGE": true,
+        "NOV23_DECISION": true
+      },
+      "candidate_hits": {
+        "NOV23_CHANGE": true,
+        "NOV23_DECISION": true
+      }
+    },
+    {
+      "key": "REAL-S06:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 2071,
+        "parents": [
+          "7d80a1b8b07a3c80b70c0e48",
+          "66b1b6c8a21ef2420204b6ba"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "7d80a1b8b07a3c80b70c0e48",
+            "tokens": 934,
+            "global_parent_rank": 1,
+            "document": "71_11-2023_Ata_de_Reuniao_Extraordinaria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "66b1b6c8a21ef2420204b6ba",
+            "tokens": 1137,
+            "global_parent_rank": 2,
+            "document": "71_11-2023_Ata_de_Reuniao_Extraordinaria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "NOV23_CHANGE": true,
+        "NOV23_DECISION": true
+      },
+      "candidate_hits": {
+        "NOV23_CHANGE": true,
+        "NOV23_DECISION": true
+      }
+    },
+    {
+      "key": "REAL-T01:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 184,
+        "parents": [
+          "3578980947d552b91560aa84"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "3578980947d552b91560aa84",
+            "tokens": 184,
+            "global_parent_rank": 1,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_PEOPLE": true
+      },
+      "candidate_hits": {
+        "AFO_PEOPLE": true
+      }
+    },
+    {
+      "key": "REAL-T01:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 184,
+        "parents": [
+          "3578980947d552b91560aa84"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "3578980947d552b91560aa84",
+            "tokens": 184,
+            "global_parent_rank": 1,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_PEOPLE": true
+      },
+      "candidate_hits": {
+        "AFO_PEOPLE": true
+      }
+    },
+    {
+      "key": "REAL-T02:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 220,
+        "parents": [
+          "554e7297ac6286e4e010651e"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "554e7297ac6286e4e010651e",
+            "tokens": 220,
+            "global_parent_rank": 1,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_TOTAL": true,
+        "AFO_RH": true,
+        "AFO_EQUIPMENT": true
+      },
+      "candidate_hits": {
+        "AFO_TOTAL": true,
+        "AFO_RH": true,
+        "AFO_EQUIPMENT": true
+      }
+    },
+    {
+      "key": "REAL-T02:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 220,
+        "parents": [
+          "554e7297ac6286e4e010651e"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "554e7297ac6286e4e010651e",
+            "tokens": 220,
+            "global_parent_rank": 1,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_TOTAL": true,
+        "AFO_RH": true,
+        "AFO_EQUIPMENT": true
+      },
+      "candidate_hits": {
+        "AFO_TOTAL": true,
+        "AFO_RH": true,
+        "AFO_EQUIPMENT": true
+      }
+    },
+    {
+      "key": "REAL-T03:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 182,
+        "parents": [
+          "882a8d94771d4dcc6209ac45"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "882a8d94771d4dcc6209ac45",
+            "tokens": 182,
+            "global_parent_rank": 1,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_PEOPLE": true,
+        "SAAR_HOURS": true
+      },
+      "candidate_hits": {
+        "SAAR_PEOPLE": true,
+        "SAAR_HOURS": true
+      }
+    },
+    {
+      "key": "REAL-T03:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 182,
+        "parents": [
+          "882a8d94771d4dcc6209ac45"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "882a8d94771d4dcc6209ac45",
+            "tokens": 182,
+            "global_parent_rank": 1,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_PEOPLE": true,
+        "SAAR_HOURS": true
+      },
+      "candidate_hits": {
+        "SAAR_PEOPLE": true,
+        "SAAR_HOURS": true
+      }
+    },
+    {
+      "key": "REAL-T04:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 185,
+        "parents": [
+          "a805aebc3b65e588092022e6"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "a805aebc3b65e588092022e6",
+            "tokens": 185,
+            "global_parent_rank": 1,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_HOURS": true
+      },
+      "candidate_hits": {
+        "RACK_HOURS": true
+      }
+    },
+    {
+      "key": "REAL-T04:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 185,
+        "parents": [
+          "a805aebc3b65e588092022e6"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "a805aebc3b65e588092022e6",
+            "tokens": 185,
+            "global_parent_rank": 1,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_HOURS": true
+      },
+      "candidate_hits": {
+        "RACK_HOURS": true
+      }
+    },
+    {
+      "key": "REAL-T05:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 180,
+        "parents": [
+          "c78bdb6ecaaa55c08e1ce83f"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "c78bdb6ecaaa55c08e1ce83f",
+            "tokens": 180,
+            "global_parent_rank": 1,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_MONTHS": true,
+        "RACK_MONTH_RH": true
+      },
+      "candidate_hits": {
+        "RACK_MONTHS": true,
+        "RACK_MONTH_RH": true
+      }
+    },
+    {
+      "key": "REAL-T05:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 180,
+        "parents": [
+          "c78bdb6ecaaa55c08e1ce83f"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "c78bdb6ecaaa55c08e1ce83f",
+            "tokens": 180,
+            "global_parent_rank": 1,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_MONTHS": true,
+        "RACK_MONTH_RH": true
+      },
+      "candidate_hits": {
+        "RACK_MONTHS": true,
+        "RACK_MONTH_RH": true
+      }
+    },
+    {
+      "key": "REAL-T06:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 485,
+        "parents": [
+          "c78bdb6ecaaa55c08e1ce83f",
+          "7fc5b1145546ab091268cb46"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "c78bdb6ecaaa55c08e1ce83f",
+            "tokens": 180,
+            "global_parent_rank": 3,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "7fc5b1145546ab091268cb46",
+            "tokens": 305,
+            "global_parent_rank": 4,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_MONTHS": true,
+        "RACK_MONTH_EQUIPMENT": true
+      },
+      "candidate_hits": {
+        "RACK_MONTHS": true,
+        "RACK_MONTH_EQUIPMENT": true
+      }
+    },
+    {
+      "key": "REAL-T06:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 485,
+        "parents": [
+          "c78bdb6ecaaa55c08e1ce83f",
+          "7fc5b1145546ab091268cb46"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "c78bdb6ecaaa55c08e1ce83f",
+            "tokens": 180,
+            "global_parent_rank": 2,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "7fc5b1145546ab091268cb46",
+            "tokens": 305,
+            "global_parent_rank": 3,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_MONTHS": true,
+        "RACK_MONTH_EQUIPMENT": true
+      },
+      "candidate_hits": {
+        "RACK_MONTHS": true,
+        "RACK_MONTH_EQUIPMENT": true
+      }
+    },
+    {
+      "key": "REAL-T07:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 206,
+        "parents": [
+          "3201aa8f0185405462801f69"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "3201aa8f0185405462801f69",
+            "tokens": 206,
+            "global_parent_rank": 2,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_INDICATORS": true
+      },
+      "candidate_hits": {
+        "SAAR_INDICATORS": true
+      }
+    },
+    {
+      "key": "REAL-T07:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 206,
+        "parents": [
+          "3201aa8f0185405462801f69"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "3201aa8f0185405462801f69",
+            "tokens": 206,
+            "global_parent_rank": 1,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_INDICATORS": true
+      },
+      "candidate_hits": {
+        "SAAR_INDICATORS": true
+      }
+    },
+    {
+      "key": "REAL-T08:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 220,
+        "parents": [
+          "554e7297ac6286e4e010651e"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "554e7297ac6286e4e010651e",
+            "tokens": 220,
+            "global_parent_rank": 2,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_TRAVEL_EMPTY": true
+      },
+      "candidate_hits": {
+        "AFO_TRAVEL_EMPTY": true
+      }
+    },
+    {
+      "key": "REAL-T08:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 220,
+        "parents": [
+          "554e7297ac6286e4e010651e"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "554e7297ac6286e4e010651e",
+            "tokens": 220,
+            "global_parent_rank": 1,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_TRAVEL_EMPTY": true
+      },
+      "candidate_hits": {
+        "AFO_TRAVEL_EMPTY": true
+      }
+    },
+    {
+      "key": "REAL-Q01:collection",
+      "condition": "collection",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": [
+          "dfa6475f115f32b394a281c4"
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_NAME": false
+      },
+      "candidate_hits": {
+        "AFO_NAME": false
+      }
+    },
+    {
+      "key": "REAL-Q01:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 12,
+        "parents": [
+          "cd062c683396c7f2b5f4fc69"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "cd062c683396c7f2b5f4fc69",
+            "tokens": 12,
+            "global_parent_rank": 6,
+            "document": "85_AFO.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_NAME": true
+      },
+      "candidate_hits": {
+        "AFO_NAME": true
+      }
+    },
+    {
+      "key": "REAL-Q02:collection",
+      "condition": "collection",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_DATES": false,
+        "SAAR_DATES": false
+      },
+      "candidate_hits": {
+        "AFO_DATES": false,
+        "SAAR_DATES": false
+      }
+    },
+    {
+      "key": "REAL-Q02:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "AFO_DATES": false,
+        "SAAR_DATES": false
+      },
+      "candidate_hits": {
+        "AFO_DATES": false,
+        "SAAR_DATES": false
+      }
+    },
+    {
+      "key": "REAL-Q03:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 64,
+        "parents": [
+          "b52aa13d72d32ed394c42621"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "b52aa13d72d32ed394c42621",
+            "tokens": 64,
+            "global_parent_rank": 2,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_VERSIONING": true
+      },
+      "candidate_hits": {
+        "RACK_VERSIONING": true
+      }
+    },
+    {
+      "key": "REAL-Q03:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 64,
+        "parents": [
+          "b52aa13d72d32ed394c42621"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "b52aa13d72d32ed394c42621",
+            "tokens": 64,
+            "global_parent_rank": 2,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_VERSIONING": true
+      },
+      "candidate_hits": {
+        "RACK_VERSIONING": true
+      }
+    },
+    {
+      "key": "REAL-Q04:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 62,
+        "parents": [
+          "7b137c1b2cc01ad9689375bf",
+          "4c3253c943aa6bd748b68545"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "7b137c1b2cc01ad9689375bf",
+            "tokens": 33,
+            "global_parent_rank": 5,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "4c3253c943aa6bd748b68545",
+            "tokens": 29,
+            "global_parent_rank": 6,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_DASHBOARD": true
+      },
+      "candidate_hits": {
+        "SAAR_DASHBOARD": true
+      }
+    },
+    {
+      "key": "REAL-Q04:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 62,
+        "parents": [
+          "7b137c1b2cc01ad9689375bf",
+          "4c3253c943aa6bd748b68545"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "7b137c1b2cc01ad9689375bf",
+            "tokens": 33,
+            "global_parent_rank": 5,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "4c3253c943aa6bd748b68545",
+            "tokens": 29,
+            "global_parent_rank": 6,
+            "document": "88_SAAR.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "SAAR_DASHBOARD": true
+      },
+      "candidate_hits": {
+        "SAAR_DASHBOARD": true
+      }
+    },
+    {
+      "key": "REAL-Q05:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 2071,
+        "parents": [
+          "66b1b6c8a21ef2420204b6ba",
+          "7d80a1b8b07a3c80b70c0e48"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "66b1b6c8a21ef2420204b6ba",
+            "tokens": 1137,
+            "global_parent_rank": 1,
+            "document": "71_11-2023_Ata_de_Reuniao_Extraordinaria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "7d80a1b8b07a3c80b70c0e48",
+            "tokens": 934,
+            "global_parent_rank": 2,
+            "document": "71_11-2023_Ata_de_Reuniao_Extraordinaria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "NOV23_CHANGE": true,
+        "NOV23_DECISION": true
+      },
+      "candidate_hits": {
+        "NOV23_CHANGE": true,
+        "NOV23_DECISION": true
+      }
+    },
+    {
+      "key": "REAL-Q05:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 2071,
+        "parents": [
+          "66b1b6c8a21ef2420204b6ba",
+          "7d80a1b8b07a3c80b70c0e48"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "66b1b6c8a21ef2420204b6ba",
+            "tokens": 1137,
+            "global_parent_rank": 1,
+            "document": "71_11-2023_Ata_de_Reuniao_Extraordinaria.md",
+            "selected_in_D": true
+          },
+          {
+            "parent_id": "7d80a1b8b07a3c80b70c0e48",
+            "tokens": 934,
+            "global_parent_rank": 2,
+            "document": "71_11-2023_Ata_de_Reuniao_Extraordinaria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "NOV23_CHANGE": true,
+        "NOV23_DECISION": true
+      },
+      "candidate_hits": {
+        "NOV23_CHANGE": true,
+        "NOV23_DECISION": true
+      }
+    },
+    {
+      "key": "REAL-Q06:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 933,
+        "parents": [
+          "9d1c5a19bec420243615e0de"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "9d1c5a19bec420243615e0de",
+            "tokens": 933,
+            "global_parent_rank": 1,
+            "document": "42_07-2022_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JULY22_VOTES": true
+      },
+      "candidate_hits": {
+        "JULY22_VOTES": true
+      }
+    },
+    {
+      "key": "REAL-Q06:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 933,
+        "parents": [
+          "9d1c5a19bec420243615e0de"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "9d1c5a19bec420243615e0de",
+            "tokens": 933,
+            "global_parent_rank": 1,
+            "document": "42_07-2022_Ata_de_Reuniao_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JULY22_VOTES": true
+      },
+      "candidate_hits": {
+        "JULY22_VOTES": true
+      }
+    },
+    {
+      "key": "REAL-Q07:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 664,
+        "parents": [
+          "800f111d1a192ee39a16c023"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "800f111d1a192ee39a16c023",
+            "tokens": 664,
+            "global_parent_rank": 1,
+            "document": "11_02-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "FEB25_SCHEDULE": true
+      },
+      "candidate_hits": {
+        "FEB25_SCHEDULE": true
+      }
+    },
+    {
+      "key": "REAL-Q07:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 664,
+        "parents": [
+          "800f111d1a192ee39a16c023"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "800f111d1a192ee39a16c023",
+            "tokens": 664,
+            "global_parent_rank": 1,
+            "document": "11_02-2025_Ata_de_Reuniao.pdf_Extraordina_ria.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "FEB25_SCHEDULE": true
+      },
+      "candidate_hits": {
+        "FEB25_SCHEDULE": true
+      }
+    },
+    {
+      "key": "REAL-Q08:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 873,
+        "parents": [
+          "998c353599228b98a343ed0d"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "998c353599228b98a343ed0d",
+            "tokens": 873,
+            "global_parent_rank": 1,
+            "document": "07_01-2026_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN26_BOARD": true
+      },
+      "candidate_hits": {
+        "JAN26_BOARD": true
+      }
+    },
+    {
+      "key": "REAL-Q08:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 873,
+        "parents": [
+          "998c353599228b98a343ed0d"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "998c353599228b98a343ed0d",
+            "tokens": 873,
+            "global_parent_rank": 1,
+            "document": "07_01-2026_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN26_BOARD": true
+      },
+      "candidate_hits": {
+        "JAN26_BOARD": true
+      }
+    },
+    {
+      "key": "REAL-Q09:collection",
+      "condition": "collection",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1447,
+        "parents": [
+          "b2aad6288473066246d34276"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "b2aad6288473066246d34276",
+            "tokens": 1447,
+            "global_parent_rank": 1,
+            "document": "05_01-2024_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN24_CIDDE": true
+      },
+      "candidate_hits": {
+        "JAN24_CIDDE": true
+      }
+    },
+    {
+      "key": "REAL-Q09:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 1447,
+        "parents": [
+          "b2aad6288473066246d34276"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "b2aad6288473066246d34276",
+            "tokens": 1447,
+            "global_parent_rank": 1,
+            "document": "05_01-2024_Ata_de_Reuniao.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "JAN24_CIDDE": true
+      },
+      "candidate_hits": {
+        "JAN24_CIDDE": true
+      }
+    },
+    {
+      "key": "REAL-Q10:collection",
+      "condition": "collection",
+      "stage": "candidate_coverage_not_proven",
+      "minimum": {
+        "status": "not_proven_in_candidates",
+        "minimum_tokens": null,
+        "ambiguous_parents": []
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_NAME": false
+      },
+      "candidate_hits": {
+        "RACK_NAME": false
+      }
+    },
+    {
+      "key": "REAL-Q10:oracle_scope",
+      "condition": "oracle_scope",
+      "stage": "complete",
+      "minimum": {
+        "status": "feasible",
+        "minimum_tokens": 12,
+        "parents": [
+          "e55185df733e9e241ae4d346"
+        ],
+        "budget": 3000,
+        "gold_informed": true,
+        "used_by_selector": false,
+        "witness": [
+          {
+            "parent_id": "e55185df733e9e241ae4d346",
+            "tokens": 12,
+            "global_parent_rank": 2,
+            "document": "87_RACK.md",
+            "selected_in_D": true
+          }
+        ]
+      },
+      "pending_anchors": [],
+      "selected_hits": {
+        "RACK_NAME": true
+      },
+      "candidate_hits": {
+        "RACK_NAME": true
+      }
+    }
+  ]
+}

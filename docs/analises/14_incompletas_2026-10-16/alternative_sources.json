@@ -1,0 +1,128 @@
+{
+  "source_hashes": {
+    "/Users/fernandotrinta/Desktop/RAG-UFC/RAG_UFC/benchmark/results/rounds/dobro_documentos_ciclo_completo_2026-10-16/run_01/D6000/retrieval.json": "b7c460542187e1c634904984134bc465d5f9852c0c444bccd459188ca44136c6"
+  },
+  "notes": "Literal excerpts already in final selected context. No final answers or new evaluations generated.",
+  "entries": [
+    {
+      "case": "REAL-E02",
+      "parent_id": "a7a8edd736cc8a6d8491a5e5",
+      "document": "uploaded_files/74_11-2025_Ata_de_Reuniao.md",
+      "parent_sha256": "aa975f2a78b519817d9833902d1aa60fba33ee0fb1ac37784fa1b6bbdad3c932",
+      "excerpt": "vado pelo Colegiado por unanimidade. 23ª Matéria: Aprovação de bolsa do Projeto 'Rack Build Deployment Validation and Provisioning II'. Em seguida, o Prof. Pablo relatou a bolsa vinculada a esse projeto para aprovação, a saber: 1. uma bolsa para o Prof. Paulo Rego (Coordenador), no valor de R$ 7.500,00 (sete mil e quinhentos reais), durante o período do projeto (12 meses). Posta a matéria em discussão. Não havendo discussão, a referida bolsa foi aprovada pelo Colegiado por unanimidade. 24ª Matéria: Aprovação de bolsa de Coordenação de Projeto de PDI para o Prof. Fernando Trinta. Dando prosseguimento, o chefe relatou a bolsa vinculada ao projeto intitulado 'Pesquisa e desenvolvimento de sistema de integração, baseado em microsserviç",
+      "parent_offsets": [
+        1467,
+        2208
+      ],
+      "role": "alternative evidence for manual equivalence audit; not a revised benchmark score"
+    },
+    {
+      "case": "REAL-E02",
+      "parent_id": "a7a8edd736cc8a6d8491a5e5",
+      "document": "uploaded_files/74_11-2025_Ata_de_Reuniao.md",
+      "parent_sha256": "aa975f2a78b519817d9833902d1aa60fba33ee0fb1ac37784fa1b6bbdad3c932",
+      "excerpt": "ara aprovação, a saber: 1. uma bolsa para o Prof. Paulo Rego (Coordenador), no valor de R$ 7.500,00 (sete mil e quinhentos reais), durante o período do projeto (12 meses). Posta a matéria em discussão. Não havendo discussão, a referida bolsa foi aprovada pelo Colegiado por unanimidade. 24ª Matéria: Aprovação de bolsa de Coordenação de Projeto de PDI para o Prof. Fernando Trinta. Dando prosseguimento, o chefe relatou a bolsa vinculada ao projeto intitulado 'Pesquisa e desenvolvimento de sistema de integração, baseado em microsserviços, para soluções biométricas', destinada ao Prof. Fernando Trinta (Coordenador), no valor de R$ 3.000,00 (três mil reais), no período de dezembro/2025 até julho/2026 (8 meses). Posta a m",
+      "parent_offsets": [
+        1671,
+        2395
+      ],
+      "role": "alternative evidence for manual equivalence audit; not a revised benchmark score"
+    },
+    {
+      "case": "REAL-C01",
+      "parent_id": "ebd6bfa47b9de448f0c28ee4",
+      "document": "uploaded_files/32_05-2025_Ata_de_Reuniao.md",
+      "parent_sha256": "7c2a6a6dd79890b737f4e09cf24a6d77cc2a6c1ab7aec4c73a95b9211a619133",
+      "excerpt": ". 14ª Matéria: Aprovação  de  bolsa  no  Projeto 'Automation of Federation Onboarding' (AFO), em parceria com a Dell, coordenado pelo Prof. Fernando Trinta. O Prof. Paulo Rego relatou a bolsa vinculada a esse projeto destinada ao Prof. Lincoln Rocha, no valor de R$ 5.600,00 (cinco mil e",
+      "parent_offsets": [
+        5633,
+        5920
+      ],
+      "role": "alternative evidence for manual equivalence audit; not a revised benchmark score"
+    },
+    {
+      "case": "REAL-C01",
+      "parent_id": "d442552ca8408f41159288c3",
+      "document": "uploaded_files/10_02-2025_Ata_de_Reuniao.md",
+      "parent_sha256": "1c704c40aca09775c5aab8b83d99e037e737966a45548f374a4a1f9ea7fa58a5",
+      "excerpt": "isioning\", convênio entre a UFC e a empresa DELL, sob a coordenação do Prof. Paulo Rego, com orçamento no valor de R$ 1.145.246,26 (um milhão, cento e quarenta e cinco mil, duzentos e quarenta e seis reais e vinte e seis centavos), durante o período de 01/03/2025 a 28/02/2026 (12 meses). Após discussão, o referido projeto foi aprovado pelo Colegiado. 16ª Matéria: Aprovação de bolsa no Projeto 'Rack Infrastructure Deployment Validation and Provisioning'. O Prof. Fernando Trinta continuou relatando a bolsa vinculada a esse projeto para aprovação, a saber: 1. uma bolsa para o prof. Paulo Rego, no valor de R$ 7.500,00 (sete mil e quinhentos reais), durante o período do projeto (12 meses). Após discussão, o Colegiado aprovou a bolsa",
+      "parent_offsets": [
+        849,
+        1586
+      ],
+      "role": "alternative evidence for manual equivalence audit; not a revised benchmark score"
+    },
+    {
+      "case": "REAL-H04",
+      "parent_id": "0ae823f0b525739198530f28",
+      "document": "uploaded_files/49_08-2022_Ata_de_Reuniao.md",
+      "parent_sha256": "bf9fc59bdd4d59fe56981208c156f1ea4d0b1a7d06e6a7b266de3fb2a42dfaf4",
+      "excerpt": "go após, o Prof. Fernando Trinta informou que é o novo Tutor do PET e solicitou a ajuda dos professores nas maratonas de programação realizadas  pelo  PET.  Por  último,  o  Chefe  fez  um  breve  relato  de  sua  gestão,  ao  mesmo  tempo  em  que agradeceu  a  ajuda  de    professores  e  funcionários  durante  seu  mandato.  O  Prof.  João  Paulo  do  Vale solicitou  a  ajuda  de  todos  durante  seu  mandato  de  chefia.  Informou  que  contará  com  o  apoio  e  a experiência  do  Prof.  Fernando  Trinta  durante  sua  gestão.  Nada  mais  havendo  a  tratar,  o  chefe  deu  por encerrada  a  sessão,  da  qual  para  constar,  eu,  Rosely Araújo  Silva  Barros,  Secretária Administrativa  do Departament",
+      "parent_offsets": [
+        297,
+        1014
+      ],
+      "role": "alternative evidence for manual equivalence audit; not a revised benchmark score"
+    },
+    {
+      "case": "REAL-H04",
+      "parent_id": "ebd6bfa47b9de448f0c28ee4",
+      "document": "uploaded_files/32_05-2025_Ata_de_Reuniao.md",
+      "parent_sha256": "7c2a6a6dd79890b737f4e09cf24a6d77cc2a6c1ab7aec4c73a95b9211a619133",
+      "excerpt": ". 14ª Matéria: Aprovação  de  bolsa  no  Projeto 'Automation of Federation Onboarding' (AFO), em parceria com a Dell, coordenado pelo Prof. Fernando Trinta. O Prof. Paulo Rego relatou a bolsa vinculada a esse projeto destinada ao Prof. Lincoln Rocha, no valor de R$ 5.600,00 (cinco mil e",
+      "parent_offsets": [
+        5633,
+        5920
+      ],
+      "role": "alternative evidence for manual equivalence audit; not a revised benchmark score"
+    },
+    {
+      "case": "REAL-Q02",
+      "parent_id": "f4115d9af17daf9753452219",
+      "document": "uploaded_files/74_11-2025_Ata_de_Reuniao.md",
+      "parent_sha256": "1bcbf65f9643af0daa5be22daa9e0d3049d0bd99fe6cb4f44b6a5379117ee2ac",
+      "excerpt": "ado aprovou por unanimidade os dois afastamentos. 18ª Matéria: Aprovação do Projeto Automation of Federation Onboarding II junto à Dell. Logo após, o Prof. Pablo Mayckon solicitou ao Prof. Fernando Trinta para fazer a relatoria do projeto acima mencionado. O Prof. Fernando Trinta informou que esse projeto, convênio entre a UFC e a empresa DELL, sob sua coordenação, trata-se de uma renovação e terá orçamento no valor de R$ 2.130.184,82 (Dois milhões, cento e trinta mil, cento e oitenta e quatro reais e oitenta e dois centavos), durante o período de 01/03/2026 a 28/02/2027. Posta a matéria em discussão. Não havendo discussão, o referido projeto foi aprovado pelo Colegiado por unanimidade. 19ª Matéria: Aprovação de bolsas do Projeto 'Aut",
+      "parent_offsets": [
+        2641,
+        3385
+      ],
+      "role": "alternative evidence for manual equivalence audit; not a revised benchmark score"
+    },
+    {
+      "case": "REAL-Q02",
+      "parent_id": "f4115d9af17daf9753452219",
+      "document": "uploaded_files/74_11-2025_Ata_de_Reuniao.md",
+      "parent_sha256": "1bcbf65f9643af0daa5be22daa9e0d3049d0bd99fe6cb4f44b6a5379117ee2ac",
+      "excerpt": "s foram aprovadas pelo Colegiado por unanimidade. 20ª Matéria: Aprovação do Projeto 'Storage Analytics and Auto-Reclamation II' junto à Dell. Logo após, o Prof. Pablo passou a palavra ao Prof. Lincoln Rocha que relatou a renovação do projeto acima mencionado, convênio entre a UFC e a empresa DELL, sob a coordenação do Prof. Lincoln Rocha, com orçamento no valor de R$ 1.814.960,20 (Um milhão, oitocentos e quatorze mil, novecentos e sessenta reais e vinte centavos), durante o período de 01/03/2026 a 28/02/2027 (12 meses). Posta a matéria em discussão. Não havendo discussão, o referido projeto foi aprovado pelo Colegiado por",
+      "parent_offsets": [
+        3884,
+        4513
+      ],
+      "role": "alternative evidence for manual equivalence audit; not a revised benchmark score"
+    },
+    {
+      "case": "REAL-Q10",
+      "parent_id": "d442552ca8408f41159288c3",
+      "document": "uploaded_files/10_02-2025_Ata_de_Reuniao.md",
+      "parent_sha256": "1c704c40aca09775c5aab8b83d99e037e737966a45548f374a4a1f9ea7fa58a5",
+      "excerpt": "isioning\", convênio entre a UFC e a empresa DELL, sob a coordenação do Prof. Paulo Rego, com orçamento no valor de R$ 1.145.246,26 (um milhão, cento e quarenta e cinco mil, duzentos e quarenta e seis reais e vinte e seis centavos), durante o período de 01/03/2025 a 28/02/2026 (12 meses). Após discussão, o referido projeto foi aprovado pelo Colegiado. 16ª Matéria: Aprovação de bolsa no Projeto 'Rack Infrastructure Deployment Validation and Provisioning'. O Prof. Fernando Trinta continuou relatando a bolsa vinculada a esse projeto para aprovação, a saber: 1. uma bolsa para o prof. Paulo Rego, no valor de R$ 7.500,00 (sete mil e quinhentos reais), durante o período do projeto (12 meses). Após discussão, o Colegiado aprovou a bolsa",
+      "parent_offsets": [
+        849,
+        1586
+      ],
+      "role": "alternative evidence for manual equivalence audit; not a revised benchmark score"
+    },
+    {
+      "case": "REAL-Q10",
+      "parent_id": "a7a8edd736cc8a6d8491a5e5",
+      "document": "uploaded_files/74_11-2025_Ata_de_Reuniao.md",
+      "parent_sha256": "aa975f2a78b519817d9833902d1aa60fba33ee0fb1ac37784fa1b6bbdad3c932",
+      "excerpt": "vado pelo Colegiado por unanimidade. 23ª Matéria: Aprovação de bolsa do Projeto 'Rack Build Deployment Validation and Provisioning II'. Em seguida, o Prof. Pablo relatou a bolsa vinculada a esse projeto para aprovação, a saber: 1. uma bolsa para o Prof. Paulo Rego (Coordenador), no valor de R$ 7.500,00 (sete mil e quinhentos reais), durante o período do projeto (12 meses). Posta a matéria em discussão. Não havendo discussão, a referida bolsa foi aprovada pelo Colegiado por unanimidade. 24ª Matéria: Aprovação de bolsa de Coordenação de Projeto de PDI para o Prof. Fernando Trinta. Dando prosseguimento, o chefe relatou a bolsa vinculada ao projeto intitulado 'Pesquisa e desenvolvimento de sistema de integração, baseado em microsserviç",
+      "parent_offsets": [
+        1467,
+        2208
+      ],
+      "role": "alternative evidence for manual equivalence audit; not a revised benchmark score"
+    }
+  ]
+}

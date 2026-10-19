@@ -1,0 +1,1061 @@
+{
+  "summary": {
+    "collection": {
+      "errors": {
+        "scope_source": 19,
+        "repeated_query": 2,
+        "scope_quote_length": 5,
+        "malformed_json": 1
+      },
+      "complete_candidates_missing_context": [
+        "REAL-C02",
+        "REAL-C08",
+        "REAL-H04",
+        "REAL-L05"
+      ],
+      "false_or_pending_sufficient": [
+        {
+          "id": "REAL-C02",
+          "pending": []
+        },
+        {
+          "id": "REAL-C09",
+          "pending": [
+            "JULY22_CHAIR"
+          ]
+        },
+        {
+          "id": "REAL-H03",
+          "pending": []
+        },
+        {
+          "id": "REAL-S01",
+          "pending": []
+        },
+        {
+          "id": "REAL-Q01",
+          "pending": []
+        },
+        {
+          "id": "REAL-Q10",
+          "pending": []
+        }
+      ]
+    },
+    "oracle_scope": {
+      "errors": {
+        "scope_source": 6,
+        "repeated_query": 6
+      },
+      "complete_candidates_missing_context": [
+        "REAL-C01",
+        "REAL-C02",
+        "REAL-H04",
+        "REAL-H06"
+      ],
+      "false_or_pending_sufficient": [
+        {
+          "id": "REAL-S01",
+          "pending": []
+        }
+      ]
+    },
+    "scope_source_audit": {
+      "count": 25,
+      "known_documents": 25,
+      "same_target": 24,
+      "literal_match_visible": 13,
+      "unique_literal_match": 12
+    },
+    "repetition_audit": {
+      "count": 8,
+      "no_proof": 8,
+      "requested_document": 8
+    }
+  },
+  "errors": [
+    {
+      "key": "REAL-F02:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "Data de início Data de estimada de término duração",
+        "document_id": "D30",
+        "scope_source": "D30",
+        "scope_quote": "2.6. Duração\nData de estimada de término:"
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [
+        {
+          "parent_id": "P490",
+          "document_id": "D30"
+        }
+      ],
+      "previous_queries": [
+        {
+          "text": "Quais são as datas de início e término estimado do AFO II, na seção de duração do plano de trabalho?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-F09:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "data, horário e modalidade da reunião",
+        "document_id": "D46",
+        "scope_source": "D46",
+        "scope_quote": "Ata da Reunião Extraordinária do Departamento de Computação do Centro de Ciências da UFC, realizada no dia 30 de janeiro de 2026."
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [
+        {
+          "parent_id": "P851",
+          "document_id": "D46"
+        },
+        {
+          "parent_id": "P4073",
+          "document_id": "D46"
+        },
+        {
+          "parent_id": "P6427",
+          "document_id": "D46"
+        },
+        {
+          "parent_id": "P2105",
+          "document_id": "D46"
+        },
+        {
+          "parent_id": "P4626",
+          "document_id": "D46"
+        },
+        {
+          "parent_id": "P4078",
+          "document_id": "D46"
+        },
+        {
+          "chunk_id": "C554",
+          "parent_id": "P4952",
+          "document_id": "D46"
+        },
+        {
+          "chunk_id": "C1335",
+          "parent_id": "P2066",
+          "document_id": "D46"
+        }
+      ],
+      "previous_queries": [
+        {
+          "text": "Em que data, horário e modalidade ocorreu a reunião registrada na ata 01-2026?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-F10:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "LDAR Lenovo Diagnóstico para Arquitetura RISC Avançada vigência duração",
+        "document_id": "D6",
+        "scope_source": "D6",
+        "scope_quote": "Prof. Lincoln Rocha relatou o Termo Aditivo ao projeto de P&D denominado \"LDAR: Lenovo Diagnóstico para Arquitetura RISC Avançada\"... O projeto é uma continuação da parceria do Prof. Javam com a Lenovo Brasil e está previsto para ter duração de dois anos (01/04/2024 a 31/03/2026)."
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "Qual é a vigência prevista para o LDAR relatado na ata de 29/01/2024?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-E02:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "coordenador projeto Rack Build Deployment Validation and Provisioning II",
+        "document_id": "D63",
+        "scope_source": "D63",
+        "scope_quote": "Projeto Rack Build Deployment Validation and Provisioning II"
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "Quem é o coordenador na instituição do projeto Rack Build Deployment Validation and Provisioning II?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-C01:collection",
+      "kind": "repeated_query",
+      "message": "RepeatedQuery: query was already executed",
+      "query": {
+        "text": "coordenador projeto AFO",
+        "document_id": "D30"
+      },
+      "source_is_known_document": false,
+      "source_equals_target": false,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "Compare os coordenadores dos projetos AFO e RACK.",
+          "scope": null
+        },
+        {
+          "text": "coordenador projeto AFO",
+          "scope": null
+        },
+        {
+          "text": "coordenador projeto RACK",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-C03:collection",
+      "kind": "scope_quote_length",
+      "message": "Invalid planner output after bounded repair: 1 validation error for TolerantMinimalDecision\nqueries.0.scope_quote\n  String should have at most 300 characters [type=string_too_long, input_value='2.8. Indicadores de Resu...              | ☐   |', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_too_long"
+    },
+    {
+      "key": "REAL-C05:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "Residência em Segurança da Informação UFC/Samsung/SiDi alterações aditivo",
+        "document_id": "D83",
+        "scope_source": "D83",
+        "scope_quote": "aprovação do Termo Aditivo do Acordo de Parceria UFC/Samsung/SiDi: Projeto \"Residência em Segurança da Informação\", coordenado pelo Prof. Emanuel Bezerra."
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [
+        {
+          "parent_id": "P6796",
+          "document_id": "D83"
+        }
+      ],
+      "previous_queries": [
+        {
+          "text": "O que mudou na Residência em Segurança da Informação UFC/Samsung/SiDi nas atas de 19/08/2022 e 14/03/2023?",
+          "scope": null
+        },
+        {
+          "text": "Residência em Segurança da Informação UFC/Samsung/SiDi alterações",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-C07:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "Como João Paulo do Vale Madeiro é identificado na chefia na abertura da ata de 13/07/2022?",
+        "document_id": "D31",
+        "scope_source": "D31",
+        "scope_quote": "Ata da Reunião do Departamento de Computação do Centro de Ciências da UFC realizada em 01 de julho de 2022."
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "Como João Paulo do Vale Madeiro é identificado na chefia nas aberturas das atas de 13/07/2022 e 29/01/2024?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-C08:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "convocação Fernando Trinta função abertura ata 04/09/2020",
+        "document_id": "D84",
+        "scope_source": "D84",
+        "scope_quote": "Aos quatro dias do mês de setembro de dois mil e vinte, às catorze horas e dez minutos, reuniramse, por meio de videoconferência, atendendo à convocação de seu Chefe, Prof. Fernando Antônio Mota Trinta"
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [
+        {
+          "chunk_id": "C115",
+          "parent_id": "P1146",
+          "document_id": "D84"
+        }
+      ],
+      "previous_queries": [
+        {
+          "text": "Qual função de chefia aparece associada a Fernando Trinta nas aberturas das atas de 04/09/2020 e 21/06/2024?",
+          "scope": null
+        },
+        {
+          "text": "Fernando Trinta função chefia abertura ata 21/06/2024",
+          "scope": null
+        },
+        {
+          "text": "convocação Fernando Trinta função chefia abertura ata 04/09/2020",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-H01:collection",
+      "kind": "malformed_json",
+      "message": "Invalid planner output after bounded repair: 1 validation error for TolerantMinimalDecision\n  Invalid JSON: expected `,` or `}` at line 4 column 1554 [type=json_invalid, input_value='{\\n  \"action\": \"finish_s...rtanto, incompleto.\"\\n}', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/json_invalid"
+    },
+    {
+      "key": "REAL-H02:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "coordenador projeto Redfish firmware",
+        "document_id": "D63",
+        "scope_source": "D63",
+        "scope_quote": "O sistema automatiza o fluxo de trabalho que leva à montagem de um rack, desde a especificação dos requisitos para um rack, passando por sua montagem física e posterior provisionamento, com a instalação dos softwares necessários nos equipamentos."
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [
+        {
+          "parent_id": "P1440",
+          "document_id": "D63"
+        }
+      ],
+      "previous_queries": [
+        {
+          "text": "Quem coordena o projeto cujo ciclo anterior automatizou a configuração de firmware via Redfish?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-H04:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "coordenador AFO PET função colaboração",
+        "document_id": "D83",
+        "scope_source": "D83",
+        "scope_quote": "Prof. Fernando Trinta informou que é o novo Tutor do PET e solicitou a ajuda dos professores nas maratonas de programação realizadas pelo PET."
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "Qual função no PET o coordenador do AFO declarou ter assumido na ata de 19/08/2022, e para que pediu colaboração?",
+          "scope": null
+        },
+        {
+          "text": "Quem é o coordenador do projeto AFO (Automation of Federation Onboarding)?",
+          "scope": null
+        },
+        {
+          "text": "Quem é o coordenador do projeto AFO?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-H05:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "progressão funcional coordenador RACK 19/08/2022",
+        "document_id": "D83",
+        "scope_source": "D83",
+        "scope_quote": "Dando prosseguimento, o Prof. Lincoln Rocha apresentou Parecer favorável à Progressão Funcional do Prof. Paulo Antônio Leal Rego da classe de Professor Adjunto C II para Professor Adjunto C III. Na ocasião, o Prof. Lincoln Rocha deu os"
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "De qual classe para qual classe era a progressão do coordenador do RACK relatada em 19/08/2022, e quem apresentou o parecer?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-H06:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "Quem é o coordenador do projeto SAAR?",
+        "scope_source": "D71",
+        "scope_quote": "Objetivo Geral O objetivo deste projeto é aprimorar e expandir a plataforma SAAR (Storage Analytics and Auto-Reclamation) , consolidando-a como uma ferramenta de governança inteligente para análise, previsão e automação da utilização de armazenamento corporativo."
+      },
+      "source_is_known_document": true,
+      "source_equals_target": false,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "Por que o coordenador do SAAR estava exercendo a chefia na reunião de 30/01/2026?",
+          "scope": null
+        },
+        {
+          "text": "Quem é o coordenador do projeto SAAR?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-H07:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "valor global projeto SEFAZ-MA 19/08/2022",
+        "document_id": "D83",
+        "scope_source": "D83",
+        "scope_quote": "cujo objetivo é ampliar o valor total do projeto para R$  1.867.500,00"
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "O projeto da SEFAZ-MA cuja vigência foi prorrogada até 03/07/2023 já havia recebido qual novo valor global na ata de 19/08/2022?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-H09:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "data de término do afastamento da Profa. Emanuele Marques",
+        "document_id": "D15",
+        "scope_source": "D15",
+        "scope_quote": "Ao questionar essa data à DICON, o setor respondeu que realmente a data estava errada e que a data correta seria 31/01/2025, quando terminaria o afastamento da Profa. Emanuele Marques que motivou a contratação do mencionado docente."
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [
+        {
+          "parent_id": "P2897",
+          "document_id": "D15"
+        }
+      ],
+      "previous_queries": [
+        {
+          "text": "Qual era a data de término do afastamento da docente que presidiu a comissão do Edital 13/2025, segundo a explicação da DICON registrada em 10/01/2025?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-H10:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "resultado final seleção professor substituto 05/09/2025",
+        "document_id": "D14",
+        "scope_source": "D14",
+        "scope_quote": "Aprovação do Resultado Final da Seleção de Professor Substituto do Edital Nº 106/2025/PROGEP"
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [
+        {
+          "parent_id": "P645",
+          "document_id": "D14"
+        }
+      ],
+      "previous_queries": [
+        {
+          "text": "Em que posição ficou, no resultado de 05/09/2025, o candidato que havia sido eliminado na prova escrita da seleção relatada em 12/03/2025?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-L03:collection",
+      "kind": "scope_quote_length",
+      "message": "Invalid planner output after bounded repair: 1 validation error for TolerantMinimalDecision\nqueries.0.scope_quote\n  String should have at most 300 characters [type=string_too_long, input_value='Novos módulos funcionai...ecisões automatizadas.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_too_long"
+    },
+    {
+      "key": "REAL-L05:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "Composição da Comissão Julgadora Fundamentos de Programação",
+        "document_id": "D36",
+        "scope_source": "D36",
+        "scope_quote": "Matéria Única: Aprovação da Comissão Julgadora para a Seleção de Professor Substituto do Edital 13/2025/PROGEP no Setor de Estudo 'Fundamentos de Programação'. O chefe então apresentou a comissão julga"
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "Qual foi a composição completa, com funções, da comissão da seleção de Fundamentos de Programação aprovada em 21/02/2025?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-L07:collection",
+      "kind": "scope_quote_length",
+      "message": "Invalid planner output after bounded repair: 1 validation error for TolerantMinimalDecision\nqueries.0.scope_quote\n  String should have at most 300 characters [type=string_too_long, input_value='3.13. Quadros Resumo dos...    | 27              |', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_too_long"
+    },
+    {
+      "key": "REAL-L08:collection",
+      "kind": "scope_quote_length",
+      "message": "Invalid planner output after bounded repair: 1 validation error for TolerantMinimalDecision\nqueries.0.scope_quote\n  String should have at most 300 characters [type=string_too_long, input_value='Prof. Lincoln Rocha rela...es (02/2024 a 01/2025).', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_too_long"
+    },
+    {
+      "key": "REAL-S02:collection",
+      "kind": "repeated_query",
+      "message": "RepeatedQuery: query was already executed",
+      "query": {
+        "text": "AFO II FY27 módulos desenvolvidos primeiro ciclo priorizados segundo ciclo",
+        "document_id": "D30"
+      },
+      "source_is_known_document": false,
+      "source_equals_target": false,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "Resuma a passagem do primeiro ciclo FY26 para o FY27 no AFO II, distinguindo o que já havia sido desenvolvido do que foi priorizado para o segundo ciclo.",
+          "scope": null
+        },
+        {
+          "text": "AFO II FY27 módulos desenvolvidos primeiro ciclo priorizados segundo ciclo",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-S04:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "CK0211 anuência decisão final 13/07/2022",
+        "document_id": "D55",
+        "scope_source": "D55",
+        "scope_quote": "Dessa forma,"
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [
+        {
+          "parent_id": "P4191",
+          "document_id": "D55"
+        }
+      ],
+      "previous_queries": [
+        {
+          "text": "Resuma a preocupação com a carga didática do novo curso de Ciência de Dados e a decisão final sobre CK0211 na extraordinária de 13/07/2022.",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-T04:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "Tabela de horas trabalhadas por categoria de RH (Superior/Médio, Direto/Indireto) e total",
+        "document_id": "D63",
+        "scope_source": "D63",
+        "scope_quote": "Total de horas trabalhadas | 10.800 | 8.400 | 1.920 | | 21.200"
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "A soma das parcelas de horas do quadro-resumo do RACK coincide com o total impresso? Informe a soma, o total impresso e a diferença, sem corrigir silenciosamente o documento.",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-Q02:collection",
+      "kind": "scope_quote_length",
+      "message": "Invalid planner output after bounded repair: 1 validation error for TolerantMinimalDecision\nqueries.0.scope_quote\n  String should have at most 300 characters [type=string_too_long, input_value='2.1. Introdução\\nEntre...bilidade e governança.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_too_long"
+    },
+    {
+      "key": "REAL-Q05:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "licença remunerada interesses particulares João Paulo Pordeus",
+        "document_id": "D54",
+        "scope_source": "D54",
+        "scope_quote": "solicitando uma licença para tratar de interesses particulares por três anos, sem remuneração, que poderá ser prorrogada por mais três anos."
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "O que foi decidido sobre João Paulo Pordeus em 24/11/2023? Essa licença era remunerada e por quanto tempo foi aprovada?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-Q06:collection",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "votação disponibilidade professor CK0211 13/07/2022",
+        "document_id": "D55",
+        "scope_source": "D55",
+        "scope_quote": "3a. votação: 1.Dar anuência condicionada à disponibilidade de professor, sim ou não ? Foram 10 votos contra e 7 a favor."
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [
+        {
+          "parent_id": "P4191",
+          "document_id": "D55"
+        }
+      ],
+      "previous_queries": [
+        {
+          "text": "A oferta de CK0211 para a Matemática noturna foi aprovada em 13/07/2022? E ficou dependendo de haver professor disponível? Qual foi a votação dessa condição?",
+          "scope": null
+        }
+      ],
+      "allowed_scope": null
+    },
+    {
+      "key": "REAL-F02:oracle_scope",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "Data de início Data de estimada de término",
+        "document_id": "D30",
+        "scope_source": "D30",
+        "scope_quote": "2.6. Duração\nData de estimada de término:"
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [
+        {
+          "parent_id": "P490",
+          "document_id": "D30"
+        }
+      ],
+      "previous_queries": [
+        {
+          "text": "Quais são as datas de início e término estimado do AFO II, na seção de duração do plano de trabalho?",
+          "scope": [
+            "D30"
+          ]
+        },
+        {
+          "text": "Data de início Data de estimada de término",
+          "scope": [
+            "D30"
+          ]
+        }
+      ],
+      "allowed_scope": [
+        "D30"
+      ]
+    },
+    {
+      "key": "REAL-E01:oracle_scope",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "Coordenador na Instituição nome completo",
+        "document_id": "D71",
+        "scope_source": "D71",
+        "scope_quote": "Coordenador na Instituição\nLincoln Souza Rocha"
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [
+        {
+          "parent_id": "P1095",
+          "document_id": "D71"
+        }
+      ],
+      "previous_queries": [
+        {
+          "text": "Quem consta como coordenador na instituição do Storage Analytics and Auto-Reclamation II?",
+          "scope": [
+            "D71"
+          ]
+        }
+      ],
+      "allowed_scope": [
+        "D71"
+      ]
+    },
+    {
+      "key": "REAL-C02:oracle_scope",
+      "kind": "repeated_query",
+      "message": "RepeatedQuery: query was already executed",
+      "query": {
+        "text": "objetivo escopo plano de trabalho RACK II",
+        "document_id": "D63"
+      },
+      "source_is_known_document": false,
+      "source_equals_target": false,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "Qual é a diferença de objeto entre AFO II, RACK II e SAAR II nos respectivos planos de trabalho?",
+          "scope": [
+            "D30",
+            "D63",
+            "D71"
+          ]
+        },
+        {
+          "text": "objetivo escopo plano de trabalho RACK II",
+          "scope": [
+            "D30",
+            "D63",
+            "D71"
+          ]
+        },
+        {
+          "text": "objetivo escopo plano de trabalho SAAR II",
+          "scope": [
+            "D30",
+            "D63",
+            "D71"
+          ]
+        }
+      ],
+      "allowed_scope": [
+        "D30",
+        "D63",
+        "D71"
+      ]
+    },
+    {
+      "key": "REAL-C09:oracle_scope",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "modalidade reunião híbrida presencial",
+        "document_id": "D55",
+        "scope_source": "D55"
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "As extraordinárias de 13/07/2022 e 21/06/2024 ocorreram na mesma modalidade?",
+          "scope": [
+            "D24",
+            "D55"
+          ]
+        }
+      ],
+      "allowed_scope": [
+        "D24",
+        "D55"
+      ]
+    },
+    {
+      "key": "REAL-H02:oracle_scope",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "coordenador projeto Rack Build Deployment Validation and Provisioning",
+        "document_id": "D63",
+        "scope_source": "D63",
+        "scope_quote": "O profissional será responsável pela coordenação científica e técnica do projeto, incluindo a definição da metodologia e dos instrumentos a serem utilizados na construção da solução."
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [
+        {
+          "parent_id": "P3241",
+          "document_id": "D63"
+        }
+      ],
+      "previous_queries": [
+        {
+          "text": "Quem coordena o projeto cujo ciclo anterior automatizou a configuração de firmware via Redfish?",
+          "scope": [
+            "D63"
+          ]
+        }
+      ],
+      "allowed_scope": [
+        "D63"
+      ]
+    },
+    {
+      "key": "REAL-H04:oracle_scope",
+      "kind": "repeated_query",
+      "message": "RepeatedQuery: query was already executed",
+      "query": {
+        "text": "Quem é o coordenador do projeto AFO?",
+        "document_id": "D30"
+      },
+      "source_is_known_document": false,
+      "source_equals_target": false,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "Qual função no PET o coordenador do AFO declarou ter assumido na ata de 19/08/2022, e para que pediu colaboração?",
+          "scope": [
+            "D30",
+            "D83"
+          ]
+        },
+        {
+          "text": "Quem é o coordenador do projeto AFO?",
+          "scope": [
+            "D30",
+            "D83"
+          ]
+        }
+      ],
+      "allowed_scope": [
+        "D30",
+        "D83"
+      ]
+    },
+    {
+      "key": "REAL-H05:oracle_scope",
+      "kind": "repeated_query",
+      "message": "RepeatedQuery: query was already executed",
+      "query": {
+        "text": "progressão funcional coordenador RACK classe",
+        "document_id": "D63"
+      },
+      "source_is_known_document": false,
+      "source_equals_target": false,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "De qual classe para qual classe era a progressão do coordenador do RACK relatada em 19/08/2022, e quem apresentou o parecer?",
+          "scope": [
+            "D63",
+            "D83"
+          ]
+        },
+        {
+          "text": "progressão funcional coordenador RACK classe",
+          "scope": [
+            "D63",
+            "D83"
+          ]
+        }
+      ],
+      "allowed_scope": [
+        "D63",
+        "D83"
+      ]
+    },
+    {
+      "key": "REAL-H06:oracle_scope",
+      "kind": "repeated_query",
+      "message": "RepeatedQuery: query was already executed",
+      "query": {
+        "text": "Quem é o coordenador do projeto SAAR?",
+        "document_id": "D71"
+      },
+      "source_is_known_document": false,
+      "source_equals_target": false,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "Por que o coordenador do SAAR estava exercendo a chefia na reunião de 30/01/2026?",
+          "scope": [
+            "D46",
+            "D71"
+          ]
+        },
+        {
+          "text": "Quem é o coordenador do projeto SAAR?",
+          "scope": [
+            "D46",
+            "D71"
+          ]
+        }
+      ],
+      "allowed_scope": [
+        "D46",
+        "D71"
+      ]
+    },
+    {
+      "key": "REAL-H08:oracle_scope",
+      "kind": "repeated_query",
+      "message": "RepeatedQuery: query was already executed",
+      "query": {
+        "text": "disciplina assumida por Pablo Mayckon Silva Farias como chefe em 2026/1",
+        "document_id": "D46"
+      },
+      "source_is_known_document": false,
+      "source_equals_target": false,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "Quem era o secretário da comissão do Edital 13/2025 e qual disciplina ele assumiu, como chefe, na distribuição de 2026/1 registrada em 30/01/2026?",
+          "scope": [
+            "D36",
+            "D46"
+          ]
+        },
+        {
+          "text": "disciplina assumida por Pablo Mayckon Silva Farias como chefe em 2026/1",
+          "scope": [
+            "D36",
+            "D46"
+          ]
+        }
+      ],
+      "allowed_scope": [
+        "D36",
+        "D46"
+      ]
+    },
+    {
+      "key": "REAL-H09:oracle_scope",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "data término afastamento Profa. Emanuele Marques DICON 10/01/2025",
+        "document_id": "D15",
+        "scope_source": "D15",
+        "scope_quote": "Ao questionar essa data à DICON, o setor respondeu que realmente a data estava errada e que a data correta seria 31/01/2025, quando terminaria o afastamento da Profa. Emanuele Marques que motivou a contratação do mencionado docente."
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [
+        {
+          "parent_id": "P2897",
+          "document_id": "D15"
+        }
+      ],
+      "previous_queries": [
+        {
+          "text": "Qual era a data de término do afastamento da docente que presidiu a comissão do Edital 13/2025, segundo a explicação da DICON registrada em 10/01/2025?",
+          "scope": [
+            "D15",
+            "D36"
+          ]
+        }
+      ],
+      "allowed_scope": [
+        "D15",
+        "D36"
+      ]
+    },
+    {
+      "key": "REAL-T04:oracle_scope",
+      "kind": "scope_source",
+      "message": "Unknown or unavailable scope source",
+      "query": {
+        "text": "detalhes horas trabalhadas RH direto superior médio e RH indireto quadro 3.13",
+        "document_id": "D63",
+        "scope_source": "D63",
+        "scope_quote": "Total de horas trabalhadas | 10.800 | 8.400 | 1.920 | | 21.200"
+      },
+      "source_is_known_document": true,
+      "source_equals_target": true,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "A soma das parcelas de horas do quadro-resumo do RACK coincide com o total impresso? Informe a soma, o total impresso e a diferença, sem corrigir silenciosamente o documento.",
+          "scope": [
+            "D63"
+          ]
+        }
+      ],
+      "allowed_scope": [
+        "D63"
+      ]
+    },
+    {
+      "key": "REAL-Q02:oracle_scope",
+      "kind": "repeated_query",
+      "message": "RepeatedQuery: query was already executed",
+      "query": {
+        "text": "duração prevista SAAR",
+        "document_id": "D71"
+      },
+      "source_is_known_document": false,
+      "source_equals_target": false,
+      "literal_matches": [],
+      "previous_queries": [
+        {
+          "text": "Qual é a duração prevista do AFO II? E o SAAR tem o mesmo período previsto?",
+          "scope": [
+            "D30",
+            "D71"
+          ]
+        },
+        {
+          "text": "duração prevista SAAR",
+          "scope": [
+            "D30",
+            "D71"
+          ]
+        }
+      ],
+      "allowed_scope": [
+        "D30",
+        "D71"
+      ]
+    }
+  ],
+  "method": {
+    "read_only": true,
+    "inference_calls": 0,
+    "scope": "saved tolerant minimal-agent results; same 70 questions in two scopes",
+    "source_matching": "Match terminal decision event to saved request using exact prompt and raw_response; inspect raw query, planner_view and literal substrings",
+    "limitations": [
+      "Literal substring matching does not verify semantic support",
+      "Candidate completeness does not establish feasibility within 3000 tokens",
+      "Error counts across scopes are executions, not distinct questions",
+      "Proposals have not been evaluated"
+    ]
+  },
+  "recorded_at_utc": "2026-10-15T10:59:17.627410+00:00",
+  "source_sha256": {
+    "benchmark/results/rounds/reason_validation_qwen36_spark_2026-10-14/run_01/C_tolerant/retrieval.json": "d44dc334a80e937c1ef6f543e46362a39ef3971ce0d1dbaa51e0fb3edb5aeca8",
+    "benchmark/results/rounds/reason_validation_qwen36_spark_2026-10-14/run_01/B_strict/retrieval.json": "3ec17726209c2b89298d1811cfe940f2d8fb8c9b089ccf68a165c22e8222c78e",
+    "benchmark/results/rounds/reason_validation_qwen36_spark_2026-10-14/run_01/A_baseline/retrieval.json": "230ac674cd41f84bb6bb0c0cf0922d83d6d9f7d3a881981c76a4a734892b92a7",
+    "benchmark/results/rounds/reason_validation_qwen36_spark_2026-10-14/run_01/cache.json": "202a6154c7a68be9f7c700a458fb1746e0a154e8d0987129110525f0740b4f05",
+    "benchmark/results/rounds/reason_validation_qwen36_spark_2026-10-14/run_01/comparison.json": "d47d48ca5b3585e2e6cd02153c2216b6b0188f2764d8a0ece75aad42743c0dde",
+    "application/service/rag/v2/AdaptiveRetrieval.py": "b02df98492cc04929dde45984bdb59ba39b9b1a5c5147b6920a7f9853d115f3f",
+    "application/service/rag/v2/DirectedRetrieval.py": "a0cb00ded4a9a5376b95ddcfba608582e0e3f7d870171fe18faaced96f6f73bd",
+    "application/service/rag/v2/EvidenceSelection.py": "2c9cb51cd0e7d5d49350845d9ebffdcbca05a24c593f5d99c2c4e95e360aa16a"
+  }
+}

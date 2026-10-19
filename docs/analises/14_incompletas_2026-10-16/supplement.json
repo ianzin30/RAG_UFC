@@ -1,0 +1,795 @@
+{
+  "audit_sha256": "a21764e7f749915c1791ec5aa109517e01ee257e9cfbb3316a4cbb58c0ee70a5",
+  "script_sha256": "431b1e07e09e116112a12c31ed3690516282a4db23abec623abdadf0af1dd049",
+  "new_calls": 0,
+  "gold_informed": true,
+  "used_by_selector": false,
+  "initial_scope_diagnostic": {
+    "REAL-E02:collection": {
+      "collection": {
+        "RACK_NAME": false
+      },
+      "oracle_scope": {
+        "RACK_NAME": true
+      }
+    },
+    "REAL-C01:collection": {
+      "collection": {
+        "AFO_NAME": false,
+        "RACK_NAME": false
+      },
+      "oracle_scope": {
+        "AFO_NAME": false,
+        "RACK_NAME": false
+      }
+    },
+    "REAL-C02:collection": {
+      "collection": {
+        "AFO_OBJECTIVE": true,
+        "RACK_OBJECTIVE": false,
+        "SAAR_OBJECTIVE": true
+      },
+      "oracle_scope": {
+        "AFO_OBJECTIVE": true,
+        "RACK_OBJECTIVE": false,
+        "SAAR_OBJECTIVE": true
+      }
+    },
+    "REAL-C07:collection": {
+      "collection": {
+        "JULY22_CHAIR": false,
+        "JAN24_CHAIR": true
+      },
+      "oracle_scope": {
+        "JULY22_CHAIR": true,
+        "JAN24_CHAIR": true
+      }
+    },
+    "REAL-C09:collection": {
+      "collection": {
+        "JULY22_CHAIR": false,
+        "JUNE24_CHAIR": false
+      },
+      "oracle_scope": {
+        "JULY22_CHAIR": false,
+        "JUNE24_CHAIR": true
+      }
+    },
+    "REAL-H01:collection": {
+      "collection": {
+        "AFO_OAUTH": true,
+        "AFO_NAME": false
+      },
+      "oracle_scope": {
+        "AFO_OAUTH": true,
+        "AFO_NAME": false
+      }
+    },
+    "REAL-H02:collection": {
+      "collection": {
+        "RACK_TOOLS": true,
+        "RACK_NAME": false
+      },
+      "oracle_scope": {
+        "RACK_TOOLS": true,
+        "RACK_NAME": false
+      }
+    },
+    "REAL-H03:collection": {
+      "collection": {
+        "SAAR_PRODUCTS": true,
+        "SAAR_NAME": false
+      },
+      "oracle_scope": {
+        "SAAR_PRODUCTS": true,
+        "SAAR_NAME": false
+      }
+    },
+    "REAL-H04:collection": {
+      "collection": {
+        "AFO_NAME": false,
+        "PET": true
+      },
+      "oracle_scope": {
+        "AFO_NAME": false,
+        "PET": true
+      }
+    },
+    "REAL-H05:collection": {
+      "collection": {
+        "RACK_NAME": false,
+        "REGO_PROGRESSION": true
+      },
+      "oracle_scope": {
+        "RACK_NAME": false,
+        "REGO_PROGRESSION": true
+      }
+    },
+    "REAL-S01:collection": {
+      "collection": {
+        "SAAR_PRODUCTS": true,
+        "SAAR_DIMENSIONS": true,
+        "SAAR_RULES": true,
+        "SAAR_DEVOPS": false,
+        "SAAR_LOGS": true,
+        "SAAR_METRICS": true,
+        "SAAR_DASHBOARD": false
+      },
+      "oracle_scope": {
+        "SAAR_PRODUCTS": true,
+        "SAAR_DIMENSIONS": true,
+        "SAAR_RULES": true,
+        "SAAR_DEVOPS": false,
+        "SAAR_LOGS": true,
+        "SAAR_METRICS": true,
+        "SAAR_DASHBOARD": true
+      }
+    },
+    "REAL-S04:collection": {
+      "collection": {
+        "JULY22_LOAD": true,
+        "JULY22_DECISION": false,
+        "JULY22_VOTES": true
+      },
+      "oracle_scope": {
+        "JULY22_LOAD": true,
+        "JULY22_DECISION": true,
+        "JULY22_VOTES": true
+      }
+    },
+    "REAL-Q02:collection": {
+      "collection": {
+        "AFO_DATES": false,
+        "SAAR_DATES": false
+      },
+      "oracle_scope": {
+        "AFO_DATES": false,
+        "SAAR_DATES": false
+      }
+    },
+    "REAL-Q10:collection": {
+      "collection": {
+        "RACK_NAME": false
+      },
+      "oracle_scope": {
+        "RACK_NAME": true
+      }
+    }
+  },
+  "previously_executed_successful_queries": {
+    "AFO_DATES": [
+      {
+        "query": "Data de início Data de estimada de término duração",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb"
+        ],
+        "cache_key": "7df014dd0c60d8547d285bcb81593cbf859a60d91402d98faf4656f63ec6428f",
+        "origin": "historical"
+      },
+      {
+        "query": "Data de início Data de estimada de término",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb"
+        ],
+        "cache_key": "16d5ff70beac4dd6f34224b090299a19ba6b89e19736a93c07364707f72db76f",
+        "origin": "historical"
+      },
+      {
+        "query": "Data de início Data de estimada de término duração",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb"
+        ],
+        "cache_key": "7df014dd0c60d8547d285bcb81593cbf859a60d91402d98faf4656f63ec6428f",
+        "origin": "current"
+      },
+      {
+        "query": "Data de início Data de estimada de término 2.6. Duração",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb"
+        ],
+        "cache_key": "38bcd226376574453ca3eee4071aff03658e5da8844f1e9f972a554b593a517d",
+        "origin": "current"
+      },
+      {
+        "query": "2.6. Duração Data de início Data de estimada de término",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb"
+        ],
+        "cache_key": "05befa70f48934c37d2ccc4eb12d458431f3dfe7053ad037940d2d9e99f5acf9",
+        "origin": "current"
+      },
+      {
+        "query": "Data de início Data de estimada de término",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb"
+        ],
+        "cache_key": "16d5ff70beac4dd6f34224b090299a19ba6b89e19736a93c07364707f72db76f",
+        "origin": "current"
+      }
+    ],
+    "AFO_NAME": [
+      {
+        "query": "nome do coordenador do projeto AFO",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb",
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "ef3067a150f04040abd369958fe75ebf0f3d0ee7b086f0a24c2b72499df6f0f6",
+        "origin": "historical"
+      },
+      {
+        "query": "Nome do Coordenador do Projeto AFO II",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb"
+        ],
+        "cache_key": "f34b212044b7e25360f98accda11a60f42a3ea8212373923e9b48e076df583b7",
+        "origin": "historical"
+      },
+      {
+        "query": "nome do coordenador do projeto AFO II",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb"
+        ],
+        "cache_key": "f85cb5a5e09cecd03cdb4044946197b86eaf62f7d315dacfa1ed6841329cc2b2",
+        "origin": "historical"
+      },
+      {
+        "query": "Quem é o coordenador do projeto AFO?",
+        "scope": null,
+        "cache_key": "7bca35cc0699e9890abca7a87922348043505c0f9a96110a49c4d56424f368af",
+        "origin": "historical"
+      },
+      {
+        "query": "Quem é o coordenador do projeto AFO?",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb",
+          "f84b4038c934faa6f33e1900"
+        ],
+        "cache_key": "fa0af375095b72ef209ae30ac2efbb46ed3a5c4b9ae57d0110972c6824d402bf",
+        "origin": "historical"
+      },
+      {
+        "query": "coordenador projeto AFO",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb"
+        ],
+        "cache_key": "351a98ba52c583951c51015155b6d239c72daeeacd623efe8491c9d29563c0c6",
+        "origin": "historical"
+      },
+      {
+        "query": "coordenador",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb"
+        ],
+        "cache_key": "8eec2c99d1cc3bdb256cfd502dc060fb64499d5024da7c583f8033ea318cb3ae",
+        "origin": "historical"
+      },
+      {
+        "query": "coordenador",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb"
+        ],
+        "cache_key": "8eec2c99d1cc3bdb256cfd502dc060fb64499d5024da7c583f8033ea318cb3ae",
+        "origin": "current"
+      },
+      {
+        "query": "coordenador projeto AFO",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb"
+        ],
+        "cache_key": "351a98ba52c583951c51015155b6d239c72daeeacd623efe8491c9d29563c0c6",
+        "origin": "current"
+      }
+    ],
+    "JULY22_CHAIR": [
+      {
+        "query": "modalidade presencial híbrida virtual",
+        "scope": [
+          "a7c9de52c0c7ef8623582130"
+        ],
+        "cache_key": "c1d42c71ab8d2c8aeef8862bb2804aa0d22789b035e4c7fb30327bcc6fa7fb4e",
+        "origin": "current"
+      },
+      {
+        "query": "modalidade presencial híbrida remota",
+        "scope": [
+          "a7c9de52c0c7ef8623582130"
+        ],
+        "cache_key": "16142bf9b519e6b9d507ebd562f3036ffb040536498b6e7d0a69a1a7abda71ae",
+        "origin": "current"
+      },
+      {
+        "query": "modalidade presencial híbrida remota videoconferência",
+        "scope": [
+          "a7c9de52c0c7ef8623582130"
+        ],
+        "cache_key": "ae81255b65a3effaefb794c3d9abbaa8acafd267e81559d45d2ebacbeb86d9dc",
+        "origin": "current"
+      }
+    ],
+    "JULY22_DECISION": [
+      {
+        "query": "modalidade presencial híbrida virtual",
+        "scope": [
+          "a7c9de52c0c7ef8623582130"
+        ],
+        "cache_key": "c1d42c71ab8d2c8aeef8862bb2804aa0d22789b035e4c7fb30327bcc6fa7fb4e",
+        "origin": "current"
+      },
+      {
+        "query": "modalidade presencial híbrida remota",
+        "scope": [
+          "a7c9de52c0c7ef8623582130"
+        ],
+        "cache_key": "16142bf9b519e6b9d507ebd562f3036ffb040536498b6e7d0a69a1a7abda71ae",
+        "origin": "current"
+      },
+      {
+        "query": "modalidade presencial híbrida remota videoconferência",
+        "scope": [
+          "a7c9de52c0c7ef8623582130"
+        ],
+        "cache_key": "ae81255b65a3effaefb794c3d9abbaa8acafd267e81559d45d2ebacbeb86d9dc",
+        "origin": "current"
+      }
+    ],
+    "JUNE24_CHAIR": [
+      {
+        "query": "Qual o campus de origem do Prof. Wladimir Araújo Tavares?",
+        "scope": null,
+        "cache_key": "66952e650ae54f8605e3dd29534ccc346a2535526e190093b6f671be7af08a51",
+        "origin": "historical"
+      },
+      {
+        "query": "Wladimir Araújo Tavares campus origem Quixadá",
+        "scope": null,
+        "cache_key": "fcfa27c4792c59da7ef4c4057da4a7ab54677d8985cd0f79fe952e671b0e5a02",
+        "origin": "historical"
+      },
+      {
+        "query": "Fernando Trinta função chefia abertura ata 21/06/2024",
+        "scope": null,
+        "cache_key": "5d965b89810708fea74b5617fc9c6fabde570adf1e66254a7f24f871ba7d4834",
+        "origin": "historical"
+      },
+      {
+        "query": "Identificar a função de chefia de Fernando Trinta na ata de 21/06/2024.",
+        "scope": [
+          "5564ccbab5a4faf4670e6f90"
+        ],
+        "cache_key": "a83d76bc8a66862fe998c5f61f516abfb5412bbab852fc379ba1dece53668825",
+        "origin": "historical"
+      },
+      {
+        "query": "período previsto SAAR",
+        "scope": null,
+        "cache_key": "1d6fbc7695613a63ec6949b92208244c6f316fcfa35e37bd95bed2fb1e9a9a63",
+        "origin": "historical"
+      },
+      {
+        "query": "Wladimir Araújo Tavares campus origem remoção",
+        "scope": null,
+        "cache_key": "1764c6c2e73330a8b90612bda393165ce8ef04854d8cb66b03513362e79b1c06",
+        "origin": "historical"
+      },
+      {
+        "query": "Wladimir Araújo Tavares campus origem remoção",
+        "scope": [
+          "5564ccbab5a4faf4670e6f90"
+        ],
+        "cache_key": "3b95d07d55b25a08108dad28f2f6bfb93cf51ad870ed80bff28fa4202dae4f77",
+        "origin": "historical"
+      },
+      {
+        "query": "Wladimir Araújo Tavares Quixadá remoção",
+        "scope": [
+          "5564ccbab5a4faf4670e6f90"
+        ],
+        "cache_key": "fcc14304cc35ab9670fd97aa67f09de7113634969504c7db150f41c309469f01",
+        "origin": "historical"
+      },
+      {
+        "query": "convocação de seu Chefe Fernando Trinta",
+        "scope": [
+          "5564ccbab5a4faf4670e6f90"
+        ],
+        "cache_key": "3393baff5e2fe107b1831a959c6040f656f86feecbd2ef78842d062de3820022",
+        "origin": "historical"
+      },
+      {
+        "query": "Wladimir Araújo Tavares campus origem Quixadá",
+        "scope": null,
+        "cache_key": "fcfa27c4792c59da7ef4c4057da4a7ab54677d8985cd0f79fe952e671b0e5a02",
+        "origin": "current"
+      },
+      {
+        "query": "convocação de seu Chefe Fernando Trinta",
+        "scope": [
+          "5564ccbab5a4faf4670e6f90"
+        ],
+        "cache_key": "3393baff5e2fe107b1831a959c6040f656f86feecbd2ef78842d062de3820022",
+        "origin": "current"
+      },
+      {
+        "query": "modalidade presencial híbrida virtual",
+        "scope": [
+          "5564ccbab5a4faf4670e6f90"
+        ],
+        "cache_key": "00538b22bf841f8352e4689187606d3ae8c96e03629e5e3ac92442e61e4ec3b6",
+        "origin": "current"
+      }
+    ],
+    "RACK_NAME": [
+      {
+        "query": "nome do coordenador do projeto AFO",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb",
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "ef3067a150f04040abd369958fe75ebf0f3d0ee7b086f0a24c2b72499df6f0f6",
+        "origin": "historical"
+      },
+      {
+        "query": "nome do coordenador do projeto RACK",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb",
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "039f5b330b74af5a98c56b2e8c742c9434be09e0eec8bc18ccddb7c150fac27f",
+        "origin": "historical"
+      },
+      {
+        "query": "coordenador projeto RACK",
+        "scope": [
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "8673a0feee2d1fe6e8cc38e4c16f3e4645435b235e203fbc3bac8d1b13919870",
+        "origin": "historical"
+      },
+      {
+        "query": "coordenador",
+        "scope": [
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "5f4e62de3c3198850e495fdd7c1276523ca432d75410ce56d49d0752c42aa20e",
+        "origin": "historical"
+      },
+      {
+        "query": "coordenador",
+        "scope": [
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "5f4e62de3c3198850e495fdd7c1276523ca432d75410ce56d49d0752c42aa20e",
+        "origin": "current"
+      },
+      {
+        "query": "coordenador SAAR",
+        "scope": null,
+        "cache_key": "d56fabaf6aae74ac33402d464ac9996b4e71586b510bcddea98d9e57667189b5",
+        "origin": "current"
+      }
+    ],
+    "RACK_OBJECTIVE": [
+      {
+        "query": "objetivo escopo plano de trabalho RACK II",
+        "scope": null,
+        "cache_key": "39788fec2e5a40ec0bccc282197b5c2119482729d2454b5399e597cde7f05e92",
+        "origin": "historical"
+      },
+      {
+        "query": "objetivo escopo plano de trabalho AFO II",
+        "scope": null,
+        "cache_key": "4d1b4512964e9d2194b3dde492d782c4eb1b74b068c5cc6bd6ac9c5aeab56f11",
+        "origin": "historical"
+      },
+      {
+        "query": "objetivo escopo plano de trabalho SAAR II",
+        "scope": null,
+        "cache_key": "9ca6ad77fbd4276c54a393940bc04eddc5d33789e5d6c7fb4dfd7260f4a02b26",
+        "origin": "historical"
+      },
+      {
+        "query": "objetivo escopo plano de trabalho RACK II",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb",
+          "c94dd56e3dbbf1f665a0d052",
+          "dc432f7e490a31344344a9a3"
+        ],
+        "cache_key": "56eee39c599ca347ce4508ea480e4851ab584ead9227930839d87eaaf0fecb73",
+        "origin": "historical"
+      },
+      {
+        "query": "objetivo escopo plano de trabalho SAAR II",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb",
+          "c94dd56e3dbbf1f665a0d052",
+          "dc432f7e490a31344344a9a3"
+        ],
+        "cache_key": "fb3232667b3ec18c80f630c91369917d05c1c9d54f7f2462b904bf2b21951c4b",
+        "origin": "historical"
+      },
+      {
+        "query": "Quem coordena o projeto Rack Build Deployment Validation and Provisioning?",
+        "scope": null,
+        "cache_key": "20cbcaffbf601e0364ec611baa5a06cc0b1fdfd413c448098098245a9cc16ef8",
+        "origin": "historical"
+      },
+      {
+        "query": "Quem é o coordenador do projeto Rack Build Deployment Validation and Provisioning?",
+        "scope": [
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "9b2a145b7143cd6329af36864a5f8625581a2f987b243ee0c4d65b0ec3d979d9",
+        "origin": "historical"
+      },
+      {
+        "query": "progressão funcional coordenador RACK classe",
+        "scope": [
+          "c94dd56e3dbbf1f665a0d052",
+          "f84b4038c934faa6f33e1900"
+        ],
+        "cache_key": "15276dbb66ef5718fe8d191401b9b3c5b61db8ad398b950a025c24860336e6b1",
+        "origin": "historical"
+      },
+      {
+        "query": "nome do coordenador do projeto RACK",
+        "scope": [
+          "7048bf5a3aecd642e90cd8bb",
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "039f5b330b74af5a98c56b2e8c742c9434be09e0eec8bc18ccddb7c150fac27f",
+        "origin": "historical"
+      },
+      {
+        "query": "AFO II FY27 módulos desenvolvidos primeiro ciclo priorizados segundo ciclo",
+        "scope": null,
+        "cache_key": "b7a15fe42000dccf9f2202fe11e5dd85442b7a4be4665b917a985fa64fd414cb",
+        "origin": "historical"
+      },
+      {
+        "query": "coordenador projeto RACK",
+        "scope": [
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "8673a0feee2d1fe6e8cc38e4c16f3e4645435b235e203fbc3bac8d1b13919870",
+        "origin": "historical"
+      },
+      {
+        "query": "RACK II objetivo escopo plano de trabalho",
+        "scope": [
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "925a424a4c13ba8f0df8b1545019ca6023e4ec7245da295825cfd82351b5484d",
+        "origin": "historical"
+      },
+      {
+        "query": "AFO II objetivo escopo plano de trabalho",
+        "scope": null,
+        "cache_key": "065888dfa9ef3bc9f253a434f723e823a27c076a943aa74a55807eb8f5fe5e72",
+        "origin": "historical"
+      },
+      {
+        "query": "objetivo principal escopo automação RACK II",
+        "scope": [
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "32121be50542f1276c937291b7f8ed0dbe4e01c8d0d36c7a96953ab020fc93d6",
+        "origin": "historical"
+      },
+      {
+        "query": "Rack Build Deployment Validation and Provisioning coordenador",
+        "scope": null,
+        "cache_key": "19faa6d4ce505d80bf5ee285eafac2f7431806cd2ca78963eda3e7e7997f8a9a",
+        "origin": "historical"
+      },
+      {
+        "query": "Rack Infrastructure Deployment Validation and Provisioning coordenador",
+        "scope": null,
+        "cache_key": "4b640ff26f4018d19d5405665653a408376e3ee0341e0cb1014f9d866c52fcd3",
+        "origin": "historical"
+      },
+      {
+        "query": "Rack Infrastructure Deployment Validation and Provisioning coordenador instituição",
+        "scope": null,
+        "cache_key": "5423f095b82d1a221aac902a34d156d197593276370eef731e948e823d74dd1a",
+        "origin": "historical"
+      },
+      {
+        "query": "objetivo escopo plano de trabalho RACK II",
+        "scope": [
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "a4c3c408cddd6b5feb7e6607c71ec2a9a82dac3d1c2b94b74c56c865546825df",
+        "origin": "current"
+      },
+      {
+        "query": "RACK II objetivo escopo plano de trabalho",
+        "scope": null,
+        "cache_key": "c75c124efbcb0ead19df25f70a23295e0198f6a0aae8a4731f4cc1e328b7bf2b",
+        "origin": "current"
+      },
+      {
+        "query": "RACK II objetivo escopo plano de trabalho",
+        "scope": [
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "925a424a4c13ba8f0df8b1545019ca6023e4ec7245da295825cfd82351b5484d",
+        "origin": "current"
+      },
+      {
+        "query": "objetivo escopo principal",
+        "scope": [
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "5138505730632170c21aee92e1b75981bb65aab390ea29e940758fd96527e654",
+        "origin": "current"
+      },
+      {
+        "query": "objetivo escopo principal RACK II",
+        "scope": [
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "d63c87d2dac4ea5083e5ddac9ea6f01fe926fa8b5aedecf8f0ae71a5fb14e3d9",
+        "origin": "current"
+      },
+      {
+        "query": "coordenador projeto Redfish firmware",
+        "scope": [
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "7715bf20b44075559cb4b41b2aa2c9fdcef88dd7f91118ea8bb1d90e206dbaa6",
+        "origin": "current"
+      },
+      {
+        "query": "coordenador projeto Rack Build Deployment Validation and Provisioning Redfish",
+        "scope": null,
+        "cache_key": "b6ffb1bd16ee4013fb20b713daa53ce406bf76023cba9d73f79b09e47267b397",
+        "origin": "current"
+      },
+      {
+        "query": "RACK II duas frentes novas capacidades complementam módulos existentes",
+        "scope": null,
+        "cache_key": "ffdc7d31e364e201af3eb618937dce82a64c0c41756258089119c3c067af3bc3",
+        "origin": "current"
+      },
+      {
+        "query": "Rack Infrastructure Deployment Validation and Provisioning coordenador",
+        "scope": null,
+        "cache_key": "4b640ff26f4018d19d5405665653a408376e3ee0341e0cb1014f9d866c52fcd3",
+        "origin": "current"
+      },
+      {
+        "query": "Rack Infrastructure Deployment Validation and Provisioning coordenador instituição",
+        "scope": null,
+        "cache_key": "5423f095b82d1a221aac902a34d156d197593276370eef731e948e823d74dd1a",
+        "origin": "current"
+      },
+      {
+        "query": "coordenador projeto Rack Infrastructure Deployment Validation and Provisioning",
+        "scope": null,
+        "cache_key": "059af2258032e557370095451b7af8678093186f00ab3044df72639b219efb25",
+        "origin": "current"
+      },
+      {
+        "query": "coordenador projeto Rack Infrastructure Deployment Validation and Provisioning",
+        "scope": [
+          "c94dd56e3dbbf1f665a0d052"
+        ],
+        "cache_key": "8d90bc51ddbae9b06abe63b2d8c3c5cd12c1090b01fc8f96b8f09232074732b1",
+        "origin": "current"
+      }
+    ],
+    "SAAR_DASHBOARD": [
+      {
+        "query": "painel de observabilidade SAAR reunir logs estatísticas ações",
+        "scope": [
+          "dc432f7e490a31344344a9a3"
+        ],
+        "cache_key": "e408a588ada7257e5bc563ec750cdae7b99b7d8b28c42b9f5715dfee37754706",
+        "origin": "historical"
+      },
+      {
+        "query": "O que o painel de observabilidade do SAAR deve reunir?",
+        "scope": [
+          "dc432f7e490a31344344a9a3"
+        ],
+        "cache_key": "89ce69691b553e90d1672fb8f5032a46e3d85eba32a26f681f3341b494e90a93",
+        "origin": "historical"
+      },
+      {
+        "query": "O que o painel de observabilidade do SAAR deve reunir especificamente?",
+        "scope": [
+          "dc432f7e490a31344344a9a3"
+        ],
+        "cache_key": "3a1dd39d1d1e104c7182802dacb69b97b7db21c19560ac8d65c26804ee7efc82",
+        "origin": "historical"
+      },
+      {
+        "query": "painel de observabilidade SAAR reunir logs estatísticas ações",
+        "scope": [
+          "dc432f7e490a31344344a9a3"
+        ],
+        "cache_key": "e408a588ada7257e5bc563ec750cdae7b99b7d8b28c42b9f5715dfee37754706",
+        "origin": "current"
+      }
+    ],
+    "SAAR_DATES": [
+      {
+        "query": "duração prevista período cronograma",
+        "scope": [
+          "dc432f7e490a31344344a9a3"
+        ],
+        "cache_key": "6f101feeee903c969de020f9d8fea0928312688e27ee04c2c367fde934bd65e1",
+        "origin": "current"
+      },
+      {
+        "query": "duração prevista período cronograma início fim",
+        "scope": [
+          "dc432f7e490a31344344a9a3"
+        ],
+        "cache_key": "75d3569227222d431e86ce4ccf5a8e5b12ba79df8df5fd8b5580504e33462f13",
+        "origin": "current"
+      }
+    ],
+    "SAAR_DEVOPS": [
+      {
+        "query": "SAAR II objetivo escopo plano de trabalho",
+        "scope": [
+          "dc432f7e490a31344344a9a3"
+        ],
+        "cache_key": "309b114b0bf50b62aab904c482bb6aa7381cf0f77944f5ec4b2c49b42036adcf",
+        "origin": "historical"
+      },
+      {
+        "query": "objetivo escopo plano de trabalho SAAR II",
+        "scope": [
+          "dc432f7e490a31344344a9a3"
+        ],
+        "cache_key": "a3e09ad22adbb24a801ce57e2dfae55feb04b9aec43e12fe57b11a88d63686cc",
+        "origin": "current"
+      },
+      {
+        "query": "objetivo escopo principal",
+        "scope": [
+          "dc432f7e490a31344344a9a3"
+        ],
+        "cache_key": "ad5c9a1b8f2a03ac3848fdaa4977afd32a44b1d09bb251952a1ed0dbe8418408",
+        "origin": "current"
+      },
+      {
+        "query": "objetivo escopo principal SAAR II",
+        "scope": [
+          "dc432f7e490a31344344a9a3"
+        ],
+        "cache_key": "03215b8e00c1d108ae0994747acc4975c83130106ddc9441533f4bfa9d41669d",
+        "origin": "current"
+      }
+    ],
+    "SAAR_NAME": [
+      {
+        "query": "Quem é o coordenador do projeto SAAR?",
+        "scope": [
+          "dc432f7e490a31344344a9a3"
+        ],
+        "cache_key": "8eec3cdcb1493e5fad0603038eb66677c490d9c860b522d0146c2197b93e1156",
+        "origin": "historical"
+      },
+      {
+        "query": "Quem é o coordenador do projeto SAAR?",
+        "scope": [
+          "9651862a91a5c7d36c980ea9",
+          "dc432f7e490a31344344a9a3"
+        ],
+        "cache_key": "6f618060ba0b11374a597323f4ba40be2b6b194ab6f10da28aacb0253cde8dc0",
+        "origin": "historical"
+      },
+      {
+        "query": "coordenador SAAR",
+        "scope": null,
+        "cache_key": "d56fabaf6aae74ac33402d464ac9996b4e71586b510bcddea98d9e57667189b5",
+        "origin": "current"
+      }
+    ]
+  },
+  "limits": "Saved successes establish recoverability for those inputs only; no new policy, query or model result is measured."
+}

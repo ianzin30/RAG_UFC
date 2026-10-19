@@ -1,0 +1,218 @@
+{
+  "name": "Por que faltou evidência?",
+  "audit_sha256": "a21764e7f749915c1791ec5aa109517e01ee257e9cfbb3316a4cbb58c0ee70a5",
+  "supplement_sha256": "5e8513452986ac8af789ceef61d2668f45936c1891eb55d2a6bcf871c42cf7a5",
+  "analysis_script_sha256": "1decfc8231d0d9518dba819d1086119c1fec2cb960de6654ca673fabab352f87",
+  "facts": {
+    "cases": 14,
+    "all_required_anchors_present_in_index": 14,
+    "incomplete_accumulated_candidate_pool": 13,
+    "selection_loss": 1,
+    "finish_sufficient_under_incomplete_frozen_metric": 11,
+    "initial_search_only": 8,
+    "explicit_reason_action_contradictions": [
+      "C07",
+      "H03"
+    ],
+    "unchanged_local_candidate_sets_checked": 25
+  },
+  "semantic_review_candidates": [
+    "E02",
+    "C01",
+    "H04",
+    "Q02",
+    "Q10"
+  ],
+  "semantic_review_status": "Manual source observations only; no semantic score, new rates or revised benchmark labels.",
+  "rows": [
+    {
+      "case": "E02",
+      "group": "Fontes alternativas",
+      "finding": "O agente encerrou na busca inicial. A ata de novembro/2025 associa o projeto RACK II à coordenação de Paulo Rego; a métrica exige o campo do plano RACK.",
+      "limit": "Revisar equivalência da fonte alternativa antes de chamar isso de falha semântica. Não mudar a nota congelada.",
+      "searches": 1,
+      "stop": "finish_sufficient",
+      "missing": [
+        "RACK_NAME"
+      ],
+      "initial_only": true,
+      "index_complete": true
+    },
+    {
+      "case": "C01",
+      "group": "Consulta e fontes alternativas",
+      "finding": "As buscas por coordenadores foram abertas, sem filtro de documento. Os dois campos anotados não vieram; atas no contexto ligam AFO a Fernando Trinta e RACK a Paulo Rego.",
+      "limit": "Buscas históricas com o mesmo texto e filtro do projeto recuperaram os campos. Há também suporte alternativo nas atas a auditar.",
+      "searches": 3,
+      "stop": "finish_sufficient",
+      "missing": [
+        "AFO_NAME",
+        "RACK_NAME"
+      ],
+      "initial_only": false,
+      "index_complete": true
+    },
+    {
+      "case": "C02",
+      "group": "Seleção comprovada",
+      "finding": "Todos os objetivos foram recuperados. O de RACK ficou fora do contexto principal, embora aparecesse em amostra adicional mostrada ao agente.",
+      "limit": "A combinação anotada requer 285 tokens. O agente não escolhe diretamente os blocos finais; não atribuir a perda somente à consulta ou somente ao reranker.",
+      "searches": 3,
+      "stop": "finish_incomplete",
+      "missing": [
+        "RACK_OBJECTIVE"
+      ],
+      "initial_only": false,
+      "index_complete": true
+    },
+    {
+      "case": "C07",
+      "group": "Encerramento contraditório",
+      "finding": "Após apenas a busca inicial, a justificativa afirma que falta a ata de 13/07/2022, mas a ação é finish_sufficient.",
+      "limit": "Erro de decisão observável independentemente da nota: a justificativa contradiz a ação. A ata e o trecho existem no índice.",
+      "searches": 1,
+      "stop": "finish_sufficient",
+      "missing": [
+        "JULY22_CHAIR"
+      ],
+      "initial_only": true,
+      "index_complete": true
+    },
+    {
+      "case": "C09",
+      "group": "Interpretação da pergunta",
+      "finding": "Encerrou após a busca inicial, tratando “Extraordinária” como modalidade. A comparação anotada é videoconferência versus reunião híbrida.",
+      "limit": "Não foram recuperadas as duas aberturas anotadas. Há pendência de alinhamento para JULY22_CHAIR; não tratá-la como ausência física comprovada.",
+      "searches": 1,
+      "stop": "finish_sufficient",
+      "missing": [
+        "JULY22_CHAIR",
+        "JUNE24_CHAIR"
+      ],
+      "initial_only": true,
+      "index_complete": true
+    },
+    {
+      "case": "H01",
+      "group": "Investigação interrompida",
+      "finding": "Reconheceu que faltava o nome do coordenador e encerrou incompleta sem fazer busca complementar.",
+      "limit": "Ainda havia três buscas disponíveis. O campo de AFO existe no índice e já foi recuperado por outras consultas salvas; isso não é uma execução contrafactual do agente.",
+      "searches": 1,
+      "stop": "finish_incomplete",
+      "missing": [
+        "AFO_NAME"
+      ],
+      "initial_only": true,
+      "index_complete": true
+    },
+    {
+      "case": "H02",
+      "group": "Ligação entre projeto e pessoa",
+      "finding": "Fez duas buscas abertas, cada vez mais longas, ainda misturando o elo Redfish com o nome do coordenador. Encerrou suficiente sem o campo anotado.",
+      "limit": "A justificativa cita uma amostra para a coordenação; amostras não fazem parte do contexto final. Auditar a ligação e o período das outras atas antes de concluir suficiência semântica.",
+      "searches": 3,
+      "stop": "finish_sufficient",
+      "missing": [
+        "RACK_NAME"
+      ],
+      "initial_only": false,
+      "index_complete": true
+    },
+    {
+      "case": "H03",
+      "group": "Encerramento contraditório",
+      "finding": "A justificativa diz explicitamente que falta o nome do coordenador de SAAR; mesmo assim a ação é finish_sufficient, sem busca adicional.",
+      "limit": "O nome está num bloco curto no índice. Outras consultas salvas o recuperam. A contradição entre justificativa e ação é comprovada.",
+      "searches": 1,
+      "stop": "finish_sufficient",
+      "missing": [
+        "SAAR_NAME"
+      ],
+      "initial_only": true,
+      "index_complete": true
+    },
+    {
+      "case": "H04",
+      "group": "Fontes alternativas",
+      "finding": "Encerrou na busca inicial. O contexto contém a declaração sobre o PET e outra ata que liga AFO a Fernando Trinta, mas não o campo AFO_NAME do plano.",
+      "limit": "Auditar a equivalência dessa ligação entre documentos; ausência da passagem anotada não prova ausência de toda evidência válida.",
+      "searches": 1,
+      "stop": "finish_sufficient",
+      "missing": [
+        "AFO_NAME"
+      ],
+      "initial_only": true,
+      "index_complete": true
+    },
+    {
+      "case": "H05",
+      "group": "Consulta mistura duas etapas",
+      "finding": "Uma decisão inválida foi corrigida, consumindo uma das quatro decisões. Depois buscou progressão e coordenação juntas, inclusive dentro do plano RACK.",
+      "limit": "O trecho da progressão foi encontrado; o elo coordenador↔RACK não foi comprovado pela âncora. Não separar a identificação da pessoa da busca de sua progressão pode prejudicar a recuperação.",
+      "searches": 3,
+      "stop": "finish_incomplete",
+      "missing": [
+        "RACK_NAME"
+      ],
+      "initial_only": false,
+      "index_complete": true
+    },
+    {
+      "case": "S01",
+      "group": "Cobertura de vários itens",
+      "finding": "Encerrou suficiente na busca inicial, faltando DevOps e o dashboard completos segundo as anotações.",
+      "limit": "O índice contém ambos; o dashboard está dividido entre dois blocos. O caso mistura recuperação de itens distribuídos e julgamento de suficiência do resumo.",
+      "searches": 1,
+      "stop": "finish_sufficient",
+      "missing": [
+        "SAAR_DEVOPS",
+        "SAAR_DASHBOARD"
+      ],
+      "initial_only": true,
+      "index_complete": true
+    },
+    {
+      "case": "S04",
+      "group": "Continuação de trecho não recuperada",
+      "finding": "Recuperou discussão e votos, mas não o parágrafo final anotado com a decisão. Encerrou suficiente na busca inicial.",
+      "limit": "O parágrafo de encerramento está em outro bloco de 155 tokens do mesmo documento. Discussão e votação podem sustentar parte da conclusão; equivalência semântica exige revisão.",
+      "searches": 1,
+      "stop": "finish_sufficient",
+      "missing": [
+        "JULY22_DECISION"
+      ],
+      "initial_only": true,
+      "index_complete": true
+    },
+    {
+      "case": "Q02",
+      "group": "Fontes alternativas e fragmentação",
+      "finding": "O agente buscou mais uma vez no SAAR e encerrou suficiente. A ata de novembro/2025 traz os períodos de AFO II e SAAR II, mas a métrica exige rótulos e datas dos planos.",
+      "limit": "Nos planos, início, rótulos e término ficaram em quatro blocos por projeto, de 8–11 tokens. A falha da âncora não prova erro nas datas alternativas.",
+      "searches": 2,
+      "stop": "finish_sufficient",
+      "missing": [
+        "AFO_DATES",
+        "SAAR_DATES"
+      ],
+      "initial_only": false,
+      "index_complete": true
+    },
+    {
+      "case": "Q10",
+      "group": "Consulta e fontes alternativas",
+      "finding": "Fez busca aberta e depois filtrada no RACK; o campo anotado não veio. O contexto possui atas que associam RACK a Paulo Rego.",
+      "limit": "A busca usou o nome longo do projeto, enquanto consultas históricas mais focadas no coordenador recuperaram o campo. Revisar também a evidência alternativa e sua edição/período.",
+      "searches": 3,
+      "stop": "finish_sufficient",
+      "missing": [
+        "RACK_NAME"
+      ],
+      "initial_only": false,
+      "index_complete": true
+    }
+  ],
+  "new_model_calls": 0,
+  "new_searches": 0,
+  "new_rerankings": 0
+}
