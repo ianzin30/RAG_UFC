@@ -38,6 +38,10 @@ def render_application() -> None:
         default_collection=default_collection, default_model=default_model
     )
 
+    if st.session_state.get("storage_error"):
+        st.error(st.session_state.storage_error)
+        return
+
     selected_collections = sanitize_collection_selection(st.session_state.get("collection"), available_collections)
     if normalize_collection_selection(st.session_state.get("collection")) != selected_collections:
         set_selected_collections(selected_collections)

@@ -29,34 +29,21 @@ MODEL_SELECTOR_CHAT_KEY = "chat_model_selector_active_chat_id"
 DEFAULT_RESPONSE_STATUS_MESSAGE = "Analisando sua pergunta..."
 
 COLLECTION_PROGRESS_LABELS = {
-    "collection_load_started": "Preparando coleção...",
-    "collection_fingerprint_ready": "Verificando cache do índice...",
-    "collection_cache_restore_started": "Restaurando índice do cache (rápido)...",
-    "collection_cache_restored": "Índice pronto!",
-    "collection_index_build_started": "Construindo índice do zero (pode demorar)...",
-    "collection_documents_loaded": "Documentos lidos. Gerando embeddings...",
-    "collection_cache_write_started": "Salvando índice em cache...",
+    "collection_load_started": "Preparando a base de arquivos...",
+    "collection_fingerprint_ready": "Conferindo se os arquivos mudaram desde o ultimo indice...",
+    "collection_cache_restore_started": "Cache encontrado. Restaurando o indice salvo...",
+    "collection_cache_restored": "Indice restaurado do cache.",
+    "collection_index_build_started": "Arquivos mudaram. Construindo um novo indice de busca...",
+    "collection_documents_loaded": "Markdown carregado. Organizando documentos para busca...",
+    "index_chunking_started": "Separando documentos em trechos pesquisaveis...",
+    "index_chunking_progress": "Separando documentos em trechos pesquisaveis...",
+    "index_embedding_started": "Gerando embeddings dos trechos...",
+    "index_embedding_progress": "Gerando embeddings dos trechos...",
+    "index_faiss_build_started": "Montando indice vetorial para consultas rapidas...",
+    "index_faiss_build_completed": "Indice vetorial montado.",
+    "collection_cache_write_started": "Salvando indice local para acelerar as proximas perguntas...",
     "collection_cache_written": "Pronto!",
 }
-
-COLLECTION_PROGRESS_LABELS.update(
-    {
-        "collection_load_started": "Preparando a base de arquivos...",
-        "collection_fingerprint_ready": "Conferindo se os arquivos mudaram desde o ultimo indice...",
-        "collection_cache_restore_started": "Cache encontrado. Restaurando o indice salvo...",
-        "collection_cache_restored": "Indice restaurado do cache.",
-        "collection_index_build_started": "Arquivos mudaram. Construindo um novo indice de busca...",
-        "collection_documents_loaded": "Markdown carregado. Organizando documentos para busca...",
-        "index_chunking_started": "Separando documentos em trechos pesquisaveis...",
-        "index_chunking_progress": "Separando documentos em trechos pesquisaveis...",
-        "index_embedding_started": "Gerando embeddings dos trechos...",
-        "index_embedding_progress": "Gerando embeddings dos trechos...",
-        "index_faiss_build_started": "Montando indice vetorial para consultas rapidas...",
-        "index_faiss_build_completed": "Indice vetorial montado.",
-        "collection_cache_write_started": "Salvando indice local para acelerar as proximas perguntas...",
-        "collection_cache_written": "Pronto!",
-    }
-)
 
 
 def _progress_int(value: object, default: int = 0) -> int:
@@ -104,6 +91,7 @@ def format_collection_progress_label(payload) -> str:
 def normalize_response_status_payload(payload=None, *, state: str = "loading") -> dict[str, str | None]:
     if isinstance(payload, dict):
         message = str(payload.get("message") or "").strip()
+        message = {"planning": "Preparando a busca...", "retrieval": "Buscando evidências...", "reasoning": "Analisando as evidências...", "answer": "Redigindo a resposta...", "verification": "Conferindo a resposta...", "source_focus": "Organizando as fontes..."}.get(message, message)
         stage = str(payload.get("stage") or "").strip()
         mode = str(payload.get("mode") or "").strip() or None
         agent = str(payload.get("agent") or "").strip() or None
@@ -142,37 +130,25 @@ def render_response_status_indicator(payload=None, *, state: str = "loading") ->
     )
 
 
+def _chat_config():
+    from service.RuntimeConfig import get_chat_config
+    return get_chat_config()
+
+
 def render_model_toolbar() -> str:
     model_options = list(get_llm_model_names())
-    model_labels = get_llm_model_labels()
-    current_model = coerce_llm_model_name(st.session_state.get("model_name"))
-    if st.session_state.get("model_name") != current_model:
-        chat_sessions.update_active_chat_model(current_model)
-
-    active_chat_id = str(st.session_state.get("active_chat_id") or "default")
-    if st.session_state.get(MODEL_SELECTOR_CHAT_KEY) != active_chat_id:
+    labels = get_llm_model_labels()
+    current_model = st.session_state.get('model_name') or model_options[0]
+    if current_model not in model_options:
+        model_options.append(current_model)
+        labels[current_model] = current_model + ' (perfil anterior; selecione um modelo disponível)'
+    active = str(st.session_state.get('active_chat_id') or 'default')
+    if st.session_state.pop('_model_backend_changed', False) or st.session_state.get(MODEL_SELECTOR_CHAT_KEY) != active or st.session_state.get(MODEL_SELECTOR_KEY) not in model_options:
         st.session_state[MODEL_SELECTOR_KEY] = current_model
-        st.session_state[MODEL_SELECTOR_CHAT_KEY] = active_chat_id
-    elif MODEL_SELECTOR_KEY not in st.session_state:
-        st.session_state[MODEL_SELECTOR_KEY] = current_model
-    else:
-        st.session_state[MODEL_SELECTOR_KEY] = coerce_llm_model_name(
-            st.session_state.get(MODEL_SELECTOR_KEY)
-        )
-
-    toolbar_col, _ = st.columns([0.24, 0.76], vertical_alignment="center")
-    with toolbar_col:
-        st.markdown('<div class="model-toolbar">', unsafe_allow_html=True)
-        selected_model = st.selectbox(
-            "Modelo",
-            options=model_options,
-            index=model_options.index(current_model),
-            format_func=lambda model: model_labels.get(model, model),
-            key=MODEL_SELECTOR_KEY,
-            label_visibility="collapsed",
-        )
-        st.markdown("</div>", unsafe_allow_html=True)
-    return coerce_llm_model_name(selected_model)
+        st.session_state[MODEL_SELECTOR_CHAT_KEY] = active
+    selected = st.selectbox('Modelo', model_options, format_func=lambda name: labels.get(name, name),
+        key=MODEL_SELECTOR_KEY, disabled=bool(st.session_state.get('turn_in_progress') or st.session_state.get('pending_turn_result')))
+    return selected
 
 
 def render_notice(message: str) -> None:
@@ -191,7 +167,7 @@ def _valid_focus_spans(source: dict, excerpt: str) -> list[dict]:
             start, end = int(span.get("start")), int(span.get("end"))
         except (TypeError, ValueError):
             continue
-        if 0 <= start < end <= len(excerpt):
+        if 0 <= start < end <= len(excerpt) and span.get("quote") == excerpt[start:end]:
             spans.append({**span, "start": start, "end": end})
     return sorted(spans, key=lambda item: (item["start"], item["end"]))
 
@@ -224,8 +200,9 @@ def _highlight(text: str, start: int, end: int) -> str:
     )
 
 
-def render_sources(sources) -> None:
-    valid_sources = [source for source in list(sources or []) if isinstance(source, dict)]
+def render_sources(sources, *, turn_key="legacy", citation_label="Fonte citada") -> None:
+    from service.rag.v2.Sources import normalize_presentation
+    valid_sources = normalize_presentation({"sources": sources})["sources"]
     if not valid_sources:
         return
 
@@ -233,7 +210,7 @@ def render_sources(sources) -> None:
     for index, source in enumerate(valid_sources, start=1):
         document_name = str(source.get("document_name", "documento")).strip() or "documento"
         chunk_kind = str(source.get("chunk_kind", "text")).strip() or "text"
-        excerpt = str(source.get("excerpt", "")).strip()
+        excerpt = str(source.get("excerpt", ""))
         section = str(source.get("section_title") or "").strip()
         if section:
             chunk_kind = f"{chunk_kind} · {section}"
@@ -243,26 +220,30 @@ def render_sources(sources) -> None:
         source_link = render_markdown_preview_link(
             label=document_name,
             document=source,
-            prefix=f"source-{index}-{id(source)}-{document_name}",
+            prefix=f"source-{turn_key}-{source.get('source_id', index)}",
             class_name="markdown-preview-link source-preview-link",
         )
         evidence_id = str(source.get("evidence_id") or index)
         spans = _valid_focus_spans(source, excerpt)
         if spans:
             focused = spans[0]
-            preview_html = _highlight(excerpt, focused["start"], focused["end"])
+            maximum = _chat_config().excerpt_chars
+            start = max(0, focused['start'] - maximum // 3)
+            end = min(len(excerpt), start + maximum)
+            preview = _highlight(excerpt[start:end], focused['start'] - start, focused['end'] - start) if focused['end'] <= end else escape(excerpt[start:end])
+            preview_html = ('… ' if start else '') + preview + (' …' if end < len(excerpt) else '')
             if len(spans) > 1:
                 preview_html += f' <span class="source-focus-more">+{len(spans) - 1}</span>'
         else:
-            preview_html = escape(excerpt)
+            preview_html = escape(excerpt[:_chat_config().excerpt_chars]) + (" …" if len(excerpt) > _chat_config().excerpt_chars else "")
         source_key = sha256(
-            f"{evidence_id}|{source.get('chunk_id')}|{source.get('relative_path')}|{id(source)}".encode()
+            f"{turn_key}|{source.get('source_id')}".encode()
         ).hexdigest()[:12]
         source_row = (
             '<div class="source-preview-row source-preview-header">'
             f'<span class="source-preview-index">{escape(evidence_id)}.</span>'
             f"{source_link}"
-            '<span class="source-preview-kind">Fonte citada</span>'
+            f'<span class="source-preview-kind">{escape(citation_label)}</span>'
             "</div>"
         )
         st.markdown(source_row, unsafe_allow_html=True)
@@ -292,7 +273,7 @@ def render_sources(sources) -> None:
                     )
             elif excerpt:
                 st.markdown(
-                    f'<div class="source-focus-context">{escape(excerpt[:900])}</div>',
+                    f'<div class="source-focus-context">{escape(excerpt[:_chat_config().excerpt_chars])}</div>',
                     unsafe_allow_html=True,
                 )
             if excerpt and st.checkbox("Ver excerto completo", key=f"source-full-{source_key}"):
@@ -362,171 +343,181 @@ def render_locked_chat_input_placeholder() -> None:
     )
 
 
-def show(selected_model: str) -> None:
-    """Display the main chat interface with messages and input."""
-    with st.container(key="main_chat_shell"):
-        # Create layout containers for messages and input
-        messages_shell = st.container(key="main_chat_messages_shell")
-        input_shell = st.container(key="main_chat_input_shell")
+def _render_message(message, key):
+    from service.rag.v2.Sources import normalize_presentation, displayed_sources
+    message = normalize_presentation(message)
+    with st.chat_message(message.get('role', 'assistant')):
+        st.write(message.get('content', ''))
+        legacy = message.get('role') == 'assistant' and not message.get('turn_id')
+        if legacy:
+            st.caption('Resposta legada — modelo e execução não registrados.')
+        for warning in message.get('source_warnings', []): st.warning(warning)
+        if message.get('role') == 'assistant' and message.get('route') == 'retrieval':
+            render_sources(displayed_sources(message), turn_key=message.get('turn_id') or key, citation_label='Fonte histórica' if legacy else 'Fonte citada')
+        if message.get('role') == 'assistant' and message.get('execution'):
+            with st.expander('Detalhes da execução'):
+                st.json({'turn_id': message.get('turn_id'), 'model': message.get('profile', {}).get('llm', {}).get('model'),
+                    'collection': message.get('collection'), **message['execution']})
 
-        # Update model if it changed in the toolbar
-        current_model = coerce_llm_model_name(st.session_state.get("model_name"))
-        if st.session_state.get("model_name") != current_model:
-            chat_sessions.update_active_chat_model(current_model)
-        if selected_model != current_model:
-            logger.info("User selected LLM model: %s", selected_model)
-            chat_sessions.update_active_chat_model(selected_model)
-            current_model = selected_model
-            if st.session_state.get("rag_service") is not None:
-                st.session_state.rag_service.set_model(current_model)
 
-        # Check if collections are selected
-        selected_collections = normalize_collection_selection(st.session_state.get("collection"))
-        if not selected_collections:
-            with messages_shell:
-                _show_locked_chat_state()
+def _ui_progress_callback(callback):
+    """Bind only the synchronous callback to the originating Streamlit session."""
+    import threading
+    from streamlit.runtime.scriptrunner import get_script_run_ctx, add_script_run_ctx
+    from streamlit.runtime.scriptrunner_utils.script_run_context import SCRIPT_RUN_CONTEXT_ATTR_NAME
+    context = get_script_run_ctx(suppress_warning=True)
+    def deliver(payload):
+        thread = threading.current_thread()
+        previous = get_script_run_ctx(suppress_warning=True)
+        if context is None:
             return
+        if previous is not context:
+            add_script_run_ctx(thread, context)
+        try:
+            callback(payload)
+        finally:
+            if previous is not context:
+                setattr(thread, SCRIPT_RUN_CONTEXT_ATTR_NAME, previous)
+    return deliver
 
-        # Display feedback from integrations (e.g., Google Drive connection)
-        feedback = st.session_state.pop("drive_feedback", None)
-        if feedback:
-            with messages_shell:
-                render_notice(feedback)
 
-        # Check if RAG service needs to be reloaded (collection or model changed)
-        current_collection = normalize_collection_selection(st.session_state.get("current_collection"))
-        collection_changed = current_collection != selected_collections
-        model_changed = (
-            "rag_service" in st.session_state
-            and st.session_state.rag_service is not None
-            and st.session_state.rag_service.model_name != current_model
-        )
-        # Reload RAG service if collections changed or service not initialized
-        if "rag_service" not in st.session_state or st.session_state.rag_service is None or collection_changed:
-            with messages_shell:
-                with st.status("Preparando assistente...", expanded=True) as status:
-                    def on_collection_progress(payload):
-                        label = format_collection_progress_label(payload)
-                        status.update(label=label, state="running")
+def show(selected_model: str) -> None:
+    from copy import deepcopy
+    from service.RuntimeConfig import application_profile
+    from presentation.chat_sessions import State, Storage
+    from . import Turns
 
-                    rag_service = RAGService(model_name=current_model)
-                    rag_service.set_collection_progress_callback(on_collection_progress)
-                    try:
-                        rag_service.load_collection(selected_collections)
-                        status.update(label="Pronto!", state="complete", expanded=False)
-                    except Exception:
-                        status.update(label="Erro ao carregar a coleção.", state="error")
-                        raise
-                    finally:
-                        rag_service.set_collection_progress_callback(None)
+    st.caption('RAG V2 — integração para testes')
+    if st.session_state.get('storage_error'):
+        st.error(st.session_state.storage_error)
+        return
+    active = chat_sessions.get_active_chat()
+    if active is None:
+        st.error('Conversa indisponível. Atualize o histórico.')
+        return
+    if selected_model != active.get('model_name'):
+        result = chat_sessions.update_active_chat_model(selected_model)
+        if result and not result.ok:
+            st.error(result.error)
+        active = chat_sessions.get_active_chat()
+    model = active.get('model_name')
+    selected_collections = normalize_collection_selection(active.get('collection'))
+    turns = {t.get('turn_id'): t for t in active.get('turns', [])}
+    for index, message in enumerate(st.session_state.get('messages', [])):
+        _render_message(message, f"{active['id']}-{index}")
+        turn = turns.get(message.get('turn_id'), {})
+        if message.get('role') == 'user' and turn.get('state') in {'failed', 'unknown'}:
+            st.warning(turn.get('error') or 'Esta pergunta não foi concluída. Nenhuma repetição automática foi feita.')
+            with st.expander('Detalhes da falha'):
+                st.json({'turn_id': turn.get('turn_id'), **dict(turn.get('execution') or {})})
 
-                    st.session_state.rag_service = rag_service
-                    st.session_state.current_collection = clone_collection_selection(selected_collections)
-        elif model_changed:
-            with messages_shell:
-                with st.status("Trocando modelo...", expanded=False) as status:
-                    st.session_state.rag_service.set_model(current_model)
-                    status.update(label="Modelo atualizado.", state="complete")
+    pending = st.session_state.get('pending_turn_result')
+    if pending:
+        context, result = pending
+        if result.message: _render_message(result.message, context.turn_id)
+        elif result.error: st.warning(result.error)
+        st.error('Resposta não salva. Mantenha esta aba aberta e tente salvar novamente.')
+        if st.button('Tentar salvar novamente', key='retry_save_turn'):
+            saved = Turns.finish(context, result)
+            if saved.ok:
+                st.session_state.pop('pending_turn_result', None)
+                State.adopt(saved.state)
+                st.rerun()
+            else: st.error(saved.error)
+        return
 
-        # Display chat history
-        with messages_shell:
-            if not st.session_state.messages:
-                render_empty_state()
+    busy = any(t.get('state') == 'running' for t in active.get('turns', []))
+    if busy:
+        st.info('Esta conversa tem uma pergunta em execução. Aguarde; atualizar não repete a chamada.')
+        if st.button('Atualizar histórico', key='refresh_chat'): st.rerun()
+        st.chat_input('Aguarde a conclusão da pergunta.', disabled=True)
+        return
+    if not selected_collections:
+        _show_locked_chat_state()
+        return
+    if model not in get_llm_model_names():
+        st.warning('Esta conversa usa um modelo anterior. Selecione um modelo disponível para continuar; as respostas antigas serão preservadas.')
+        return
+    try:
+        profile = application_profile()
+        profile['llm']['model'] = model
+        fingerprint = profile['fingerprint']
+        old = st.session_state.get('app_profile_fingerprint')
+        if old and old != fingerprint:
+            st.error('A configuração ou o código mudou. Reinicie o Streamlit antes de enviar outra pergunta.')
+            return
+        st.session_state.app_profile_fingerprint = fingerprint
+        st.caption(f"Modelo: {model} · Coleção: {', '.join(selected_collections)} · Contexto documental: {profile['retrieval']['context_tokens']} tokens")
+        identity = (fingerprint, model, tuple(selected_collections))
+        if st.session_state.get('rag_identity') != identity or st.session_state.get('rag_service') is None:
+            with st.status('Preparando assistente...', expanded=True) as status:
+                service = RAGService(model_name=model)
+                service.set_collection_progress_callback(lambda payload: status.update(label=format_collection_progress_label(payload)))
+                try:
+                    if hasattr(service, "check_model_ready"): service.check_model_ready()
+                    service.load_collection(selected_collections)
+                    if hasattr(service, 'check_ready'): service.check_ready()
+                finally:
+                    service.set_collection_progress_callback(None)
+                status.update(label='Modelo e recuperação disponíveis.', state='complete', expanded=False)
+            st.session_state.rag_service = service
+            st.session_state.index_identity = deepcopy(getattr(getattr(service, '_v2', None), 'load_diagnostics', {}))
+            st.session_state.rag_identity = identity
+            st.session_state.current_collection = clone_collection_selection(selected_collections)
+    except Exception as exc:
+        from llm_client import LLMError
+        from service.RuntimeConfig import RuntimeConfigurationError
+        from service.rag.v2.Providers import ProviderError
+        safe = str(exc) if isinstance(exc, (LLMError, ProviderError, RuntimeConfigurationError)) else 'Não foi possível preparar o modelo ou a coleção. Confira o índice, o serviço de embeddings e a configuração.'
+        st.error(safe)
+        st.session_state.rag_service = None
+        st.chat_input('Assistente indisponível.', disabled=True)
+        return
 
-            # Render each message with sources if it's a retrieval-based answer
-            for message in st.session_state.messages:
-                with st.chat_message(message["role"]):
-                    if message.get("role") == "assistant":
-                        st.empty()
-                    st.write(message["content"])
-                    if message.get("role") == "assistant" and message.get("route") == "retrieval":
-                        from service.rag.v2.Sources import displayed_sources
-                        render_sources(displayed_sources(message))
-
-        # Input area for user questions
-        with input_shell:
-            prompt = st.chat_input("Faca uma pergunta sobre os documentos carregados...")
-
-        # Process user input and get answer from RAG service
-        if prompt:
-            recent_history = st.session_state.messages[-6:]
-            with messages_shell:
-                st.chat_message("user").write(prompt)
-            st.session_state.messages.append({"role": "user", "content": prompt})
-            chat_sessions.maybe_title_active_chat(prompt)
-            chat_sessions.update_active_chat_messages(st.session_state.messages)
-
-            with messages_shell:
-                with st.chat_message("assistant"):
-                    rag_service = st.session_state.rag_service
-                    answer_text = None
-                    route = "retrieval"
-                    sources = []
-                    matched_documents = []
-                    needs_document_refinement = False
-                    resolved_question = prompt
-                    response_succeeded = False
-
-                    with st.status(DEFAULT_RESPONSE_STATUS_MESSAGE, expanded=True) as status:
-                        def update_response_status(status_payload) -> None:
-                            message = ""
-                            if isinstance(status_payload, dict):
-                                message = str(status_payload.get("message") or "").strip()
-                            else:
-                                message = str(status_payload or "").strip()
-                            status.update(
-                                label=message or DEFAULT_RESPONSE_STATUS_MESSAGE,
-                                state="running",
-                            )
-
-                        if hasattr(rag_service, "set_response_status_callback"):
-                            rag_service.set_response_status_callback(update_response_status)
-
-                        try:
-                            answer_trace = rag_service.ask_question_with_trace(prompt, recent_history)
-                            answer_text = str(answer_trace.get("answer_text", "")).strip()
-                            route = str(answer_trace.get("route", "")).strip() or "retrieval"
-                            resolved_question = str(answer_trace.get("resolved_question", prompt)).strip() or prompt
-                            matched_documents = [
-                                str(item).strip()
-                                for item in list(answer_trace.get("matched_documents") or [])
-                                if str(item).strip()
-                            ]
-                            needs_document_refinement = bool(answer_trace.get("needs_document_refinement"))
-                            from service.rag.v2.Sources import displayed_sources
-                            sources = displayed_sources(answer_trace)
-                            status.update(label="Resposta pronta.", state="complete", expanded=False)
-                            response_succeeded = True
-                        except Exception:
-                            logger.exception("Failed to generate chat response.")
-                            answer_text = "Nao consegui gerar a resposta agora. Tente novamente em instantes."
-                            status.update(label=answer_text, state="error")
-                        finally:
-                            if hasattr(rag_service, "set_response_status_callback"):
-                                rag_service.set_response_status_callback(None)
-
-                    if response_succeeded:
-                        st.write(answer_text)
-                        if route == "retrieval":
-                            render_sources(sources)
-
-                        assistant_message = {
-                            "role": "assistant",
-                            "content": answer_text,
-                            "route": route,
-                            "resolved_question": resolved_question,
-                        }
-                        if matched_documents:
-                            assistant_message["matched_documents"] = matched_documents
-                        if needs_document_refinement:
-                            assistant_message["needs_document_refinement"] = True
-                        if sources:
-                            assistant_message["sources"] = answer_trace.get("sources", sources)
-                        from service.rag.v2.Sources import preserve_v2_fields
-                        preserve_v2_fields(answer_trace, assistant_message)
-
-                        st.session_state.messages.append(assistant_message)
-                        chat_sessions.update_active_chat_messages(st.session_state.messages)
-                    elif answer_text:
-                        st.session_state.messages.append({"role": "assistant", "content": answer_text})
-                        chat_sessions.update_active_chat_messages(st.session_state.messages)
+    if not st.session_state.messages: render_empty_state()
+    # Reserve the new turn above the composer before accepting a submission.
+    turn_output = st.container()
+    prompt = st.chat_input('Faça uma pergunta sobre os documentos carregados...')
+    if prompt:
+        with turn_output:
+            profile['index'] = deepcopy(st.session_state.get('index_identity', {}))
+            context, saved = Turns.begin(active['id'], prompt, selected_collections, profile, expected_revision=active.get('revision', 0))
+            if context is None:
+                st.error(saved.error)
+                return
+            State.adopt(saved.state)
+            st.session_state.turn_in_progress = context.turn_id
+            service = st.session_state.rag_service
+            with st.chat_message('user'): st.write(prompt)
+            result = None
+            try:
+                progress = st.empty()
+                with progress.container(), st.status('Gerando resposta...', expanded=True) as status:
+                    if hasattr(service, 'set_response_status_callback'):
+                        service.set_response_status_callback(_ui_progress_callback(lambda payload: status.update(label=normalize_response_status_payload(payload)['message'])))
+                    result = Turns.run(service, context)
+                progress.empty()
+                # Persist before rendering sources: a bad widget cannot lose a completed answer.
+                saved = Turns.finish(context, result)
+                if saved.ok:
+                    State.adopt(saved.state)
+                    if result.message:
+                        if st.session_state.get('active_chat_id') == context.chat_id:
+                            _render_message(result.message, context.turn_id)
+                        else:
+                            st.info('Resposta salva na conversa de origem.')
+                        st.caption('Resposta salva.')
+                    else: st.warning(result.error)
+                else:
+                    st.session_state.pending_turn_result = (context, result)
+                    if result.message: _render_message(result.message, context.turn_id)
+                    st.error('Resposta não salva. Use “Tentar salvar novamente”; a geração não será repetida.')
+                    st.rerun()
+            finally:
+                progress.empty()
+                if hasattr(service, 'set_response_status_callback'): service.set_response_status_callback(None)
+                st.session_state.pop('turn_in_progress', None)
+                if result is None:
+                    interrupted = Turns.TurnResult('unknown', error='Execução interrompida; resultado desconhecido. Nenhuma chamada será repetida automaticamente.')
+                    persisted = Turns.finish(context, interrupted)
+                    if not persisted.ok: Storage._ACTIVE_TURNS.discard(context.turn_id)

@@ -37,6 +37,31 @@ class RAGService:
     def load_collection(self, collection_name):
         return self._v2.load_collection(collection_name)
 
+    def check_model_ready(self):
+        """Model discovery/tokenizer only: no completion request."""
+        checked = {}
+        for role in ('planner', 'research', 'reasoning', 'answer', 'verification', 'source_focus'):
+            provider = self._v2.providers.resolve(role)
+            key = (provider.identity().get('provider'), provider.identity().get('endpoint'), provider.selection.model)
+            if key in checked and key[0] == 'spark':
+                provider.physical_model = checked[key].physical_model
+                provider.tokenizer = checked[key].tokenizer
+                provider.served_models = list(checked[key].served_models)
+            elif hasattr(provider, 'resolve'):
+                provider.resolve()
+                checked[key] = provider
+
+    def check_ready(self):
+        """Resolve retrieval dependencies without sending a user query."""
+        self.check_model_ready()
+        if self._v2.retriever is None:
+            raise ValueError('Coleção sem índice carregado.')
+        encoder = self._v2.encoder
+        if hasattr(encoder, 'verify_model_unchanged'):
+            encoder.verify_model_unchanged()
+        self._v2.retriever.reranker.score('', [])
+        return self._v2.load_diagnostics
+
     def set_model(self, model_name, rebuild_crewai_agents=True):
         # The optional argument remains accepted for existing callers.
         self._v2.set_model(model_name)

@@ -1,7 +1,2 @@
-[theme]
-base = "dark"
-primaryColor = "#38bdf8"
-backgroundColor = "#07101d"
-secondaryBackgroundColor = "#0f172a"
-textColor = "#e5edf8"
-font = "sans serif"
+# Native settings are translated from config/config.toml by run_streamlit.py.
+# Start the application with: .venv/bin/python run_streamlit.py

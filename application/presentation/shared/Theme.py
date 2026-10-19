@@ -173,8 +173,11 @@ APP_THEMES = {
 
 # Este helper devolve o tema ativo ja validado contra a paleta conhecida.
 def get_active_theme_name() -> str:
-    st.session_state.app_theme = DEFAULT_APP_THEME
-    return DEFAULT_APP_THEME
+    from service.RuntimeConfig import _read_config_document
+    configured = _read_config_document().get("streamlit", {}).get("theme", {}).get("base", DEFAULT_APP_THEME)
+    theme = configured if configured in APP_THEMES else DEFAULT_APP_THEME
+    st.session_state.app_theme = theme
+    return theme
 
 
 # Mantido por compatibilidade enquanto o app fica travado no tema escuro.

@@ -22,6 +22,9 @@ def render_sidebar(
 ) -> None:
     """Render the main sidebar with navigation rail and content panels."""
     with st.sidebar:
+        if st.session_state.get("turn_in_progress") or st.session_state.get("pending_turn_result"):
+            st.info("Conclua a pergunta ou salve a resposta pendente antes de mudar a conversa ou os arquivos.")
+            return
         # Retrieve any pending feedback messages
         upload_feedback = st.session_state.pop("upload_feedback", None)
         chat_feedback = st.session_state.pop("chat_feedback", None)
