@@ -1,5 +1,13 @@
 # Estrutura e implantação
 
+## Experiment history
+
+Start with the [visual chronological report](experiment_history_2026-10-13.html) to review interventions, results, parameter changes and missing historical records. Its current-run figures are a dated snapshot, not a live dashboard. Use the [benchmark guide](../benchmark/README.md) for the available interface and interrupted studies.
+
+The [frozen Qwen3.6 generation base](qwen36_generation_base_2026-10-13.md) records the current parameters, input/output budgets and live transport/tokenization checks. Agent experiments will use a separate plan.
+
+The [Qwen3.6 decision-contract round completed on 2026-10-14](../benchmark/results/rounds/decision_contract_qwen36_spark_2026-10-14/run_01/report.md) separates documentary completeness from operational success on the original 70 questions. It reused the approved generation base unchanged.
+
 ## Componentes
 
 - `application/app.py`: entrada Streamlit.
