@@ -6,7 +6,7 @@ import time
 from .Providers import ProviderRegistry
 from .Cache import fingerprint, load_bundle, save_bundle
 from .Documents import build_document_chunks
-from .Retrieval import BGEEncoder, BGEReranker, HybridRetriever
+from .Retrieval import create_encoder, BGEReranker, HybridRetriever
 
 
 class RAGEngine:
@@ -52,22 +52,32 @@ class RAGEngine:
                     }
                 )
         if self.encoder is None:
-            self.encoder = BGEEncoder(self.config)
-        key = fingerprint(
-            files,
-            {
+            self.encoder = create_encoder(self.config)
+        chunk_settings = {
                 "child_tokens": self.config.child_tokens,
                 "parent_tokens": self.config.parent_tokens,
                 "encoder": self.encoder.identity,
-                "chunker": "structural_offsets_v3_heading_context",
+                "chunker": (
+                    "structural_offsets_v3_heading_context"
+                    if self.config.chunking_strategy == "legacy"
+                    else self.config.chunking_strategy
+                ),
                 "tokenizer": self.encoder.tokenizer.name_or_path,
-            },
-        )
+            }
+        if self.config.chunking_strategy != "legacy":
+            chunk_settings["chunker_sha256"] = hashlib.sha256(
+                Path(__file__).with_name("Documents.py").read_bytes()
+                + Path(__file__).with_name("MarkdownBlocks.py").read_bytes()
+            ).hexdigest()
+        facade._emit_collection_progress("collection_fingerprint_ready", file_count=len(files))
+        key = fingerprint(files, chunk_settings)
         path = facade.project_root / "data/cache/rag_v2" / (key + ".npz")
         bundle = load_bundle(path)
         cache_hit = bundle is not None
         if bundle is None:
+            facade._emit_collection_progress("collection_index_build_started", file_count=len(files))
             documents = facade._load_collection_documents(names)
+            facade._emit_collection_progress("collection_documents_loaded", document_count=len(documents))
             chunks, parents, catalog = build_document_chunks(
                 documents,
                 facade.collections_root,
@@ -77,7 +87,9 @@ class RAGEngine:
             )
             if not chunks:
                 raise ValueError("No indexable text")
+            facade._emit_collection_progress("index_embedding_started", total=len(chunks))
             vectors, sparse = self.encoder.encode([chunk.text for chunk in chunks])
+            facade._emit_collection_progress("collection_cache_write_started")
             save_bundle(path, chunks, parents, catalog, vectors, sparse)
         else:
             chunks, parents, catalog, vectors, sparse = bundle
@@ -136,12 +148,20 @@ class RAGEngine:
         try:
             state = flow.kickoff()
         except Exception as exc:
+            # Keep the partially completed question inspectable even when an
+            # agent or deterministic operation fails. Public response behavior
+            # is unchanged; these fields belong to diagnostics.
+            flow.diagnostics["query_plan"] = (
+                flow.state.plan.model_dump() if flow.state.plan else None
+            )
+            flow.diagnostics["state"] = flow.state.model_dump()
             self.last_trace = {
                 "trace_version": 2,
                 "status": "error",
                 "error": str(exc),
                 "diagnostics": flow.diagnostics,
                 "provider_calls": list(self.providers.calls),
+                "evidence": [item.model_dump() for item in flow.state.evidence],
             }
             raise
         finally:

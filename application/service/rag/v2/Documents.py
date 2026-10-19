@@ -41,6 +41,16 @@ def build_document_chunks(documents, root, tokenizer, config, spreadsheet_builde
             {"document_id": doc_id, "document_name": name, "relative_path": relative}
         )
         document.metadata.update(document_name=name)
+        if (config.chunking_strategy == "markdown_blocks_v1"
+                and "document type: spreadsheet" not in text.lower()):
+            from .MarkdownBlocks import markdown_chunks
+            new_chunks, new_parents = markdown_chunks(
+                text, structured, tokenizer, config, doc_id, name, version,
+                source, relative,
+            )
+            chunks.extend(new_chunks)
+            parents.update(new_parents)
+            continue
         if "document type: spreadsheet" in text.lower():
             items = spreadsheet_builder(document, "")
             sections = [

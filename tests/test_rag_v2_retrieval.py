@@ -83,3 +83,58 @@ def test_reranker_order_is_preserved_in_diagnostics():
     assert [item["position"] for item in ranked] == [1, 0]
     assert [item["reranker_score"] for item in trace["stages"]["reranker"]] == [10, 0]
     assert trace["stages"]["rrf"][0]["position"] == 0
+
+
+@pytest.mark.parametrize("overlap", [0, 10])
+@pytest.mark.parametrize("rerank_k", [30, 60])
+def test_full_union_allows_evidence_beyond_initial_cutoff(monkeypatch, overlap, rerank_k):
+    from application.service.rag.v2.Config import V2Config
+    from application.service.rag.v2.Retrieval import HybridRetriever
+
+    docs = chunks(60)
+    for chunk in docs:
+        chunk.text = "evidence " + chunk.chunk_id
+    dense = [(i, 1.0) for i in range(30)]
+    sparse = [(i, 1.0) for i in range(30 - overlap, 60 - overlap)]
+    fused = reciprocal_rank_fusion(dense, sparse, docs)
+    target = docs[fused[-1]["position"]].text
+
+    class Encoder:
+        def encode(self, texts):
+            return [[1, 0]], [{"x": 1}]
+
+    class Reranker:
+        received = None
+
+        def score(self, query, texts):
+            self.received = texts
+            return [10 if text == target else 0 for text in texts]
+
+    reranker = Reranker()
+    engine = HybridRetriever(
+        docs, [[1, 0]] * 60, [{}] * 60, Encoder(), reranker,
+        V2Config(embedding_provider="ollama", search_k=30, rerank_k=rerank_k),
+    )
+    search_calls = []
+
+    def ranking(channel, result):
+        def search(query, scope, k):
+            search_calls.append((channel, scope, k))
+            return result
+        return search
+
+    monkeypatch.setattr(engine.dense, "search", ranking("dense", dense))
+    monkeypatch.setattr(engine.sparse, "search", ranking("sparse", sparse))
+    ranked, trace = engine.search("question", ["allowed"], 1)
+
+    assert search_calls == [("dense", ["allowed"], 30), ("sparse", ["allowed"], 30)]
+    assert reranker.received == [docs[item["position"]].text for item in fused[:rerank_k]]
+    assert len(set(reranker.received)) == len(reranker.received)
+    assert trace["candidate_counts"] == {
+        "dense": 30, "sparse": 30, "union": 60 - overlap,
+        "reranked": min(rerank_k, 60 - overlap),
+    }
+    if rerank_k == 60:
+        assert docs[ranked[0]["position"]].text == target
+    else:
+        assert target not in reranker.received

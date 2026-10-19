@@ -64,7 +64,7 @@ def test_history_roundtrip_preserves_source_focus(monkeypatch):
         "excerpt": "Fernando Trinta é Tutor do PET.",
         "focus_status": "focused",
         "focus_spans": [
-            {"claim_ids": ["C1"], "quote": "Tutor do PET", "start": 20, "end": 32}
+            {"claim_ids": ["C1"], "quote": "Tutor do PET", "start": 18, "end": 30}
         ],
     }
     normalized = coerce_messages(

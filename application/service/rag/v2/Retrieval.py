@@ -64,6 +64,15 @@ class SparseIndex:
         )[:k]
 
 
+def create_encoder(config):
+    bge = BGEEncoder(config)
+    if config.embedding_provider == "ollama":
+        from .OllamaEmbeddings import OllamaHybridEncoder
+
+        return OllamaHybridEncoder(config, bge)
+    return bge
+
+
 def reciprocal_rank_fusion(dense, sparse, chunks, k=60):
     results = {}
     for channel, ranking in (("dense_rank", dense), ("sparse_rank", sparse)):
@@ -140,7 +149,8 @@ class HybridRetriever:
     def search(self, query, scope, hop):
         stages, latencies = {}, {}
         started = time.perf_counter()
-        vectors, weights = self.encoder.encode([query])
+        encode_query = getattr(self.encoder, "encode_query", self.encoder.encode)
+        vectors, weights = encode_query([query])
         latencies["query_encoding"] = time.perf_counter() - started
         started = time.perf_counter()
         dense = self.dense.search(vectors[0], scope, self.config.search_k)
@@ -176,4 +186,8 @@ class HybridRetriever:
             "stages": stages,
             "latencies": latencies,
             "dense_filter": self.dense.last_search,
+            "candidate_counts": {
+                "dense": len(dense), "sparse": len(sparse),
+                "union": len(fused), "reranked": len(candidates),
+            },
         }
