@@ -5,8 +5,8 @@
 [llm]
 provider = "spark"
 model = "nvidia/Qwen3.6-35B-A3B-NVFP4"
-# Bounded structured outputs by agent role; avoids local-model truncation.
-role_max_output_tokens = { planner = 512, research = 384, reasoning = 768, answer = 768, verification = 512, source_focus = 384 }
+# Output limits by role; answer reserves room for structured text and sources.
+role_max_output_tokens = { planner = 512, research = 384, reasoning = 768, answer = 2048, verification = 512, source_focus = 384 }
 temperature = 0.0
 num_ctx = 16384
 timeout_seconds = 420
