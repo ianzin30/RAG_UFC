@@ -1,1 +1,1 @@
-"""Composable, provider-independent RAG V2 components."""
+../../../../packages/rag-ufc-core/src/rag_ufc_core/rag/v2/__init__.py

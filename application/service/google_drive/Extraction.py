@@ -3,13 +3,17 @@
 
 from __future__ import annotations
 
-import re
-import tempfile
 from io import BytesIO
-from pathlib import Path
 
 from googleapiclient.http import MediaIoBaseDownload
-from pypdf import PdfReader
+
+# Extraction itself is core-owned so every ingestion source writes the same corpus.
+from rag_ufc_core.DocumentExtraction import (  # noqa: F401 - re-exported for GoogleDriveService
+    extract_file_text_with_docling,
+    extract_pdf_text_with_pypdf,
+    get_docling_converter,
+    safe_filename,
+)
 
 from ..SpreadsheetMarkdown import extract_spreadsheet_markdown
 from .Constants import EXTRACTION_METHOD_DOCLING, SPREADSHEET_SUFFIXES
@@ -39,44 +43,6 @@ def export_google_workspace_file_bytes(service, file_id: str, export_mime_type: 
     return download_request_bytes(request)
 
 
-# Este caminho usa a camada textual do PDF quando o extrator escolhido e pypdf.
-def extract_pdf_text_with_pypdf(pdf_bytes: bytes) -> str:
-    buffer = BytesIO(pdf_bytes)
-    reader = PdfReader(buffer)
-    pages = [page.extract_text() or "" for page in reader.pages]
-    from ..StructuredExtraction import ExtractedText
-    return ExtractedText("\n\n".join(page.strip() for page in pages if page.strip()), [{"title": "", "text": text, "provenance": [{"page_no": index}]} for index, text in enumerate(pages, 1) if text.strip()])
-
-
-# Este cache evita recriar o conversor do Docling a cada arquivo.
-def get_docling_converter(owner):
-    if owner._docling_converter is None:
-        try:
-            from docling.document_converter import DocumentConverter
-        except ImportError as exc:
-            raise RuntimeError(
-                "Docling não está instalado. Adicione 'docling' às dependências do projeto."
-            ) from exc
-        owner._docling_converter = DocumentConverter()
-    return owner._docling_converter
-
-
-# Esta etapa envia um arquivo temporario para o Docling e devolve markdown limpo.
-def extract_file_text_with_docling(owner, file_bytes: bytes, suffix: str) -> str:
-    converter = get_docling_converter(owner)
-    with tempfile.NamedTemporaryFile(suffix=suffix or ".bin", delete=False) as temp_file:
-        temp_file.write(file_bytes)
-        temp_file.flush()
-        temp_path = Path(temp_file.name)
-
-    try:
-        result = converter.convert(str(temp_path))
-        from ..StructuredExtraction import docling_text
-        return docling_text(result.document)
-    finally:
-        temp_path.unlink(missing_ok=True)
-
-
 # Este fluxo do Google Drive usa Docling em todos os arquivos suportados.
 def extract_drive_file_text(owner, service, drive_file: dict, extraction_method: str) -> str:
     _ = extraction_method
@@ -102,9 +68,3 @@ def extract_drive_file_text(owner, service, drive_file: dict, extraction_method:
             pass
 
     return extract_file_text_with_docling(owner, file_bytes, plan.suffix)
-
-
-# Este helper sanitiza o nome do arquivo para virar nome de markdown local.
-def safe_filename(name: str) -> str:
-    cleaned = re.sub(r"[^A-Za-z0-9._-]+", "_", name).strip("._")
-    return cleaned or "document"

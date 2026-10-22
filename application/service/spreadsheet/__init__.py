@@ -1,2 +1,1 @@
-"""Readable helpers for spreadsheet-to-markdown extraction."""
-# Simple: Tools for working with spreadsheet files
+../../../packages/rag-ufc-core/src/rag_ufc_core/spreadsheet/__init__.py

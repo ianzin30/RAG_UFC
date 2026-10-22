@@ -1,0 +1,130 @@
+{
+  "schema": "rag_ufc.research_candidates.v1",
+  "description": "Research strategies, where they live, the scope at which they were validated and what promotion into an approved core release would require. Status 'approved' needs a core release (released_in); everything else stays out of applications.",
+  "candidates": [
+    {
+      "id": "baseline.rag_v2_agentic_flow",
+      "title": "Production RAG V2 pipeline (RAGFlow: planning, hybrid retrieval, reranking, coverage, grounded answer, verification, source focus)",
+      "status": "baseline",
+      "component": "pipeline",
+      "validation_scope": "application",
+      "implementation": {
+        "location": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2 (modules reachable from Engine)",
+        "in_core": true,
+        "wired_into_application_pipeline": true
+      },
+      "requires": {
+        "index_rebuild": false,
+        "representation_id": "chunk_text_v1"
+      },
+      "summary": "Pipeline running in the Streamlit/Spark chat at a998f73 and the official reference for research comparisons. This entry records what runs; it makes no new answer-quality claim.",
+      "evidence": [
+        {
+          "path": "docs/estado_intermediario_2026-10-19.md",
+          "sha256": "b01bfe94ff83d4d92263fd6bcc183da72dbf1f3513c19c8df39e62884d763fe1"
+        },
+        {
+          "path": "docs/chat_spark.md",
+          "sha256": "3f6e85cd264fe8f781415dbb8766b696fbd7be0ae15fca4607b5b3da5328e0af"
+        }
+      ],
+      "released_in": "1.0.0"
+    },
+    {
+      "id": "core.adaptive_retrieval_controller",
+      "title": "Adaptive investigation planner/controller (AdaptiveRetrieval)",
+      "status": "experimental",
+      "component": "query_planning_and_retrieval_control",
+      "validation_scope": "component",
+      "implementation": {
+        "location": "rag_ufc_core.rag.v2.AdaptiveRetrieval",
+        "in_core": true,
+        "wired_into_application_pipeline": false
+      },
+      "requires": {
+        "index_rebuild": false
+      },
+      "summary": "Evaluated by benchmark/search rounds (single-shot vs adaptive, agent interface, D3000/D6000 budgets). The intermediate branch explicitly did not promote the experimental controller.",
+      "evidence": [
+        {
+          "path": "docs/investigacao_arquitetura_agente_2026-10-15.md",
+          "sha256": "c13b88ec3c748eafaf2e9db0ee61a60a7d9028d798f56d1f41c0a27c4efe4c21"
+        },
+        {
+          "path": "docs/estado_intermediario_2026-10-19.md",
+          "sha256": "b01bfe94ff83d4d92263fd6bcc183da72dbf1f3513c19c8df39e62884d763fe1"
+        }
+      ],
+      "promotion_requires": "Wire into RAGFlow retrieval hops behind a pipeline setting; pipeline-level answer evaluation against the baseline; new core release."
+    },
+    {
+      "id": "core.directed_retrieval",
+      "title": "Directed multi-hop / cross-document searches (DirectedRetrieval)",
+      "status": "experimental",
+      "component": "retrieval",
+      "validation_scope": "component",
+      "implementation": {
+        "location": "rag_ufc_core.rag.v2.DirectedRetrieval",
+        "in_core": true,
+        "wired_into_application_pipeline": false
+      },
+      "requires": {
+        "index_rebuild": false
+      },
+      "summary": "Directed retrieval rounds (2026-10-06) measured retrieval only, not answers.",
+      "evidence": [
+        {
+          "path": "docs/rodada_buscas_direcionadas.md",
+          "sha256": "0e4584de4c605876a8b166b8b7e0aaa24b25b2638860d5b6edf3bc80f8d1cd6d"
+        }
+      ],
+      "promotion_requires": "Wire into RAGFlow; pipeline-level evaluation; new core release."
+    },
+    {
+      "id": "core.evidence_selection",
+      "title": "Deterministic parent ordering, packing and LLM coverage selection (EvidenceSelection)",
+      "status": "experimental",
+      "component": "evidence_selection",
+      "validation_scope": "component",
+      "implementation": {
+        "location": "rag_ufc_core.rag.v2.EvidenceSelection",
+        "in_core": true,
+        "wired_into_application_pipeline": false
+      },
+      "requires": {
+        "index_rebuild": false
+      },
+      "summary": "Selection rounds (2026-10-07) and offline replays use it; the application selects evidence through Coverage in RAGFlow instead.",
+      "evidence": [
+        {
+          "path": "docs/rodada_selecao_evidencias.md",
+          "sha256": "97117d82fbbf7235e2984f359c1ef12874781564e814be11ed526a582a3273ef"
+        }
+      ],
+      "promotion_requires": "Replace or extend Coverage batching in RAGFlow; answer-level evaluation, not only selection metrics; new core release."
+    },
+    {
+      "id": "core.semantic_retrieval",
+      "title": "Semantic planning for institutional generalization (SemanticRetrieval)",
+      "status": "experimental",
+      "component": "query_planning",
+      "validation_scope": "component",
+      "implementation": {
+        "location": "rag_ufc_core.rag.v2.SemanticRetrieval",
+        "in_core": true,
+        "wired_into_application_pipeline": false
+      },
+      "requires": {
+        "index_rebuild": false
+      },
+      "summary": "Semantic planning/generalization round of 2026-10-07.",
+      "evidence": [
+        {
+          "path": "docs/rodada_planejamento_semantico.md",
+          "sha256": "c5abd670b5297275562b5e5f1c687c9687928f188ae3df256257d04e52215566"
+        }
+      ],
+      "promotion_requires": "Wire into RAGFlow; pipeline-level evaluation on reserved questions; new core release."
+    }
+  ]
+}
