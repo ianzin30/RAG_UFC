@@ -2,35 +2,12 @@ from __future__ import annotations
 
 from copy import deepcopy
 
-from presentation.shared.Config import UPLOAD_COLLECTION_NAME
-
-
-ROOT_COLLECTION_KEY = "__root__"
-
-
-def _collection_sort_key(collection_name: str) -> tuple[bool, str]:
-    return (collection_name != ROOT_COLLECTION_KEY, collection_name.lower())
-
-
-def normalize_collection_selection(collections) -> list[str]:
-    if collections is None:
-        return []
-
-    if isinstance(collections, str):
-        items = [collections]
-    else:
-        items = list(collections)
-
-    normalized: list[str] = []
-    seen: set[str] = set()
-    for item in items:
-        name = str(item or "").strip()
-        if not name or name in seen:
-            continue
-        seen.add(name)
-        normalized.append(name)
-
-    return sorted(normalized, key=_collection_sort_key)
+# Normalization and labels are engine-owned; the toggles below are UI helpers.
+from rag_ufc_core.rag.v2.Collections import (  # noqa: F401
+    ROOT_COLLECTION_KEY,
+    format_collection_selection_label,
+    normalize_collection_selection,
+)
 
 
 def clone_collection_selection(collections):
@@ -68,14 +45,3 @@ def sanitize_collection_selection(collections, available_collections) -> list[st
 
 def is_collection_selected(collections, collection_name: str) -> bool:
     return str(collection_name or "").strip() in normalize_collection_selection(collections)
-
-
-def format_collection_selection_label(collections) -> str:
-    selected = normalize_collection_selection(collections)
-    if not selected:
-        return "colecao nao identificada"
-    if len(selected) == 1:
-        if selected[0] == UPLOAD_COLLECTION_NAME:
-            return "Uploaded files"
-        return selected[0]
-    return ", ".join(selected)

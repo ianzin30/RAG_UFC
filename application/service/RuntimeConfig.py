@@ -55,6 +55,12 @@ def _read_config_document():
         return tomllib.load(file)
 
 
+def checkout_settings_document():
+    """config/config.toml with [llm] resolved for this process: the core's default document."""
+    raw = _read_config_document()
+    return {**raw, "llm": resolve_application_llm(raw["llm"])}
+
+
 @lru_cache(maxsize=1)
 def get_runtime_config():
     from .rag.v2.Config import LLMConfig
@@ -128,7 +134,9 @@ def get_chat_config():
 def application_profile():
     from .rag.v2.Config import load_settings
     llm, retrieval = load_settings()
+    # application/ holds symlinks to moved core modules; the package tree covers the rest.
     files = sorted((PROJECT_ROOT / 'application').rglob('*.py')) + [PROJECT_ROOT / 'llm_client.py']
+    files += sorted((PROJECT_ROOT / 'packages/rag-ufc-core/src').rglob('*.py'))
     implementation = hashlib.sha256(b''.join(str(p.relative_to(PROJECT_ROOT)).encode() + p.read_bytes() for p in files)).hexdigest()
     public = {'llm': llm.model_dump(), 'retrieval': retrieval.model_dump(), 'implementation_fingerprint': implementation}
     public['fingerprint'] = hashlib.sha256(json.dumps(public, sort_keys=True).encode()).hexdigest()

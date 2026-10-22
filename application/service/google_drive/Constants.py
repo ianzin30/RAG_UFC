@@ -1,20 +1,19 @@
 """Constants shared by the Google Drive ingestion helpers."""
 # Simple: Store Google Drive file types and permission settings
 
-SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
-
-EXTRACTION_METHOD_PYPDF = "pypdf"
-EXTRACTION_METHOD_DOCLING = "docling"
-SUPPORTED_EXTRACTION_METHODS = {
-    EXTRACTION_METHOD_PYPDF,
+from rag_ufc_core.DocumentExtraction import (  # noqa: F401 - one definition for all sources
     EXTRACTION_METHOD_DOCLING,
-}
+    EXTRACTION_METHOD_PYPDF,
+    SPREADSHEET_SUFFIXES,
+    SUPPORTED_EXTRACTION_METHODS,
+)
+
+SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
 
 DOCX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 PPTX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
 XLSX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 PDF_MIME_TYPE = "application/pdf"
-SPREADSHEET_SUFFIXES = {".xlsx", ".csv"}
 
 DOCLING_BINARY_MIME_TYPES = {
     PDF_MIME_TYPE: ".pdf",
