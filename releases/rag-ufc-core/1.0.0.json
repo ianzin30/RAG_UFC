@@ -1,0 +1,15 @@
+{
+  "schema": "rag_ufc_core.release_record.v1",
+  "core_version": "1.0.0",
+  "git_tag": "rag-ufc-core-v1.0.0",
+  "core_commit": "c13b27e7405079f35fce129f602166f7c13e2097",
+  "core_source_fingerprint": "484b33c96835e0d267669e47c33a94192617cf8484eb131be8e47ce1f7aa312c",
+  "release_manifest_sha256": "abe145639d9accb410e986ece5617859a65eb3dfc41b43fbc3e2f2fa97187da6",
+  "wheel": {
+    "file": "rag_ufc_core-1.0.0-py3-none-any.whl",
+    "sha256": "b59735b692023fde7fe90b2472091c4bd33e8228716acc3f6491b38e78269323"
+  },
+  "install": "rag-ufc-core @ git+https://github.com/ianzin30/RAG_UFC.git@c13b27e7405079f35fce129f602166f7c13e2097#subdirectory=packages/rag-ufc-core",
+  "approval_status": "baseline_continuity",
+  "maintainer_signoff": null
+}
