@@ -1,0 +1,341 @@
+{
+  "base": "a998f73",
+  "files": [
+    {
+      "legacy_path": "application/service/SpreadsheetMarkdown.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/SpreadsheetMarkdown.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "57964aa603c401d88d72e6fa62c332fd521b3c7e96d8d96a5ac6a8e6f5ffa8e0",
+      "current_sha256": "57964aa603c401d88d72e6fa62c332fd521b3c7e96d8d96a5ac6a8e6f5ffa8e0",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/StructuredExtraction.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/StructuredExtraction.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "00b4f62343368132e47976def16fa92beddcf9f0fb4a8027745aa34fd1e96b02",
+      "current_sha256": "00b4f62343368132e47976def16fa92beddcf9f0fb4a8027745aa34fd1e96b02",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/UfcOllama.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/UfcOllama.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "8ab07e3f04f62a690c6a6ddf52509befa8b6ab676b6325ff4598763e85734138",
+      "current_sha256": "8ab07e3f04f62a690c6a6ddf52509befa8b6ab676b6325ff4598763e85734138",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/CrewAiTelemetry.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/CrewAiTelemetry.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "697cfff7b975d1284a1156bc799ebb86b7a14f258234fbcbef4ae9a6856dabd5",
+      "current_sha256": "697cfff7b975d1284a1156bc799ebb86b7a14f258234fbcbef4ae9a6856dabd5",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/AdaptiveRetrieval.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/AdaptiveRetrieval.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "b73971d141b00452a29470968906293797d57484fe061fe3f5c76d10b344be4c",
+      "current_sha256": "b73971d141b00452a29470968906293797d57484fe061fe3f5c76d10b344be4c",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Agents.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Agents.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "6f32fe07cc211add1379a140c21062e83689566d410223006340c6cec69e2f87",
+      "current_sha256": "6f32fe07cc211add1379a140c21062e83689566d410223006340c6cec69e2f87",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Cache.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Cache.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "ad10d6c8ae30007d4a0d1094831f7885a68cde3fb7083e85bbd9a30d8f681ba7",
+      "current_sha256": "ad10d6c8ae30007d4a0d1094831f7885a68cde3fb7083e85bbd9a30d8f681ba7",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Collections.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Collections.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "32e4606de2a675dd022ea84ed7dca7cb75a4026939ea4168611b46f33c728dc9",
+      "current_sha256": "be0df2020aa63e71982c469ee53645943821ce8187d5f2b26a18432265824357",
+      "identical": false
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Config.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Config.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "5ddcae67c2ac8b12aa13b6976ed9a3870d94152391cc37162bf0ac065169cd2e",
+      "current_sha256": "edf052b8c4437c293b2db840e33527fa14256558a50f41931e0ff10f0d8a8b25",
+      "identical": false
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Coverage.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Coverage.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "8d724c4a3a722945da3cdacce2bb81dc50338bef00d720f655b9d6dc11a4cf05",
+      "current_sha256": "8d724c4a3a722945da3cdacce2bb81dc50338bef00d720f655b9d6dc11a4cf05",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Decision.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Decision.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "2431a1e4be716a0e36357c19f7cc9c4b29c051730bb88f5a03ef5bef975ce438",
+      "current_sha256": "2431a1e4be716a0e36357c19f7cc9c4b29c051730bb88f5a03ef5bef975ce438",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Dense.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Dense.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "51e102e7a8df258cf95e29e32853698efde6cde594edc6948a18e62ed3301a67",
+      "current_sha256": "51e102e7a8df258cf95e29e32853698efde6cde594edc6948a18e62ed3301a67",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/DirectedRetrieval.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/DirectedRetrieval.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "a0cb00ded4a9a5376b95ddcfba608582e0e3f7d870171fe18faaced96f6f73bd",
+      "current_sha256": "a0cb00ded4a9a5376b95ddcfba608582e0e3f7d870171fe18faaced96f6f73bd",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Documents.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Documents.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "efe1977453f20009e539099730ba2190c79e9922cb8bc6e094104e4344d1d72a",
+      "current_sha256": "efe1977453f20009e539099730ba2190c79e9922cb8bc6e094104e4344d1d72a",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Engine.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Engine.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "053463e2e2432a43202b517d6f3162796869d76a008d85654352856905772ba0",
+      "current_sha256": "af91433ef06f053fc86a21e03e64d3bb9da7b285290d6680f533def11beffb61",
+      "identical": false
+    },
+    {
+      "legacy_path": "application/service/rag/v2/EvidenceSelection.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/EvidenceSelection.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "2c9cb51cd0e7d5d49350845d9ebffdcbca05a24c593f5d99c2c4e95e360aa16a",
+      "current_sha256": "2c9cb51cd0e7d5d49350845d9ebffdcbca05a24c593f5d99c2c4e95e360aa16a",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Flow.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Flow.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "1d3886a673d017cf393484503bd4c08cf38bc12408b857683bb27e0d0b922768",
+      "current_sha256": "1d3886a673d017cf393484503bd4c08cf38bc12408b857683bb27e0d0b922768",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Focus.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Focus.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "60e66584d15df78005431d6c8c89ba985dfea2c0dbb5b8da6b7644278e12dc1d",
+      "current_sha256": "60e66584d15df78005431d6c8c89ba985dfea2c0dbb5b8da6b7644278e12dc1d",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Grounding.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Grounding.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "8019df41c2cb190771bd3338645fe7f6d4f2a4388fcd73ea9ab33ed6f5f89729",
+      "current_sha256": "8019df41c2cb190771bd3338645fe7f6d4f2a4388fcd73ea9ab33ed6f5f89729",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/MarkdownBlocks.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/MarkdownBlocks.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "c023ec82800ba9afd2944d92f70b43c092cb8b3a8db22feea905be63a98a0e7f",
+      "current_sha256": "c023ec82800ba9afd2944d92f70b43c092cb8b3a8db22feea905be63a98a0e7f",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Models.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Models.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "8f475c71e30872a6db691f71b89a2e55ebf988a06a3330024cdda25e87626bbf",
+      "current_sha256": "8f475c71e30872a6db691f71b89a2e55ebf988a06a3330024cdda25e87626bbf",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/OllamaEmbeddings.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/OllamaEmbeddings.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "b43894e8def74311aed48523fa5325f9158fd9a7b74e5b9ade28ff42dda8069c",
+      "current_sha256": "b43894e8def74311aed48523fa5325f9158fd9a7b74e5b9ade28ff42dda8069c",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Planning.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Planning.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "b55412b63ce8a9135ae69e19f30d3bd731f962f8e1c17e87f27ccb658dc99b99",
+      "current_sha256": "b55412b63ce8a9135ae69e19f30d3bd731f962f8e1c17e87f27ccb658dc99b99",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Providers.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Providers.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "a35f1bb749a47a3b4f16a3fad1363d2a01848b85063ccc7eefa1804c0a3d0c3b",
+      "current_sha256": "a35f1bb749a47a3b4f16a3fad1363d2a01848b85063ccc7eefa1804c0a3d0c3b",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Retrieval.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Retrieval.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "846a06f00c7d23fa5926544bc53288680cacda4024ea597bb99ffb0f3628497c",
+      "current_sha256": "846a06f00c7d23fa5926544bc53288680cacda4024ea597bb99ffb0f3628497c",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/SemanticRetrieval.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/SemanticRetrieval.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "ba90fd7f34065c4c671e3abfca58e819a1536314e0d2f7476be1f95d615fad83",
+      "current_sha256": "ba90fd7f34065c4c671e3abfca58e819a1536314e0d2f7476be1f95d615fad83",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Sources.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Sources.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "6499b7df262b6fd0387a4797bba8256b6af00d5a054f88c80dcf0deb7031b449",
+      "current_sha256": "6499b7df262b6fd0387a4797bba8256b6af00d5a054f88c80dcf0deb7031b449",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Spark.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Spark.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "81a16dc59780964dd6339954da38a51f89319ab90e988585ffca2b33fb75d0a0",
+      "current_sha256": "025f5f637310691bffcd865f80208a8490943575692c2ad4273ddd50bc3666a5",
+      "identical": false
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Spreadsheet.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Spreadsheet.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "dc2faa8d70621f0871175380ae900716626a6a343fb47cbb1cee8d19dc7db792",
+      "current_sha256": "dc2faa8d70621f0871175380ae900716626a6a343fb47cbb1cee8d19dc7db792",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Support.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Support.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "491368e64577eb4be4f24092e0db641141cfe9de02e90c6122771a344ab75adb",
+      "current_sha256": "491368e64577eb4be4f24092e0db641141cfe9de02e90c6122771a344ab75adb",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/Tables.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/Tables.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "508d10675a8a27cb19ae17da93701e3a275a416f6511e627f2c1507d97f62879",
+      "current_sha256": "508d10675a8a27cb19ae17da93701e3a275a416f6511e627f2c1507d97f62879",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/rag/v2/__init__.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/rag/v2/__init__.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "16ded71e8333edddc23d1bfef9f7a7e08611866dae72064d5e3b17ce17322c21",
+      "current_sha256": "16ded71e8333edddc23d1bfef9f7a7e08611866dae72064d5e3b17ce17322c21",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/spreadsheet/Constants.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/spreadsheet/Constants.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "6ebc229006f8a963c473043e6f7e10998be54ccf0789b472df6602e91c823295",
+      "current_sha256": "6ebc229006f8a963c473043e6f7e10998be54ccf0789b472df6602e91c823295",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/spreadsheet/Loading.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/spreadsheet/Loading.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "a19eb49b45f2c052f4abd6c951e52d73d2e5c561d8be94db7284ba0c48facf8a",
+      "current_sha256": "a19eb49b45f2c052f4abd6c951e52d73d2e5c561d8be94db7284ba0c48facf8a",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/spreadsheet/Models.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/spreadsheet/Models.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "400535d0ff3418f98d4bfb9c9fa1bd10ae33cb430c0c95559cbc3c05e4baa102",
+      "current_sha256": "400535d0ff3418f98d4bfb9c9fa1bd10ae33cb430c0c95559cbc3c05e4baa102",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/spreadsheet/Normalization.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/spreadsheet/Normalization.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "bf4bbb1592a528d5861c9d9154aac9b453d6179a74275d1ba741a9bd1fe3611c",
+      "current_sha256": "bf4bbb1592a528d5861c9d9154aac9b453d6179a74275d1ba741a9bd1fe3611c",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/spreadsheet/Numbers.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/spreadsheet/Numbers.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "7eb9b64897774148aa7896b0f771024cc17a6f83ead1eee7dff33b3031249cc4",
+      "current_sha256": "7eb9b64897774148aa7896b0f771024cc17a6f83ead1eee7dff33b3031249cc4",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/spreadsheet/People.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/spreadsheet/People.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "3b8728de0239b24aa79c1c41fe9485b1d65bd055537fffe96e694d2fcdddf5ce",
+      "current_sha256": "3b8728de0239b24aa79c1c41fe9485b1d65bd055537fffe96e694d2fcdddf5ce",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/spreadsheet/Rendering.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/spreadsheet/Rendering.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "7e5f4feb1977848b2a98b9d9395a40590eacfb86e1bd5b57006fcb6111f87b20",
+      "current_sha256": "7e5f4feb1977848b2a98b9d9395a40590eacfb86e1bd5b57006fcb6111f87b20",
+      "identical": true
+    },
+    {
+      "legacy_path": "application/service/spreadsheet/__init__.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/spreadsheet/__init__.py",
+      "legacy_path_now": "symlink",
+      "base_sha256": "65808f49804869db98f1f1babb645ccd4f485cf41b4902efe0945129b5768150",
+      "current_sha256": "65808f49804869db98f1f1babb645ccd4f485cf41b4902efe0945129b5768150",
+      "identical": true
+    },
+    {
+      "legacy_path": "llm_client.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/llm_client.py",
+      "legacy_path_now": "shim",
+      "base_sha256": "0dbfd44c849a2d4aa8c0d583e281c04c3e18d8abd89a95e2171c7eb6f9e657b3",
+      "current_sha256": "b200c75c21f73c4c8b5d2c4b88bc1b084bb0685cb996030f366469b0aea91aa6",
+      "identical": false
+    },
+    {
+      "legacy_path": "application/service/LocalUploads.py",
+      "package_path": "packages/rag-ufc-core/src/rag_ufc_core/LocalUploads.py",
+      "legacy_path_now": "shim",
+      "base_sha256": "e2f1b01c9eab74aba1af3b0559a122c2c4af15acce072f35cc4ccec7da1c9ae5",
+      "current_sha256": "95e8d08eca4a0610329a4c7b900f3dfb1bacc79ebdd3776ff773566c039a912c",
+      "identical": false
+    }
+  ]
+}

@@ -51,3 +51,24 @@ def experimental_modules() -> set[str]:
         module for strategy in STRATEGIES.values() if not strategy["in_application_pipeline"]
         for module in strategy["modules"]
     }
+
+
+def application_pipeline_modules() -> set[str]:
+    """Engine modules reachable by imports (including lazy ones) from the facade's engine."""
+    import ast
+    from pathlib import Path
+
+    root = Path(__file__).with_name("rag") / "v2"
+    available = {path.stem for path in root.glob("*.py")}
+    reachable, pending = set(), ["Engine", "Collections", "Spreadsheet", "Support"]
+    while pending:
+        name = pending.pop()
+        if name in reachable:
+            continue
+        reachable.add(name)
+        tree = ast.parse((root / f"{name}.py").read_text(encoding="utf-8"))
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ImportFrom) and node.level == 1:
+                targets = [node.module] if node.module else [alias.name for alias in node.names]
+                pending.extend(target for target in targets if target in available)
+    return reachable

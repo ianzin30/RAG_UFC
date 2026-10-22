@@ -9,7 +9,11 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 def code_files():
+    # application/service keeps symlinks to the moved engine files (historical paths);
+    # the package tree adds core modules that have no legacy path.
     paths = sorted((PROJECT_ROOT / 'application/service').rglob('*.py'))
+    paths += sorted(p for p in (PROJECT_ROOT / 'packages/rag-ufc-core/src').rglob('*.py')
+                    if '__pycache__' not in p.parts)
     paths += sorted(p for p in (PROJECT_ROOT / 'benchmark').rglob('*.py')
                     if p.relative_to(PROJECT_ROOT / 'benchmark').parts[0] not in ('results', 'datasets'))
     return paths

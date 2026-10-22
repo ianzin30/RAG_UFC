@@ -6,8 +6,10 @@ readme = "README.md"
 requires-python = ">=3.11,<3.13"
 # Behavior-sensitive libraries (agents, embeddings, ANN search, tokenizers) are bounded to
 # the minor versions the approved pipeline was evaluated with; a wider range is a new release.
+# CrewAI builds the agent prompts, so it is pinned exactly (1.14.0 is yanked on PyPI for an
+# unrelated anthropic dependency issue; an exact pin still installs it).
 dependencies = [
-    "crewai>=1.14.0,<1.15",
+    "crewai==1.14.0",
     "faiss-cpu>=1.13.2,<1.14",
     "flagembedding==1.3.5",
     "httpx>=0.28.1,<1",
