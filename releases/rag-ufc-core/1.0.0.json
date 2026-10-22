@@ -11,7 +11,14 @@
   },
   "install": "rag-ufc-core @ git+https://github.com/ianzin30/RAG_UFC.git@94d1c84b77433f86fbd499b08f3647dab6489598#subdirectory=packages/rag-ufc-core",
   "approval_status": "baseline_continuity",
-  "maintainer_signoff": null,
+  "maintainer_signoff": {
+    "by": "Ian Gabriel Braga Trinta",
+    "at": "2026-10-21",
+    "statement": "Aprovado pelo mantenedor como continuidade do baseline de produção (a998f73), sem nova afirmação científica; E04 e demais candidatos permanecem experimentais. Assinatura registrada pelo assistente Claude a pedido explícito do mantenedor.",
+    "approval_status": "baseline_continuity",
+    "core_source_fingerprint": "484b33c96835e0d267669e47c33a94192617cf8484eb131be8e47ce1f7aa312c",
+    "release_manifest_sha256": "abe145639d9accb410e986ece5617859a65eb3dfc41b43fbc3e2f2fa97187da6"
+  },
   "git_tag_commit": "c13b27e7405079f35fce129f602166f7c13e2097",
   "superseded_install_commits": [
     {
