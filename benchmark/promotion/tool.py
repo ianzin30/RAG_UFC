@@ -70,7 +70,8 @@ def current_identity(document) -> dict:
 
 
 def evidence_entry(path) -> dict:
-    path = Path(path).resolve()
+    # Repository-relative without resolving symlinks: result folders may be linked in.
+    path = Path(path) if Path(path).is_absolute() else PROJECT_ROOT / path
     return {"path": path.relative_to(PROJECT_ROOT).as_posix(), "sha256": sha(path)}
 
 
@@ -193,6 +194,9 @@ def check() -> list[str]:
         if candidate.get("validation_scope") not in SCOPES:
             problems.append(f"{name}: unknown validation scope")
         problems.extend(f"{name}: {p}" for p in evidence_problems(candidate.get("evidence", [])))
+        # Result packages stay out of Git; verify them wherever they are present.
+        present = [a for a in candidate.get("artifact_references", []) if (PROJECT_ROOT / a["path"]).exists()]
+        problems.extend(f"{name}: {p}" for p in evidence_problems(present))
         if candidate.get("status") == "approved" and not candidate.get("released_in"):
             problems.append(f"{name}: approved candidates must name the core release that ships them")
     try:
