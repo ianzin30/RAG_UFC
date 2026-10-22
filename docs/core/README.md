@@ -65,7 +65,9 @@ after: 36 of 42 are byte-identical; the 6 that changed only remove checkout coup
 ## Development loop
 
 ```bash
-uv sync                                    # installs the core editable from packages/
+uv sync                                    # installs the core editable from packages/ (a path
+                                           # dependency, not a workspace member: this repository's
+                                           # uv sources must not leak to consumers of the core)
 uv run pytest tests packages/rag-ufc-core/tests
 uv run python -m benchmark.promotion check  # registry, manifest, evidence, pipeline boundary
 ```

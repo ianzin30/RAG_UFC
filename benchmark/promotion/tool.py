@@ -167,19 +167,22 @@ def release_record(*, wheel, tag) -> dict:
     from rag_ufc_core.identity import core_source_fingerprint
     from rag_ufc_core.release import release_manifest
 
-    if git("status", "--porcelain", "--", str(PACKAGE)):
-        raise ValueError("Commit the package before recording a release")
+    if git("status", "--porcelain", "--", str(PACKAGE), "pyproject.toml", "uv.lock"):
+        raise ValueError("Commit the package and packaging files before recording a release")
+    # The whole commit, not only the package's: git consumers resolve with this repository's
+    # packaging configuration at that commit.
+    commit = git("rev-parse", "HEAD")
     manifest = release_manifest()
     return {
         "schema": "rag_ufc_core.release_record.v1",
         "core_version": __version__,
         "git_tag": tag,
-        "core_commit": git("log", "-1", "--format=%H", "--", str(PACKAGE)),
+        "core_commit": commit,
         "core_source_fingerprint": core_source_fingerprint(),
         "release_manifest_sha256": sha(MANIFEST),
         "wheel": {"file": Path(wheel).name, "sha256": sha(wheel)},
-        "install": (f"rag-ufc-core @ git+https://github.com/ianzin30/RAG_UFC.git@"
-                    f"{git('log', '-1', '--format=%H', '--', str(PACKAGE))}#subdirectory=packages/rag-ufc-core"),
+        "install": (f"rag-ufc-core @ git+https://github.com/ianzin30/RAG_UFC.git@{commit}"
+                    "#subdirectory=packages/rag-ufc-core"),
         "approval_status": manifest["approval"]["status"],
         "maintainer_signoff": None,
     }
