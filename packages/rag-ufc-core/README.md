@@ -32,6 +32,7 @@ report = check_adoption(identity)            # compared with RELEASE.json
   `set_collection_progress_callback(fn)` receives `{"event", ...}` while indexes load or build.
 * Errors to catch: `rag_ufc_core.errors` (`ProviderError`, `InputBudgetError`, `LLMError`,
   `LLMConnectionError`); their messages are safe to show.
+* Collections: `rag_ufc_core.collections` (`normalize_collection_selection`, `UPLOAD_COLLECTION_NAME`).
 * Presentation of answers: `rag_ufc_core.results` (`normalize_presentation`, `preserve_v2_fields`,
   `displayed_sources`) keeps claims and citations consistent with the answer's evidence.
 * Secrets: providers read credentials through `rag_ufc_core.secret_source.read_secret`

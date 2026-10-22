@@ -130,7 +130,7 @@ def source_lineage(base_ref: str) -> list[dict]:
 
 def build_manifest(*, version, kind, status, decision, evidence, document, approved_by=None,
                    approved_at=None, evaluation_scope, evaluation_statement, candidates=()) -> dict:
-    from rag_ufc_core.identity import PIPELINE_ID, REPRESENTATION_ID, chunker_id
+    from rag_ufc_core.identity import PIPELINE_ID, REPRESENTATION_ID, chunker_id, runtime_environment
     from rag_ufc_core.release import KNOWN_STATUSES, MANIFEST_SCHEMA
     from rag_ufc_core.rag.v2.Cache import FORMAT_VERSION
     from rag_ufc_core.settings import EngineSettings
@@ -156,6 +156,8 @@ def build_manifest(*, version, kind, status, decision, evidence, document, appro
         "index_compatibility": {"format_version": FORMAT_VERSION, "representation_id": REPRESENTATION_ID,
                                 "chunker": chunker_id(settings.retrieval)},
         "included_candidates": list(candidates),
+        # Dependency versions of the environment this release was built and validated in.
+        "evaluated_environment": runtime_environment(),
         "evaluation": {"scope": evaluation_scope, "statement": evaluation_statement, "evidence": entries},
     }
 

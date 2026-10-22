@@ -84,3 +84,13 @@ def test_manifest_validation_rejects_tampering():
     manifest["approval"]["status"] = "looks-fine"
     with pytest.raises(ReleaseError, match="status"):
         validate_manifest(manifest)
+
+
+def test_dependency_versions_differing_from_the_evaluated_environment_are_warnings(settings):
+    identity = pipeline_identity(settings)
+    assert set(release_manifest()["evaluated_environment"]) == set(identity["environment"])
+    identity["environment"] = {**identity["environment"], "crewai": "9.9.9"}
+    report = check_adoption(identity)
+    assert report["status"] == "approved_match"
+    assert {"package": "crewai", "evaluated": release_manifest()["evaluated_environment"]["crewai"],
+            "installed": "9.9.9"} in report["environment_differences"]

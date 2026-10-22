@@ -35,6 +35,26 @@ OPERATIONAL_RETRIEVAL_FIELDS = {
 }
 
 
+# Libraries whose version can change results (prompts, tokenization, numerics, parsing).
+BEHAVIOR_SENSITIVE_PACKAGES = (
+    "crewai", "docling", "faiss-cpu", "FlagEmbedding", "huggingface-hub", "langchain-core", "numpy",
+    "openai", "openpyxl", "pydantic", "pypdf", "sentence-transformers", "tokenizers", "torch", "transformers",
+)
+
+
+def runtime_environment() -> dict:
+    """Installed versions of behavior-sensitive dependencies (None when absent)."""
+    from importlib.metadata import PackageNotFoundError, version
+
+    versions = {}
+    for name in BEHAVIOR_SENSITIVE_PACKAGES:
+        try:
+            versions[name] = version(name)
+        except PackageNotFoundError:
+            versions[name] = None
+    return versions
+
+
 def canonical_hash(value) -> str:
     payload = json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
@@ -127,6 +147,8 @@ def pipeline_identity(settings, *, index_diagnostics=None) -> dict:
         "prompt_set": {"location": "embedded_in_core_source", "identity": static["core_source_fingerprint"]},
         "pipeline_config": config,
         "index": runtime,
+        # Not part of the signature: compared with the release's evaluated environment.
+        "environment": runtime_environment(),
     }
 
 

@@ -84,6 +84,10 @@ def check_adoption(identity: dict, pin: dict | None = None, *, manifest: dict | 
         if key in compatible and compatible[key] != (identity.get("index_format") or {}).get(key):
             divergences.append({"path": f"index_format.{key}", "expected": compatible[key],
                                 "actual": (identity.get("index_format") or {}).get(key), "change": "different"})
+    evaluated = manifest.get("evaluated_environment") or {}
+    installed = identity.get("environment") or {}
+    environment = [{"package": name, "evaluated": version, "installed": installed.get(name)}
+                   for name, version in sorted(evaluated.items()) if installed.get(name) != version]
     if any(p["kind"] == "pin" for p in problems):
         verdict = "pin_mismatch"
     elif any(p["kind"] == "approval" for p in problems):
@@ -98,4 +102,6 @@ def check_adoption(identity: dict, pin: dict | None = None, *, manifest: dict | 
                     "release_kind": manifest.get("release_kind")},
         "problems": problems,
         "divergences": divergences,
+        # Warnings only: dependency versions that differ from the evaluated environment.
+        "environment_differences": environment,
     }

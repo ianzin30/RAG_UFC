@@ -60,7 +60,7 @@ def test_importing_the_package_and_facade_loads_no_models_or_agents():
     code = (
         "import sys, rag_ufc_core\n"
         "from rag_ufc_core import RAGService, EngineSettings, pipeline_identity\n"
-        "import rag_ufc_core.errors, rag_ufc_core.results, rag_ufc_core.release\n"
+        "import rag_ufc_core.errors, rag_ufc_core.results, rag_ufc_core.release, rag_ufc_core.collections\n"
         "heavy = {'crewai', 'faiss', 'torch', 'FlagEmbedding', 'sentence_transformers', 'streamlit', 'fastapi'}\n"
         "print(sorted(heavy & set(sys.modules)))\n"
     )
