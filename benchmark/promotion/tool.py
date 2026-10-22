@@ -52,14 +52,23 @@ def archived_config_document(code_zip) -> dict:
         return tomllib.loads(archive.read("config/config.toml").decode("utf-8"))
 
 
-def config_identity(document) -> dict:
+def select_llm_section(document, section="llm") -> dict:
+    """Benchmarks call models through ``[benchmark.llm]``, applications through ``[llm]``;
+    a run's identity must use the section it actually used."""
+    llm = document
+    for key in section.split("."):
+        llm = llm[key]
+    return {**document, "llm": llm}
+
+
+def config_identity(document, llm_section="llm") -> dict:
     """Pipeline configuration identity only; valid for historical runs too, since it
     does not claim anything about the code that ran."""
     from rag_ufc_core.identity import canonical_hash, pipeline_config
     from rag_ufc_core.settings import EngineSettings
 
-    config = pipeline_config(EngineSettings.from_document(document))
-    return {"pipeline_config_hash": canonical_hash(config), "pipeline_config": config}
+    config = pipeline_config(EngineSettings.from_document(select_llm_section(document, llm_section)))
+    return {"llm_section": llm_section, "pipeline_config_hash": canonical_hash(config), "pipeline_config": config}
 
 
 def current_identity(document) -> dict:

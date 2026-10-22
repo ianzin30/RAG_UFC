@@ -21,6 +21,8 @@ def main(argv=None):
     source = historical.add_mutually_exclusive_group(required=True)
     source.add_argument("--config")
     source.add_argument("--code-zip", help="a run's code.zip; reads its archived config/config.toml")
+    historical.add_argument("--llm-section", default="llm",
+                            help="'benchmark.llm' for benchmark runs, 'llm' for the application profile")
     historical.add_argument("--compare-release", action="store_true",
                             help="list differences with the pipeline approved in RELEASE.json")
 
@@ -56,12 +58,12 @@ def main(argv=None):
             tool.write_json(args.out, result)
     elif args.command == "config-identity":
         document = tool.archived_config_document(args.code_zip) if args.code_zip else tool.config_document(args.config)
-        result = tool.config_identity(document)
+        result = tool.config_identity(document, args.llm_section)
         if args.compare_release:
             from rag_ufc_core.identity import diff
             from rag_ufc_core.release import release_manifest
             approved = release_manifest()["pipeline"]
-            result = {"pipeline_config_hash": result["pipeline_config_hash"],
+            result = {"llm_section": args.llm_section, "pipeline_config_hash": result["pipeline_config_hash"],
                       "approved_pipeline_config_hash": approved["pipeline_config_hash"],
                       "differences": diff(approved["pipeline_config"], result["pipeline_config"], "pipeline_config")}
     elif args.command == "lineage":
