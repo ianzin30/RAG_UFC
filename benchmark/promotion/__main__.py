@@ -1,4 +1,4 @@
-"""python -m benchmark.promotion {identity,config-identity,lineage,manifest,record,check}"""
+"""python -m benchmark.promotion {identity,config-identity,lineage,manifest,record,signoff,check}"""
 
 import argparse
 import json
@@ -47,6 +47,12 @@ def main(argv=None):
     record.add_argument("--wheel", required=True)
     record.add_argument("--tag", required=True)
 
+    sign = commands.add_parser("signoff", help="record the maintainer's decision on a release record (once)")
+    sign.add_argument("--version", required=True)
+    sign.add_argument("--by", required=True, help="maintainer's name")
+    sign.add_argument("--statement", required=True, help="what was reviewed and decided")
+    sign.add_argument("--at", help="YYYY-MM-DD (default: today)")
+
     commands.add_parser("check", help="registry, manifest, evidence and pipeline-boundary consistency")
 
     args = parser.parse_args(argv)
@@ -80,6 +86,8 @@ def main(argv=None):
     elif args.command == "record":
         result = tool.release_record(wheel=args.wheel, tag=args.tag)
         tool.write_json(tool.RELEASES / f"{result['core_version']}.json", result)
+    elif args.command == "signoff":
+        result = tool.signoff(version=args.version, by=args.by, statement=args.statement, at=args.at)
     else:
         problems = tool.check()
         print(json.dumps({"consistent": not problems, "problems": problems}, ensure_ascii=False, indent=2))

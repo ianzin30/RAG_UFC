@@ -62,6 +62,13 @@ the released application pipeline (Spark, answer budget 2048) in five fields.
 
    `manifest` refuses `approved` without a maintainer and date, and refuses candidates the
    registry does not mark approved. `record` refuses an uncommitted package.
+   The maintainer then signs the record (once; it refuses if this checkout's package differs from
+   the record):
+
+   ```bash
+   uv run python -m benchmark.promotion signoff --version X.Y.Z --by "<maintainer>" \
+     --statement "<what was reviewed and decided>"
+   ```
 8. **QwenRAG adopts it deliberately** (see QwenRAG `docs/core-upgrade.md`): update the commit pin
    and `core-release.lock.json`, rebuild indexes if the index format or representation changed,
    run the adoption check and integration tests, review, merge, deploy.

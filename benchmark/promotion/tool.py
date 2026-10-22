@@ -188,6 +188,35 @@ def release_record(*, wheel, tag) -> dict:
     }
 
 
+def signoff(*, version, by, statement, at=None) -> dict:
+    """Record the maintainer's decision on a release record, once.
+
+    The maintainer signs what the record describes: the command refuses if the package
+    in this checkout no longer matches the record (fingerprint or RELEASE.json), or if
+    the release was already signed.
+    """
+    from datetime import date
+
+    from rag_ufc_core.identity import core_source_fingerprint
+
+    if not by.strip() or not statement.strip():
+        raise ValueError("A sign-off needs the maintainer's name and a statement")
+    path = RELEASES / f"{version}.json"
+    record = read_json(path)
+    if record.get("maintainer_signoff"):
+        raise ValueError(f"Release {version} is already signed; records are append-only")
+    if record["core_source_fingerprint"] != core_source_fingerprint() or record["release_manifest_sha256"] != sha(MANIFEST):
+        raise ValueError("This checkout's package differs from the release record; check out the released commit")
+    record["maintainer_signoff"] = {
+        "by": by.strip(), "at": at or date.today().isoformat(), "statement": statement.strip(),
+        "approval_status": record["approval_status"],
+        "core_source_fingerprint": record["core_source_fingerprint"],
+        "release_manifest_sha256": record["release_manifest_sha256"],
+    }
+    write_json(path, record)
+    return record
+
+
 def check() -> list[str]:
     """Consistency of registry, manifest and evidence. Empty list = consistent."""
     from rag_ufc_core.release import ReleaseError, release_manifest
@@ -222,6 +251,12 @@ def check() -> list[str]:
         for name in manifest.get("included_candidates", []):
             if name not in ids:
                 problems.append(f"release includes unknown candidate {name}")
+    for path in sorted(RELEASES.glob("*.json")):
+        record = read_json(path)
+        signed = record.get("maintainer_signoff") if record.get("schema") == "rag_ufc_core.release_record.v1" else None
+        if signed and (signed.get("core_source_fingerprint") != record.get("core_source_fingerprint")
+                       or signed.get("release_manifest_sha256") != record.get("release_manifest_sha256")):
+            problems.append(f"{path.name}: sign-off does not match the release it is attached to")
     leaked = application_pipeline_modules() & experimental_modules()
     if leaked:
         problems.append(f"experimental modules reachable from the application pipeline: {sorted(leaked)}")

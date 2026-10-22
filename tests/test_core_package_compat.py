@@ -104,3 +104,25 @@ def test_source_lineage_reports_unchanged_engine_files():
         row = lineage[relative]
         assert row["identical"]
         assert row["current_sha256"] == hashlib.sha256((PROJECT_ROOT / relative).read_bytes()).hexdigest()
+
+
+def test_signoff_is_recorded_once_and_only_for_the_package_in_this_checkout(tmp_path, monkeypatch):
+    import json
+    import shutil
+
+    from benchmark.promotion import tool
+
+    monkeypatch.setattr(tool, "RELEASES", tmp_path)
+    shutil.copy(PROJECT_ROOT / "releases/rag-ufc-core/1.0.0.json", tmp_path / "1.0.0.json")
+    with pytest.raises(ValueError, match="name and a statement"):
+        tool.signoff(version="1.0.0", by=" ", statement="ok")
+    signed = tool.signoff(version="1.0.0", by="Maintainer", statement="Reviewed lineage and manifest.", at="2026-10-22")
+    assert signed["maintainer_signoff"]["by"] == "Maintainer"
+    assert signed["maintainer_signoff"]["core_source_fingerprint"] == signed["core_source_fingerprint"]
+    with pytest.raises(ValueError, match="already signed"):
+        tool.signoff(version="1.0.0", by="Other", statement="again")
+    record = json.loads((tmp_path / "1.0.0.json").read_text())
+    record.update(maintainer_signoff=None, core_source_fingerprint="0" * 64)
+    (tmp_path / "1.0.0.json").write_text(json.dumps(record))
+    with pytest.raises(ValueError, match="differs from the release record"):
+        tool.signoff(version="1.0.0", by="Maintainer", statement="ok")
