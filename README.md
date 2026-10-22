@@ -1,6 +1,13 @@
 # RAG UFC
 
-Aplicação Streamlit com RAG V2, ingestão local/Google Drive, scraping e Telegram.
+Pesquisa e núcleo RAG: o motor RAG V2 reutilizável (`packages/rag-ufc-core`), benchmarks e
+protocolos científicos, e a interface Streamlit de exploração, além de ingestão Google Drive,
+scraping e Telegram. A aplicação (FastAPI + React) vive no repositório
+[QwenRAG](https://github.com/ianzin30/QwenRAG) e consome o núcleo como dependência versionada.
+
+* Arquitetura e fronteiras do núcleo: [docs/core/README.md](docs/core/README.md)
+* Promoção de candidatos de pesquisa para releases: [docs/core/promotion.md](docs/core/promotion.md)
+* Reprodutibilidade de execuções anteriores à extração: [docs/core/historical_reproducibility.md](docs/core/historical_reproducibility.md)
 
 ## Executar
 
@@ -19,7 +26,7 @@ O primeiro carregamento de uma coleção baixa os modelos BGE de embedding/reran
 
 ## Teste de conexão e resposta dos modelos da Spark
 
-O cliente reutilizável `llm_client.py` acessa a API OpenAI-compatible do Open WebUI
+O cliente reutilizável `llm_client.py` (hoje `rag_ufc_core.llm_client`; o nome antigo continua válido) acessa a API OpenAI-compatible do Open WebUI
 em `https://spark.ollama.atlab.ufc.br/api`, usando o SDK `openai`.
 O modelo prioritário é `nvidia/Qwen3.6-35B-A3B-NVFP4`.
 A `.env.example` da raiz contém as três variáveis `LLM_BASE_URL`, `LLM_API_KEY`

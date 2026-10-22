@@ -30,6 +30,10 @@ report = check_adoption(identity)            # compared with RELEASE.json
   `provider_calls`.
 * Progress: `set_response_status_callback(fn)` receives `{"stage", "message", "mode", "agent"}`;
   `set_collection_progress_callback(fn)` receives `{"event", ...}` while indexes load or build.
+* Errors to catch: `rag_ufc_core.errors` (`ProviderError`, `InputBudgetError`, `LLMError`,
+  `LLMConnectionError`); their messages are safe to show.
+* Presentation of answers: `rag_ufc_core.results` (`normalize_presentation`, `preserve_v2_fields`,
+  `displayed_sources`) keeps claims and citations consistent with the answer's evidence.
 * Secrets: providers read credentials through `rag_ufc_core.secret_source.read_secret`
   (process environment by default; `use_secret_source(fn)` registers another source).
   Settings, identities and logs never contain secret values.
